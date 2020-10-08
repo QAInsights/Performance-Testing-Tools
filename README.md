@@ -2,10 +2,6 @@
 
 > 🛠 Curated list of Performance Testing Tools ⚡
 
-⭐ Free or Open Source  
-💸 Commercial  
-🌧 Cloud based   
-
 - Apache JMeter
 - Blazemeter
 - Micro Focus LoadRunner Professional
@@ -34,3 +30,8 @@
 - LoadStorm
 - AgileLoad
 - Appvance IQ
+
+## Legends
+⭐ Free or Open Source  
+💰 Commercial  
+🌧 Cloud based   
