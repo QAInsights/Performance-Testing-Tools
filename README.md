@@ -3,32 +3,32 @@
 > 🛠 Curated list of Performance Testing Tools ⚡
 
 - Apache JMeter
-- Blazemeter 🌧
-- Micro Focus LoadRunner Professional
-- Micro Focus LoadRunner Enterprise
-- Micro Focus LoadRunner Cloud 🌧
-- Neotys NeoLoad
+- Blazemeter 🌧 💰
+- Micro Focus LoadRunner Professional 💰
+- Micro Focus LoadRunner Enterprise 💰
+- Micro Focus LoadRunner Cloud 🌧 💰
+- Neotys NeoLoad 💰
 - Netling
 - Locust
-- Gatling
-- RedLine 13 🌧
-- Loader 🌧
-- Flood 🌧
-- Load Focus 🌧
-- Nouvola 🌧
+- Gatling 
+- RedLine 13 🌧 💰
+- Loader 🌧 💰
+- Flood 🌧 💰
+- Load Focus 🌧 💰
+- Nouvola 🌧 💰
 - StormForger 
 - Stress Stimulus
-- Supervisor 🌧
-- RoboSwarm 🌧
+- Supervisor 🌧 💰
+- RoboSwarm 🌧 💰
 - k6 
 - PureLoad 
-- OctoPerf 🌧
-- RadView
+- OctoPerf 🌧 💰 
+- RadView 
 - Apica
 - Load Tester
 - WAPT
-- Frugal Testing 🌧
-- LoadStorm 🌧
+- Frugal Testing 🌧 💰
+- LoadStorm 🌧 💰
 - AgileLoad
 - Appvance IQ
 
