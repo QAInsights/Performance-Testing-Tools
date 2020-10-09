@@ -2,13 +2,13 @@
 
 > 🛠 Curated list of Performance Testing Tools ⚡
 
-- Apache JMeter
+- Apache JMeter ⭐
 - Blazemeter 🌧 💰
 - Micro Focus LoadRunner Professional 💰
 - Micro Focus LoadRunner Enterprise 💰
 - Micro Focus LoadRunner Cloud 🌧 💰
 - Neotys NeoLoad 💰
-- Netling
+- Netling ⭐
 - Locust
 - Gatling 
 - RedLine 13 🌧 💰
