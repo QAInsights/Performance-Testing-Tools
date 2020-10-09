@@ -8,6 +8,7 @@
 - Micro Focus LoadRunner Enterprise
 - Micro Focus LoadRunner Cloud
 - Neotys NeoLoad
+- Netling
 - Locust
 - Gatling
 - RedLine 13
