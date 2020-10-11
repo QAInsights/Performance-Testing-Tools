@@ -1,38 +1,24 @@
-# Performance Testing Tools
+# Performance Testing Tools ⚡
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-1EAEDB)]()
+[![saythanks](https://img.shields.io/badge/say-thanks-1EAEDB.svg)](https://saythanks.io/to/catch.nkn%40gmail.com)
+[![](https://img.shields.io/badge/license-MIT-0a0a0a.svg?style=flat&colorA=1EAEDB)](https://qainsights.com)
+[![](https://img.shields.io/badge/%E2%9D%A4-QAInsights-0a0a0a.svg?style=flat&colorA=1EAEDB)](https://qainsights.com)
+[![](https://img.shields.io/badge/%E2%9D%A4-YouTube%20Channel-0a0a0a.svg?style=flat&colorA=1EAEDB)](https://www.youtube.com/user/QAInsights?sub_confirmation=1)
+[![](https://img.shields.io/badge/donate-paypal-1EAEDB)](https://www.paypal.com/paypalme/NAVEENKUMARN)
 
-> 🛠 Curated list of Performance Testing Tools ⚡
 
-- Apache JMeter ⭐
-- Blazemeter 🌧 💰
-- Micro Focus LoadRunner Professional 💰
-- Micro Focus LoadRunner Enterprise 💰
-- Micro Focus LoadRunner Cloud 🌧 💰
-- Neotys NeoLoad 💰
-- Netling ⭐
-- Locust
-- Gatling 
-- RedLine 13 🌧 💰
-- Loader 🌧 💰
-- Flood 🌧 💰
-- Load Focus 🌧 💰
-- Nouvola 🌧 💰
-- StormForger 
-- Stress Stimulus
-- Supervisor 🌧 💰
-- RoboSwarm 🌧 💰
-- k6 
-- PureLoad 
-- OctoPerf 🌧 💰 
-- RadView 
-- Apica
-- Load Tester
-- WAPT
-- Frugal Testing 🌧 💰
-- LoadStorm 🌧 💰
-- AgileLoad
-- Appvance IQ
+> 🛠 Curated list of Performance Testing Tools 🛠
 
-## Legends
-⭐ Free or Open Source  
-💰 Commercial  
-🌧 Cloud based   
+![Performance Testing Tools](./assets/PerformanceTestingTools_v1.jpg)
+
+## 📌 Note(s)
+
+- Tools are not arranged in a random order
+
+# Contribution are welcome 💜
+
+Please raise an issue to discuss your suggestions or open a PR to request improvements.
+
+# License 📜
+
+MIT
