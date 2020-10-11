@@ -19,6 +19,8 @@
 
 Please raise an issue to discuss your suggestions or open a PR to request improvements.
 
+> Designed using [Diagrams.net](https://github.com/jgraph/drawio)
+
 # License 📜
 
 MIT
