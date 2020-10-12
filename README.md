@@ -13,7 +13,7 @@
 
 ## Note(s) 📌
 
-- Tools are not arranged in a random order
+- Tools are arranged in a random order
 
 # Contribution are welcome 💜
 
