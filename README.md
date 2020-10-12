@@ -9,7 +9,7 @@
 
 > 🛠 Curated list of Performance Testing Tools 🛠
 
-![Performance Testing Tools](./assets/PerformanceTestingTools_v1.jpg)
+![Performance Testing Tools](./assets/PerformanceTestingTools_v2.jpg)
 
 ## Note(s) 📌
 
