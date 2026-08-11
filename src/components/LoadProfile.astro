@@ -1,0 +1,41 @@
+---
+import type { Tool } from '../data/tools';
+import { loadProfilePath } from '../lib/loadProfile';
+const { tool, large = false } = Astro.props as { tool: Tool; large?: boolean };
+const width = large ? 520 : 150;
+const height = large ? 110 : 42;
+---
+
+<svg
+  class:list={['load-profile', large && 'load-profile--large']}
+  width={width}
+  height={height}
+  viewBox={`0 0 ${width} ${height}`}
+  role="img"
+  aria-label={`Deterministic load profile for ${tool.name}`}
+>
+  <path d={`M 0 ${height - 2} H ${width}`} class="profile-baseline"></path>
+  <path
+    d={loadProfilePath(tool, width, height)}
+    class="profile-line"
+    pathLength="1"></path>
+</svg>
+<style>
+  .load-profile {
+    display: block;
+    max-width: 150px;
+  }
+  .profile-baseline {
+    stroke: var(--color-teal-700);
+    stroke-width: 1;
+  }
+  .profile-line {
+    fill: none;
+    stroke: var(--color-cyan-500);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .load-profile--large {
+    max-width: 100%;
+  }
+</style>

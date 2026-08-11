@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import { baseUrl } from '../lib/urls';
+const {
+  title = 'Performance Testing Tools',
+  description = 'A curated directory of performance testing tools.',
+} = Astro.props;
+const { structuredData = [], canonical, ogImage } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="manifest" href={baseUrl('manifest.webmanifest')} />
+    <link rel="icon" href={baseUrl('favicon.svg')} type="image/svg+xml" />
+    <Seo
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      structuredData={structuredData}
+    />
+  </head>
+  <body class="console-grid">
+    <slot />
+  </body>
+</html>

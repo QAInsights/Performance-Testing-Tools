@@ -1,0 +1,34 @@
+---
+import { absoluteUrl, baseUrl } from '../lib/urls';
+import { siteOrigin } from '../config/site';
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  ogImage = baseUrl('og/default.png'),
+  structuredData = [],
+} = Astro.props;
+const schemas = Array.isArray(structuredData)
+  ? structuredData
+  : [structuredData];
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(ogImage, Astro.site ?? siteOrigin).toString();
+---
+
+<link rel="canonical" href={absoluteUrl(canonical)} />
+<meta name="theme-color" content="#0A0A0A" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={absoluteUrl(canonical)} />
+<meta property="og:image" content={absoluteOgImage} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={absoluteOgImage} />
+{
+  schemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))
+}

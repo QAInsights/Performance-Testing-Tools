@@ -1,0 +1,45 @@
+---
+import type { Tool } from '../data/tools';
+const { tool } = Astro.props as { tool: Tool };
+---
+
+<span class="badge badge--teal">{tool.category}</span>
+<span class="badge badge--cyan">{tool.license}</span>
+<span class="badge">{tool.deployment}</span>
+{
+  tool.personalPick && (
+    <span class="badge badge--amber" title="Personal pick">
+      ♥ pick
+    </span>
+  )
+}
+<style>
+  .badge {
+    display: inline-block;
+    border: 1px solid var(--color-surface-700);
+    color: var(--color-surface-300);
+    padding: 3px 5px;
+    margin: 2px 2px 2px 0;
+    font: 9px var(--font-mono);
+    white-space: nowrap;
+  }
+  .badge--teal {
+    color: var(--color-teal-300);
+    border-color: var(--color-teal-700);
+  }
+  .badge--cyan {
+    color: var(--color-cyan-500);
+    border-color: color-mix(in srgb, var(--color-cyan-500) 60%, transparent);
+  }
+  .badge--amber {
+    color: var(--color-amber-400);
+    border-color: var(--color-amber-400);
+  }
+</style>
+{
+  tool.generalPick && (
+    <span class="badge badge--cyan" title="General pick">
+      ✓ pick
+    </span>
+  )
+}

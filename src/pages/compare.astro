@@ -1,0 +1,238 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import { tools } from '../data/tools';
+import { siteUrl } from '../lib/urls';
+import { loadProfilePath } from '../lib/loadProfile';
+const serializedTools = tools.map(
+  ({
+    slug,
+    name,
+    vendor,
+    category,
+    license,
+    deployment,
+    scriptingLanguages,
+    protocols,
+    status,
+    firstReleased,
+    pricingModel,
+  }) => ({
+    slug,
+    name,
+    vendor,
+    category,
+    license,
+    deployment,
+    scriptingLanguages,
+    protocols,
+    status,
+    firstReleased,
+    pricingModel,
+    profile: loadProfilePath(
+      {
+        slug,
+        category,
+        license,
+        deployment,
+        protocols,
+      },
+      180,
+      42,
+    ),
+  }),
+);
+---
+
+<ConsoleLayout title="Test Rig · Performance Testing Tools">
+  <main class="compare-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>← Directory</a><span>/</span><strong>Test Rig</strong>
+    </nav>
+    <header>
+      <p class="eyebrow">COMPARISON MATRIX</p><h1>Test Rig</h1><p class="intro">
+        Put up to three load profiles side by side. Share this URL with your
+        team.
+      </p>
+    </header>
+    <div data-compare-matrix class="matrix panel"></div>
+    <p data-compare-empty class="empty panel" hidden>
+      Select tools from the directory to populate the rig.
+    </p>
+  </main>
+</ConsoleLayout>
+<script define:vars={{ serializedTools }}>
+  const matrix = document.querySelector('[data-compare-matrix]');
+  const empty = document.querySelector('[data-compare-empty]');
+  const selected =
+    new URLSearchParams(location.search)
+      .get('tools')
+      ?.split(',')
+      .filter(Boolean) || [];
+  const data = serializedTools
+    .filter((tool) => selected.includes(tool.slug))
+    .slice(0, 3);
+  if (!data.length) {
+    if (empty) empty.hidden = false;
+  } else if (matrix) {
+    matrix.style.setProperty('--compare-columns', String(data.length));
+    const fields = [
+      ['Vendor', 'vendor'],
+      ['Category', 'category'],
+      ['License', 'license'],
+      ['Deployment', 'deployment'],
+      ['Status', 'status'],
+      ['First released', 'firstReleased'],
+      ['Pricing', 'pricingModel'],
+      ['Scripting languages', 'scriptingLanguages'],
+      ['Protocols', 'protocols'],
+      ['Load profile', 'profile'],
+    ];
+    const value = (item, key) =>
+      Array.isArray(item[key])
+        ? item[key].join(', ')
+        : item[key] || 'Not recorded';
+    const table = document.createElement('table');
+    table.className = 'matrix-table';
+    const thead = document.createElement('thead');
+    const headRow = document.createElement('tr');
+    const fieldHead = document.createElement('th');
+    fieldHead.scope = 'col';
+    fieldHead.textContent = 'FIELD';
+    headRow.append(fieldHead);
+    data.forEach((tool) => {
+      const th = document.createElement('th');
+      th.scope = 'col';
+      const name = document.createElement('strong');
+      name.textContent = tool.name;
+      const vendor = document.createElement('small');
+      vendor.textContent = tool.vendor;
+      th.append(name, vendor);
+      headRow.append(th);
+    });
+    thead.append(headRow);
+    table.append(thead);
+    const tbody = document.createElement('tbody');
+    fields.forEach(([label, key]) => {
+      const values = data.map((tool) => value(tool, key));
+      const different = new Set(values).size > 1;
+      const row = document.createElement('tr');
+      const field = document.createElement('th');
+      field.scope = 'row';
+      field.textContent = label;
+      row.append(field);
+      values.forEach((item) => {
+        const cell = document.createElement('td');
+        if (key === 'profile') {
+          const profile = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'svg',
+          );
+          profile.setAttribute('class', 'matrix-profile');
+          profile.setAttribute('viewBox', '0 0 180 42');
+          profile.setAttribute('role', 'img');
+          profile.setAttribute('aria-label', `Load profile for ${item}`);
+          const baseline = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'path',
+          );
+          baseline.setAttribute('d', 'M 0 40 H 180');
+          baseline.setAttribute('class', 'matrix-profile-baseline');
+          const line = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'path',
+          );
+          line.setAttribute('d', item);
+          line.setAttribute('class', 'matrix-profile-line');
+          profile.append(baseline, line);
+          cell.append(profile);
+        } else {
+          cell.textContent = item;
+        }
+        if (different) cell.className = 'different';
+        row.append(cell);
+      });
+      tbody.append(row);
+    });
+    table.append(tbody);
+    matrix.replaceChildren(table);
+  }
+</script>
+<style>
+  .compare-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 38px 24px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 11px;
+    margin-bottom: 35px;
+  }
+  .breadcrumbs a {
+    color: var(--color-teal-300);
+  }
+  .compare-page h1 {
+    font-size: clamp(42px, 8vw, 90px);
+    letter-spacing: -0.08em;
+    margin: 0;
+  }
+  .intro {
+    color: var(--color-surface-300);
+  }
+  .matrix {
+    margin-top: 38px;
+    overflow: auto;
+  }
+  .matrix-head,
+  .matrix-row {
+    display: grid;
+    grid-template-columns: 170px repeat(
+        var(--compare-columns, 3),
+        minmax(170px, 1fr)
+      );
+    min-width: 680px;
+  }
+  .matrix-head {
+    border-bottom: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    font: 11px var(--font-mono);
+  }
+  .matrix-head > div,
+  .matrix-row > div {
+    padding: 15px;
+    border-right: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  }
+  .matrix-head strong,
+  .matrix-head small {
+    display: block;
+    color: var(--color-surface-100);
+    font: 600 14px var(--font-sans);
+  }
+  .matrix-head small {
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    margin-top: 4px;
+  }
+  .matrix-row {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  }
+  .matrix-row > div:first-child {
+    color: var(--color-teal-300);
+    font: 10px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .matrix-row .different:not(:first-child) {
+    color: var(--color-amber-400);
+  }
+  .empty {
+    margin-top: 30px;
+    padding: 30px;
+    color: var(--color-surface-300);
+  }
+</style>

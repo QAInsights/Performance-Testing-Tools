@@ -1,0 +1,25 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Directory from '../components/Directory.astro';
+import { tools } from '../data/tools';
+import { toolItemList } from '../lib/seo';
+import { siteUrl } from '../lib/urls';
+---
+
+<ConsoleLayout
+  structuredData={[
+    toolItemList(tools),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Performance Testing Tools',
+      url: siteUrl(),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'QAInsights',
+      url: 'https://qainsights.com/',
+    },
+  ]}><Directory /></ConsoleLayout
+>

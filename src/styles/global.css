@@ -1,0 +1,200 @@
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import 'tailwindcss';
+
+@theme {
+  --color-teal-950: #003b3a;
+  --color-teal-900: #005452;
+  --color-teal-700: #007f7c;
+  --color-teal-500: #18a09b;
+  --color-teal-300: #70d3cb;
+  --color-amber-400: #fbb03b;
+  --color-cyan-500: #1eaedb;
+  --color-ink: #0a0a0a;
+  --color-surface-950: #101313;
+  --color-surface-900: #171b1b;
+  --color-surface-800: #222828;
+  --color-surface-700: #303838;
+  --color-surface-500: #697676;
+  --color-surface-300: #aab5b4;
+  --color-surface-100: #e8eeee;
+  --font-sans: 'Geist Variable', sans-serif;
+  --font-mono: 'Geist Mono Variable', monospace;
+}
+
+:root {
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  background: var(--color-surface-950);
+  color: var(--color-surface-100);
+}
+
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  outline-offset: 3px;
+}
+:focus-visible {
+  outline: 2px solid var(--color-amber-400);
+}
+
+.console-grid {
+  background-color: var(--color-surface-950);
+  background-image:
+    linear-gradient(rgba(112, 211, 203, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 211, 203, 0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.rule {
+  border-color: color-mix(in srgb, var(--color-teal-300) 20%, transparent);
+}
+.panel {
+  background: color-mix(in srgb, var(--color-surface-900) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-teal-300) 20%, transparent);
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.muted {
+  color: var(--color-surface-300);
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-amber-400);
+  outline-offset: 2px;
+}
+.eyebrow {
+  color: var(--color-teal-300);
+  font: 10px var(--font-mono);
+  letter-spacing: 0.14em;
+}
+.button {
+  border: 1px solid;
+  padding: 9px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.button--amber {
+  border-color: var(--color-amber-400);
+  background: var(--color-amber-400);
+  color: var(--color-ink);
+}
+.button--ghost {
+  border-color: var(--color-teal-700);
+  color: var(--color-teal-300);
+  text-decoration: none;
+}
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.breadcrumbs {
+  display: flex;
+  gap: 10px;
+  color: var(--color-surface-300);
+  font-size: 11px;
+}
+.breadcrumbs a {
+  color: var(--color-teal-300);
+}
+.compare-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 38px 24px 80px;
+}
+.compare-page h1 {
+  font-size: clamp(42px, 8vw, 90px);
+  letter-spacing: -0.08em;
+  margin: 0;
+}
+.compare-page .intro {
+  color: var(--color-surface-300);
+}
+.matrix {
+  margin-top: 38px;
+  overflow: auto;
+}
+.matrix-table {
+  border-collapse: collapse;
+  min-width: 680px;
+  width: 100%;
+}
+.matrix-table th,
+.matrix-table td {
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  border-right: 1px solid
+    color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  padding: 15px;
+  text-align: left;
+}
+.matrix-table thead th {
+  color: var(--color-teal-300);
+  font: 11px var(--font-mono);
+  vertical-align: top;
+}
+.matrix-table thead strong,
+.matrix-table thead small {
+  color: var(--color-surface-100);
+  display: block;
+  font: 600 14px var(--font-sans);
+}
+.matrix-table thead small {
+  color: var(--color-surface-300);
+  font: 10px var(--font-mono);
+  margin-top: 4px;
+}
+.matrix-table tbody th {
+  color: var(--color-teal-300);
+  font: 10px var(--font-mono);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.matrix-table tbody td {
+  color: var(--color-surface-300);
+  font-size: 12px;
+}
+.matrix-table .different {
+  color: var(--color-amber-400);
+}
+.matrix-profile {
+  display: block;
+  width: 180px;
+}
+.matrix-profile-baseline {
+  stroke: var(--color-teal-700);
+  stroke-width: 1;
+}
+.matrix-profile-line {
+  fill: none;
+  stroke: var(--color-cyan-500);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Performance Testing Tools",
+  "short_name": "Perf Tools",
+  "description": "A curated directory of performance testing tools from QAInsights.",
+  "start_url": "/Performance-Testing-Tools/",
+  "scope": "/Performance-Testing-Tools/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "icons": [
+    {
+      "src": "/Performance-Testing-Tools/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Performance-Testing-Tools/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Performance-Testing-Tools/icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/Performance-Testing-Tools/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
