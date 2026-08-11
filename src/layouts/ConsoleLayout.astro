@@ -1,0 +1,16 @@
+---
+import '../styles/global.css';
+const { title = 'Performance Testing Tools', description = 'A curated directory of performance testing tools.' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body class="console-grid">
+    <slot />
+  </body>
+</html>

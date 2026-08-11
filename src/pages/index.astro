@@ -1,27 +1,5 @@
 ---
-import '../styles/global.css';
-import { tools } from '../data/tools';
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Directory from '../components/Directory.astro';
 ---
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Performance Testing Tools</title>
-    <meta name="description" content="A curated directory of performance testing tools." />
-  </head>
-  <body class="min-h-screen">
-    <main class="mx-auto max-w-6xl px-6 py-16">
-      <p class="font-mono text-sm uppercase tracking-widest text-amber-400">QAInsights directory</p>
-      <h1 class="mt-4 text-5xl font-semibold tracking-tight text-white">Performance testing tools</h1>
-      <p class="mt-5 max-w-2xl text-lg text-surface-300">
-        A curated, searchable directory for load, stress, protocol, and performance engineering tools.
-      </p>
-      <div class="mt-12 rounded-xl border border-surface-700 bg-surface-900 p-6">
-        <p class="font-mono text-sm text-teal-300">{tools.length} tools catalogued</p>
-        <p class="mt-2 text-surface-300">The full directory experience is coming next.</p>
-      </div>
-    </main>
-  </body>
-</html>
+<ConsoleLayout><Directory /></ConsoleLayout>

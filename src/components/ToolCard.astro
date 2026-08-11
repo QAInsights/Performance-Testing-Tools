@@ -1,0 +1,11 @@
+---
+import type { Tool } from '../data/tools';
+import { siteUrl } from '../lib/urls';
+import LoadProfile from './LoadProfile.astro';
+import ToolBadges from './ToolBadges.astro';
+const { tool } = Astro.props as { tool: Tool };
+---
+<article class="tool-card panel" data-tool-card data-tool={tool.slug} data-name={tool.name.toLowerCase()} data-vendor={tool.vendor.toLowerCase()} data-category={tool.category} data-license={tool.license} data-deployment={tool.deployment} data-status={tool.status} data-language={tool.scriptingLanguages.join('|')} data-protocol={tool.protocols.join('|')} data-pick={`${tool.personalPick ? 'personal' : ''}|${tool.generalPick ? 'general' : ''}`} data-released={tool.firstReleased ?? 0}>
+  <div class="card-head"><div><a class="tool-name focus-ring" href={siteUrl(`tools/${tool.slug}`)}>{tool.name}</a><span class="tool-vendor">{tool.vendor}</span></div><label class="compare-check"><input type="checkbox" data-compare={tool.slug} aria-label={`Add ${tool.name} to Test Rig`} /><span>+</span></label></div>
+  <p>{tool.description}</p><ToolBadges tool={tool} /><LoadProfile tool={tool} />
+</article>
