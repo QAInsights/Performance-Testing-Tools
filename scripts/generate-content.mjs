@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import sharp from 'sharp';
 
 const { tools } = await import('../src/data/tools.ts');
-const { joinBase, siteNoIndex, siteOrigin } = await import(
+const { canonicalBase, joinBase, siteNoIndex, siteOrigin } = await import(
   '../src/config/site.ts'
 );
 const root = resolve(new URL('..', import.meta.url).pathname);
@@ -51,7 +51,7 @@ await Promise.all([
 const concise = tools
   .map(
     (tool) =>
-      `- [${tool.name}](${siteOrigin}${joinBase(`tools/${tool.slug}`)}) — ${tool.description} License: ${tool.license}; deployment: ${tool.deployment}; status: ${tool.status}.`,
+      `- [${tool.name}](${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}) — ${tool.description} License: ${tool.license}; deployment: ${tool.deployment}; status: ${tool.status}.`,
   )
   .join('\n');
 const full = tools
@@ -72,5 +72,5 @@ await writeFile(
   resolve(publicDir, 'robots.txt'),
   siteNoIndex
     ? 'User-agent: *\nDisallow: /\n'
-    : `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}${joinBase('sitemap-index.xml')}\n`,
+    : `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}${joinBase('sitemap-index.xml', canonicalBase)}\n`,
 );

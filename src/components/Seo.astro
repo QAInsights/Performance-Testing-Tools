@@ -1,6 +1,6 @@
 ---
 import { absoluteUrl, baseUrl } from '../lib/urls';
-import { siteNoIndex, siteOrigin } from '../config/site';
+import { siteNoIndex } from '../config/site';
 const {
   title,
   description,
@@ -13,7 +13,7 @@ const schemas = Array.isArray(structuredData)
   : [structuredData];
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
-  : new URL(ogImage, Astro.site ?? siteOrigin).toString();
+  : absoluteUrl(ogImage);
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />

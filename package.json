@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "predev": "npm run generate",
-    "build": "npm run generate && astro build",
+    "build": "npm run generate && astro build && node scripts/normalize-sitemap.mjs",
     "generate": "node --experimental-strip-types scripts/generate-content.mjs",
     "preview": "astro preview",
     "pretest": "npm run generate",

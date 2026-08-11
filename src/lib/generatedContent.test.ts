@@ -22,4 +22,10 @@ describe('generated public content', () => {
       'Disallow: /',
     );
   });
+
+  it('uses the canonical origin in generated robots metadata', () => {
+    expect(readFileSync('public/robots.txt', 'utf8')).toContain(
+      'Sitemap: https://perf.jmeter.ai/sitemap-index.xml',
+    );
+  });
 });

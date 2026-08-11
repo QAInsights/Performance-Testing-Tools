@@ -6,10 +6,14 @@ import {
   toolSoftwareApplication,
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
-import { joinBase, siteBase, siteOrigin } from '../config/site';
+import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { tools } from '../data/tools';
 
 describe('SEO structured data', () => {
+  it('defaults to the perf.jmeter.ai origin without environment overrides', () => {
+    expect(siteOrigin).toBe('https://perf.jmeter.ai');
+  });
+
   it('builds absolute URLs with exactly one project base segment', () => {
     for (const path of [
       '',
@@ -18,7 +22,9 @@ describe('SEO structured data', () => {
       '/categories/load-testing/',
     ]) {
       const url = absoluteUrl(path);
-      expect(url).toBe(`${siteOrigin}${joinBase(path)}`.replace(/\/$/, ''));
+      expect(url).toBe(
+        `${siteOrigin}${joinBase(path, canonicalBase)}`.replace(/\/$/, ''),
+      );
       if (siteBase !== '/') {
         expect(url).not.toContain(`${siteBase}${siteBase}`);
       }
@@ -45,6 +51,17 @@ describe('SEO structured data', () => {
         '/',
       ),
     ).toBe('https://performance-testing-tools.vercel.app/og/default.png');
+  });
+
+  it('keeps Pages serving paths out of canonical URLs', () => {
+    expect(
+      absoluteUrl(
+        '/Performance-Testing-Tools/tools/grafana-k6',
+        'https://perf.jmeter.ai',
+        canonicalBase,
+        '/Performance-Testing-Tools',
+      ),
+    ).toBe('https://perf.jmeter.ai/tools/grafana-k6');
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

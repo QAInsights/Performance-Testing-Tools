@@ -14,6 +14,7 @@ export const siteBase =
   configuredBase === '/' || configuredBase === ''
     ? '/'
     : `/${configuredBase.replace(/^\/+|\/+$/g, '')}`;
+export const canonicalBase = '/';
 export const siteNoIndex =
   environment.SITE_NOINDEX === '1' || environment.SITE_NOINDEX === 'true';
 
