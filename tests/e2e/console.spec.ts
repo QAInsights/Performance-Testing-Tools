@@ -44,11 +44,19 @@ test('mobile users can open the shared filter controls', async ({ page }) => {
 test('compare renders a real matrix for two and three tools', async ({
   page,
 }) => {
+  await page.goto('/Performance-Testing-Tools/tools/grafana-k6/');
+  await expect(page.locator('.badge').first()).toHaveClass(/badge/);
+  await expect(page.locator('.profile-line')).toHaveCSS('fill', 'none');
   await page.goto(
     '/Performance-Testing-Tools/compare?tools=apache-jmeter,grafana-k6',
   );
   await expect(page.locator('.matrix-table')).toBeVisible();
   await expect(page.locator('.matrix-table thead th')).toHaveCount(3);
+  await expect(page.locator('.matrix-table td').first()).toHaveCSS(
+    'padding-top',
+    '15px',
+  );
+  await expect(page.locator('.matrix-profile-line')).toHaveCount(2);
   await page.goto(
     '/Performance-Testing-Tools/compare?tools=apache-jmeter,grafana-k6,locust',
   );

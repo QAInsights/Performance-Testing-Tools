@@ -41,3 +41,59 @@ const { tool } = Astro.props as { tool: Tool };
     ></td
   >
 </tr>
+<style>
+  td {
+    padding: 13px 14px;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 12%, transparent);
+    vertical-align: middle;
+    font-size: 12px;
+  }
+  tr:last-child td {
+    border-bottom: 0;
+  }
+  .tool-name {
+    display: block;
+    color: var(--color-surface-100);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .tool-name:hover {
+    color: var(--color-amber-400);
+  }
+  .tool-vendor {
+    display: block;
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    margin-top: 4px;
+  }
+  .description-cell {
+    color: var(--color-surface-300);
+    max-width: 300px;
+  }
+  .status-dot {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--color-amber-400);
+    font: 9px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .compare-check input {
+    position: absolute;
+    opacity: 0;
+  }
+  .compare-check span {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    cursor: pointer;
+  }
+  .compare-check input:checked + span {
+    background: var(--color-amber-400);
+    color: var(--color-ink);
+    border-color: var(--color-amber-400);
+  }
+</style>

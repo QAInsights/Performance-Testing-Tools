@@ -1,7 +1,27 @@
 ---
 import ConsoleLayout from '../layouts/ConsoleLayout.astro';
-import { datasetLastVerified } from '../data/tools';
+import LoadProfile from '../components/LoadProfile.astro';
+import { datasetLastVerified, tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
+const archetypes = [
+  ['Ramp', 'Gradual rise for protocol/API-oriented tools.', 'ghz'],
+  [
+    'Step',
+    'Staged plateaus common for enterprise suites.',
+    'loadrunner-enterprise',
+  ],
+  ['Spike', 'Concentrated peak common for micro-benchmark CLIs.', 'wrk'],
+  [
+    'Soak',
+    'Sustained oscillating load common for open-source engines.',
+    'locust',
+  ],
+  [
+    'Burst',
+    'Repeated bursts common for cloud/commercial services.',
+    'blazemeter',
+  ],
+] as const;
 ---
 
 <ConsoleLayout title="About · Performance Testing Tools">
@@ -31,19 +51,28 @@ import { siteUrl } from '../lib/urls';
           Mini load profiles are deterministic visual fingerprints, not measured
           benchmarks. They are generated from each tool's catalog attributes,
           not measured performance.
-        </p><h3>Profile archetypes</h3><ul>
-          <li>
-            <b>Ramp:</b> gradual rise, useful for protocol/API-oriented tools.
-          </li><li>
-            <b>Step:</b> staged plateaus, common for enterprise suites.
-          </li><li>
-            <b>Spike:</b> concentrated peak, common for micro-benchmark CLIs.
-          </li><li>
-            <b>Soak:</b> sustained oscillating load, common for open-source engines.
-          </li><li>
-            <b>Burst:</b> repeated bursts, common for cloud/commercial services.
-          </li>
-        </ul>
+        </p><h3>Profile archetypes</h3><div class="archetype-list">
+          {
+            archetypes.map(([name, description, slug]) => {
+              const example = tools.find((tool) => tool.slug === slug);
+              return (
+                example && (
+                  <div class="archetype">
+                    <>
+                      <LoadProfile tool={example} width={150} height={42} />
+                      <div>
+                        <>
+                          <b>{name}</b>
+                          <span>{description}</span>
+                        </>
+                      </div>
+                    </>
+                  </div>
+                )
+              );
+            })
+          }
+        </div>
       </article><article class="panel about-card">
         <h2>Maintained with evidence</h2><p>
           Tool records include official links, ownership, licensing, deployment,
@@ -137,6 +166,33 @@ import { siteUrl } from '../lib/urls';
   .small {
     font-size: 11px;
     color: var(--color-teal-300);
+  }
+  .archetype-list {
+    display: grid;
+    gap: 10px;
+  }
+  .archetype {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 12px;
+    align-items: center;
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 10px;
+  }
+  .archetype b,
+  .archetype span {
+    display: block;
+  }
+  .archetype b {
+    color: var(--color-surface-100);
+    font: 11px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .archetype span {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 4px;
   }
   .submit {
     display: flex;

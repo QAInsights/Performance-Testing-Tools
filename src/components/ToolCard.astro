@@ -38,3 +38,54 @@ const { tool } = Astro.props as { tool: Tool };
   </div>
   <p>{tool.description}</p><ToolBadges tool={tool} /><LoadProfile tool={tool} />
 </article>
+<style>
+  .tool-card {
+    padding: 14px;
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .tool-card p {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .tool-card .load-profile {
+    margin-top: 12px;
+  }
+  .tool-name {
+    display: block;
+    color: var(--color-surface-100);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .tool-name:hover {
+    color: var(--color-amber-400);
+  }
+  .tool-vendor {
+    display: block;
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    margin-top: 4px;
+  }
+  .compare-check input {
+    position: absolute;
+    opacity: 0;
+  }
+  .compare-check span {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    cursor: pointer;
+  }
+  .compare-check input:checked + span {
+    background: var(--color-amber-400);
+    color: var(--color-ink);
+    border-color: var(--color-amber-400);
+  }
+</style>

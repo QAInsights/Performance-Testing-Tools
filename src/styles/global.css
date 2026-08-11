@@ -35,9 +35,6 @@
 [hidden] {
   display: none !important;
 }
-[hidden] {
-  display: none !important;
-}
 html {
   scroll-behavior: smooth;
 }
@@ -83,6 +80,114 @@ select {
 .focus-ring:focus-visible {
   outline: 2px solid var(--color-amber-400);
   outline-offset: 2px;
+}
+.eyebrow {
+  color: var(--color-teal-300);
+  font: 10px var(--font-mono);
+  letter-spacing: 0.14em;
+}
+.button {
+  border: 1px solid;
+  padding: 9px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.button--amber {
+  border-color: var(--color-amber-400);
+  background: var(--color-amber-400);
+  color: var(--color-ink);
+}
+.button--ghost {
+  border-color: var(--color-teal-700);
+  color: var(--color-teal-300);
+  text-decoration: none;
+}
+.button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.breadcrumbs {
+  display: flex;
+  gap: 10px;
+  color: var(--color-surface-300);
+  font-size: 11px;
+}
+.breadcrumbs a {
+  color: var(--color-teal-300);
+}
+.compare-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 38px 24px 80px;
+}
+.compare-page h1 {
+  font-size: clamp(42px, 8vw, 90px);
+  letter-spacing: -0.08em;
+  margin: 0;
+}
+.compare-page .intro {
+  color: var(--color-surface-300);
+}
+.matrix {
+  margin-top: 38px;
+  overflow: auto;
+}
+.matrix-table {
+  border-collapse: collapse;
+  min-width: 680px;
+  width: 100%;
+}
+.matrix-table th,
+.matrix-table td {
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  border-right: 1px solid
+    color-mix(in srgb, var(--color-teal-300) 13%, transparent);
+  padding: 15px;
+  text-align: left;
+}
+.matrix-table thead th {
+  color: var(--color-teal-300);
+  font: 11px var(--font-mono);
+  vertical-align: top;
+}
+.matrix-table thead strong,
+.matrix-table thead small {
+  color: var(--color-surface-100);
+  display: block;
+  font: 600 14px var(--font-sans);
+}
+.matrix-table thead small {
+  color: var(--color-surface-300);
+  font: 10px var(--font-mono);
+  margin-top: 4px;
+}
+.matrix-table tbody th {
+  color: var(--color-teal-300);
+  font: 10px var(--font-mono);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.matrix-table tbody td {
+  color: var(--color-surface-300);
+  font-size: 12px;
+}
+.matrix-table .different {
+  color: var(--color-amber-400);
+}
+.matrix-profile {
+  display: block;
+  width: 180px;
+}
+.matrix-profile-baseline {
+  stroke: var(--color-teal-700);
+  stroke-width: 1;
+}
+.matrix-profile-line {
+  fill: none;
+  stroke: var(--color-cyan-500);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
 }
 @media (prefers-reduced-motion: reduce) {
   *,

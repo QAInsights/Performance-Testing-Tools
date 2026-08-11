@@ -20,3 +20,22 @@ const height = large ? 110 : 42;
     class="profile-line"
     pathLength="1"></path>
 </svg>
+<style>
+  .load-profile {
+    display: block;
+    max-width: 150px;
+  }
+  .profile-baseline {
+    stroke: var(--color-teal-700);
+    stroke-width: 1;
+  }
+  .profile-line {
+    fill: none;
+    stroke: var(--color-cyan-500);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .load-profile--large {
+    max-width: 100%;
+  }
+</style>

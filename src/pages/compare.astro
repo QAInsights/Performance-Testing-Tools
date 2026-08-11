@@ -2,6 +2,7 @@
 import ConsoleLayout from '../layouts/ConsoleLayout.astro';
 import { tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
+import { loadProfilePath } from '../lib/loadProfile';
 const serializedTools = tools.map(
   ({
     slug,
@@ -27,6 +28,17 @@ const serializedTools = tools.map(
     status,
     firstReleased,
     pricingModel,
+    profile: loadProfilePath(
+      {
+        slug,
+        category,
+        license,
+        deployment,
+        protocols,
+      },
+      180,
+      42,
+    ),
   }),
 );
 ---
@@ -73,6 +85,7 @@ const serializedTools = tools.map(
       ['Pricing', 'pricingModel'],
       ['Scripting languages', 'scriptingLanguages'],
       ['Protocols', 'protocols'],
+      ['Load profile', 'profile'],
     ];
     const value = (item, key) =>
       Array.isArray(item[key])
@@ -109,7 +122,32 @@ const serializedTools = tools.map(
       row.append(field);
       values.forEach((item) => {
         const cell = document.createElement('td');
-        cell.textContent = item;
+        if (key === 'profile') {
+          const profile = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'svg',
+          );
+          profile.setAttribute('class', 'matrix-profile');
+          profile.setAttribute('viewBox', '0 0 180 42');
+          profile.setAttribute('role', 'img');
+          profile.setAttribute('aria-label', `Load profile for ${item}`);
+          const baseline = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'path',
+          );
+          baseline.setAttribute('d', 'M 0 40 H 180');
+          baseline.setAttribute('class', 'matrix-profile-baseline');
+          const line = document.createElementNS(
+            'http://www.w3.org/2000/svg',
+            'path',
+          );
+          line.setAttribute('d', item);
+          line.setAttribute('class', 'matrix-profile-line');
+          profile.append(baseline, line);
+          cell.append(profile);
+        } else {
+          cell.textContent = item;
+        }
         if (different) cell.className = 'different';
         row.append(cell);
       });
