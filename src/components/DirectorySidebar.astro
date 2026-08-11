@@ -1,0 +1,84 @@
+---
+import { datasetLastVerified, type Category } from '../data/tools';
+import { siteUrl } from '../lib/urls';
+
+interface Props {
+  category?: Category;
+  toolsCount: number;
+  categoriesCount: number;
+  optionGroups: readonly (readonly [string, string[]])[];
+}
+
+const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
+---
+
+<aside class="rail panel">
+  <a href={siteUrl()} class="brand focus-ring"
+    ><span class="brand-mark">↗</span><span
+      >PERFORMANCE<br /><b>TESTING TOOLS</b></span
+    ></a
+  >
+  <div class="rail-rule"></div>
+  <div class="dataset-stats mono">
+    <strong>{toolsCount}</strong> tools · <strong
+      >{categoriesCount}</strong
+    > categories<br />updated {datasetLastVerified}
+  </div>
+  <nav class="rail-nav" aria-label="Primary">
+    <a href={siteUrl()} class="active focus-ring">Directory</a>
+    <a href={siteUrl('about')} class="focus-ring">About <span>↗</span></a>
+  </nav>
+  <details class="filter-disclosure" open>
+    <summary>FILTER SIGNALS</summary>
+    <div class="filter-groups">
+      {
+        optionGroups.map(([key, options]) =>
+          key !== 'category' || !category ? (
+            key === 'language' || key === 'protocol' ? (
+              <details class="sub-filter-disclosure" data-filter-group={key}>
+                <summary>{key}</summary>
+                <div class="sub-filter-options">
+                  {options.map((option) => (
+                    <label>
+                      <input
+                        type="checkbox"
+                        data-filter={key}
+                        value={option}
+                      />{' '}
+                      <span>{option}</span>
+                    </label>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <fieldset class="filter-group" data-filter-group={key}>
+                <legend>{key}</legend>
+                {options.map((option) => (
+                  <label>
+                    <input
+                      type="checkbox"
+                      data-filter={key}
+                      value={option}
+                    />{' '}
+                    <span>{option}</span>
+                  </label>
+                ))}
+              </fieldset>
+            )
+          ) : null,
+        )
+      }
+      <fieldset class="filter-group">
+        <legend>picks</legend>
+        <label
+          ><input type="checkbox" data-filter="pick" value="personal" />
+          <span>♥ personal</span></label
+        >
+        <label
+          ><input type="checkbox" data-filter="pick" value="general" />
+          <span>✓ general</span></label
+        >
+      </fieldset>
+    </div>
+  </details>
+</aside>

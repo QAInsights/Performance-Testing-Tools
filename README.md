@@ -3,7 +3,7 @@
 [![CI](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml/badge.svg)](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml)
 [![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://perf.jmeter.ai/)
 
-Load Profile Console is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
+Performance Testing Tools is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
 
 Live site: <https://perf.jmeter.ai/>
 

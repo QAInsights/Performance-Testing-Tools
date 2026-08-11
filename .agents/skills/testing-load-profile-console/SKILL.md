@@ -1,9 +1,9 @@
 ---
 name: testing-load-profile-console
-description: How to build, serve and end-to-end test the Astro "Load Profile Console" static site in this repo (directory, filters, compare rig, command palette, tool pages).
+description: How to build, serve and end-to-end test the Astro "Performance Testing Tools" static site in this repo (directory, filters, compare rig, command palette, tool pages).
 ---
 
-# Testing the Load Profile Console (Astro static site)
+# Testing Performance Testing Tools (Astro static site)
 
 ## Serving the app
 

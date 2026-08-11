@@ -1,11 +1,12 @@
 /* global URL */
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const { canonicalBase, joinBase, siteBase, siteOrigin } = await import(
   '../src/config/site.ts'
 );
-const root = resolve(new URL('..', import.meta.url).pathname);
+const root = fileURLToPath(new URL('..', import.meta.url));
 const distDir = resolve(root, 'dist');
 
 if (siteBase !== canonicalBase) {

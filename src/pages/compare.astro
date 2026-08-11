@@ -1,5 +1,6 @@
 ---
 import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Footer from '../components/Footer.astro';
 import { tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 import { loadProfilePath } from '../lib/loadProfile';
@@ -58,6 +59,7 @@ const serializedTools = tools.map(
     <p data-compare-empty class="empty panel" hidden>
       Select tools from the directory to populate the rig.
     </p>
+    <Footer />
   </main>
 </ConsoleLayout>
 <script define:vars={{ serializedTools }}>

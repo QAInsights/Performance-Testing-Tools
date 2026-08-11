@@ -403,26 +403,6 @@ export const tools: Tool[] = [
     tags: ['windows', 'api', 'recording'],
   }),
   makeTool({
-    slug: 'roboswarm',
-    name: 'RoboSwarm',
-    vendor: 'RoboSwarm',
-    url: 'https://roboswarm.com/',
-    description:
-      'Cloud load testing platform historically based on distributed Locust test clusters.',
-    longDescription:
-      'RoboSwarm was described by contemporary third-party coverage as a cloud service that provisioned distributed Locust clusters. The official site currently returns an access-denied response, so current availability remains unverified.',
-    category: 'Browser/RUM',
-    license: 'Commercial',
-    pricingModel: 'Current pricing not verified.',
-    deployment: 'Cloud',
-    scriptingLanguages: ['JavaScript'],
-    protocols: ['HTTP', 'HTTPS'],
-    osSupport: ['Browser'],
-    status: 'Unknown',
-    cloudBased: true,
-    tags: ['legacy', 'browser'],
-  }),
-  makeTool({
     slug: 'pureload',
     name: 'PureLoad',
     vendor: 'Emblasoft',

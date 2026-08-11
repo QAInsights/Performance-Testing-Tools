@@ -1,0 +1,27 @@
+---
+---
+
+<div class="palette-backdrop" data-palette hidden>
+  <section
+    class="palette panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="palette-title"
+  >
+    <div class="palette-head">
+      <span id="palette-title" class="mono">COMMAND PALETTE</span><button
+        type="button"
+        data-palette-close
+        aria-label="Close command palette">Esc</button
+      >
+    </div>
+    <input
+      data-palette-search
+      class="palette-input"
+      type="search"
+      placeholder="Jump to a tool, category, or filter…"
+      aria-label="Command palette search"
+    />
+    <div data-palette-results class="palette-results"></div>
+  </section>
+</div>

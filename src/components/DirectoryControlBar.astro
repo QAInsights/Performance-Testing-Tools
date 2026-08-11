@@ -1,0 +1,37 @@
+---
+---
+
+<div class="controlbar panel">
+  <label class="search-wrap"
+    ><span aria-hidden="true">⌕</span><input
+      data-search
+      type="search"
+      placeholder="Search tools, protocols, vendors…"
+      aria-label="Search tools"
+    /><kbd aria-label="Press slash to focus search">/</kbd></label
+  >
+  <label class="sort-wrap mono"
+    >SORT <select data-sort aria-label="Sort tools"
+      ><option value="name">Name</option><option value="category"
+        >Category</option
+      ><option value="vendor">Vendor</option><option value="released"
+        >First released</option
+      ></select
+    ></label
+  >
+  <div class="view-toggle" role="group" aria-label="View mode">
+    <button
+      type="button"
+      data-view="table"
+      class="selected focus-ring"
+      aria-label="Table view"
+      aria-pressed="true">▤</button
+    ><button
+      type="button"
+      data-view="grid"
+      class="focus-ring"
+      aria-label="Grid view"
+      aria-pressed="false">▦</button
+    >
+  </div>
+</div>

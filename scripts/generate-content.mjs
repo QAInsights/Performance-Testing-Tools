@@ -1,13 +1,14 @@
 /* global Buffer, URL */
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 
 const { tools } = await import('../src/data/tools.ts');
 const { canonicalBase, joinBase, siteNoIndex, siteOrigin } = await import(
   '../src/config/site.ts'
 );
-const root = resolve(new URL('..', import.meta.url).pathname);
+const root = fileURLToPath(new URL('..', import.meta.url));
 const publicDir = resolve(root, 'public');
 const ogDir = resolve(publicDir, 'og');
 await mkdir(ogDir, { recursive: true });
@@ -31,7 +32,7 @@ const profile = (tool) => {
   return points.join(' ');
 };
 const svg = (tool) =>
-  `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#0A0A0A"/><path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200M120 0V630M240 0V630M360 0V630M480 0V630M600 0V630M720 0V630M840 0V630M960 0V630M1080 0V630" stroke="#005452" opacity=".45"/><text x="70" y="100" fill="#70D3CB" font-family="monospace" font-size="24" letter-spacing="5">LOAD PROFILE CONSOLE</text><text x="70" y="235" fill="#FBB03B" font-family="sans-serif" font-size="64" font-weight="700">${escapeXml(tool.name)}</text><text x="70" y="285" fill="#AAB5B4" font-family="monospace" font-size="24">${escapeXml(tool.category)} · ${escapeXml(tool.vendor)}</text><polyline points="${profile(tool)}" transform="translate(70 350) scale(.9 1.3)" fill="none" stroke="#1EAEDB" stroke-width="4"/></svg>`;
+  `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect width="1200" height="630" fill="#0A0A0A"/><path d="M0 120H1200M0 240H1200M0 360H1200M0 480H1200M120 0V630M240 0V630M360 0V630M480 0V630M600 0V630M720 0V630M840 0V630M960 0V630M1080 0V630" stroke="#005452" opacity=".45"/><text x="70" y="100" fill="#70D3CB" font-family="monospace" font-size="24" letter-spacing="5">PERFORMANCE TESTING TOOLS</text><text x="70" y="235" fill="#FBB03B" font-family="sans-serif" font-size="64" font-weight="700">${escapeXml(tool.name)}</text><text x="70" y="285" fill="#AAB5B4" font-family="monospace" font-size="24">${escapeXml(tool.category)} · ${escapeXml(tool.vendor)}</text><polyline points="${profile(tool)}" transform="translate(70 350) scale(.9 1.3)" fill="none" stroke="#1EAEDB" stroke-width="4"/></svg>`;
 await writeFile(resolve(ogDir, 'default.svg'), svg(tools[0]));
 for (const tool of tools)
   await writeFile(resolve(ogDir, `${tool.slug}.svg`), svg(tool));

@@ -47,6 +47,13 @@ input,
 select {
   font: inherit;
 }
+select {
+  color-scheme: dark;
+}
+select option {
+  background-color: var(--color-surface-900);
+  color: var(--color-surface-100);
+}
 button,
 a,
 input,
@@ -83,8 +90,9 @@ select {
 }
 .eyebrow {
   color: var(--color-teal-300);
-  font: 10px var(--font-mono);
+  font: 11px var(--font-mono);
   letter-spacing: 0.14em;
+  margin: 0 0 12px;
 }
 .button {
   border: 1px solid;
