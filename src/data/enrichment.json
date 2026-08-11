@@ -310,9 +310,7 @@
       ],
       "pricing": "Artillery Cloud offers a free tier for hobby and proof-of-concept projects. Paid plans include a Team plan at $199/month and a Business/Scale plan at $499/month. Enterprise add-ons start at $1,199/month. Subscriptions are available via the Artillery website or AWS Marketplace. Annual billing options are available for a 20% discount.",
       "authorOrCompany": "Artillery Software",
-      "aiFeatures": [
-        "AI-assisted analysis and debugging for test results"
-      ],
+      "aiFeatures": ["AI-assisted analysis and debugging for test results"],
       "latestRelease": {
         "version": "2.0.33",
         "date": "2026-06-16",
