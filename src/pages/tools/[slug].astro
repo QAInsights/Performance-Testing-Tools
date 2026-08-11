@@ -35,6 +35,11 @@ const latestRelease = enrichment?.latestRelease;
 const hasLatestRelease =
   latestRelease &&
   Boolean(latestRelease.version || latestRelease.date || latestRelease.notes);
+const hasSpecs =
+  tool.scriptingLanguages.length > 0 ||
+  tool.protocols.length > 0 ||
+  tool.osSupport.length > 0 ||
+  tool.tags.length > 0;
 const sourceHost = (url: string) => {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -103,7 +108,7 @@ const sourceHost = (url: string) => {
         </div>
       </div><div class="hero-profile"><LoadProfile tool={tool} large /></div>
     </header>
-    <section class="summary-strip panel" aria-label="At a glance">
+    <dl class="summary-strip panel" aria-label="At a glance">
       <div><dt>License</dt><dd>{tool.license}</dd></div>
       <div><dt>Deployment</dt><dd>{tool.deployment}</dd></div>
       <div><dt>Pricing model</dt><dd>{tool.pricingModel}</dd></div>
@@ -120,7 +125,7 @@ const sourceHost = (url: string) => {
           </div>
         )
       }
-    </section>
+    </dl>
     {
       tool.status !== 'Active' && (
         <aside class="status-callout panel">
@@ -183,71 +188,63 @@ const sourceHost = (url: string) => {
             </section>
           )
         }
-        <section class="detail-section">
-          <h2>Specs</h2>
-          <dl class="metadata-grid">
-            <div><dt>License</dt><dd>{tool.license}</dd></div>
-            <div><dt>Deployment</dt><dd>{tool.deployment}</dd></div>
-            <div>
-              <dt>First released</dt><dd>
-                {tool.firstReleased ?? 'Not verified'}
-              </dd>
-            </div>
-            {
-              tool.scriptingLanguages.length > 0 && (
-                <div>
-                  <dt>Scripting</dt>
-                  <dd>
-                    <span class="spec-chips">
-                      {tool.scriptingLanguages.map((item) => (
-                        <span class="spec-chip">{item}</span>
-                      ))}
-                    </span>
-                  </dd>
-                </div>
-              )
-            }{
-              tool.protocols.length > 0 && (
-                <div>
-                  <dt>Protocols</dt>
-                  <dd>
-                    <span class="spec-chips">
-                      {tool.protocols.map((item) => (
-                        <span class="spec-chip">{item}</span>
-                      ))}
-                    </span>
-                  </dd>
-                </div>
-              )
-            }{
-              tool.osSupport.length > 0 && (
-                <div>
-                  <dt>Operating systems</dt>
-                  <dd>
-                    <span class="spec-chips">
-                      {tool.osSupport.map((item) => (
-                        <span class="spec-chip">{item}</span>
-                      ))}
-                    </span>
-                  </dd>
-                </div>
-              )
-            }{
-              tool.tags.length > 0 && (
-                <div>
-                  <dt>Tags</dt>
-                  <dd>
-                    <span class="spec-chips">
-                      {tool.tags.map((item) => (
-                        <span class="spec-chip">{item}</span>
-                      ))}
-                    </span>
-                  </dd>
-                </div>
-              )
-            }
-          </dl>
-        </section>
+        {
+          hasSpecs && (
+            <section class="detail-section">
+              <h2>Specs</h2>
+              <dl class="metadata-grid">
+                {tool.scriptingLanguages.length > 0 && (
+                  <div>
+                    <dt>Scripting</dt>
+                    <dd>
+                      <span class="spec-chips">
+                        {tool.scriptingLanguages.map((item) => (
+                          <span class="spec-chip">{item}</span>
+                        ))}
+                      </span>
+                    </dd>
+                  </div>
+                )}
+                {tool.protocols.length > 0 && (
+                  <div>
+                    <dt>Protocols</dt>
+                    <dd>
+                      <span class="spec-chips">
+                        {tool.protocols.map((item) => (
+                          <span class="spec-chip">{item}</span>
+                        ))}
+                      </span>
+                    </dd>
+                  </div>
+                )}
+                {tool.osSupport.length > 0 && (
+                  <div>
+                    <dt>Operating systems</dt>
+                    <dd>
+                      <span class="spec-chips">
+                        {tool.osSupport.map((item) => (
+                          <span class="spec-chip">{item}</span>
+                        ))}
+                      </span>
+                    </dd>
+                  </div>
+                )}
+                {tool.tags.length > 0 && (
+                  <div>
+                    <dt>Tags</dt>
+                    <dd>
+                      <span class="spec-chips">
+                        {tool.tags.map((item) => (
+                          <span class="spec-chip">{item}</span>
+                        ))}
+                      </span>
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </section>
+          )
+        }
         {
           enrichment?.sources && enrichment.sources.length > 0 && (
             <section class="detail-section sources-section">
