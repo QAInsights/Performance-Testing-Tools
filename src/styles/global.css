@@ -1,0 +1,30 @@
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import 'tailwindcss';
+
+@theme {
+  --color-teal-950: #003b3a;
+  --color-teal-900: #005452;
+  --color-teal-700: #007f7c;
+  --color-teal-500: #18a09b;
+  --color-teal-300: #70d3cb;
+  --color-amber-400: #fbb03b;
+  --color-cyan-500: #1eaedb;
+  --color-ink: #0a0a0a;
+  --color-surface-950: #101313;
+  --color-surface-900: #171b1b;
+  --color-surface-800: #222828;
+  --color-surface-700: #303838;
+  --color-surface-500: #697676;
+  --color-surface-300: #aab5b4;
+  --color-surface-100: #e8eeee;
+  --font-sans: 'Geist Variable', sans-serif;
+  --font-mono: 'Geist Mono Variable', monospace;
+}
+
+:root {
+  color-scheme: dark;
+  font-family: var(--font-sans);
+  background: var(--color-surface-950);
+  color: var(--color-surface-100);
+}
