@@ -1,0 +1,40 @@
+---
+import { absoluteUrl } from '../lib/seo';
+const {
+  title,
+  description,
+  canonical = Astro.url.pathname,
+  ogImage = '/Performance-Testing-Tools/og/default.svg',
+  structuredData = [],
+} = Astro.props;
+const schemas = Array.isArray(structuredData)
+  ? structuredData
+  : [structuredData];
+---
+
+<link rel="canonical" href={absoluteUrl(canonical)} />
+<meta name="theme-color" content="#0A0A0A" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={absoluteUrl(canonical)} />
+<meta
+  property="og:image"
+  content={ogImage.startsWith('http')
+    ? ogImage
+    : `https://qainsights.github.io${ogImage}`}
+/>
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta
+  name="twitter:image"
+  content={ogImage.startsWith('http')
+    ? ogImage
+    : `https://qainsights.github.io${ogImage}`}
+/>
+{
+  schemas.map((schema) => (
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  ))
+}

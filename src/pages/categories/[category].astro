@@ -2,12 +2,37 @@
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import Directory from '../../components/Directory.astro';
 import { tools, type Category } from '../../data/tools';
+import { breadcrumbs, toolItemList, absoluteUrl } from '../../lib/seo';
 
 export function getStaticPaths() {
-  return [...new Set(tools.map((tool) => tool.category))].map((category) => ({ params: { category: category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-') }, props: { category } }));
+  return [...new Set(tools.map((tool) => tool.category))].map((category) => ({
+    params: { category: category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-') },
+    props: { category },
+  }));
 }
 const { category } = Astro.props as { category: Category };
 ---
-<ConsoleLayout title={`${category} · Performance Testing Tools`}>
-  <Directory category={category} title={category} intro={`A focused signal view of ${category.toLowerCase()} tools.`} />
+
+<ConsoleLayout
+  title={`${category} · Performance Testing Tools`}
+  description={`Browse ${category.toLowerCase()} performance testing tools.`}
+  structuredData={[
+    toolItemList(tools.filter((tool) => tool.category === category)),
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      {
+        name: category,
+        path: `categories/${category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-')}`,
+      },
+    ]),
+  ]}
+  canonical={absoluteUrl(
+    `categories/${category.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-')}`,
+  )}
+>
+  <Directory
+    category={category}
+    title={category}
+    intro={`A focused signal view of ${category.toLowerCase()} tools.`}
+  />
 </ConsoleLayout>

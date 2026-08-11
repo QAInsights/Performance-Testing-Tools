@@ -5,12 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run generate && astro build",
+    "generate": "node --experimental-strip-types scripts/generate-content.mjs",
     "preview": "astro preview",
+    "pretest": "npm run generate",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@astrojs/sitemap": "3.5.1",
@@ -25,6 +29,7 @@
     "@types/node": "24.5.2",
     "eslint": "9.36.0",
     "prettier": "3.6.2",
+    "prettier-plugin-astro": "0.14.1",
     "tailwindcss": "4.1.13",
     "typescript": "5.9.2",
     "typescript-eslint": "8.44.0",
