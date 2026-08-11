@@ -1,11 +1,11 @@
 # Performance Testing Tools
 
 [![CI](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml/badge.svg)](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml)
-[![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://qainsights.github.io/Performance-Testing-Tools/)
+[![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://perf.jmeter.ai/)
 
 Load Profile Console is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
 
-Live site: <https://qainsights.github.io/Performance-Testing-Tools/>
+Live site: <https://perf.jmeter.ai/>
 
 ## Run locally
 
@@ -28,22 +28,23 @@ npm run test:e2e
 
 ### Deployment targets
 
-The build defaults to GitHub Pages:
+The build defaults to the canonical root-hosted site:
 
-- `SITE_ORIGIN=https://qainsights.github.io`
-- `SITE_BASE=/Performance-Testing-Tools`
+- `SITE_ORIGIN=https://perf.jmeter.ai`
+- `SITE_BASE=/`
 
-Both values can be overridden at build time. For a root-hosted deployment,
-set `SITE_BASE=/`. `SITE_ORIGIN` should be the public origin used for canonical,
-Open Graph, sitemap, robots, and generated catalog URLs. Vercel automatically
-uses its `VERCEL_URL` as the origin when `SITE_ORIGIN` is not explicitly set;
-the committed `vercel.json` sets the root base automatically.
+All three are overridable at build time:
+
+- `SITE_ORIGIN` — public origin used for canonical, Open Graph, sitemap, robots and generated catalog URLs.
+- `SITE_BASE` — path the copy is _served_ from (`/Performance-Testing-Tools` for the Pages copy). Canonical URLs always point at the root of `SITE_ORIGIN`, so a copy served under a sub-path still credits the canonical site.
+- `SITE_NOINDEX=1` — adds `noindex` and a disallow-all `robots.txt`, for secondary copies.
 
 Examples:
 
 ```bash
-SITE_ORIGIN=https://example.com SITE_BASE=/ npm run build
-SITE_ORIGIN=https://example.com SITE_BASE=/preview npm run build
+npm run build                                                        # perf.jmeter.ai
+SITE_BASE=/Performance-Testing-Tools SITE_NOINDEX=1 npm run build    # Pages copy
+SITE_ORIGIN=https://example.com npm run build                        # another host
 ```
 
 ## Dataset
@@ -64,7 +65,7 @@ Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-too
 
 Vitest covers dataset, SEO JSON-LD, and load-profile invariants. Playwright covers the project Pages base path, search URL state, filtering, and command palette behavior. The static Astro build produces the directory, category pages, detail pages, comparison page, and about page.
 
-GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The deploy workflow publishes `dist/` to GitHub Pages on pushes to `main`. Repository owners must switch Pages → Build and deployment → Source to **GitHub Actions** once.
+GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The default build targets the canonical Vercel deployment at <https://perf.jmeter.ai/>. The deploy workflow also publishes a project-base build to GitHub Pages at <https://qainsights.github.io/Performance-Testing-Tools/>, but that copy is built with canonical URLs pointing at `perf.jmeter.ai` and `noindex` enabled so it does not compete in search. Repository owners must switch Pages → Build and deployment → Source to **GitHub Actions** once.
 
 ## Original context
 

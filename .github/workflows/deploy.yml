@@ -24,6 +24,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          SITE_BASE: /Performance-Testing-Tools
+          SITE_ORIGIN: https://perf.jmeter.ai
+          SITE_NOINDEX: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
