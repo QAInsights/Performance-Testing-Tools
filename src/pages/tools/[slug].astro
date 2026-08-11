@@ -23,6 +23,25 @@ const enrichment = getEnrichment(tool.slug);
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
   : '';
+const about = enrichment?.about || tool.longDescription;
+const normalized = (value: string) =>
+  value.trim().toLowerCase().replace(/\s+/g, ' ');
+const maintainedBy =
+  enrichment?.authorOrCompany &&
+  normalized(enrichment.authorOrCompany) !== normalized(tool.vendor)
+    ? enrichment.authorOrCompany
+    : undefined;
+const latestRelease = enrichment?.latestRelease;
+const hasLatestRelease =
+  latestRelease &&
+  Boolean(latestRelease.version || latestRelease.date || latestRelease.notes);
+const sourceHost = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+};
 ---
 
 <ConsoleLayout
@@ -52,166 +71,18 @@ const enrichmentDate = enrichment
       ><span>/</span><strong>{tool.name}</strong>
     </nav>
     <header class="detail-hero panel">
-      <div>
+      <div class="hero-content">
         <p class="eyebrow">TOOL SIGNAL / {tool.status.toUpperCase()}</p><h1>
           {tool.name}
         </h1><p class="detail-vendor">{tool.vendor}</p><div
           class="detail-badges"
         >
           <ToolBadges tool={tool} />
-        </div>
-      </div><div class="hero-profile"><LoadProfile tool={tool} large /></div>
-    </header>
-    {
-      tool.status !== 'Active' && (
-        <aside class="status-callout panel">
-          <>
-            <strong>{tool.status}</strong>
-            <span>
-              {tool.successor
-                ? `Successor: ${tool.successor}`
-                : 'Current product status requires verification.'}
-            </span>
-          </>
-        </aside>
-      )
-    }
-    <section class="faq-block panel">
-      <h2>Frequently asked</h2><div class="faq-list">
-        <div>
-          <strong>Is it open source?</strong><p>
-            {
-              tool.license === 'Open Source'
-                ? `Yes. ${tool.name} is listed as open source.`
-                : tool.license === 'Commercial'
-                  ? `No. ${tool.name} is listed as commercial.`
-                  : `${tool.name} is listed as freemium.`
-            }
-          </p>
         </div>{
-          tool.protocols.length > 0 && (
-            <div>
-              <>
-                <strong>What protocols does it support?</strong>
-                <p>
-                  {tool.name} supports {tool.protocols.join(', ')}.
-                </p>
-              </>
-            </div>
+          maintainedBy && (
+            <p class="maintained-by mono">MAINTAINED BY · {maintainedBy}</p>
           )
-        }<div>
-          <strong>Is it cloud or self-hosted?</strong><p>
-            {tool.name} is listed as {tool.deployment.toLowerCase()}.
-          </p>
-        </div>{
-          tool.status !== 'Unknown' && (
-            <div>
-              <>
-                <strong>Is it still maintained?</strong>
-                <p>
-                  {tool.status === 'Active'
-                    ? `${tool.name} is listed as active.`
-                    : `${tool.name} is listed as discontinued${tool.successor ? `; its successor is ${tool.successor}.` : '.'}`}
-                </p>
-              </>
-            </div>
-          )
-        }
-      </div>
-    </section>
-    <div class="detail-grid">
-      <article class="detail-copy">
-        <p class="lead">{tool.longDescription}</p>{
-          enrichment && (
-            <section class="enrichment panel">
-              {enrichment.about && (
-                <div class="enrichment-section">
-                  <h2>About</h2>
-                  <p>{enrichment.about}</p>
-                </div>
-              )}
-              {enrichment.features && enrichment.features.length > 0 && (
-                <div class="enrichment-section">
-                  <h2>Features</h2>
-                  <ul>
-                    {enrichment.features.map((feature) => (
-                      <li>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {enrichment.pricing && (
-                <div class="enrichment-section">
-                  <h2>Pricing</h2>
-                  <p>{enrichment.pricing}</p>
-                </div>
-              )}
-              {enrichment.authorOrCompany && (
-                <div class="enrichment-section">
-                  <h2>Author / Company</h2>
-                  <p>{enrichment.authorOrCompany}</p>
-                </div>
-              )}
-              {enrichment.aiFeatures && enrichment.aiFeatures.length > 0 && (
-                <div class="enrichment-section">
-                  <h2>AI features</h2>
-                  <ul>
-                    {enrichment.aiFeatures.map((feature) => (
-                      <li>{feature}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {enrichment.latestRelease && (
-                <div class="enrichment-section">
-                  <h2>Latest release</h2>
-                  <p>
-                    {[
-                      enrichment.latestRelease.version,
-                      enrichment.latestRelease.date,
-                    ]
-                      .filter(Boolean)
-                      .join(' · ')}
-                  </p>
-                  {enrichment.latestRelease.notes && (
-                    <p>{enrichment.latestRelease.notes}</p>
-                  )}
-                </div>
-              )}
-              {enrichment.sources && enrichment.sources.length > 0 && (
-                <div class="enrichment-section">
-                  <h2>Sources</h2>
-                  <ul class="source-list">
-                    {enrichment.sources.map((source) => (
-                      <li>
-                        <a href={source.url} target="_blank" rel="noreferrer">
-                          {source.title} ↗
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <p class="enrichment-stamp mono">
-                GROUNDED VIA EXA · {enrichmentDate}
-              </p>
-            </section>
-          )
-        }<h2>Signal notes</h2><dl class="metadata-grid">
-          <div><dt>License</dt><dd>{tool.license}</dd></div><div>
-            <dt>Deployment</dt><dd>{tool.deployment}</dd>
-          </div><div><dt>Pricing</dt><dd>{tool.pricingModel}</dd></div><div>
-            <dt>First released</dt><dd>
-              {tool.firstReleased ?? 'Not verified'}
-            </dd>
-          </div><div>
-            <dt>Scripting</dt><dd>{tool.scriptingLanguages.join(', ')}</dd>
-          </div><div>
-            <dt>Protocols</dt><dd>{tool.protocols.join(', ')}</dd>
-          </div><div>
-            <dt>Operating systems</dt><dd>{tool.osSupport.join(', ')}</dd>
-          </div><div><dt>Tags</dt><dd>{tool.tags.join(' · ')}</dd></div>
-        </dl><div class="detail-actions">
+        }<div class="detail-actions">
           <a
             class="button button--amber"
             href={tool.url}
@@ -230,24 +101,244 @@ const enrichmentDate = enrichment
             )
           }
         </div>
+      </div><div class="hero-profile"><LoadProfile tool={tool} large /></div>
+    </header>
+    <section class="summary-strip panel" aria-label="At a glance">
+      <div><dt>License</dt><dd>{tool.license}</dd></div>
+      <div><dt>Deployment</dt><dd>{tool.deployment}</dd></div>
+      <div><dt>Pricing model</dt><dd>{tool.pricingModel}</dd></div>
+      <div>
+        <dt>First released</dt><dd>{tool.firstReleased ?? 'Not verified'}</dd>
+      </div>
+      {
+        latestRelease?.version && (
+          <div>
+            <>
+              <dt>Latest release</dt>
+              <dd>{latestRelease.version}</dd>
+            </>
+          </div>
+        )
+      }
+    </section>
+    {
+      tool.status !== 'Active' && (
+        <aside class="status-callout panel">
+          <>
+            <strong>{tool.status}</strong>
+            <span>
+              {tool.successor
+                ? `Successor: ${tool.successor}`
+                : 'Current product status requires verification.'}
+            </span>
+          </>
+        </aside>
+      )
+    }
+    <div class="detail-grid">
+      <article class="detail-copy">
+        <section class="detail-section">
+          <h2>About</h2>
+          <p class="lead">{about}</p>
+        </section>
+        {
+          enrichment?.features && enrichment.features.length > 0 && (
+            <section class="detail-section">
+              <h2>Features</h2>
+              <ul class="feature-list">
+                {enrichment.features.map((feature) => (
+                  <li>{feature}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }{
+          enrichment?.aiFeatures && enrichment.aiFeatures.length > 0 && (
+            <section class="detail-section">
+              <h2>AI features</h2>
+              <ul class="feature-list">
+                {enrichment.aiFeatures.map((feature) => (
+                  <li>{feature}</li>
+                ))}
+              </ul>
+            </section>
+          )
+        }{
+          hasLatestRelease && (
+            <section class="detail-section">
+              <h2>Latest release</h2>
+              <p class="release-line">
+                {[latestRelease.version, latestRelease.date]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </p>
+              {latestRelease.notes && <p>{latestRelease.notes}</p>}
+            </section>
+          )
+        }{
+          enrichment?.pricing && (
+            <section class="detail-section">
+              <h2>Pricing</h2>
+              <p>{enrichment.pricing}</p>
+            </section>
+          )
+        }
+        <section class="detail-section">
+          <h2>Specs</h2>
+          <dl class="metadata-grid">
+            <div><dt>License</dt><dd>{tool.license}</dd></div>
+            <div><dt>Deployment</dt><dd>{tool.deployment}</dd></div>
+            <div>
+              <dt>First released</dt><dd>
+                {tool.firstReleased ?? 'Not verified'}
+              </dd>
+            </div>
+            {
+              tool.scriptingLanguages.length > 0 && (
+                <div>
+                  <dt>Scripting</dt>
+                  <dd>
+                    <span class="spec-chips">
+                      {tool.scriptingLanguages.map((item) => (
+                        <span class="spec-chip">{item}</span>
+                      ))}
+                    </span>
+                  </dd>
+                </div>
+              )
+            }{
+              tool.protocols.length > 0 && (
+                <div>
+                  <dt>Protocols</dt>
+                  <dd>
+                    <span class="spec-chips">
+                      {tool.protocols.map((item) => (
+                        <span class="spec-chip">{item}</span>
+                      ))}
+                    </span>
+                  </dd>
+                </div>
+              )
+            }{
+              tool.osSupport.length > 0 && (
+                <div>
+                  <dt>Operating systems</dt>
+                  <dd>
+                    <span class="spec-chips">
+                      {tool.osSupport.map((item) => (
+                        <span class="spec-chip">{item}</span>
+                      ))}
+                    </span>
+                  </dd>
+                </div>
+              )
+            }{
+              tool.tags.length > 0 && (
+                <div>
+                  <dt>Tags</dt>
+                  <dd>
+                    <span class="spec-chips">
+                      {tool.tags.map((item) => (
+                        <span class="spec-chip">{item}</span>
+                      ))}
+                    </span>
+                  </dd>
+                </div>
+              )
+            }
+          </dl>
+        </section>
+        {
+          enrichment?.sources && enrichment.sources.length > 0 && (
+            <section class="detail-section sources-section">
+              <details class="source-details">
+                <summary>
+                  <>
+                    <h2>Sources</h2>
+                    <span class="disclosure-hint mono">SHOW SOURCES</span>
+                  </>
+                </summary>
+                <ul class="source-list">
+                  {enrichment.sources.map((source) => (
+                    <li>
+                      <a href={source.url} target="_blank" rel="noreferrer">
+                        <strong>{sourceHost(source.url)}</strong>
+                        <span>{source.title}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+              <p class="enrichment-stamp mono">
+                GROUNDED VIA EXA · {enrichmentDate}
+              </p>
+            </section>
+          )
+        }
       </article><aside>
-        <p class="eyebrow">RELATED SIGNALS</p><div class="similar-list">
-          {
-            similar.map((item) => (
-              <a
-                class="similar-item panel focus-ring"
-                href={siteUrl(`tools/${item.slug}`)}
-              >
-                <>
-                  <span>{item.name}</span>
-                  <small>{item.vendor}</small>
-                </>
-              </a>
-            ))
-          }
+        <div class="related-sidebar">
+          <p class="eyebrow">RELATED SIGNALS</p><div class="similar-list">
+            {
+              similar.map((item) => (
+                <a
+                  class="similar-item panel focus-ring"
+                  href={siteUrl(`tools/${item.slug}`)}
+                >
+                  <>
+                    <span>{item.name}</span>
+                    <small>{item.vendor}</small>
+                  </>
+                </a>
+              ))
+            }
+          </div>
         </div>
       </aside>
     </div>
+    <details class="faq-block panel">
+      <summary
+        ><h2>Frequently asked</h2><span class="disclosure-hint mono"
+          >SHOW FAQ</span
+        ></summary
+      >
+      <div class="faq-list">
+        <div>
+          <strong>Is it open source?</strong><p>
+            {
+              tool.license === 'Open Source'
+                ? `Yes. ${tool.name} is listed as open source.`
+                : tool.license === 'Commercial'
+                  ? `No. ${tool.name} is listed as commercial.`
+                  : `${tool.name} is listed as freemium.`
+            }
+          </p>
+        </div>{
+          tool.protocols.length > 0 && (
+            <div>
+              <strong>What protocols does it support?</strong>
+              <p>
+                {tool.name} supports {tool.protocols.join(', ')}.
+              </p>
+            </div>
+          )
+        }<div>
+          <strong>Is it cloud or self-hosted?</strong><p>
+            {tool.name} is listed as {tool.deployment.toLowerCase()}.
+          </p>
+        </div>{
+          tool.status !== 'Unknown' && (
+            <div>
+              <strong>Is it still maintained?</strong>
+              <p>
+                {tool.status === 'Active'
+                  ? `${tool.name} is listed as active.`
+                  : `${tool.name} is listed as discontinued${tool.successor ? `; its successor is ${tool.successor}.` : '.'}`}
+              </p>
+            </div>
+          )
+        }
+      </div>
+    </details>
     <Footer />
   </main>
 </ConsoleLayout>
@@ -279,6 +370,9 @@ const enrichmentDate = enrichment
     letter-spacing: -0.07em;
     margin: 0;
   }
+  .hero-content {
+    min-width: 0;
+  }
   .detail-vendor {
     color: var(--color-surface-300);
     font: 14px var(--font-mono);
@@ -286,8 +380,37 @@ const enrichmentDate = enrichment
   .detail-badges {
     margin-top: 24px;
   }
+  .maintained-by {
+    color: var(--color-surface-300);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    margin: 18px 0 0;
+  }
   .hero-profile {
     align-self: center;
+  }
+  .summary-strip {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 12px;
+    padding: 16px 20px;
+  }
+  .summary-strip div {
+    min-width: 0;
+  }
+  .summary-strip dt,
+  .metadata-grid dt {
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .summary-strip dd {
+    color: var(--color-surface-100);
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 5px 0 0;
+    overflow-wrap: anywhere;
   }
   .status-callout {
     display: flex;
@@ -308,75 +431,116 @@ const enrichmentDate = enrichment
     gap: 55px;
     margin-top: 52px;
   }
+  .detail-copy {
+    min-width: 0;
+  }
+  .detail-section {
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 22px;
+  }
+  .detail-section + .detail-section {
+    margin-top: 34px;
+  }
   .lead {
     color: var(--color-surface-100);
     font-size: 19px;
     line-height: 1.65;
   }
-  .enrichment {
-    margin-top: 30px;
-    padding: 20px;
-  }
-  .enrichment h2 {
-    margin-top: 0;
-  }
-  .enrichment-section + .enrichment-section {
-    margin-top: 22px;
-  }
-  .enrichment p,
-  .enrichment li {
+  .detail-section > p,
+  .detail-section li {
     color: var(--color-surface-300);
     font-size: 13px;
     line-height: 1.55;
   }
-  .enrichment ul {
+  .feature-list {
     display: grid;
-    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
     margin: 0;
     padding-left: 18px;
   }
+  .feature-list li {
+    overflow-wrap: anywhere;
+  }
+  .release-line {
+    color: var(--color-surface-100) !important;
+    font-family: var(--font-mono);
+  }
   .source-list {
     list-style: none;
-    padding-left: 0 !important;
+    margin: 18px 0 0;
+    padding: 0;
+  }
+  .source-list li + li {
+    margin-top: 9px;
   }
   .source-list a {
+    display: block;
     color: var(--color-teal-300);
+    text-decoration: none;
+  }
+  .source-list strong,
+  .source-list span {
+    display: block;
+    overflow-wrap: anywhere;
+  }
+  .source-list strong {
+    font: 11px var(--font-mono);
+  }
+  .source-list span {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 2px;
   }
   .enrichment-stamp {
     color: var(--color-surface-400) !important;
     font-size: 10px !important;
     letter-spacing: 0.08em;
-    margin: 24px 0 0;
+    margin: 18px 0 0;
   }
   .detail-copy h2,
   .faq-block h2 {
     color: var(--color-teal-300);
     font: 12px var(--font-mono);
     letter-spacing: 0.1em;
-    margin-top: 38px;
+    margin: 0 0 14px;
   }
   .metadata-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    border-top: 1px solid var(--color-teal-700);
+    margin: 0;
   }
   .metadata-grid div {
-    padding: 14px 0;
+    min-width: 0;
+    padding: 11px 0;
     border-bottom: 1px solid
       color-mix(in srgb, var(--color-teal-300) 15%, transparent);
   }
-  .metadata-grid dt {
-    color: var(--color-surface-300);
-    font: 10px var(--font-mono);
-    text-transform: uppercase;
-  }
   .metadata-grid dd {
-    margin: 5px 14px 0 0;
+    margin: 6px 14px 0 0;
     color: var(--color-surface-100);
     font-size: 13px;
   }
+  .spec-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .spec-chip {
+    border: 1px solid var(--color-teal-700);
+    border-radius: 2px;
+    color: var(--color-teal-300);
+    display: inline-block;
+    font: 10px var(--font-mono);
+    line-height: 1.2;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    padding: 4px 6px;
+  }
   .detail-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 28px;
   }
@@ -385,7 +549,11 @@ const enrichmentDate = enrichment
     color: var(--color-teal-300);
     text-decoration: none;
   }
-  aside .eyebrow {
+  .related-sidebar {
+    position: sticky;
+    top: 24px;
+  }
+  .related-sidebar .eyebrow {
     margin-bottom: 14px;
   }
   .similar-list {
@@ -412,13 +580,36 @@ const enrichmentDate = enrichment
     margin-top: 28px;
     padding: 20px;
   }
-  .faq-block h2 {
-    margin-top: 0;
+  .faq-block summary,
+  .source-details summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .faq-block summary::-webkit-details-marker,
+  .source-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-block summary h2,
+  .source-details summary h2 {
+    margin: 0;
+  }
+  .disclosure-hint {
+    color: var(--color-surface-300);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .source-details {
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 22px;
   }
   .faq-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
+    margin-top: 22px;
   }
   .faq-list div {
     border-top: 1px solid var(--color-teal-700);
@@ -441,6 +632,10 @@ const enrichmentDate = enrichment
       grid-template-columns: 1fr;
       padding: 22px;
     }
+    .summary-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
     .hero-profile {
       overflow: hidden;
     }
@@ -451,6 +646,12 @@ const enrichmentDate = enrichment
     .metadata-grid,
     .faq-list {
       grid-template-columns: 1fr;
+    }
+    .feature-list {
+      grid-template-columns: 1fr;
+    }
+    .related-sidebar {
+      position: static;
     }
   }
 </style>
