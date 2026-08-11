@@ -7,6 +7,7 @@ import { tools } from '../../data/tools';
 import { siteUrl } from '../../lib/urls';
 import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
 import { absoluteUrl } from '../../lib/urls';
+import { getEnrichment } from '../../lib/enrichmentData';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({
@@ -18,6 +19,10 @@ const { tool } = Astro.props;
 const similar = tools
   .filter((item) => item.category === tool.category && item.slug !== tool.slug)
   .slice(0, 4);
+const enrichment = getEnrichment(tool.slug);
+const enrichmentDate = enrichment
+  ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
+  : '';
 ---
 
 <ConsoleLayout
@@ -116,9 +121,83 @@ const similar = tools
     </section>
     <div class="detail-grid">
       <article class="detail-copy">
-        <p class="lead">{tool.longDescription}</p><h2>Signal notes</h2><dl
-          class="metadata-grid"
-        >
+        <p class="lead">{tool.longDescription}</p>{
+          enrichment && (
+            <section class="enrichment panel">
+              {enrichment.about && (
+                <div class="enrichment-section">
+                  <h2>About</h2>
+                  <p>{enrichment.about}</p>
+                </div>
+              )}
+              {enrichment.features && enrichment.features.length > 0 && (
+                <div class="enrichment-section">
+                  <h2>Features</h2>
+                  <ul>
+                    {enrichment.features.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {enrichment.pricing && (
+                <div class="enrichment-section">
+                  <h2>Pricing</h2>
+                  <p>{enrichment.pricing}</p>
+                </div>
+              )}
+              {enrichment.authorOrCompany && (
+                <div class="enrichment-section">
+                  <h2>Author / Company</h2>
+                  <p>{enrichment.authorOrCompany}</p>
+                </div>
+              )}
+              {enrichment.aiFeatures && enrichment.aiFeatures.length > 0 && (
+                <div class="enrichment-section">
+                  <h2>AI features</h2>
+                  <ul>
+                    {enrichment.aiFeatures.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {enrichment.latestRelease && (
+                <div class="enrichment-section">
+                  <h2>Latest release</h2>
+                  <p>
+                    {[
+                      enrichment.latestRelease.version,
+                      enrichment.latestRelease.date,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                  {enrichment.latestRelease.notes && (
+                    <p>{enrichment.latestRelease.notes}</p>
+                  )}
+                </div>
+              )}
+              {enrichment.sources && enrichment.sources.length > 0 && (
+                <div class="enrichment-section">
+                  <h2>Sources</h2>
+                  <ul class="source-list">
+                    {enrichment.sources.map((source) => (
+                      <li>
+                        <a href={source.url} target="_blank" rel="noreferrer">
+                          {source.title} ↗
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <p class="enrichment-stamp mono">
+                GROUNDED VIA EXA · {enrichmentDate}
+              </p>
+            </section>
+          )
+        }<h2>Signal notes</h2><dl class="metadata-grid">
           <div><dt>License</dt><dd>{tool.license}</dd></div><div>
             <dt>Deployment</dt><dd>{tool.deployment}</dd>
           </div><div><dt>Pricing</dt><dd>{tool.pricingModel}</dd></div><div>
@@ -233,6 +312,41 @@ const similar = tools
     color: var(--color-surface-100);
     font-size: 19px;
     line-height: 1.65;
+  }
+  .enrichment {
+    margin-top: 30px;
+    padding: 20px;
+  }
+  .enrichment h2 {
+    margin-top: 0;
+  }
+  .enrichment-section + .enrichment-section {
+    margin-top: 22px;
+  }
+  .enrichment p,
+  .enrichment li {
+    color: var(--color-surface-300);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .enrichment ul {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding-left: 18px;
+  }
+  .source-list {
+    list-style: none;
+    padding-left: 0 !important;
+  }
+  .source-list a {
+    color: var(--color-teal-300);
+  }
+  .enrichment-stamp {
+    color: var(--color-surface-400) !important;
+    font-size: 10px !important;
+    letter-spacing: 0.08em;
+    margin: 24px 0 0;
   }
   .detail-copy h2,
   .faq-block h2 {
