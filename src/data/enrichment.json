@@ -1,4 +1,159 @@
 {
-  "generatedAt": "",
-  "entries": {}
+  "generatedAt": "2026-08-11T22:30:46.250Z",
+  "entries": {
+    "apache-jmeter": {
+      "about": "Apache JMeter is an open source, 100% pure Java application designed to load test functional behavior and measure performance, originally focused on web applications but expanded to other test functions.",
+      "features": [
+        "Supports various test types: Web (HTTP/HTTPS), FTP, JDBC, LDAP, Java, and JUnit",
+        "Thread Group management for load testing scenarios",
+        "Test plan construction, parameterization, and script recording capabilities",
+        "Listeners for data visualization and metrics collection",
+        "Distributed testing support"
+      ],
+      "pricing": "Open source (free)",
+      "authorOrCompany": "Apache Software Foundation",
+      "aiFeatures": [
+        "JSR223 samplers with support for scripting languages like Groovy",
+        "Backend Listener for real-time results (e.g., InfluxDB, Graphite)",
+        "HTTP(S) Test Script Recorder for capturing test samples",
+        "Ability to parameterize tests and use variables across thread groups"
+      ],
+      "latestRelease": {
+        "version": "5.6.3",
+        "date": "2024-01-09",
+        "notes": "Included various bug fixes, such as resolving issues with summary report response times, NullPointerExceptions in timers, and restoring binary API compatibility. Also included non-functional improvements like Gradle updates and migration of certain tests to Kotlin and JUnit 5."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/apache/jmeter/releases/tag/rel%2Fv5.6.3",
+          "title": "v5.6.3"
+        },
+        {
+          "url": "https://jmeter.apache.org/",
+          "title": "Apache JMeter - Apache JMeter™"
+        },
+        {
+          "url": "https://jmeter.apache.org/?roistat_visit=4096462",
+          "title": "Apache JMeter\n          -\n          Apache JMeter™"
+        },
+        {
+          "url": "https://jmeter.apache.org/download_jmeter.cgi",
+          "title": "Apache JMeter\n          -\n          Download Apache JMeter"
+        },
+        {
+          "url": "https://jmeter.apache.org/changes.html",
+          "title": "Apache JMeter\n          -\n          Changes"
+        },
+        {
+          "url": "https://jmeter.apache.org/usermanual/component_reference",
+          "title": "Apache JMeter\n          -\n          User's Manual: Component Reference"
+        }
+      ],
+      "fetchedAt": "2026-08-11T22:30:46.245Z"
+    },
+    "blazemeter": {
+      "about": "BlazeMeter is an enterprise continuous testing platform owned by Perforce that unifies performance, functional, and API testing with service virtualization and AI-powered test data. It is designed for DevOps teams to test at scale while maintaining compatibility with open-source tools.",
+      "features": [
+        "100% compatibility with open-source tools (e.g., JMeter, Selenium, Gatling, Playwright)",
+        "Cloud-based auto-scaling load infrastructure (up to millions of virtual users)",
+        "Hybrid deployment with support for private locations behind firewalls",
+        "Service virtualization to simulate environment dependencies",
+        "CI/CD pipeline integration (e.g., Jenkins, GitHub)",
+        "BlazeMeter Environment Manager for standardized JMeter bundles",
+        "Centralized audit logs for service virtualization"
+      ],
+      "pricing": "BlazeMeter offers various plans starting from $149/month for small teams, with options for larger organizations (e.g., $499/month, $649/month). Pricing is primarily based on credit types such as Variable Units (VU), Variable Unit Hours (VUH), or total tests, with enterprise custom plans and volume discounts available.",
+      "authorOrCompany": "Perforce",
+      "aiFeatures": [
+        "AI-driven test data generation",
+        "AI-powered test automation and analytics",
+        "AI-assisted execution insights",
+        "Semantic API testing with AI assertion for response validation",
+        "Natural-language requests and filters for finding tests and executions via MCP Server"
+      ],
+      "latestRelease": {
+        "version": "3.1",
+        "date": "2026-07-19",
+        "notes": "Introduces searchable Service Virtualization Audit Logs for tracking workspace changes and API Monitoring enhancements including a semantic \"is similar (AI)\" assertion for dynamic content validation."
+      },
+      "sources": [
+        {
+          "url": "https://www.blazemeter.com/pricing",
+          "title": "BlazeMeter Pricing: Scalable Plans for Every Testing Need"
+        },
+        {
+          "url": "https://aws.amazon.com/marketplace/pp/prodview-rrekx3l2ezjp4",
+          "title": "AWS Marketplace: BlazeMeter"
+        },
+        {
+          "url": "https://www.merito.com/resources/product-release-updates/perforce-blazemeter-31-auditable-virtual-services-and-more-resilient-api-checks",
+          "title": "BlazeMeter 3.1: Audit Logs and Semantic API Testing"
+        },
+        {
+          "url": "https://www.blazemeter.com/about",
+          "title": "About Perforce BlazeMeter | Perforce BlazeMeter"
+        },
+        {
+          "url": "https://www.blazemeter.com/product/blazemeter",
+          "title": "Enterprise Continuous Testing, Built for Open-Source Scale"
+        },
+        {
+          "url": "https://help.blazemeter.com/docs/guide/release-notes-26-2-2.html?TocPath=Release+notes%7C2026+releases%7C_____1",
+          "title": "Release 2.2"
+        }
+      ],
+      "fetchedAt": "2026-08-11T22:30:43.593Z"
+    },
+    "gatling": {
+      "about": "Gatling is a high-performance load testing platform designed for developers and teams, providing continuous performance intelligence and automated load testing capabilities throughout the software lifecycle.",
+      "features": [
+        "Code-based test creation using SDKs for Java, JavaScript, TypeScript, Scala, and Kotlin",
+        "Protocol-agnostic load engine with built-in HTTP and JMS support",
+        "Asynchronous, event-driven architecture for high-concurrency simulation with minimal resource usage",
+        "CI/CD integration for automated testing workflows",
+        "Distributed load injection on-demand across cloud or on-prem environments",
+        "Visual test builder and HTTP recorder for simplified test creation",
+        "Enterprise features including real-time dashboards, team collaboration, and automated infrastructure provisioning"
+      ],
+      "pricing": "Gatling offers a free Community Edition. Gatling Enterprise Edition pricing is available via tiered plans including Starter-pack options (e.g., €89/month billed annually) and custom tailormade solutions; contact sales for specific needs.",
+      "authorOrCompany": "Gatling Corp.",
+      "aiFeatures": [
+        "AI-assisted test writing, explanation, and optimization in IDEs via VS Code extension",
+        "Gatling MCP Server and Skills for integrating with AI coding agents like Claude Code or Cursor",
+        "Automated performance insights and anomaly detection in Gatling Enterprise Edition"
+      ],
+      "latestRelease": {
+        "version": "3.0.2",
+        "date": "July 2026",
+        "notes": "Introduced Gatling MCP server update for integrating with AI coding agents."
+      },
+      "sources": [
+        {
+          "url": "https://gatling.io/product/test-creation",
+          "title": "Gatling: Create load tests your way with a flexible platform"
+        },
+        {
+          "url": "https://gatling.io/?hsLang=en",
+          "title": "Gatling — Continuous Performance Intelligence, powered by AI"
+        },
+        {
+          "url": "https://gatling.io/pricing",
+          "title": "Gatling pricing: Flexible plans for scalable load testing"
+        },
+        {
+          "url": "https://gatling.io/pricing?hsLang=en",
+          "title": "Gatling pricing: Flexible plans for scalable load testing"
+        },
+        {
+          "url": "https://docs.gatling.io/",
+          "title": "Gatling documentation"
+        },
+        {
+          "url": "https://gatling.io/how-it-works",
+          "title": "How Gatling works: From test creation to scalable load testing"
+        }
+      ],
+      "fetchedAt": "2026-08-11T22:30:44.341Z"
+    }
+  }
 }
