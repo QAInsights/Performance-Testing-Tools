@@ -5,7 +5,8 @@ export default defineConfig({
   use: {
     baseURL: 'http://127.0.0.1:4321',
     launchOptions: {
-      executablePath: '/opt/.devin/chrome/chrome/linux-133.0.6943.126/chrome-linux64/chrome',
+      executablePath:
+        '/opt/.devin/chrome/chrome/linux-133.0.6943.126/chrome-linux64/chrome',
     },
   },
   webServer: {

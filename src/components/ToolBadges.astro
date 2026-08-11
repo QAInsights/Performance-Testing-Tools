@@ -2,8 +2,21 @@
 import type { Tool } from '../data/tools';
 const { tool } = Astro.props as { tool: Tool };
 ---
+
 <span class="badge badge--teal">{tool.category}</span>
 <span class="badge badge--cyan">{tool.license}</span>
 <span class="badge">{tool.deployment}</span>
-{tool.personalPick && <span class="badge badge--amber" title="Personal pick">♥ pick</span>}
-{tool.generalPick && <span class="badge badge--cyan" title="General pick">✓ pick</span>}
+{
+  tool.personalPick && (
+    <span class="badge badge--amber" title="Personal pick">
+      ♥ pick
+    </span>
+  )
+}
+{
+  tool.generalPick && (
+    <span class="badge badge--cyan" title="General pick">
+      ✓ pick
+    </span>
+  )
+}
