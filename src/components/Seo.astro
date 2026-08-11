@@ -1,6 +1,6 @@
 ---
 import { absoluteUrl, baseUrl } from '../lib/urls';
-import { siteOrigin } from '../config/site';
+import { siteNoIndex, siteOrigin } from '../config/site';
 const {
   title,
   description,
@@ -17,6 +17,7 @@ const absoluteOgImage = ogImage.startsWith('http')
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />
+{siteNoIndex && <meta name="robots" content="noindex" />}
 <meta name="theme-color" content="#0A0A0A" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

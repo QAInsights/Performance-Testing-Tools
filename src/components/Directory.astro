@@ -696,9 +696,10 @@ const optionGroups = [
     const compareButton = root.querySelector<HTMLButtonElement>(
       '[data-open-compare]',
     );
-    const projectBase = (
-      (root as HTMLElement).dataset.base ?? '/Performance-Testing-Tools'
-    ).replace(/\/+$/, '');
+    const projectBase = ((root as HTMLElement).dataset.base ?? '/').replace(
+      /\/+$/,
+      '',
+    );
     const selected = new Set<string>(
       JSON.parse(sessionStorage.getItem('ptt-compare') || '[]'),
     );

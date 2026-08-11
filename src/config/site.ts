@@ -1,6 +1,6 @@
 const environment = typeof process === 'undefined' ? {} : process.env;
-const defaultOrigin = 'https://qainsights.github.io';
-const defaultBase = '/Performance-Testing-Tools';
+const defaultOrigin = 'https://perf.jmeter.ai';
+const defaultBase = '/';
 
 const configuredOrigin =
   environment.SITE_ORIGIN ||
@@ -14,6 +14,8 @@ export const siteBase =
   configuredBase === '/' || configuredBase === ''
     ? '/'
     : `/${configuredBase.replace(/^\/+|\/+$/g, '')}`;
+export const siteNoIndex =
+  environment.SITE_NOINDEX === '1' || environment.SITE_NOINDEX === 'true';
 
 export function joinBase(path = '', base = siteBase): string {
   const normalizedBase = base === '/' ? '' : base.replace(/^\/+|\/+$/g, '');

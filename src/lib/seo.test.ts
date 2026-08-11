@@ -6,7 +6,7 @@ import {
   toolSoftwareApplication,
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
-import { joinBase } from '../config/site';
+import { joinBase, siteBase, siteOrigin } from '../config/site';
 import { tools } from '../data/tools';
 
 describe('SEO structured data', () => {
@@ -18,22 +18,16 @@ describe('SEO structured data', () => {
       '/categories/load-testing/',
     ]) {
       const url = absoluteUrl(path);
-      expect(url).toMatch(
-        /^https:\/\/qainsights\.github\.io\/Performance-Testing-Tools(?:\/.*)?$/,
-      );
-      expect(url).not.toContain(
-        '/Performance-Testing-Tools/Performance-Testing-Tools',
-      );
+      expect(url).toBe(`${siteOrigin}${joinBase(path)}`.replace(/\/$/, ''));
+      if (siteBase !== '/') {
+        expect(url).not.toContain(`${siteBase}${siteBase}`);
+      }
     }
   });
 
   it('joins base-relative asset URLs with one separator', () => {
-    expect(baseUrl('favicon.svg')).toBe(
-      '/Performance-Testing-Tools/favicon.svg',
-    );
-    expect(baseUrl('/og/default.png')).toBe(
-      '/Performance-Testing-Tools/og/default.png',
-    );
+    expect(baseUrl('favicon.svg')).toBe(joinBase('favicon.svg'));
+    expect(baseUrl('/og/default.png')).toBe(joinBase('og/default.png'));
   });
 
   it('supports a root deployment without a Pages segment', () => {

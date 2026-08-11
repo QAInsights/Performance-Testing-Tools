@@ -1,11 +1,11 @@
 # Performance Testing Tools
 
 [![CI](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml/badge.svg)](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml)
-[![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://qainsights.github.io/Performance-Testing-Tools/)
+[![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://perf.jmeter.ai/)
 
 Load Profile Console is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
 
-Live site: <https://qainsights.github.io/Performance-Testing-Tools/>
+Live site: <https://perf.jmeter.ai/>
 
 ## Run locally
 
@@ -30,8 +30,8 @@ npm run test:e2e
 
 The build defaults to GitHub Pages:
 
-- `SITE_ORIGIN=https://qainsights.github.io`
-- `SITE_BASE=/Performance-Testing-Tools`
+- `SITE_ORIGIN=https://perf.jmeter.ai`
+- `SITE_BASE=/`
 
 Both values can be overridden at build time. For a root-hosted deployment,
 set `SITE_BASE=/`. `SITE_ORIGIN` should be the public origin used for canonical,
@@ -64,7 +64,7 @@ Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-too
 
 Vitest covers dataset, SEO JSON-LD, and load-profile invariants. Playwright covers the project Pages base path, search URL state, filtering, and command palette behavior. The static Astro build produces the directory, category pages, detail pages, comparison page, and about page.
 
-GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The deploy workflow publishes `dist/` to GitHub Pages on pushes to `main`. Repository owners must switch Pages → Build and deployment → Source to **GitHub Actions** once.
+GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The default build targets the canonical Vercel deployment at <https://perf.jmeter.ai/>. The deploy workflow also publishes a project-base build to GitHub Pages at <https://qainsights.github.io/Performance-Testing-Tools/>, but that copy is built with canonical URLs pointing at `perf.jmeter.ai` and `noindex` enabled so it does not compete in search. Repository owners must switch Pages → Build and deployment → Source to **GitHub Actions** once.
 
 ## Original context
 
