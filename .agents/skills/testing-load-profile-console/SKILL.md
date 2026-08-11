@@ -13,14 +13,20 @@ npm run build                # runs scripts/generate-content.mjs then astro buil
 npx astro preview --host 127.0.0.1 --port 4321
 ```
 
-- The site is served under the Astro `base`, so the entry URL is
-  `http://127.0.0.1:4321/Performance-Testing-Tools/` — the bare `/` returns 404.
+- The base comes from `SITE_BASE` in `src/config/site.ts` and defaults to `/`, so
+  locally the entry URL is `http://127.0.0.1:4321/`. The
+  `/Performance-Testing-Tools/` prefix only applies when `SITE_BASE` is set (the
+  GitHub Pages deploy sets it); don't assume it locally.
+- `public/manifest.webmanifest` still hardcodes the `/Performance-Testing-Tools/`
+  base, so expect 2 pre-existing console errors on every page locally (a 404 for
+  `icons/icon-192.png` plus "Error while trying to use the following icon from the
+  Manifest"). Don't attribute them to the change under test.
 - `base` / origin live in `src/config/site.ts`; runtime JS derives paths from
   `data-base` on `[data-directory]` and from `import.meta.env.BASE_URL`.
 - Prefer testing the built `dist` output over `astro dev` — some bugs (base-path
   string concatenation, canonical URLs) only appear in the build.
 - A preview server may already be running on 4321; check with
-  `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4321/Performance-Testing-Tools/`
+  `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4321/`
   before starting another one.
 
 ## Where the behaviour lives
@@ -33,6 +39,11 @@ npx astro preview --host 127.0.0.1 --port 4321
 - `src/pages/tools/[slug].astro`, `categories/[category].astro`, `about.astro`.
 - `src/components/LoadProfile.astro` — waveform must be a cyan stroke with
   `fill: none`; a filled blob means the `.profile-line` rule was lost.
+- Tool-page enrichment (About / Features / Pricing / Author / AI features / Latest
+  release / Sources panel) is read from the committed `src/data/enrichment.json`
+  via `src/lib/enrichmentData.ts`, keyed by tool slug. Only seeded slugs render the
+  panel, and no API key or network access is needed to test it — never call the Exa
+  API from a test run.
 
 ## Useful selectors / interactions
 
@@ -65,9 +76,10 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
   can make every second ArrowDown bounce focus back to the input. Press Down 4+ times
   in a row and check the active item advances each press.
 - **Base-path concatenation**: `import.meta.env.BASE_URL` has **no** trailing slash
-  here, so `` `${BASE_URL}favicon.svg` `` yields `/Performance-Testing-Toolsfavicon.svg`.
-  All joining goes through `src/lib/urls.ts` — keep new call sites on it.
-  Sweep the built HTML for this class of bug:
+  when a base is set, so `` `${BASE_URL}favicon.svg` `` yields
+  `/Performance-Testing-Toolsfavicon.svg`. All joining goes through
+  `src/lib/urls.ts` — keep new call sites on it. To sweep the built HTML for this
+  class of bug, build with `SITE_BASE=/Performance-Testing-Tools` and then:
   ```bash
   cd dist && grep -rhoP 'href="/Performance-Testing-Tools[^"#]*"' --include=*.html . \
     | sed 's/href="//;s/"$//' | sort -u \
@@ -89,4 +101,6 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
 
 ## Devin Secrets Needed
 
-None — the site is fully static with no backend, auth, or API keys.
+None — the site is fully static with no backend, auth, or API keys. Enrichment
+content is committed JSON; the Exa API key (`EXA_API_KEY`) is only needed to
+*refresh* that data, never to test the site.
