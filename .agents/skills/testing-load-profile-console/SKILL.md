@@ -6,11 +6,13 @@ description: How to build, serve and end-to-end test the Astro "Load Profile Con
 # Testing the Load Profile Console (Astro static site)
 
 ## Serving the app
+
 ```bash
 npm ci                       # or reuse existing node_modules
 npm run build                # runs scripts/generate-content.mjs then astro build
 npx astro preview --host 127.0.0.1 --port 4321
 ```
+
 - The site is served under the Astro `base`, so the entry URL is
   `http://127.0.0.1:4321/Performance-Testing-Tools/` — the bare `/` returns 404.
 - `base` / origin live in `src/config/site.ts`; runtime JS derives paths from
@@ -22,6 +24,7 @@ npx astro preview --host 127.0.0.1 --port 4321
   before starting another one.
 
 ## Where the behaviour lives
+
 - `src/components/Directory.astro` — one inline `<script>` drives search, checkbox
   filters, sort, table/grid toggle, URL sync (`history.replaceState`), the compare
   tray (sessionStorage key `ptt-compare`, cap of 3) and the Ctrl+K command palette.
@@ -32,6 +35,7 @@ npx astro preview --host 127.0.0.1 --port 4321
   `fill: none`; a filled blob means the `.profile-line` rule was lost.
 
 ## Useful selectors / interactions
+
 - Search input `[data-search]`; `/` key focuses it (ignored while an input is focused).
 - Filter checkboxes `[data-filter="category|license|deployment|status|language|protocol|pick"]`;
   OR within a group, AND across groups.
@@ -45,6 +49,7 @@ npx astro preview --host 127.0.0.1 --port 4321
   items `.palette-item`.
 
 ## Known fragile areas — check these explicitly
+
 All four bit us once already and now have regression tests; re-check them after any
 change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls.ts`.
 
@@ -52,7 +57,7 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
   `.palette-head`, `.palette-input`, `.palette-results`, `.palette-item`. If these
   rules go missing, the palette renders as unstyled text in normal document flow at
   the bottom of the page — easy to miss because the DOM looks correct and the element
-  is "visible". Always take a *screenshot* after Ctrl+K, and assert overlay-ness
+  is "visible". Always take a _screenshot_ after Ctrl+K, and assert overlay-ness
   (fixed position, non-static z-index, box inside the viewport), not visibility.
 - **Palette entries**: `.tool-name` exists in both the table rows and the grid cards,
   so collecting from it naively lists every tool twice. Assert uniqueness.
@@ -75,6 +80,7 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
   naive prepend doubles it. Check one of those pages, not just a tool page.
 
 ## Mobile / JS-off testing tips
+
 - Chrome cannot be resized below ~530px on this box; use DevTools device mode
   (F12 then Ctrl+Shift+M, set width 375) for the 375px checks.
 - Toggle JavaScript through `chrome://settings/content/javascript` (a real UI path,
@@ -82,4 +88,5 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
   pages must still render every tool.
 
 ## Devin Secrets Needed
+
 None — the site is fully static with no backend, auth, or API keys.
