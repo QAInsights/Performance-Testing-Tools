@@ -3,6 +3,10 @@ dist/
 .astro/
 test-results/
 playwright-report/
+public/llms.txt
+public/llms-full.txt
+public/robots.txt
+public/og/*.svg
 .env
 .env.*
 !.env.example

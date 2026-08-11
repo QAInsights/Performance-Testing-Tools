@@ -3,15 +3,189 @@ import ConsoleLayout from '../layouts/ConsoleLayout.astro';
 import { datasetLastVerified } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 ---
+
 <ConsoleLayout title="About · Performance Testing Tools">
   <main class="about-page">
-    <nav class="breadcrumbs mono"><a href={siteUrl()}>← Directory</a><span>/</span><strong>About</strong></nav>
-    <header><p class="eyebrow">FIELD NOTES / QAINSIGHTS</p><h1>A living map of performance tools.</h1><p class="lead">Load Profile Console is a dense, practical directory for engineers choosing tools for load, stress, protocol, and performance testing.</p></header>
-    <div class="about-grid"><article class="panel about-card"><h2>How to read the console</h2><p>The original PerformanceTestingTools diagram used a legend to call out the author's personal picks and generally recommended tools. This directory keeps that signal visible: <b class="amber">♥ personal pick</b> marks a personal recommendation, while <b class="cyan">✓ general pick</b> marks a broadly useful choice.</p><p>Mini load profiles are deterministic visual fingerprints, not measured benchmarks. They are generated from each tool's catalog attributes so the same tool always renders the same shape.</p></article><article class="panel about-card"><h2>Maintained with evidence</h2><p>Tool records include official links, ownership, licensing, deployment, protocols, and lifecycle status where available. Renamed and discontinued products remain visible so historical references are not silently lost.</p><p class="mono small">Last shared verification: {datasetLastVerified}</p></article></div>
-    <section class="submit panel"><div><p class="eyebrow">SEE SOMETHING MISSING?</p><h2>Submit a tool or correction</h2></div><a class="button button--amber" href="https://github.com/QAInsights/Performance-Testing-Tools/issues/new?title=Tool%20submission%3A%20&body=Tool%20name%3A%20%0AOfficial%20URL%3A%20%0AWhat%20should%20be%20added%20or%20corrected%3F%20%0A" target="_blank" rel="noreferrer">Open GitHub issue ↗</a></section>
-    <footer class="about-footer"><a href="https://qainsights.com/" target="_blank" rel="noreferrer">QAInsights ↗</a><a href="https://www.youtube.com/@qainisghts" target="_blank" rel="noreferrer">YouTube ↗</a><a href="https://github.com/QAInsights/Performance-Testing-Tools" target="_blank" rel="noreferrer">Source repository ↗</a></footer>
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>← Directory</a><span>/</span><strong>About</strong>
+    </nav>
+    <header>
+      <p class="eyebrow">FIELD NOTES / QAINSIGHTS</p><h1>
+        A living map of performance tools.
+      </h1><p class="lead">
+        Load Profile Console is a dense, practical directory for engineers
+        choosing tools for load, stress, protocol, and performance testing.
+      </p>
+    </header>
+    <div class="about-grid">
+      <article class="panel about-card">
+        <h2>How to read the console</h2><p>
+          The original PerformanceTestingTools diagram used a legend to call out
+          the author's personal picks and generally recommended tools. This
+          directory keeps that signal visible: <b class="amber"
+            >♥ personal pick</b
+          > marks a personal recommendation, while <b class="cyan"
+            >✓ general pick</b
+          > marks a broadly useful choice.
+        </p><p>
+          Mini load profiles are deterministic visual fingerprints, not measured
+          benchmarks. They are generated from each tool's catalog attributes,
+          not measured performance.
+        </p><h3>Profile archetypes</h3><ul>
+          <li>
+            <b>Ramp:</b> gradual rise, useful for protocol/API-oriented tools.
+          </li><li>
+            <b>Step:</b> staged plateaus, common for enterprise suites.
+          </li><li>
+            <b>Spike:</b> concentrated peak, common for micro-benchmark CLIs.
+          </li><li>
+            <b>Soak:</b> sustained oscillating load, common for open-source engines.
+          </li><li>
+            <b>Burst:</b> repeated bursts, common for cloud/commercial services.
+          </li>
+        </ul>
+      </article><article class="panel about-card">
+        <h2>Maintained with evidence</h2><p>
+          Tool records include official links, ownership, licensing, deployment,
+          protocols, and lifecycle status where available. Renamed and
+          discontinued products remain visible so historical references are not
+          silently lost.
+        </p><p class="mono small">
+          Last shared verification: {datasetLastVerified}
+        </p>
+      </article>
+    </div>
+    <section class="submit panel">
+      <div>
+        <p class="eyebrow">SEE SOMETHING MISSING?</p><h2>
+          Submit a tool or correction
+        </h2>
+      </div><a
+        class="button button--amber"
+        href="https://github.com/QAInsights/Performance-Testing-Tools/issues/new?title=Tool%20submission%3A%20&body=Tool%20name%3A%20%0AOfficial%20URL%3A%20%0AWhat%20should%20be%20added%20or%20corrected%3F%20%0A"
+        target="_blank"
+        rel="noreferrer">Open GitHub issue ↗</a
+      >
+    </section>
+    <footer class="about-footer">
+      <a href="https://qainsights.com/" target="_blank" rel="noreferrer"
+        >QAInsights ↗</a
+      ><a
+        href="https://www.youtube.com/@QAInsights"
+        target="_blank"
+        rel="noreferrer">YouTube ↗</a
+      ><a
+        href="https://github.com/QAInsights/Performance-Testing-Tools"
+        target="_blank"
+        rel="noreferrer">Source repository ↗</a
+      >
+    </footer>
   </main>
 </ConsoleLayout>
 <style>
-  .about-page{max-width:1000px;margin:0 auto;padding:38px 24px 70px}.breadcrumbs{display:flex;gap:10px;color:var(--color-surface-300);font-size:11px;margin-bottom:55px}.breadcrumbs a{color:var(--color-teal-300)}.about-page h1{max-width:780px;font-size:clamp(42px,8vw,90px);line-height:.95;letter-spacing:-.08em;margin:0}.lead{max-width:700px;font-size:20px;line-height:1.6;color:var(--color-surface-300)}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:60px}.about-card{padding:25px;color:var(--color-surface-300);line-height:1.65}.about-card h2,.submit h2{color:var(--color-surface-100);font-size:20px;margin-top:0}.amber{color:var(--color-amber-400)}.cyan{color:var(--color-cyan-500)}.small{font-size:11px;color:var(--color-teal-300)}.submit{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:20px 25px}.submit h2{margin-bottom:0}.button{display:inline-block;border:1px solid;padding:10px 13px;text-decoration:none}.button--amber{border-color:var(--color-amber-400);background:var(--color-amber-400);color:var(--color-ink)}.about-footer{display:flex;gap:20px;border-top:1px solid var(--color-teal-700);margin-top:60px;padding-top:18px;font:11px var(--font-mono)}.about-footer a{color:var(--color-teal-300)}@media(max-width:650px){.about-page{padding:25px 14px}.about-grid{grid-template-columns:1fr;margin-top:35px}.submit{display:block}.submit .button{margin-top:15px}.about-footer{flex-wrap:wrap}}
+  .about-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 38px 24px 70px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 11px;
+    margin-bottom: 55px;
+  }
+  .breadcrumbs a {
+    color: var(--color-teal-300);
+  }
+  .about-page h1 {
+    max-width: 780px;
+    font-size: clamp(42px, 8vw, 90px);
+    line-height: 0.95;
+    letter-spacing: -0.08em;
+    margin: 0;
+  }
+  .lead {
+    max-width: 700px;
+    font-size: 20px;
+    line-height: 1.6;
+    color: var(--color-surface-300);
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 60px;
+  }
+  .about-card {
+    padding: 25px;
+    color: var(--color-surface-300);
+    line-height: 1.65;
+  }
+  .about-card h2,
+  .submit h2 {
+    color: var(--color-surface-100);
+    font-size: 20px;
+    margin-top: 0;
+  }
+  .amber {
+    color: var(--color-amber-400);
+  }
+  .cyan {
+    color: var(--color-cyan-500);
+  }
+  .small {
+    font-size: 11px;
+    color: var(--color-teal-300);
+  }
+  .submit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    padding: 20px 25px;
+  }
+  .submit h2 {
+    margin-bottom: 0;
+  }
+  .button {
+    display: inline-block;
+    border: 1px solid;
+    padding: 10px 13px;
+    text-decoration: none;
+  }
+  .button--amber {
+    border-color: var(--color-amber-400);
+    background: var(--color-amber-400);
+    color: var(--color-ink);
+  }
+  .about-footer {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid var(--color-teal-700);
+    margin-top: 60px;
+    padding-top: 18px;
+    font: 11px var(--font-mono);
+  }
+  .about-footer a {
+    color: var(--color-teal-300);
+  }
+  @media (max-width: 650px) {
+    .about-page {
+      padding: 25px 14px;
+    }
+    .about-grid {
+      grid-template-columns: 1fr;
+      margin-top: 35px;
+    }
+    .submit {
+      display: block;
+    }
+    .submit .button {
+      margin-top: 15px;
+    }
+    .about-footer {
+      flex-wrap: wrap;
+    }
+  }
 </style>

@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { loadProfilePath, loadProfilePoints } from './loadProfile';
 
-const tool = { slug: 'grafana-k6', category: 'Load Testing' as const, deployment: 'Self-hosted' as const, protocols: ['HTTP', 'gRPC'] };
+const tool = {
+  slug: 'grafana-k6',
+  category: 'Load Testing' as const,
+  deployment: 'Self-hosted' as const,
+  license: 'Open Source' as const,
+  protocols: ['HTTP', 'gRPC'],
+};
 
 describe('load profile generator', () => {
   it('is deterministic', () => {

@@ -29,22 +29,67 @@
   color: var(--color-surface-100);
 }
 
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; }
-button, input, select { font: inherit; }
-button, a, input, select { outline-offset: 3px; }
-:focus-visible { outline: 2px solid var(--color-amber-400); }
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+[hidden] {
+  display: none !important;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  min-width: 320px;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+a,
+input,
+select {
+  outline-offset: 3px;
+}
+:focus-visible {
+  outline: 2px solid var(--color-amber-400);
+}
 
 .console-grid {
   background-color: var(--color-surface-950);
-  background-image: linear-gradient(rgba(112, 211, 203, .055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(112, 211, 203, .055) 1px, transparent 1px);
+  background-image:
+    linear-gradient(rgba(112, 211, 203, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(112, 211, 203, 0.055) 1px, transparent 1px);
   background-size: 28px 28px;
 }
-.rule { border-color: color-mix(in srgb, var(--color-teal-300) 20%, transparent); }
-.panel { background: color-mix(in srgb, var(--color-surface-900) 92%, transparent); border: 1px solid color-mix(in srgb, var(--color-teal-300) 20%, transparent); }
-.mono { font-family: var(--font-mono); }
-.muted { color: var(--color-surface-300); }
-.focus-ring:focus-visible { outline: 2px solid var(--color-amber-400); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+.rule {
+  border-color: color-mix(in srgb, var(--color-teal-300) 20%, transparent);
+}
+.panel {
+  background: color-mix(in srgb, var(--color-surface-900) 92%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-teal-300) 20%, transparent);
+}
+.mono {
+  font-family: var(--font-mono);
+}
+.muted {
+  color: var(--color-surface-300);
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-amber-400);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

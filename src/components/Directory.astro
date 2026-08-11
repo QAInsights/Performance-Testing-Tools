@@ -4,14 +4,26 @@ import { siteUrl } from '../lib/urls';
 import ToolRow from './ToolRow.astro';
 import ToolCard from './ToolCard.astro';
 
-interface Props { title?: string; intro?: string; category?: Category }
-const { title = 'Performance testing tools', intro = 'Instrument your next performance test with a tool that fits the load profile.', category } = Astro.props;
-const visibleTools = category ? tools.filter((tool) => tool.category === category) : tools;
+interface Props {
+  title?: string;
+  intro?: string;
+  category?: Category;
+}
+const {
+  title = 'Performance testing tools',
+  intro = 'Instrument your next performance test with a tool that fits the load profile.',
+  category,
+} = Astro.props;
+const visibleTools = category
+  ? tools.filter((tool) => tool.category === category)
+  : tools;
 const categories = [...new Set(tools.map((tool) => tool.category))];
 const licenses = [...new Set(tools.map((tool) => tool.license))];
 const deployments = [...new Set(tools.map((tool) => tool.deployment))];
 const statuses = [...new Set(tools.map((tool) => tool.status))];
-const languages = [...new Set(tools.flatMap((tool) => tool.scriptingLanguages))].sort();
+const languages = [
+  ...new Set(tools.flatMap((tool) => tool.scriptingLanguages)),
+].sort();
 const protocols = [...new Set(tools.flatMap((tool) => tool.protocols))].sort();
 const optionGroups = [
   ['category', categories],
@@ -22,50 +34,133 @@ const optionGroups = [
   ['protocol', protocols],
 ] as const;
 ---
-<section class="directory-shell" data-directory data-category={category} data-base={siteUrl().replace(/\/$/, '')}>
+
+<section
+  class="directory-shell"
+  data-directory
+  data-category={category}
+  data-base={siteUrl().replace(/\/$/, '')}
+>
   <aside class="rail panel">
-    <a href={siteUrl()} class="brand focus-ring"><span class="brand-mark">↗</span><span>LOAD PROFILE<br /><b>CONSOLE</b></span></a>
+    <a href={siteUrl()} class="brand focus-ring"
+      ><span class="brand-mark">↗</span><span
+        >LOAD PROFILE<br /><b>CONSOLE</b></span
+      ></a
+    >
     <div class="rail-rule"></div>
-    <div class="dataset-stats mono"><strong>{tools.length}</strong> tools · <strong>{categories.length}</strong> categories<br />updated {datasetLastVerified}</div>
+    <div class="dataset-stats mono">
+      <strong>{tools.length}</strong> tools · <strong
+        >{categories.length}</strong
+      > categories<br />updated {datasetLastVerified}
+    </div>
     <nav class="rail-nav" aria-label="Primary">
-      <a href={siteUrl()} class="active focus-ring">Directory <span>⌘D</span></a>
+      <a href={siteUrl()} class="active focus-ring">Directory</a>
       <a href={siteUrl('about')} class="focus-ring">About <span>↗</span></a>
     </nav>
-    <div class="filter-groups">
-      <p class="eyebrow">FILTER SIGNALS</p>
-      {optionGroups.map(([key, options]) => (
-        <fieldset class="filter-group" data-filter-group={key}>
-          <legend>{key}</legend>
-          {options.map((option) => <label><input type="checkbox" data-filter={key} value={option} /> <span>{option}</span></label>)}
+    <details class="filter-disclosure" open>
+      <summary>FILTER SIGNALS</summary>
+      <div class="filter-groups">
+        {
+          optionGroups.map(([key, options]) =>
+            key !== 'category' || !category ? (
+              <fieldset class="filter-group" data-filter-group={key}>
+                <legend>{key}</legend>
+                {options.map((option) => (
+                  <label>
+                    <input type="checkbox" data-filter={key} value={option} />{' '}
+                    <span>{option}</span>
+                  </label>
+                ))}
+              </fieldset>
+            ) : null,
+          )
+        }
+        <fieldset class="filter-group">
+          <legend>picks</legend>
+          <label
+            ><input type="checkbox" data-filter="pick" value="personal" />
+            <span>♥ personal</span></label
+          >
+          <label
+            ><input type="checkbox" data-filter="pick" value="general" />
+            <span>✓ general</span></label
+          >
         </fieldset>
-      ))}
-      <fieldset class="filter-group"><legend>picks</legend>
-        <label><input type="checkbox" data-filter="pick" value="personal" /> <span>♥ personal</span></label>
-        <label><input type="checkbox" data-filter="pick" value="general" /> <span>✓ general</span></label>
-      </fieldset>
-    </div>
+      </div>
+    </details>
   </aside>
   <div class="directory-main">
     <header class="topbar">
       <div>
-        <p class="eyebrow">PERFORMANCE TOOLING / {category ? 'CATEGORY VIEW' : 'LIVE DIRECTORY'}</p>
+        <p class="eyebrow">
+          PERFORMANCE TOOLING / {category ? 'CATEGORY VIEW' : 'LIVE DIRECTORY'}
+        </p>
         <h1>{title}</h1>
         <p class="intro">{intro}</p>
       </div>
       <div class="top-actions">
-        <button class="icon-button focus-ring" type="button" data-palette-open aria-label="Open command palette">⌘K</button>
+        <button
+          class="icon-button focus-ring"
+          type="button"
+          data-palette-open
+          aria-label="Open command palette">⌘K</button
+        >
       </div>
     </header>
     <div class="controlbar panel">
-      <label class="search-wrap"><span aria-hidden="true">⌕</span><input data-search type="search" placeholder="Search tools, protocols, vendors…" aria-label="Search tools" /><kbd>/</kbd></label>
-      <label class="sort-wrap mono">SORT <select data-sort aria-label="Sort tools"><option value="name">Name</option><option value="category">Category</option><option value="vendor">Vendor</option><option value="released">First released</option></select></label>
-      <div class="view-toggle" role="group" aria-label="View mode"><button type="button" data-view="table" class="selected focus-ring">▤</button><button type="button" data-view="grid" class="focus-ring">▦</button></div>
+      <label class="search-wrap"
+        ><span aria-hidden="true">⌕</span><input
+          data-search
+          type="search"
+          placeholder="Search tools, protocols, vendors…"
+          aria-label="Search tools"
+        /><kbd aria-label="Press slash to focus search">/</kbd></label
+      >
+      <label class="sort-wrap mono"
+        >SORT <select data-sort aria-label="Sort tools"
+          ><option value="name">Name</option><option value="category"
+            >Category</option
+          ><option value="vendor">Vendor</option><option value="released"
+            >First released</option
+          ></select
+        ></label
+      >
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button
+          type="button"
+          data-view="table"
+          class="selected focus-ring"
+          aria-label="Table view"
+          aria-pressed="true">▤</button
+        ><button
+          type="button"
+          data-view="grid"
+          class="focus-ring"
+          aria-label="Grid view"
+          aria-pressed="false">▦</button
+        >
+      </div>
     </div>
-    <div class="results-line mono"><span data-results-count>{visibleTools.length}</span> signals found <span class="live-region" aria-live="polite" data-announcement></span><button type="button" data-clear-filters class="clear-button">clear filters</button></div>
+    <div class="results-line mono">
+      <span data-results-count>{visibleTools.length}</span> signals found <span
+        class="live-region"
+        aria-live="polite"
+        data-announcement></span><button
+        type="button"
+        data-clear-filters
+        class="clear-button">clear filters</button
+      >
+    </div>
     <div class="table-wrap panel" data-table-wrap>
       <table>
         <caption class="sr-only">Performance testing tools directory</caption>
-        <thead><tr><th>TOOL / VENDOR</th><th>DESCRIPTION</th><th>CLASS</th><th>LOAD PROFILE</th><th>COMPARE</th></tr></thead>
+        <thead
+          ><tr
+            ><th>TOOL / VENDOR</th><th>DESCRIPTION</th><th>CLASS</th><th
+              >LOAD PROFILE</th
+            ><th>COMPARE</th></tr
+          ></thead
+        >
         <tbody data-tool-list>
           {visibleTools.map((tool) => <ToolRow tool={tool} />)}
         </tbody>
@@ -74,115 +169,887 @@ const optionGroups = [
     <div class="card-list" data-card-list>
       {visibleTools.map((tool) => <ToolCard tool={tool} />)}
     </div>
-    <div class="empty-state panel" data-empty hidden>No tools match this signal set. <button type="button" data-clear-filters>Reset filters</button></div>
+    <div class="empty-state panel" data-empty hidden>
+      No tools match this signal set. <button type="button" data-clear-filters
+        >Reset filters</button
+      >
+    </div>
   </div>
   <div class="compare-tray panel" data-compare-tray hidden>
-    <div><span class="eyebrow">TEST RIG</span><strong data-compare-count>0 / 3 selected</strong></div>
+    <div>
+      <span class="eyebrow">TEST RIG</span><strong data-compare-count
+        >0 / 3 selected</strong
+      >
+    </div>
     <div class="compare-chips" data-compare-chips></div>
-    <button class="button button--amber focus-ring" data-open-compare disabled type="button">Compare tools →</button>
+    <button
+      class="button button--amber focus-ring"
+      data-open-compare
+      disabled
+      type="button">Compare tools →</button
+    >
   </div>
   <div class="palette-backdrop" data-palette hidden>
-    <section class="palette panel" role="dialog" aria-modal="true" aria-labelledby="palette-title">
-      <div class="palette-head"><span id="palette-title" class="mono">COMMAND PALETTE</span><button type="button" data-palette-close aria-label="Close command palette">Esc</button></div>
-      <input data-palette-search class="palette-input" type="search" placeholder="Jump to a tool, category, or filter…" aria-label="Command palette search" />
+    <section
+      class="palette panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="palette-title"
+    >
+      <div class="palette-head">
+        <span id="palette-title" class="mono">COMMAND PALETTE</span><button
+          type="button"
+          data-palette-close
+          aria-label="Close command palette">Esc</button
+        >
+      </div>
+      <input
+        data-palette-search
+        class="palette-input"
+        type="search"
+        placeholder="Jump to a tool, category, or filter…"
+        aria-label="Command palette search"
+      />
       <div data-palette-results class="palette-results"></div>
     </section>
   </div>
 </section>
 
 <style is:global>
-  .directory-shell { display:grid; grid-template-columns:255px minmax(0,1fr); gap:24px; max-width:1600px; margin:0 auto; padding:24px; min-height:100vh; }
-  .rail { padding:20px 16px; position:sticky; top:24px; height:calc(100vh - 48px); overflow:auto; }
-  .brand { display:flex; gap:10px; color:var(--color-surface-100); text-decoration:none; font:600 12px/1.05 var(--font-mono); letter-spacing:.1em; }.brand-mark { color:var(--color-amber-400); font-size:30px; line-height:20px; }.brand b { color:var(--color-teal-300); }
-  .rail-rule { border-top:1px solid var(--color-teal-700); margin:22px 0 16px; opacity:.7; }.dataset-stats { color:var(--color-surface-300); font-size:11px; line-height:1.8; }.dataset-stats strong { color:var(--color-amber-400); font-size:16px; }
-  .rail-nav { display:grid; gap:3px; margin:24px -4px; }.rail-nav a { display:flex; justify-content:space-between; padding:9px 10px; color:var(--color-surface-300); text-decoration:none; font:12px var(--font-mono); }.rail-nav a.active,.rail-nav a:hover { background:var(--color-teal-900); color:white; }.rail-nav span { opacity:.55; }
-  .eyebrow { color:var(--color-teal-300); font:10px var(--font-mono); letter-spacing:.14em; margin:0 0 9px; }.filter-groups { border-top:1px solid var(--color-teal-700); padding-top:18px; }.filter-group { border:0; padding:0; margin:0 0 18px; }.filter-group legend { color:var(--color-surface-300); font:10px var(--font-mono); text-transform:uppercase; margin-bottom:7px; }.filter-group label { display:flex; gap:7px; align-items:center; color:var(--color-surface-100); font-size:12px; padding:3px 0; cursor:pointer; }.filter-group input { accent-color:var(--color-teal-500); }
-  .directory-main { min-width:0; padding-bottom:90px; }.topbar { display:flex; align-items:flex-start; justify-content:space-between; padding:9px 0 23px; }.topbar h1 { font-size:clamp(28px,4vw,48px); letter-spacing:-.05em; margin:0; }.intro { color:var(--color-surface-300); margin:8px 0 0; max-width:600px; }.top-actions { display:flex; gap:8px; }.icon-button { background:transparent; color:var(--color-surface-100); border:1px solid var(--color-teal-700); padding:9px 12px; cursor:pointer; }.controlbar { display:flex; gap:12px; padding:10px; align-items:center; }.search-wrap { display:flex; gap:8px; align-items:center; flex:1; color:var(--color-teal-300); }.search-wrap input { background:transparent; border:0; color:inherit; width:100%; outline:none; }.search-wrap kbd { border:1px solid var(--color-teal-700); padding:2px 6px; color:var(--color-surface-300); }.sort-wrap { color:var(--color-surface-300); font-size:10px; white-space:nowrap; }.sort-wrap select { border:0; color:var(--color-surface-100); background:transparent; }.view-toggle { display:flex; }.view-toggle button { background:transparent; color:var(--color-surface-300); border:1px solid var(--color-teal-700); padding:7px 10px; cursor:pointer; }.view-toggle button.selected { background:var(--color-teal-900); color:white; }.results-line { color:var(--color-surface-300); font-size:10px; padding:15px 2px 8px; }.results-line [data-results-count] { color:var(--color-amber-400); }.clear-button { float:right; background:none; border:0; color:var(--color-cyan-500); cursor:pointer; font:inherit; }
-  .table-wrap { overflow:auto; }.table-wrap table { border-collapse:collapse; width:100%; min-width:850px; }.table-wrap th { color:var(--color-teal-300); font:10px var(--font-mono); text-align:left; padding:12px 14px; border-bottom:1px solid var(--color-teal-700); white-space:nowrap; }.table-wrap td { padding:13px 14px; border-bottom:1px solid color-mix(in srgb, var(--color-teal-300) 12%, transparent); vertical-align:middle; font-size:12px; }.table-wrap tr:last-child td { border-bottom:0; }.tool-name { display:block; color:var(--color-surface-100); font-weight:600; text-decoration:none; }.tool-name:hover { color:var(--color-amber-400); }.tool-vendor { display:block; color:var(--color-surface-300); font:10px var(--font-mono); margin-top:4px; }.description-cell { color:var(--color-surface-300); max-width:300px; }.status-dot { display:inline-block; margin-top:6px; color:var(--color-amber-400); font:9px var(--font-mono); text-transform:uppercase; }.badge { display:inline-block; border:1px solid var(--color-surface-700); color:var(--color-surface-300); padding:3px 5px; margin:2px 2px 2px 0; font:9px var(--font-mono); white-space:nowrap; }.badge--teal { color:var(--color-teal-300); border-color:var(--color-teal-700); }.badge--cyan { color:var(--color-cyan-500); border-color:color-mix(in srgb, var(--color-cyan-500) 60%, transparent); }.badge--amber { color:var(--color-amber-400); border-color:var(--color-amber-400); }.load-profile { display:block; max-width:150px; }.profile-baseline { stroke:var(--color-teal-700); stroke-width:1; }.profile-line { fill:none; stroke:var(--color-cyan-500); stroke-width:2; vector-effect:non-scaling-stroke; }.load-profile--large { max-width:100%; }.compare-check input { position:absolute; opacity:0; }.compare-check span { display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--color-teal-700); color:var(--color-teal-300); cursor:pointer; }.compare-check input:checked + span { background:var(--color-amber-400); color:var(--color-ink); border-color:var(--color-amber-400); }.card-list { display:none; gap:10px; }.empty-state { padding:35px; text-align:center; color:var(--color-surface-300); }.empty-state button { color:var(--color-cyan-500); background:none; border:0; cursor:pointer; }.compare-tray { position:fixed; z-index:5; bottom:16px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:18px; padding:10px 14px; width:min(760px,calc(100% - 30px)); box-shadow:0 10px 35px #0008; }.compare-tray strong { display:block; font:12px var(--font-mono); }.compare-chips { display:flex; gap:5px; flex:1; overflow:hidden; }.compare-chip { border:1px solid var(--color-teal-700); padding:5px 7px; color:var(--color-surface-100); font:10px var(--font-mono); white-space:nowrap; }.button { border:1px solid; padding:9px 12px; cursor:pointer; white-space:nowrap; }.button--amber { border-color:var(--color-amber-400); background:var(--color-amber-400); color:var(--color-ink); }.button:disabled { opacity:.4; cursor:not-allowed; }.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }.live-region { margin-left:12px; }
-  @media (max-width:900px) { .directory-shell { grid-template-columns:1fr; padding:14px; }.rail { position:static; height:auto; }.filter-groups { display:none; }.rail-nav { display:flex; margin:16px -4px 0; }.rail-nav a { flex:1; }.topbar { padding-top:8px; } }
-  @media (max-width:620px) { .controlbar { flex-wrap:wrap; }.search-wrap { flex-basis:100%; }.sort-wrap { flex:1; }.table-wrap { display:none; }.card-list { display:grid; }.top-actions { flex-shrink:0; }.top-actions .icon-button:last-child { display:none; }.compare-tray { gap:8px; flex-wrap:wrap; }.compare-tray > div:first-child { width:100%; }.compare-chips { order:3; width:100%; flex-basis:100%; }.compare-tray .button { margin-left:auto; }.intro { font-size:14px; } }
+  .directory-shell {
+    display: grid;
+    grid-template-columns: 255px minmax(0, 1fr);
+    gap: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 24px;
+    min-height: 100vh;
+  }
+  .rail {
+    padding: 20px 16px;
+    position: sticky;
+    top: 24px;
+    height: calc(100vh - 48px);
+    overflow: auto;
+  }
+  .brand {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-100);
+    text-decoration: none;
+    font: 600 12px/1.05 var(--font-mono);
+    letter-spacing: 0.1em;
+  }
+  .brand-mark {
+    color: var(--color-amber-400);
+    font-size: 30px;
+    line-height: 20px;
+  }
+  .brand b {
+    color: var(--color-teal-300);
+  }
+  .rail-rule {
+    border-top: 1px solid var(--color-teal-700);
+    margin: 22px 0 16px;
+    opacity: 0.7;
+  }
+  .dataset-stats {
+    color: var(--color-surface-300);
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .dataset-stats strong {
+    color: var(--color-amber-400);
+    font-size: 16px;
+  }
+  .rail-nav {
+    display: grid;
+    gap: 3px;
+    margin: 24px -4px;
+  }
+  .rail-nav a {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 10px;
+    color: var(--color-surface-300);
+    text-decoration: none;
+    font: 12px var(--font-mono);
+  }
+  .rail-nav a.active,
+  .rail-nav a:hover {
+    background: var(--color-teal-900);
+    color: white;
+  }
+  .rail-nav span {
+    opacity: 0.55;
+  }
+  .eyebrow {
+    color: var(--color-teal-300);
+    font: 10px var(--font-mono);
+    letter-spacing: 0.14em;
+    margin: 0 0 9px;
+  }
+  .filter-disclosure {
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 18px;
+  }
+  .filter-disclosure > summary {
+    color: var(--color-teal-300);
+    font: 10px var(--font-mono);
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    list-style: none;
+  }
+  .filter-disclosure > summary::-webkit-details-marker {
+    display: none;
+  }
+  .filter-disclosure > summary::before {
+    content: '＋ ';
+  }
+  .filter-disclosure[open] > summary::before {
+    content: '－ ';
+  }
+  .filter-groups {
+    padding-top: 18px;
+  }
+  .filter-group {
+    border: 0;
+    padding: 0;
+    margin: 0 0 18px;
+  }
+  .filter-group legend {
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .filter-group label {
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    color: var(--color-surface-100);
+    font-size: 12px;
+    padding: 3px 0;
+    cursor: pointer;
+  }
+  .filter-group input {
+    accent-color: var(--color-teal-500);
+  }
+  .directory-main {
+    min-width: 0;
+    padding-bottom: 90px;
+  }
+  .topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 9px 0 23px;
+  }
+  .topbar h1 {
+    font-size: clamp(28px, 4vw, 48px);
+    letter-spacing: -0.05em;
+    margin: 0;
+  }
+  .intro {
+    color: var(--color-surface-300);
+    margin: 8px 0 0;
+    max-width: 600px;
+  }
+  .top-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .icon-button {
+    background: transparent;
+    color: var(--color-surface-100);
+    border: 1px solid var(--color-teal-700);
+    padding: 9px 12px;
+    cursor: pointer;
+  }
+  .controlbar {
+    display: flex;
+    gap: 12px;
+    padding: 10px;
+    align-items: center;
+  }
+  .search-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+    color: var(--color-teal-300);
+  }
+  .search-wrap input {
+    background: transparent;
+    border: 0;
+    color: inherit;
+    width: 100%;
+    outline: none;
+  }
+  .search-wrap kbd {
+    border: 1px solid var(--color-teal-700);
+    padding: 2px 6px;
+    color: var(--color-surface-300);
+  }
+  .sort-wrap {
+    color: var(--color-surface-300);
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .sort-wrap select {
+    border: 0;
+    color: var(--color-surface-100);
+    background: transparent;
+  }
+  .view-toggle {
+    display: flex;
+  }
+  .view-toggle button {
+    background: transparent;
+    color: var(--color-surface-300);
+    border: 1px solid var(--color-teal-700);
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+  .view-toggle button.selected {
+    background: var(--color-teal-900);
+    color: white;
+  }
+  .results-line {
+    color: var(--color-surface-300);
+    font-size: 10px;
+    padding: 15px 2px 8px;
+  }
+  .results-line [data-results-count] {
+    color: var(--color-amber-400);
+  }
+  .clear-button {
+    float: right;
+    background: none;
+    border: 0;
+    color: var(--color-cyan-500);
+    cursor: pointer;
+    font: inherit;
+  }
+  .table-wrap {
+    overflow: auto;
+  }
+  .table-wrap table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 850px;
+  }
+  .table-wrap th {
+    color: var(--color-teal-300);
+    font: 10px var(--font-mono);
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-teal-700);
+    white-space: nowrap;
+  }
+  .table-wrap td {
+    padding: 13px 14px;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 12%, transparent);
+    vertical-align: middle;
+    font-size: 12px;
+  }
+  .table-wrap tr:last-child td {
+    border-bottom: 0;
+  }
+  .tool-name {
+    display: block;
+    color: var(--color-surface-100);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .tool-name:hover {
+    color: var(--color-amber-400);
+  }
+  .tool-vendor {
+    display: block;
+    color: var(--color-surface-300);
+    font: 10px var(--font-mono);
+    margin-top: 4px;
+  }
+  .description-cell {
+    color: var(--color-surface-300);
+    max-width: 300px;
+  }
+  .status-dot {
+    display: inline-block;
+    margin-top: 6px;
+    color: var(--color-amber-400);
+    font: 9px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .badge {
+    display: inline-block;
+    border: 1px solid var(--color-surface-700);
+    color: var(--color-surface-300);
+    padding: 3px 5px;
+    margin: 2px 2px 2px 0;
+    font: 9px var(--font-mono);
+    white-space: nowrap;
+  }
+  .badge--teal {
+    color: var(--color-teal-300);
+    border-color: var(--color-teal-700);
+  }
+  .badge--cyan {
+    color: var(--color-cyan-500);
+    border-color: color-mix(in srgb, var(--color-cyan-500) 60%, transparent);
+  }
+  .badge--amber {
+    color: var(--color-amber-400);
+    border-color: var(--color-amber-400);
+  }
+  .load-profile {
+    display: block;
+    max-width: 150px;
+  }
+  .profile-baseline {
+    stroke: var(--color-teal-700);
+    stroke-width: 1;
+  }
+  .profile-line {
+    fill: none;
+    stroke: var(--color-cyan-500);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+  .load-profile--large {
+    max-width: 100%;
+  }
+  .compare-check input {
+    position: absolute;
+    opacity: 0;
+  }
+  .compare-check span {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    cursor: pointer;
+  }
+  .compare-check input:checked + span {
+    background: var(--color-amber-400);
+    color: var(--color-ink);
+    border-color: var(--color-amber-400);
+  }
+  .card-list {
+    display: none;
+    gap: 10px;
+  }
+  .grid-mode .table-wrap {
+    display: none;
+  }
+  .grid-mode .card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px;
+  }
+  .tool-card {
+    padding: 14px;
+  }
+  .tool-card .card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .tool-card p {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .tool-card .load-profile {
+    margin-top: 12px;
+  }
+  .empty-state {
+    padding: 35px;
+    text-align: center;
+    color: var(--color-surface-300);
+  }
+  .empty-state button {
+    color: var(--color-cyan-500);
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+  .compare-tray {
+    position: fixed;
+    z-index: 5;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 14px;
+    width: min(760px, calc(100% - 30px));
+    box-shadow: 0 10px 35px #0008;
+  }
+  .compare-tray strong {
+    display: block;
+    font: 12px var(--font-mono);
+  }
+  .compare-chips {
+    display: flex;
+    gap: 5px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .compare-chip {
+    border: 1px solid var(--color-teal-700);
+    padding: 5px 7px;
+    color: var(--color-surface-100);
+    font: 10px var(--font-mono);
+    white-space: nowrap;
+  }
+  .button {
+    border: 1px solid;
+    padding: 9px 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .button--amber {
+    border-color: var(--color-amber-400);
+    background: var(--color-amber-400);
+    color: var(--color-ink);
+  }
+  .button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .live-region {
+    margin-left: 12px;
+  }
+  @media (max-width: 900px) {
+    .directory-shell {
+      grid-template-columns: 1fr;
+      padding: 14px;
+    }
+    .rail {
+      position: static;
+      height: auto;
+    }
+    .rail-nav {
+      display: flex;
+      margin: 16px -4px 0;
+    }
+    .rail-nav a {
+      flex: 1;
+    }
+    .topbar {
+      padding-top: 8px;
+    }
+  }
+  @media (max-width: 620px) {
+    .controlbar {
+      flex-wrap: wrap;
+    }
+    .search-wrap {
+      flex-basis: 100%;
+    }
+    .sort-wrap {
+      flex: 1;
+    }
+    .table-wrap {
+      display: none;
+    }
+    .card-list {
+      display: grid;
+    }
+    .top-actions {
+      flex-shrink: 0;
+    }
+    .compare-tray {
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .compare-tray > div:first-child {
+      width: 100%;
+    }
+    .compare-chips {
+      order: 3;
+      width: 100%;
+      flex-basis: 100%;
+    }
+    .compare-tray .button {
+      margin-left: auto;
+    }
+    .intro {
+      font-size: 14px;
+    }
+    .filter-disclosure {
+      margin-top: 16px;
+    }
+  }
 </style>
 
 <script>
   const root = document.querySelector('[data-directory]');
   if (root) {
-    const allItems = [...root.querySelectorAll('[data-tool], [data-tool-card]')];
+    const allItems = [
+      ...root.querySelectorAll('[data-tool], [data-tool-card]'),
+    ];
     const rows = [...root.querySelectorAll<HTMLElement>('tr[data-tool]')];
     const cards = [...root.querySelectorAll<HTMLElement>('[data-tool-card]')];
     const search = root.querySelector('[data-search]');
     const sort = root.querySelector('[data-sort]');
     const count = root.querySelector('[data-results-count]');
     const announce = root.querySelector('[data-announcement]');
+    const empty = root.querySelector<HTMLElement>('[data-empty]');
     const tray = root.querySelector('[data-compare-tray]');
-    const compareButton = root.querySelector<HTMLButtonElement>('[data-open-compare]');
-    const selected = new Set<string>();
+    const compareButton = root.querySelector<HTMLButtonElement>(
+      '[data-open-compare]',
+    );
+    const selected = new Set<string>(
+      JSON.parse(sessionStorage.getItem('ptt-compare') || '[]'),
+    );
     const params = new URLSearchParams(location.search);
-    const keyMap: Record<string, string> = { category: 'category', license: 'license', deployment: 'deployment', status: 'status', language: 'language', protocol: 'protocol', pick: 'pick' };
-    const values = (key: string) => [...root.querySelectorAll<HTMLInputElement>(`[data-filter="${key}"]:checked`)].map((input) => input.value);
+    const keyMap: Record<string, string> = {
+      category: 'category',
+      license: 'license',
+      deployment: 'deployment',
+      status: 'status',
+      language: 'language',
+      protocol: 'protocol',
+      pick: 'pick',
+    };
+    const values = (key: string) =>
+      [
+        ...root.querySelectorAll<HTMLInputElement>(
+          `[data-filter="${key}"]:checked`,
+        ),
+      ].map((input) => input.value);
     const matches = (item: Element) => {
       const query = (search as HTMLInputElement)?.value.toLowerCase() || '';
-      const text = `${item.getAttribute('data-name')} ${item.getAttribute('data-vendor')} ${item.getAttribute('data-category')} ${item.getAttribute('data-language')} ${item.getAttribute('data-protocol')}`.toLowerCase();
+      const text =
+        `${item.getAttribute('data-name')} ${item.getAttribute('data-vendor')} ${item.getAttribute('data-description')} ${item.getAttribute('data-tags')} ${item.getAttribute('data-category')} ${item.getAttribute('data-language')} ${item.getAttribute('data-protocol')}`.toLowerCase();
       if (query && !text.includes(query)) return false;
       for (const key of Object.keys(keyMap)) {
         const wanted = values(key);
-        if (wanted.length && !wanted.some((value) => (item.getAttribute(`data-${key}`) || '').split('|').includes(value))) return false;
+        if (
+          wanted.length &&
+          !wanted.some((value) =>
+            (item.getAttribute(`data-${key}`) || '').split('|').includes(value),
+          )
+        )
+          return false;
       }
       return true;
     };
     const syncUrl = () => {
       const next = new URLSearchParams();
-      if ((search as HTMLInputElement).value) next.set('q', (search as HTMLInputElement).value);
-      for (const key of Object.keys(keyMap)) values(key).forEach((value) => next.append(key, value));
-      if ((sort as HTMLSelectElement).value !== 'name') next.set('sort', (sort as HTMLSelectElement).value);
-      history.replaceState(null, '', `${location.pathname}${next.toString() ? `?${next}` : ''}`);
+      if ((search as HTMLInputElement).value)
+        next.set('q', (search as HTMLInputElement).value);
+      for (const key of Object.keys(keyMap))
+        values(key).forEach((value) => next.append(key, value));
+      if ((sort as HTMLSelectElement).value !== 'name')
+        next.set('sort', (sort as HTMLSelectElement).value);
+      history.replaceState(
+        null,
+        '',
+        `${location.pathname}${next.toString() ? `?${next}` : ''}`,
+      );
     };
     const update = () => {
-      const visible = allItems.filter(matches);
-      allItems.forEach((item) => { (item as HTMLElement).hidden = !matches(item); });
+      const matchState = new Map(allItems.map((item) => [item, matches(item)]));
+      const visible = allItems.filter((item) => matchState.get(item));
+      allItems.forEach((item) => {
+        (item as HTMLElement).hidden = !matchState.get(item);
+      });
       const sorted = [...rows].sort((a, b) => {
-        const field = (sort as HTMLSelectElement).value === 'released' ? 'released' : (sort as HTMLSelectElement).value;
-        return (a.dataset[field] || '').localeCompare(b.dataset[field] || '', undefined, { numeric: true });
+        const field =
+          (sort as HTMLSelectElement).value === 'released'
+            ? 'released'
+            : (sort as HTMLSelectElement).value;
+        return (a.dataset[field] || '').localeCompare(
+          b.dataset[field] || '',
+          undefined,
+          { numeric: true },
+        );
       });
       sorted.forEach((item) => rows[0]?.parentElement?.append(item));
-      const sortedCards = [...cards].sort((a, b) => (a.dataset[(sort as HTMLSelectElement).value] || '').localeCompare(b.dataset[(sort as HTMLSelectElement).value] || '', undefined, { numeric: true }));
+      const sortedCards = [...cards].sort((a, b) =>
+        (a.dataset[(sort as HTMLSelectElement).value] || '').localeCompare(
+          b.dataset[(sort as HTMLSelectElement).value] || '',
+          undefined,
+          { numeric: true },
+        ),
+      );
       sortedCards.forEach((item) => cards[0]?.parentElement?.append(item));
-      if (count) count.textContent = String(visible.filter((item) => item.matches('tr')).length);
-      if (announce) announce.textContent = `${visible.filter((item) => item.matches('tr')).length} results`;
+      if (count)
+        count.textContent = String(
+          visible.filter((item) => item.matches('tr')).length,
+        );
+      if (announce)
+        announce.textContent = `${visible.filter((item) => item.matches('tr')).length} results`;
+      if (empty)
+        empty.hidden =
+          visible.filter((item) => item.matches('tr')).length !== 0;
       syncUrl();
     };
-    root.querySelectorAll<HTMLInputElement>('[data-filter]').forEach((input) => input.addEventListener('change', update));
-    search?.addEventListener('input', update); sort?.addEventListener('change', update);
-    root.querySelectorAll<HTMLButtonElement>('[data-clear-filters]').forEach((button) => button.addEventListener('click', () => { root.querySelectorAll<HTMLInputElement>('[data-filter]').forEach((input) => { input.checked = false; }); (search as HTMLInputElement).value = ''; update(); }));
-    const restore = (key: string, value: string) => root.querySelectorAll<HTMLInputElement>(`[data-filter="${key}"][value="${CSS.escape(value)}"]`).forEach((input) => { input.checked = true; });
-    params.forEach((value, key) => { if (key === 'q' && search) (search as HTMLInputElement).value = value; else if (key === 'sort' && sort) (sort as HTMLSelectElement).value = value; else if (keyMap[key]) restore(key, value); });
-    root.querySelectorAll<HTMLInputElement>('[data-compare]').forEach((input) => input.addEventListener('change', () => {
-      if (input.checked && selected.size >= 3) { input.checked = false; return; }
-      if (input.checked) selected.add(input.dataset.compare!); else selected.delete(input.dataset.compare!);
-      root.querySelectorAll<HTMLInputElement>(`[data-compare="${CSS.escape(input.dataset.compare!)}"]`).forEach((other) => { other.checked = input.checked; });
+    root
+      .querySelectorAll<HTMLInputElement>('[data-filter]')
+      .forEach((input) => input.addEventListener('change', update));
+    search?.addEventListener('input', update);
+    sort?.addEventListener('change', update);
+    root
+      .querySelectorAll<HTMLButtonElement>('[data-clear-filters]')
+      .forEach((button) =>
+        button.addEventListener('click', () => {
+          root
+            .querySelectorAll<HTMLInputElement>('[data-filter]')
+            .forEach((input) => {
+              input.checked = false;
+            });
+          (search as HTMLInputElement).value = '';
+          update();
+        }),
+      );
+    const restore = (key: string, value: string) =>
+      root
+        .querySelectorAll<HTMLInputElement>(
+          `[data-filter="${key}"][value="${CSS.escape(value)}"]`,
+        )
+        .forEach((input) => {
+          input.checked = true;
+        });
+    params.forEach((value, key) => {
+      if (key === 'q' && search) (search as HTMLInputElement).value = value;
+      else if (key === 'sort' && sort)
+        (sort as HTMLSelectElement).value = value;
+      else if (keyMap[key]) restore(key, value);
+    });
+    const renderCompare = () => {
+      root
+        .querySelectorAll<HTMLInputElement>('[data-compare]')
+        .forEach((input) => {
+          input.checked = selected.has(input.dataset.compare || '');
+        });
+      sessionStorage.setItem('ptt-compare', JSON.stringify([...selected]));
       if (tray) (tray as HTMLElement).hidden = selected.size === 0;
-      const chipBox = root.querySelector('[data-compare-chips]'); if (chipBox) chipBox.innerHTML = [...selected].map((slug) => `<span class="compare-chip">${slug}</span>`).join('');
-      if (root.querySelector('[data-compare-count]')) root.querySelector('[data-compare-count]')!.textContent = `${selected.size} / 3 selected`;
-      if (compareButton) { compareButton.disabled = selected.size < 2; compareButton.onclick = () => { location.href = `${(document.querySelector('[data-directory]') as HTMLElement).dataset.base || '/Performance-Testing-Tools'}/compare?tools=${[...selected].join(',')}`; }; }
-    }));
-    root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((button) => button.addEventListener('click', () => { root.querySelectorAll('[data-view]').forEach((item) => item.classList.remove('selected')); button.classList.add('selected'); root.classList.toggle('grid-mode', button.dataset.view === 'grid'); }));
+      const chipBox = root.querySelector('[data-compare-chips]');
+      if (chipBox) {
+        chipBox.replaceChildren(
+          ...[...selected].map((slug) => {
+            const chip = document.createElement('span');
+            chip.className = 'compare-chip';
+            const label = document.createElement('span');
+            label.textContent =
+              root.querySelector(`[data-tool="${CSS.escape(slug)}"] .tool-name`)
+                ?.textContent || slug;
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'compare-chip-remove';
+            remove.setAttribute(
+              'aria-label',
+              `Remove ${label.textContent} from Test Rig`,
+            );
+            remove.textContent = '×';
+            remove.addEventListener('click', () => {
+              selected.delete(slug);
+              renderCompare();
+            });
+            chip.append(label, remove);
+            return chip;
+          }),
+        );
+      }
+      const compareCount = root.querySelector('[data-compare-count]');
+      if (compareCount)
+        compareCount.textContent = `${selected.size} / 3 selected`;
+      if (compareButton) {
+        compareButton.disabled = selected.size < 2;
+        compareButton.onclick = () => {
+          location.href = `${(document.querySelector('[data-directory]') as HTMLElement).dataset.base || '/Performance-Testing-Tools'}/compare?tools=${[...selected].join(',')}`;
+        };
+      }
+    };
+    root.querySelectorAll<HTMLInputElement>('[data-compare]').forEach((input) =>
+      input.addEventListener('change', () => {
+        if (input.checked && selected.size >= 3) {
+          input.checked = false;
+          return;
+        }
+        if (input.checked) selected.add(input.dataset.compare!);
+        else selected.delete(input.dataset.compare!);
+        renderCompare();
+      }),
+    );
+    renderCompare();
+    root.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((button) =>
+      button.addEventListener('click', () => {
+        root
+          .querySelectorAll<HTMLButtonElement>('[data-view]')
+          .forEach((item) => {
+            item.classList.remove('selected');
+            item.setAttribute('aria-pressed', String(item === button));
+          });
+        button.classList.add('selected');
+        root.classList.toggle('grid-mode', button.dataset.view === 'grid');
+      }),
+    );
+    document.addEventListener('keydown', (event) => {
+      const target = event.target as HTMLElement;
+      if (
+        event.key === '/' &&
+        !['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)
+      ) {
+        event.preventDefault();
+        (search as HTMLInputElement)?.focus();
+      }
+    });
     const palette = root.querySelector<HTMLElement>('[data-palette]');
-    const paletteInput = root.querySelector<HTMLInputElement>('[data-palette-search]');
-    const paletteResults = root.querySelector<HTMLElement>('[data-palette-results]');
-    const openPalette = () => { if (!palette) return; palette.hidden = false; paletteInput?.focus(); renderPalette(''); };
-    const closePalette = () => { if (palette) palette.hidden = true; };
+    const paletteInput = root.querySelector<HTMLInputElement>(
+      '[data-palette-search]',
+    );
+    const paletteResults = root.querySelector<HTMLElement>(
+      '[data-palette-results]',
+    );
+    const paletteOpener = root.querySelector<HTMLElement>(
+      '[data-palette-open]',
+    );
+    const paletteCategories = [
+      ...new Set(
+        allItems.map((item) => item.getAttribute('data-category') || ''),
+      ),
+    ];
+    const paletteFilters = [
+      'Open Source',
+      'Commercial',
+      'Freemium',
+      'Cloud',
+      'Self-hosted',
+      'Active',
+      'Discontinued',
+    ].map((value) => ({ label: `Filter: ${value}`, filter: value }));
+    const openPalette = () => {
+      if (!palette) return;
+      palette.hidden = false;
+      paletteInput?.focus();
+      renderPalette('');
+    };
+    const closePalette = () => {
+      if (palette) palette.hidden = true;
+      paletteOpener?.focus();
+    };
+    let paletteIndex = 0;
     const renderPalette = (query: string) => {
       if (!paletteResults) return;
-      const links = [...root.querySelectorAll<HTMLAnchorElement>('.tool-name')];
-      const cats = [...new Set(toolsPlaceholderCategories)];
-      const entries = [...links.map((link) => ({ label: link.textContent || '', href: link.href })), ...cats.map((cat) => ({ label: `Category: ${cat}`, href: `${location.pathname}?category=${encodeURIComponent(cat)}` }))];
-      paletteResults.innerHTML = entries.filter((entry) => entry.label.toLowerCase().includes(query.toLowerCase())).slice(0, 12).map((entry) => `<a class="palette-item focus-ring" href="${entry.href}">${entry.label}</a>`).join('') || '<p class="muted">No commands found.</p>';
+      const toolsEntries = [
+        ...root.querySelectorAll<HTMLAnchorElement>('.tool-name'),
+      ].map((link) => ({ label: link.textContent || '', href: link.href }));
+      const entries = [
+        ...toolsEntries,
+        ...paletteCategories.map((cat) => ({
+          label: `Category: ${cat}`,
+          href: `${(document.querySelector('[data-directory]') as HTMLElement).dataset.base}/categories/${cat.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-')}`,
+        })),
+        ...paletteFilters,
+      ];
+      const filtered = entries
+        .filter((entry) =>
+          entry.label.toLowerCase().includes(query.toLowerCase()),
+        )
+        .slice(0, 12);
+      paletteResults.replaceChildren();
+      filtered.forEach((entry, index) => {
+        const item = document.createElement('href' in entry ? 'a' : 'button');
+        item.className = 'palette-item focus-ring';
+        item.textContent = entry.label;
+        item.dataset.paletteIndex = String(index);
+        if ('href' in entry) (item as HTMLAnchorElement).href = entry.href;
+        if ('filter' in entry)
+          (item as HTMLButtonElement).addEventListener('click', () => {
+            const input = root.querySelector<HTMLInputElement>(
+              `[data-filter][value="${CSS.escape(entry.filter)}"]`,
+            );
+            if (input) {
+              input.checked = true;
+              update();
+            }
+            closePalette();
+          });
+        paletteResults.append(item);
+      });
+      paletteIndex = 0;
     };
-    const toolsPlaceholderCategories = [...new Set(allItems.map((item) => item.getAttribute('data-category') || ''))];
-    paletteInput?.addEventListener('input', () => renderPalette(paletteInput.value));
-    root.querySelector('[data-palette-open]')?.addEventListener('click', openPalette);
-    root.querySelector('[data-palette-close]')?.addEventListener('click', closePalette);
-    palette?.addEventListener('click', (event) => { if (event.target === palette) closePalette(); });
-    document.addEventListener('keydown', (event) => { if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); openPalette(); } if (event.key === 'Escape') closePalette(); });
+    paletteInput?.addEventListener('input', () =>
+      renderPalette(paletteInput.value),
+    );
+    root
+      .querySelector('[data-palette-open]')
+      ?.addEventListener('click', openPalette);
+    root
+      .querySelector('[data-palette-close]')
+      ?.addEventListener('click', closePalette);
+    palette?.addEventListener('click', (event) => {
+      if (event.target === palette) closePalette();
+    });
+    paletteInput?.addEventListener('keydown', (event) => {
+      const items = [
+        ...(paletteResults?.querySelectorAll<HTMLElement>('.palette-item') ||
+          []),
+      ];
+      if (
+        (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
+        items.length
+      ) {
+        event.preventDefault();
+        paletteIndex =
+          (paletteIndex + (event.key === 'ArrowDown' ? 1 : -1) + items.length) %
+          items.length;
+        items[paletteIndex]?.focus();
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        items[paletteIndex]?.click();
+      }
+    });
+    paletteResults?.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        paletteInput?.focus();
+      }
+    });
+    palette?.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const focusable = [
+        ...palette.querySelectorAll<HTMLElement>('button, input, a[href]'),
+      ];
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        openPalette();
+      }
+      if (event.key === 'Escape' && palette && !palette.hidden) closePalette();
+    });
     update();
   }
 </script>
