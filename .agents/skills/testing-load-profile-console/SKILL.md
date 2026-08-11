@@ -103,4 +103,4 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
 
 None — the site is fully static with no backend, auth, or API keys. Enrichment
 content is committed JSON; the Exa API key (`EXA_API_KEY`) is only needed to
-*refresh* that data, never to test the site.
+_refresh_ that data, never to test the site.
