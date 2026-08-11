@@ -2,7 +2,8 @@
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import Directory from '../../components/Directory.astro';
 import { tools, type Category } from '../../data/tools';
-import { breadcrumbs, toolItemList, absoluteUrl } from '../../lib/seo';
+import { breadcrumbs, toolItemList } from '../../lib/seo';
+import { absoluteUrl } from '../../lib/urls';
 
 export function getStaticPaths() {
   return [...new Set(tools.map((tool) => tool.category))].map((category) => ({

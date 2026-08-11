@@ -11,13 +11,54 @@ test('search state is reflected in the URL and command palette opens', async ({
   await page
     .getByRole('button', { name: 'Open command palette' })
     .press('Enter');
-  await expect(
-    page.getByRole('dialog', { name: 'COMMAND PALETTE' }),
-  ).toBeVisible();
+  const palette = page.getByRole('dialog', { name: 'COMMAND PALETTE' });
+  const backdrop = page.locator('.palette-backdrop');
+  await expect(palette).toBeVisible();
+  await expect(backdrop).toHaveCSS('position', 'fixed');
+  await expect
+    .poll(() =>
+      backdrop.evaluate((element) => ({
+        zIndex: getComputedStyle(element).zIndex,
+      })),
+    )
+    .toMatchObject({ zIndex: '20' });
+  await expect
+    .poll(() =>
+      palette.evaluate((element) => {
+        const box = element.getBoundingClientRect();
+        return box.top >= 0 && box.bottom <= window.innerHeight;
+      }),
+    )
+    .toBe(true);
+  const toolLabels = await page
+    .locator('.palette-item')
+    .evaluateAll((items) =>
+      items
+        .map((item) => item.textContent)
+        .filter((label): label is string => Boolean(label)),
+    );
+  expect(new Set(toolLabels).size).toBe(toolLabels.length);
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.palette-item:focus')).toBeVisible();
+  await page.keyboard.press('ArrowDown');
+  await expect(page.locator('.palette-item:focus')).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(
-    page.getByRole('dialog', { name: 'COMMAND PALETTE' }),
-  ).toBeHidden();
+  await expect(palette).toBeHidden();
+});
+
+test('released-date sorting puts undated tools last', async ({ page }) => {
+  await page.goto('/Performance-Testing-Tools/');
+  await page.getByLabel('Sort tools').selectOption('released');
+  await expect(page.locator('[data-tool-list] tr').first()).toHaveAttribute(
+    'data-tool',
+    'loadrunner-professional',
+  );
+  await expect(page.locator('[data-tool-list] tr').last()).toHaveAttribute(
+    'data-released',
+    '',
+  );
 });
 
 test('empty state and desktop grid view are usable', async ({ page }) => {
@@ -70,6 +111,14 @@ test('compare tray names tools and survives navigation', async ({ page }) => {
   await expect(page.locator('[data-compare-tray]')).toBeVisible();
   await expect(page.locator('[data-compare-chips]')).toContainText(
     'Apache JMeter',
+  );
+  await page.locator('[data-compare="locust"]').first().check();
+  await page
+    .locator('[data-compare="loadrunner-professional"]')
+    .first()
+    .click();
+  await expect(page.locator('[data-compare-feedback]')).toHaveText(
+    'Maximum 3 tools',
   );
   await page.goto('/Performance-Testing-Tools/about/');
   await page.goto('/Performance-Testing-Tools/');

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
+import { baseUrl } from '../lib/urls';
 const {
   title = 'Performance Testing Tools',
   description = 'A curated directory of performance testing tools.',
@@ -15,15 +16,8 @@ const { structuredData = [], canonical, ogImage } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link
-      rel="manifest"
-      href={`${import.meta.env.BASE_URL}manifest.webmanifest`}
-    />
-    <link
-      rel="icon"
-      href={`${import.meta.env.BASE_URL}favicon.svg`}
-      type="image/svg+xml"
-    />
+    <link rel="manifest" href={baseUrl('manifest.webmanifest')} />
+    <link rel="icon" href={baseUrl('favicon.svg')} type="image/svg+xml" />
     <Seo
       title={title}
       description={description}

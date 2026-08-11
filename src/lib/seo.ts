@@ -1,13 +1,5 @@
 import type { Tool } from '../data/tools';
-import { siteBase, siteOrigin } from '../config/site';
-
-export function absoluteUrl(path: string): string {
-  if (path.startsWith('http')) return path;
-  return `${siteOrigin}${siteBase}/${path.replace(/^\/+/, '')}`.replace(
-    /\/$/,
-    '',
-  );
-}
+import { absoluteUrl } from './urls';
 
 export function toolItemList(items: Tool[]) {
   return {

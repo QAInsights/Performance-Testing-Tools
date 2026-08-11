@@ -4,12 +4,8 @@ import LoadProfile from '../../components/LoadProfile.astro';
 import ToolBadges from '../../components/ToolBadges.astro';
 import { tools } from '../../data/tools';
 import { siteUrl } from '../../lib/urls';
-import {
-  breadcrumbs,
-  toolFaq,
-  toolSoftwareApplication,
-  absoluteUrl,
-} from '../../lib/seo';
+import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
+import { absoluteUrl } from '../../lib/urls';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({

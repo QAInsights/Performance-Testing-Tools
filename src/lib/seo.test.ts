@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  absoluteUrl,
   breadcrumbs,
   toolFaq,
   toolItemList,
   toolSoftwareApplication,
 } from './seo';
+import { absoluteUrl, baseUrl } from './urls';
 import { tools } from '../data/tools';
 
 describe('SEO structured data', () => {
@@ -24,6 +24,15 @@ describe('SEO structured data', () => {
         '/Performance-Testing-Tools/Performance-Testing-Tools',
       );
     }
+  });
+
+  it('joins base-relative asset URLs with one separator', () => {
+    expect(baseUrl('favicon.svg')).toBe(
+      '/Performance-Testing-Tools/favicon.svg',
+    );
+    expect(baseUrl('/og/default.png')).toBe(
+      '/Performance-Testing-Tools/og/default.png',
+    );
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

@@ -179,7 +179,8 @@ const optionGroups = [
     <div>
       <span class="eyebrow">TEST RIG</span><strong data-compare-count
         >0 / 3 selected</strong
-      >
+      ><span class="compare-feedback" data-compare-feedback aria-live="polite"
+      ></span>
     </div>
     <div class="compare-chips" data-compare-chips></div>
     <button
@@ -494,11 +495,97 @@ const optionGroups = [
     overflow: hidden;
   }
   .compare-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     border: 1px solid var(--color-teal-700);
     padding: 5px 7px;
     color: var(--color-surface-100);
     font: 10px var(--font-mono);
     white-space: nowrap;
+  }
+  .compare-chip-remove {
+    border: 0;
+    padding: 0;
+    color: var(--color-amber-400);
+    background: transparent;
+    cursor: pointer;
+    font: 14px/1 var(--font-mono);
+  }
+  .compare-feedback {
+    margin-left: 8px;
+    color: var(--color-amber-400);
+    font: 10px var(--font-mono);
+  }
+  .palette-backdrop {
+    position: fixed;
+    z-index: 20;
+    inset: 0;
+    display: grid;
+    place-items: start center;
+    padding: 12vh 20px 20px;
+    background: #000b;
+  }
+  .palette {
+    width: min(620px, 100%);
+    max-height: min(620px, 76vh);
+    overflow: hidden;
+    box-shadow: 0 20px 70px #000c;
+  }
+  .palette-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    font: 10px var(--font-mono);
+    letter-spacing: 0.12em;
+  }
+  .palette-head button {
+    border: 1px solid var(--color-teal-700);
+    padding: 3px 6px;
+    color: var(--color-surface-300);
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+  }
+  .palette-input {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--color-teal-700);
+    padding: 14px;
+    color: var(--color-surface-100);
+    background: transparent;
+    outline: none;
+    font: 13px var(--font-mono);
+  }
+  .palette-results {
+    display: grid;
+    gap: 2px;
+    max-height: 470px;
+    overflow: auto;
+    padding: 8px;
+  }
+  .palette-item {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 10px 12px;
+    color: var(--color-surface-300);
+    background: transparent;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font: 11px var(--font-mono);
+  }
+  .palette-item:hover,
+  .palette-item:focus,
+  .palette-item.selected {
+    color: var(--color-surface-100);
+    background: var(--color-teal-900);
+    outline: 1px solid var(--color-teal-700);
   }
   .button {
     border: 1px solid;
@@ -665,25 +752,28 @@ const optionGroups = [
       allItems.forEach((item) => {
         (item as HTMLElement).hidden = !matchState.get(item);
       });
-      const sorted = [...rows].sort((a, b) => {
-        const field =
-          (sort as HTMLSelectElement).value === 'released'
-            ? 'released'
-            : (sort as HTMLSelectElement).value;
+      const sortItems = (a: HTMLElement, b: HTMLElement) => {
+        const field = (sort as HTMLSelectElement).value;
+        if (field === 'released') {
+          const aYear = a.dataset.released
+            ? Number(a.dataset.released)
+            : Number.NaN;
+          const bYear = b.dataset.released
+            ? Number(b.dataset.released)
+            : Number.NaN;
+          if (!Number.isFinite(aYear)) return Number.isFinite(bYear) ? 1 : 0;
+          if (!Number.isFinite(bYear)) return -1;
+          return aYear - bYear;
+        }
         return (a.dataset[field] || '').localeCompare(
           b.dataset[field] || '',
           undefined,
           { numeric: true },
         );
-      });
+      };
+      const sorted = [...rows].sort(sortItems);
       sorted.forEach((item) => rows[0]?.parentElement?.append(item));
-      const sortedCards = [...cards].sort((a, b) =>
-        (a.dataset[(sort as HTMLSelectElement).value] || '').localeCompare(
-          b.dataset[(sort as HTMLSelectElement).value] || '',
-          undefined,
-          { numeric: true },
-        ),
-      );
+      const sortedCards = [...cards].sort(sortItems);
       sortedCards.forEach((item) => cards[0]?.parentElement?.append(item));
       if (count)
         count.textContent = String(
@@ -773,10 +863,21 @@ const optionGroups = [
         };
       }
     };
+    const compareFeedback = root.querySelector<HTMLElement>(
+      '[data-compare-feedback]',
+    );
+    let compareFeedbackTimer: ReturnType<typeof setTimeout> | undefined;
     root.querySelectorAll<HTMLInputElement>('[data-compare]').forEach((input) =>
       input.addEventListener('change', () => {
         if (input.checked && selected.size >= 3) {
           input.checked = false;
+          if (compareFeedback) {
+            compareFeedback.textContent = 'Maximum 3 tools';
+            clearTimeout(compareFeedbackTimer);
+            compareFeedbackTimer = setTimeout(() => {
+              compareFeedback.textContent = '';
+            }, 1800);
+          }
           return;
         }
         if (input.checked) selected.add(input.dataset.compare!);
@@ -845,7 +946,7 @@ const optionGroups = [
     const renderPalette = (query: string) => {
       if (!paletteResults) return;
       const toolsEntries = [
-        ...root.querySelectorAll<HTMLAnchorElement>('.tool-name'),
+        ...root.querySelectorAll<HTMLAnchorElement>('tr[data-tool] .tool-name'),
       ].map((link) => ({ label: link.textContent || '', href: link.href }));
       const entries = [
         ...toolsEntries,
@@ -882,6 +983,18 @@ const optionGroups = [
       });
       paletteIndex = 0;
     };
+    const movePalette = (delta: number) => {
+      const items = [
+        ...(paletteResults?.querySelectorAll<HTMLElement>('.palette-item') ||
+          []),
+      ];
+      if (!items.length) return;
+      paletteIndex = (paletteIndex + delta + items.length) % items.length;
+      items.forEach((item, index) =>
+        item.classList.toggle('selected', index === paletteIndex),
+      );
+      items[paletteIndex]?.focus();
+    };
     paletteInput?.addEventListener('input', () =>
       renderPalette(paletteInput.value),
     );
@@ -904,10 +1017,7 @@ const optionGroups = [
         items.length
       ) {
         event.preventDefault();
-        paletteIndex =
-          (paletteIndex + (event.key === 'ArrowDown' ? 1 : -1) + items.length) %
-          items.length;
-        items[paletteIndex]?.focus();
+        movePalette(event.key === 'ArrowDown' ? 1 : -1);
       }
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -917,7 +1027,7 @@ const optionGroups = [
     paletteResults?.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
         event.preventDefault();
-        paletteInput?.focus();
+        movePalette(event.key === 'ArrowDown' ? 1 : -1);
       }
     });
     palette?.addEventListener('keydown', (event) => {

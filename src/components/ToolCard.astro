@@ -21,7 +21,7 @@ const { tool } = Astro.props as { tool: Tool };
   data-language={tool.scriptingLanguages.join('|')}
   data-protocol={tool.protocols.join('|')}
   data-pick={`${tool.personalPick ? 'personal' : ''}|${tool.generalPick ? 'general' : ''}`}
-  data-released={tool.firstReleased ?? 0}
+  data-released={tool.firstReleased ?? ''}
 >
   <div class="card-head">
     <div>
