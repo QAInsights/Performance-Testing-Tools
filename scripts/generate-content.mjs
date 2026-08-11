@@ -1,8 +1,10 @@
-/* global URL */
+/* global Buffer, URL */
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import sharp from 'sharp';
 
 const { tools } = await import('../src/data/tools.ts');
+const { siteBase, siteOrigin } = await import('../src/config/site.ts');
 const root = resolve(new URL('..', import.meta.url).pathname);
 const publicDir = resolve(root, 'public');
 const ogDir = resolve(publicDir, 'og');
@@ -31,11 +33,23 @@ const svg = (tool) =>
 await writeFile(resolve(ogDir, 'default.svg'), svg(tools[0]));
 for (const tool of tools)
   await writeFile(resolve(ogDir, `${tool.slug}.svg`), svg(tool));
+const ogPngs = tools.map(async (tool) => {
+  const buffer = Buffer.from(svg(tool));
+  await sharp(buffer)
+    .png()
+    .toFile(resolve(ogDir, `${tool.slug}.png`));
+});
+await Promise.all([
+  sharp(Buffer.from(svg(tools[0])))
+    .png()
+    .toFile(resolve(ogDir, 'default.png')),
+  ...ogPngs,
+]);
 
 const concise = tools
   .map(
     (tool) =>
-      `- [${tool.name}](https://qainsights.github.io/Performance-Testing-Tools/tools/${tool.slug}/) — ${tool.description} License: ${tool.license}; deployment: ${tool.deployment}; status: ${tool.status}.`,
+      `- [${tool.name}](${siteOrigin}${siteBase}/tools/${tool.slug}/) — ${tool.description} License: ${tool.license}; deployment: ${tool.deployment}; status: ${tool.status}.`,
   )
   .join('\n');
 const full = tools
@@ -54,5 +68,5 @@ await writeFile(
 );
 await writeFile(
   resolve(publicDir, 'robots.txt'),
-  `User-agent: *\nAllow: /\nSitemap: https://qainsights.github.io/Performance-Testing-Tools/sitemap-index.xml\n`,
+  `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}${siteBase}/sitemap-index.xml\n`,
 );

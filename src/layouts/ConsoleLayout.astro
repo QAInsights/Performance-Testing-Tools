@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
+import { siteBase } from '../config/site';
 const {
   title = 'Performance Testing Tools',
   description = 'A curated directory of performance testing tools.',
@@ -15,15 +16,8 @@ const { structuredData = [], canonical, ogImage } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link
-      rel="manifest"
-      href="/Performance-Testing-Tools/manifest.webmanifest"
-    />
-    <link
-      rel="icon"
-      href="/Performance-Testing-Tools/favicon.svg"
-      type="image/svg+xml"
-    />
+    <link rel="manifest" href={`${siteBase}/manifest.webmanifest`} />
+    <link rel="icon" href={`${siteBase}/favicon.svg`} type="image/svg+xml" />
     <Seo
       title={title}
       description={description}

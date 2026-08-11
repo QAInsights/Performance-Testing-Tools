@@ -1,8 +1,9 @@
 import type { Tool } from '../data/tools';
+import { siteBase, siteOrigin } from '../config/site';
 
 export function absoluteUrl(path: string): string {
   if (path.startsWith('http')) return path;
-  return `https://qainsights.github.io/Performance-Testing-Tools/${path.replace(/^\/+/, '')}`.replace(
+  return `${siteOrigin}${siteBase}/${path.replace(/^\/+/, '')}`.replace(
     /\/$/,
     '',
   );

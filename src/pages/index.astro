@@ -3,6 +3,7 @@ import ConsoleLayout from '../layouts/ConsoleLayout.astro';
 import Directory from '../components/Directory.astro';
 import { tools } from '../data/tools';
 import { toolItemList } from '../lib/seo';
+import { siteUrl } from '../lib/urls';
 ---
 
 <ConsoleLayout
@@ -12,7 +13,7 @@ import { toolItemList } from '../lib/seo';
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'Performance Testing Tools',
-      url: 'https://qainsights.github.io/Performance-Testing-Tools/',
+      url: siteUrl(),
     },
     {
       '@context': 'https://schema.org',

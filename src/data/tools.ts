@@ -293,7 +293,7 @@ export const tools: Tool[] = [
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Browser'],
     status: 'Discontinued',
-    successor: 'No verified successor',
+    successor: 'Tricentis NeoLoad',
     cloudBased: true,
     tags: ['legacy', 'jmeter', 'gatling'],
   }),
@@ -321,21 +321,21 @@ export const tools: Tool[] = [
   makeTool({
     slug: 'redline13',
     name: 'RedLine13',
-    vendor: 'RedLine13 community',
+    vendor: 'RedLine13',
     url: 'https://www.redline13.com/',
     repoUrl: 'https://github.com/RedLine13/Redline13',
     description:
-      'Open-source interface and extensions for distributed Apache JMeter execution.',
+      'Freemium cloud load testing platform that runs tests in a customer AWS account.',
     longDescription:
-      'RedLine13 helps teams configure and run JMeter distributed tests on cloud infrastructure. Its open-source project provides integrations and a web interface around load generation.',
+      'RedLine13 provides a hosted load-testing service with AWS-based execution and integrations for JMeter and other load tools. Its companion GitHub repository contains open-source project components.',
     category: 'Load Testing',
-    license: 'Open Source',
-    pricingModel: 'Free; Apache License 2.0.',
-    deployment: 'Self-hosted',
+    license: 'Freemium',
+    pricingModel: 'Free trial and paid cloud plans.',
+    deployment: 'Hybrid',
     scriptingLanguages: ['Java', 'Groovy'],
     protocols: ['HTTP', 'HTTPS', 'JDBC'],
     osSupport: ['Linux', 'Windows'],
-    status: 'Unknown',
+    status: 'Active',
     tags: ['jmeter', 'aws', 'distributed'],
   }),
   makeTool({
@@ -344,9 +344,9 @@ export const tools: Tool[] = [
     vendor: 'Nouvola',
     url: 'https://www.nouvola.com/',
     description:
-      'Former cloud performance testing platform associated with distributed load testing.',
+      'Discontinued cloud performance testing platform for web, mobile, and API applications.',
     longDescription:
-      'Nouvola was a cloud load testing service listed in the original directory. Its current product availability could not be verified from a maintained official product page.',
+      'Nouvola was a cloud load testing and performance analytics service. Public company records report that Nouvola ceased operations.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel:
@@ -366,9 +366,9 @@ export const tools: Tool[] = [
     vendor: 'StormForger',
     url: 'https://stormforger.com/',
     description:
-      'Former cloud-native load testing service for continuous delivery workflows.',
+      'Discontinued SaaS performance testing service acquired and rebranded as StormForge.',
     longDescription:
-      'StormForger provided hosted load testing and CI-oriented workflows. The service is no longer verifiable as an active product from a maintained official source.',
+      'StormForger provided SaaS application performance testing. StormForge acquired the company in 2020 and integrated its technology into the StormForge platform.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel:
@@ -378,7 +378,7 @@ export const tools: Tool[] = [
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Browser'],
     status: 'Discontinued',
-    successor: 'No verified successor',
+    successor: 'StormForge',
     cloudBased: true,
     tags: ['legacy', 'ci-cd'],
   }),
@@ -408,9 +408,9 @@ export const tools: Tool[] = [
     vendor: 'RoboSwarm',
     url: 'https://roboswarm.com/',
     description:
-      'Performance testing platform focused on browser and API test execution.',
+      'Cloud load testing platform historically based on distributed Locust test clusters.',
     longDescription:
-      'RoboSwarm was included in the original performance tools diagram. Its current official product status and technical details could not be verified reliably.',
+      'RoboSwarm was described by contemporary third-party coverage as a cloud service that provisioned distributed Locust clusters. The official site currently returns an access-denied response, so current availability remains unverified.',
     category: 'Browser/RUM',
     license: 'Commercial',
     pricingModel: 'Current pricing not verified.',
@@ -425,20 +425,20 @@ export const tools: Tool[] = [
   makeTool({
     slug: 'pureload',
     name: 'PureLoad',
-    vendor: 'PureLoad',
+    vendor: 'Emblasoft',
     url: 'https://www.pureload.com/',
     description:
-      'Commercial load testing software for creating and executing application performance tests.',
+      'Commercial functional and performance testing software for applications and mobile networks.',
     longDescription:
-      'PureLoad appeared in the original directory as a commercial performance testing product. Current availability and supported protocols could not be verified from a maintained official source.',
+      'Emblasoft PureLoad supports functional and high-volume performance testing for applications and networks, including SIP, MSRP, HTTP, and Diameter.',
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Current pricing not verified.',
     deployment: 'Self-hosted',
     scriptingLanguages: ['Unknown'],
-    protocols: ['HTTP', 'HTTPS'],
+    protocols: ['HTTP', 'HTTPS', 'SIP', 'MSRP', 'Diameter'],
     osSupport: ['Windows'],
-    status: 'Unknown',
+    status: 'Active',
     tags: ['legacy', 'enterprise'],
   }),
   makeTool({
@@ -531,9 +531,9 @@ export const tools: Tool[] = [
     vendor: 'Load Multiplier',
     url: 'https://www.loadmultiplier.com/',
     description:
-      'Former hosted load testing product listed in the original QAInsights diagram.',
+      'Discontinued hosted load testing product listed in the original QAInsights diagram.',
     longDescription:
-      'Load Multiplier was listed as a cloud performance testing service in the source diagram. Its current product availability could not be verified from an active official source.',
+      'Load Multiplier was listed as a cloud performance testing service in the source diagram. Its official domain no longer provides a verifiable product page.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel: 'Historical pricing not verified.',
@@ -552,9 +552,9 @@ export const tools: Tool[] = [
     vendor: 'Apica',
     url: 'https://www.apica.io/',
     description:
-      'Performance monitoring and load testing platform for digital experiences and APIs.',
+      'Observability platform with synthetic monitoring and load-testing capabilities for digital experiences.',
     longDescription:
-      'Apica provides load testing alongside synthetic monitoring and observability capabilities. Its services target web, API, and enterprise application performance workflows.',
+      'Apica currently presents an observability platform with synthetic monitoring and a load test portal. Its services target web, API, and enterprise application performance workflows.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel: 'Commercial plans; contact vendor.',
@@ -578,7 +578,7 @@ export const tools: Tool[] = [
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Trial and commercial licenses.',
-    deployment: 'Self-hosted',
+    deployment: 'Hybrid',
     scriptingLanguages: ['JavaScript'],
     protocols: ['HTTP', 'HTTPS', 'REST', 'SOAP'],
     osSupport: ['Windows'],
@@ -609,12 +609,12 @@ export const tools: Tool[] = [
   makeTool({
     slug: 'agileload',
     name: 'AgileLoad',
-    vendor: 'AgileLoad',
+    vendor: 'Quotium Technologies',
     url: 'https://www.agileload.com/',
     description:
-      'Former performance testing product for web and enterprise application workloads.',
+      'Discontinued performance testing product formerly offered by Quotium Technologies.',
     longDescription:
-      'AgileLoad was included in the source diagram as a commercial load testing product. Its current product status could not be verified from a maintained official source.',
+      'AgileLoad was a Quotium performance testing product that ran on-premises or in the cloud. Quotium’s current QTest pages describe the successor product family.',
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Historical pricing not verified.',
@@ -623,18 +623,17 @@ export const tools: Tool[] = [
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Windows'],
     status: 'Discontinued',
-    successor: 'No verified successor',
+    successor: 'Quotium QTest',
     tags: ['legacy', 'enterprise'],
   }),
   makeTool({
     slug: 'loadstorm',
     name: 'LoadStorm',
-    vendor: 'LoadStorm',
+    vendor: 'CustomerCentrix',
     url: 'https://loadstorm.com/',
-    description:
-      'Former cloud load testing service for web applications and APIs.',
+    description: 'Cloud load testing service for web applications and APIs.',
     longDescription:
-      'LoadStorm was listed in the source diagram as a hosted load testing service. The product is no longer reliably verifiable as an active service.',
+      'LoadStorm is a SaaS load testing product created and operated by CustomerCentrix for generating large volumes of web traffic.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel: 'Historical pricing not verified.',
@@ -642,18 +641,17 @@ export const tools: Tool[] = [
     scriptingLanguages: ['JavaScript'],
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Browser'],
-    status: 'Discontinued',
-    successor: 'No verified successor',
+    status: 'Active',
     cloudBased: true,
     tags: ['legacy', 'cloud'],
   }),
   makeTool({
     slug: 'appvance-iq',
-    name: 'Appvance IQ',
+    name: 'Appvance AIQ',
     vendor: 'Appvance',
     url: 'https://appvance.ai/',
     description:
-      'AI-assisted enterprise platform for functional, performance, and continuous testing.',
+      'AI-assisted enterprise platform for functional, performance, security, and continuous testing.',
     longDescription:
       'Appvance IQ combines test creation and execution for web and enterprise applications. Appvance positions the platform for software quality and performance workflows.',
     category: 'Enterprise Suite',
@@ -724,7 +722,8 @@ export const tools: Tool[] = [
     scriptingLanguages: ['Java'],
     protocols: ['HTTP', 'HTTPS', 'SOAP', 'JMS'],
     osSupport: ['Windows', 'Linux'],
-    status: 'Active',
+    status: 'Discontinued',
+    successor: 'IBM DevOps Test Performance',
     tags: ['ibm', 'enterprise', 'jvm'],
   }),
   makeTool({
