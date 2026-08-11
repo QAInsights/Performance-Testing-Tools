@@ -2,9 +2,7 @@ export function initDirectory(): void {
   const root = document.querySelector('[data-directory]');
   if (!root) return;
 
-  const allItems = [
-    ...root.querySelectorAll('[data-tool], [data-tool-card]'),
-  ];
+  const allItems = [...root.querySelectorAll('[data-tool], [data-tool-card]')];
   const rows = [...root.querySelectorAll<HTMLElement>('tr[data-tool]')];
   const cards = [...root.querySelectorAll<HTMLElement>('[data-tool-card]')];
   const search = root.querySelector('[data-search]');
@@ -147,9 +145,8 @@ export function initDirectory(): void {
     }
   });
   if (hasActiveFilters) {
-    const disclosure = root.querySelector<HTMLDetailsElement>(
-      '.filter-disclosure',
-    );
+    const disclosure =
+      root.querySelector<HTMLDetailsElement>('.filter-disclosure');
     if (disclosure) disclosure.open = true;
   }
   const renderCompare = () => {
@@ -249,9 +246,7 @@ export function initDirectory(): void {
   const paletteResults = root.querySelector<HTMLElement>(
     '[data-palette-results]',
   );
-  const paletteOpener = root.querySelector<HTMLElement>(
-    '[data-palette-open]',
-  );
+  const paletteOpener = root.querySelector<HTMLElement>('[data-palette-open]');
   const paletteCategories = [
     ...new Set(
       allItems.map((item) => item.getAttribute('data-category') || ''),

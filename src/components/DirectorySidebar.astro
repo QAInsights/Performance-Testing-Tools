@@ -20,9 +20,8 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
   >
   <div class="rail-rule"></div>
   <div class="dataset-stats mono">
-    <strong>{toolsCount}</strong> tools · <strong
-      >{categoriesCount}</strong
-    > categories<br />updated {datasetLastVerified}
+    <strong>{toolsCount}</strong> tools · <strong>{categoriesCount}</strong> categories<br
+    />updated {datasetLastVerified}
   </div>
   <nav class="rail-nav" aria-label="Primary">
     <a href={siteUrl()} class="active focus-ring">Directory</a>
@@ -40,11 +39,7 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
                 <div class="sub-filter-options">
                   {options.map((option) => (
                     <label>
-                      <input
-                        type="checkbox"
-                        data-filter={key}
-                        value={option}
-                      />{' '}
+                      <input type="checkbox" data-filter={key} value={option} />{' '}
                       <span>{option}</span>
                     </label>
                   ))}
@@ -55,11 +50,7 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
                 <legend>{key}</legend>
                 {options.map((option) => (
                   <label>
-                    <input
-                      type="checkbox"
-                      data-filter={key}
-                      value={option}
-                    />{' '}
+                    <input type="checkbox" data-filter={key} value={option} />{' '}
                     <span>{option}</span>
                   </label>
                 ))}
