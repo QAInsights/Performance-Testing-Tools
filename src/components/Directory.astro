@@ -39,7 +39,7 @@ const optionGroups = [
   class="directory-shell"
   data-directory
   data-category={category}
-  data-base={siteUrl().replace(/\/$/, '')}
+  data-base={siteUrl()}
 >
   <aside class="rail panel">
     <a href={siteUrl()} class="brand focus-ring"
@@ -696,6 +696,9 @@ const optionGroups = [
     const compareButton = root.querySelector<HTMLButtonElement>(
       '[data-open-compare]',
     );
+    const projectBase = (
+      (root as HTMLElement).dataset.base ?? '/Performance-Testing-Tools'
+    ).replace(/\/+$/, '');
     const selected = new Set<string>(
       JSON.parse(sessionStorage.getItem('ptt-compare') || '[]'),
     );
@@ -859,7 +862,7 @@ const optionGroups = [
       if (compareButton) {
         compareButton.disabled = selected.size < 2;
         compareButton.onclick = () => {
-          location.href = `${(document.querySelector('[data-directory]') as HTMLElement).dataset.base || '/Performance-Testing-Tools'}/compare?tools=${[...selected].join(',')}`;
+          location.href = `${projectBase}/compare?tools=${[...selected].join(',')}`;
         };
       }
     };
@@ -952,7 +955,7 @@ const optionGroups = [
         ...toolsEntries,
         ...paletteCategories.map((cat) => ({
           label: `Category: ${cat}`,
-          href: `${(document.querySelector('[data-directory]') as HTMLElement).dataset.base}/categories/${cat.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-')}`,
+          href: `${projectBase}/categories/${cat.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-')}`,
         })),
         ...paletteFilters,
       ];

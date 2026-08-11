@@ -1,4 +1,4 @@
-import { siteBase, siteOrigin } from '../config/site';
+import { joinBase, siteBase, siteOrigin } from '../config/site';
 
 const runtimeBase = () =>
   (import.meta.env.BASE_URL && import.meta.env.BASE_URL !== '/'
@@ -7,21 +7,18 @@ const runtimeBase = () =>
   ).replace(/\/+$/, '');
 
 export function baseUrl(path = ''): string {
-  const base = runtimeBase();
-  const cleanPath = path.replace(/^\/+|\/+$/g, '');
-  const relativePath =
-    cleanPath === base.replace(/^\/+/, '') ||
-    cleanPath.startsWith(`${base.replace(/^\/+/, '')}/`)
-      ? cleanPath.slice(base.replace(/^\/+/, '').length).replace(/^\/+/, '')
-      : cleanPath;
-  return relativePath ? `${base}/${relativePath}` : `${base}/`;
+  return joinBase(path, runtimeBase() || '/');
 }
 
 export function siteUrl(path = ''): string {
   return baseUrl(path);
 }
 
-export function absoluteUrl(path: string): string {
+export function absoluteUrl(
+  path: string,
+  origin = siteOrigin,
+  base = runtimeBase() || '/',
+): string {
   if (path.startsWith('http')) return path;
-  return `${siteOrigin}${baseUrl(path)}`.replace(/\/$/, '');
+  return `${origin}${joinBase(path, base)}`.replace(/\/$/, '');
 }

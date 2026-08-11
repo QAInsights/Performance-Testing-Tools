@@ -1,0 +1,11 @@
+{
+  "framework": "astro",
+  "buildCommand": "SITE_BASE=/ npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "build": {
+    "env": {
+      "SITE_BASE": "/"
+    }
+  }
+}

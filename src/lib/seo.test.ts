@@ -6,6 +6,7 @@ import {
   toolSoftwareApplication,
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
+import { joinBase } from '../config/site';
 import { tools } from '../data/tools';
 
 describe('SEO structured data', () => {
@@ -33,6 +34,23 @@ describe('SEO structured data', () => {
     expect(baseUrl('/og/default.png')).toBe(
       '/Performance-Testing-Tools/og/default.png',
     );
+  });
+
+  it('supports a root deployment without a Pages segment', () => {
+    expect(joinBase('favicon.svg', '/')).toBe('/favicon.svg');
+    expect(joinBase('manifest.webmanifest', '/')).toBe('/manifest.webmanifest');
+    expect(joinBase('sitemap-index.xml', '/')).toBe('/sitemap-index.xml');
+    expect(joinBase('', '/')).toBe('/');
+    expect(
+      absoluteUrl('about', 'https://performance-testing-tools.vercel.app', '/'),
+    ).toBe('https://performance-testing-tools.vercel.app/about');
+    expect(
+      absoluteUrl(
+        'og/default.png',
+        'https://performance-testing-tools.vercel.app',
+        '/',
+      ),
+    ).toBe('https://performance-testing-tools.vercel.app/og/default.png');
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {
