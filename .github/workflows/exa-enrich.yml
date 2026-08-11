@@ -1,0 +1,68 @@
+name: Exa enrichment
+
+on:
+  schedule:
+    - cron: '0 6 1,15 * *'
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: Optional comma-separated tool slug(s)
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    env:
+      EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+      ENRICH_SLUG: ${{ inputs.slug }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Enrich catalog
+        run: |
+          if [ -z "$EXA_API_KEY" ]; then
+            echo "EXA_API_KEY secret is empty; configure it before running enrichment." >&2
+            exit 1
+          fi
+          npm ci
+          args=()
+          if [ -n "$ENRICH_SLUG" ]; then
+            args+=(--slug="$ENRICH_SLUG")
+          else
+            args+=(--all)
+          fi
+          npm run enrich -- "${args[@]}"
+      - name: Open or update enrichment PR
+        run: |
+          if git diff --quiet -- src/data/enrichment.json; then
+            echo "Enrichment JSON is unchanged."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C automation/exa-enrichment
+          git add src/data/enrichment.json
+          git commit -m "chore: refresh Exa tool enrichment"
+          git push --force-with-lease origin automation/exa-enrichment
+          gh pr view automation/exa-enrichment --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head automation/exa-enrichment \
+              --title "chore: refresh Exa tool enrichment" \
+              --body "Automated grounded tool-page enrichment refresh from Exa."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

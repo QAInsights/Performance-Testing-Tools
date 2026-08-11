@@ -61,6 +61,18 @@ To add or correct a tool:
 
 Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-tool PNG OG images, and `public/robots.txt` from the dataset using the selected deployment origin and base.
 
+## Exa enrichment pipeline
+
+Tool pages can include grounded, periodically refreshed details about features, pricing, ownership, AI capabilities, and the latest release. The pipeline runs on the 1st and 15th of each month, using the `EXA_API_KEY` GitHub repository secret, and opens or updates an automation PR when the enrichment data changes.
+
+Run a focused refresh locally:
+
+```bash
+EXA_API_KEY=... npm run enrich -- --slug=apache-jmeter
+```
+
+Use `--all`, `--stale-days=<n>`, `--concurrency=<n>`, and `--dry-run` for broader or test runs. Enrichment sources and fetch timestamps are stored in [`src/data/enrichment.json`](src/data/enrichment.json).
+
 ## Testing and deployment
 
 Vitest covers dataset, SEO JSON-LD, and load-profile invariants. Playwright covers the project Pages base path, search URL state, filtering, and command palette behavior. The static Astro build produces the directory, category pages, detail pages, comparison page, and about page.
