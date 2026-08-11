@@ -26,6 +26,26 @@ npm test
 npm run test:e2e
 ```
 
+### Deployment targets
+
+The build defaults to GitHub Pages:
+
+- `SITE_ORIGIN=https://qainsights.github.io`
+- `SITE_BASE=/Performance-Testing-Tools`
+
+Both values can be overridden at build time. For a root-hosted deployment,
+set `SITE_BASE=/`. `SITE_ORIGIN` should be the public origin used for canonical,
+Open Graph, sitemap, robots, and generated catalog URLs. Vercel automatically
+uses its `VERCEL_URL` as the origin when `SITE_ORIGIN` is not explicitly set;
+the committed `vercel.json` sets the root base automatically.
+
+Examples:
+
+```bash
+SITE_ORIGIN=https://example.com SITE_BASE=/ npm run build
+SITE_ORIGIN=https://example.com SITE_BASE=/preview npm run build
+```
+
 ## Dataset
 
 The catalog lives in [`src/data/tools.ts`](src/data/tools.ts). Every record has a typed schema covering official URL, ownership, description, category, licensing, deployment, protocols, lifecycle status, and recommendation flags. `datasetLastVerified` is shared across the catalog. Historical or renamed products remain listed with an explicit status and successor when known.
@@ -38,7 +58,7 @@ To add or correct a tool:
 4. Run `npm test`, `npm run typecheck`, and `npm run build`.
 5. For a public correction or suggestion, [open a GitHub issue](https://github.com/QAInsights/Performance-Testing-Tools/issues/new).
 
-Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-tool SVG OG images, and `public/robots.txt` from the dataset.
+Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-tool PNG OG images, and `public/robots.txt` from the dataset using the selected deployment origin and base.
 
 ## Testing and deployment
 
