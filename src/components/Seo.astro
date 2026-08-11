@@ -1,11 +1,11 @@
 ---
 import { absoluteUrl } from '../lib/seo';
-import { siteBase, siteOrigin } from '../config/site';
+import { siteOrigin } from '../config/site';
 const {
   title,
   description,
   canonical = Astro.url.pathname,
-  ogImage = `${siteBase}/og/default.png`,
+  ogImage = `${import.meta.env.BASE_URL}og/default.png`,
   structuredData = [],
 } = Astro.props;
 const schemas = Array.isArray(structuredData)

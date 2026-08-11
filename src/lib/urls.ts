@@ -1,5 +1,4 @@
-import { siteBase } from '../config/site';
-
 export function siteUrl(path = ''): string {
-  return `${siteBase}/${path.replace(/^\//, '')}`;
+  const base = import.meta.env.BASE_URL;
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 }
