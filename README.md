@@ -28,22 +28,23 @@ npm run test:e2e
 
 ### Deployment targets
 
-The build defaults to GitHub Pages:
+The build defaults to the canonical root-hosted site:
 
 - `SITE_ORIGIN=https://perf.jmeter.ai`
 - `SITE_BASE=/`
 
-Both values can be overridden at build time. For a root-hosted deployment,
-set `SITE_BASE=/`. `SITE_ORIGIN` should be the public origin used for canonical,
-Open Graph, sitemap, robots, and generated catalog URLs. Vercel automatically
-uses its `VERCEL_URL` as the origin when `SITE_ORIGIN` is not explicitly set;
-the committed `vercel.json` sets the root base automatically.
+All three are overridable at build time:
+
+- `SITE_ORIGIN` — public origin used for canonical, Open Graph, sitemap, robots and generated catalog URLs.
+- `SITE_BASE` — path the copy is _served_ from (`/Performance-Testing-Tools` for the Pages copy). Canonical URLs always point at the root of `SITE_ORIGIN`, so a copy served under a sub-path still credits the canonical site.
+- `SITE_NOINDEX=1` — adds `noindex` and a disallow-all `robots.txt`, for secondary copies.
 
 Examples:
 
 ```bash
-SITE_ORIGIN=https://example.com SITE_BASE=/ npm run build
-SITE_ORIGIN=https://example.com SITE_BASE=/preview npm run build
+npm run build                                                        # perf.jmeter.ai
+SITE_BASE=/Performance-Testing-Tools SITE_NOINDEX=1 npm run build    # Pages copy
+SITE_ORIGIN=https://example.com npm run build                        # another host
 ```
 
 ## Dataset
