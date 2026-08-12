@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml/badge.svg)](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml)
 [![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://perf.jmeter.ai/)
-[![Tools](https://img.shields.io/badge/tools-55+-18A09B)](https://perf.jmeter.ai/)
+[![Tools](https://img.shields.io/badge/tools-64+-18A09B)](https://perf.jmeter.ai/)
 [![Last verified](https://img.shields.io/badge/last_verified-2026--08--11-FBB03B)](https://perf.jmeter.ai/)
 
 Performance Testing Tools is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
