@@ -3,8 +3,8 @@ import type {
   EnrichmentDataset,
   EnrichmentEntry,
   EnrichmentSource,
-} from './enrichmentData';
-import { filterAiFeatures, rankSources } from './enrichmentQuality';
+} from './enrichmentData.ts';
+import { filterAiFeatures, rankSources } from './enrichmentQuality.ts';
 
 export {
   filterAiFeatures,
@@ -12,7 +12,7 @@ export {
   rankSources,
   sanitizeEnrichmentForDisplay,
   sourceTrustScore,
-} from './enrichmentQuality';
+} from './enrichmentQuality.ts';
 
 export interface ExaResponse {
   output?: {

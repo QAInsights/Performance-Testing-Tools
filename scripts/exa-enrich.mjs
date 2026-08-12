@@ -2,6 +2,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import prettier from 'prettier';
 
 const { tools } = await import('../src/data/tools.ts');
 const { buildExaRequestBody, isStale, mergeEnrichment, normalizeExaResponse } =
@@ -109,8 +110,15 @@ if (!succeeded) {
   console.error('All requested tools failed.');
   process.exit(1);
 }
+const prettyJson = await prettier.format(
+  `${JSON.stringify(dataset, null, 2)}\n`,
+  {
+    ...(await prettier.resolveConfig(outputPath)),
+    filepath: outputPath,
+  },
+);
 if (!dryRun) {
-  await writeFile(outputPath, `${JSON.stringify(dataset, null, 2)}\n`);
+  await writeFile(outputPath, prettyJson);
 } else {
-  console.log(JSON.stringify(dataset, null, 2));
+  console.log(prettyJson);
 }

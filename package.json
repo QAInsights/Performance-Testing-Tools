@@ -8,7 +8,7 @@
     "predev": "npm run generate",
     "build": "npm run generate && astro build && node scripts/normalize-sitemap.mjs",
     "generate": "node --experimental-strip-types scripts/generate-content.mjs",
-    "enrich": "node --experimental-strip-types scripts/exa-enrich.mjs",
+    "enrich": "node --env-file-if-exists=.env --experimental-strip-types scripts/exa-enrich.mjs",
     "preview": "astro preview",
     "pretest": "npm run generate",
     "test": "vitest run",

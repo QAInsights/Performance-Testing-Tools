@@ -1,5 +1,5 @@
-import type { Tool } from '../data/tools';
-import type { EnrichmentEntry, EnrichmentSource } from './enrichmentData';
+import type { Tool } from '../data/tools.ts';
+import type { EnrichmentEntry, EnrichmentSource } from './enrichmentData.ts';
 
 /** Phrases that look like “AI” mislabels for generic product capabilities. */
 const NON_AI_FEATURE_PATTERNS = [
