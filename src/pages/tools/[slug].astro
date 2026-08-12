@@ -3,11 +3,14 @@ import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import LoadProfile from '../../components/LoadProfile.astro';
 import ToolBadges from '../../components/ToolBadges.astro';
 import Footer from '../../components/Footer.astro';
-import { tools } from '../../data/tools';
+import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
+import { datasetLastVerified, tools } from '../../data/tools';
 import { siteUrl } from '../../lib/urls';
 import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
 import { absoluteUrl } from '../../lib/urls';
 import { getEnrichment } from '../../lib/enrichmentData';
+import { buildToolFaq } from '../../lib/toolFaq';
+import { toolDescription, toolTitle } from '../../lib/pageMeta';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({
@@ -16,13 +19,11 @@ export function getStaticPaths() {
   }));
 }
 const { tool } = Astro.props;
-const similar = tools
-  .filter((item) => item.category === tool.category && item.slug !== tool.slug)
-  .slice(0, 4);
-const enrichment = getEnrichment(tool.slug);
+const enrichment = getEnrichment(tool.slug, tool);
+const faqItems = buildToolFaq(tool, tools);
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
-  : '';
+  : datasetLastVerified;
 const about = enrichment?.about || tool.longDescription;
 const normalized = (value: string) =>
   value.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -50,13 +51,13 @@ const sourceHost = (url: string) => {
 ---
 
 <ConsoleLayout
-  title={`${tool.name} · Performance Testing Tools`}
-  description={tool.description}
+  title={toolTitle(tool)}
+  description={toolDescription(tool)}
   ogImage={siteUrl(`og/${tool.slug}.png`)}
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
-    toolSoftwareApplication(tool),
-    toolFaq(tool),
+    toolSoftwareApplication(tool, enrichment),
+    toolFaq(tool, tools, faqItems),
     breadcrumbs([
       { name: 'Directory', path: '' },
       {
@@ -123,6 +124,12 @@ const sourceHost = (url: string) => {
           </div>
         )
       }
+      <div>
+        <dt>Last verified</dt>
+        <dd>
+          <time datetime={enrichmentDate}>{enrichmentDate}</time>
+        </dd>
+      </div>
     </dl>
     {
       tool.status !== 'Active' && (
@@ -256,7 +263,11 @@ const sourceHost = (url: string) => {
                 <ul class="source-list">
                   {enrichment.sources.map((source) => (
                     <li>
-                      <a href={source.url} target="_blank" rel="noreferrer">
+                      <a
+                        href={source.url}
+                        target="_blank"
+                        rel="nofollow noreferrer"
+                      >
                         <strong>{sourceHost(source.url)}</strong>
                         <span>{source.title}</span>
                       </a>
@@ -265,75 +276,41 @@ const sourceHost = (url: string) => {
                 </ul>
               </details>
               <p class="enrichment-stamp mono">
-                GROUNDED VIA EXA · {enrichmentDate}
+                LAST VERIFIED · {enrichmentDate}
+                {enrichment?.fetchedAt ? ' · GROUNDED VIA EXA' : ''}
               </p>
             </section>
           )
         }
-      </article><aside>
-        <div class="related-sidebar">
-          <p class="eyebrow">RELATED SIGNALS</p><div class="similar-list">
-            {
-              similar.map((item) => (
-                <a
-                  class="similar-item panel focus-ring"
-                  href={siteUrl(`tools/${item.slug}`)}
-                >
-                  <>
-                    <span>{item.name}</span>
-                    <small>{item.vendor}</small>
-                  </>
-                </a>
-              ))
-            }
-          </div>
-        </div>
-      </aside>
-    </div>
-    <details class="faq-block panel">
-      <summary
-        ><h2>Frequently asked</h2><span class="disclosure-hint mono"
-          >SHOW FAQ</span
-        ></summary
-      >
-      <div class="faq-list">
-        <div>
-          <strong>Is it open source?</strong><p>
-            {
-              tool.license === 'Open Source'
-                ? `Yes. ${tool.name} is listed as open source.`
-                : tool.license === 'Commercial'
-                  ? `No. ${tool.name} is listed as commercial.`
-                  : `${tool.name} is listed as freemium.`
-            }
-          </p>
-        </div>{
-          tool.protocols.length > 0 && (
-            <div>
-              <strong>What protocols does it support?</strong>
-              <p>
-                {tool.name} supports {tool.protocols.join(', ')}.
-              </p>
-            </div>
-          )
-        }<div>
-          <strong>Is it cloud or self-hosted?</strong><p>
-            {tool.name} is listed as {tool.deployment.toLowerCase()}.
-          </p>
-        </div>{
-          tool.status !== 'Unknown' && (
-            <div>
-              <strong>Is it still maintained?</strong>
-              <p>
-                {tool.status === 'Active'
-                  ? `${tool.name} is listed as active.`
-                  : `${tool.name} is listed as discontinued${tool.successor ? `; its successor is ${tool.successor}.` : '.'}`}
-              </p>
-            </div>
+        {
+          !enrichment?.sources?.length && (
+            <p class="enrichment-stamp mono catalog-stamp">
+              CATALOG LAST VERIFIED · {datasetLastVerified}
+            </p>
           )
         }
+      </article><aside>
+        <ToolRelatedLinks tool={tool} catalog={tools} />
+      </aside>
+    </div>
+    <section class="faq-block panel" aria-labelledby="faq-heading">
+      <div class="faq-head">
+        <h2 id="faq-heading">Frequently asked</h2>
+        <span class="disclosure-hint mono">ANSWER-SHAPED</span>
       </div>
-    </details>
+      <div class="faq-list">
+        {
+          faqItems.map((item, index) => (
+            <details class="faq-item" open={index < 2}>
+              <summary>
+                <strong>{item.question}</strong>
+              </summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
     <Footer />
   </main>
 </ConsoleLayout>
@@ -522,6 +499,11 @@ const sourceHost = (url: string) => {
     letter-spacing: 0.08em;
     margin: 18px 0 0;
   }
+  .catalog-stamp {
+    margin-top: 28px;
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 16px;
+  }
   .detail-copy h2,
   .faq-block h2 {
     color: var(--color-teal-300);
@@ -572,51 +554,17 @@ const sourceHost = (url: string) => {
     color: var(--color-teal-300);
     text-decoration: none;
   }
-  .related-sidebar {
-    position: sticky;
-    top: 24px;
-  }
-  .related-sidebar .eyebrow {
-    margin-bottom: 14px;
-  }
-  .similar-list {
-    display: grid;
-    gap: 10px;
-    margin-top: 14px;
-  }
-  .similar-item {
-    display: block;
-    padding: 12px;
-    color: var(--color-surface-100);
-    text-decoration: none;
-  }
-  .similar-item small {
-    display: block;
-    color: var(--color-surface-300);
-    font: 12px var(--font-mono);
-    margin-top: 4px;
-  }
-  .similar-item:hover {
-    border-color: var(--color-amber-400);
-  }
   .faq-block {
     margin-top: 28px;
     padding: 20px;
   }
-  .faq-block summary,
-  .source-details summary {
+  .faq-head {
     align-items: center;
-    cursor: pointer;
     display: flex;
     justify-content: space-between;
-    list-style: none;
+    gap: 12px;
   }
-  .faq-block summary::-webkit-details-marker,
-  .source-details summary::-webkit-details-marker {
-    display: none;
-  }
-  .faq-block summary h2,
-  .source-details summary h2 {
+  .faq-head h2 {
     margin: 0;
   }
   .disclosure-hint {
@@ -624,7 +572,18 @@ const sourceHost = (url: string) => {
     font-size: 12px;
     letter-spacing: 0.08em;
   }
-  .source-details {
+  .source-details summary {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+  }
+  .source-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .source-details summary h2 {
+    margin: 0;
   }
   .faq-list {
     display: grid;
@@ -632,18 +591,26 @@ const sourceHost = (url: string) => {
     gap: 15px;
     margin-top: 22px;
   }
-  .faq-list div {
+  .faq-item {
     border-top: 1px solid var(--color-teal-700);
     padding-top: 10px;
   }
-  .faq-list strong {
+  .faq-item summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item strong {
     font: 13px var(--font-mono);
     color: var(--color-surface-100);
   }
-  .faq-list p {
+  .faq-item p {
     color: var(--color-surface-300);
     font-size: 15px;
     line-height: 1.55;
+    margin: 10px 0 0;
   }
   @media (max-width: 700px) {
     .detail-page {
@@ -670,9 +637,6 @@ const sourceHost = (url: string) => {
     }
     .feature-list {
       grid-template-columns: 1fr;
-    }
-    .related-sidebar {
-      position: static;
     }
   }
 </style>

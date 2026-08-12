@@ -2,24 +2,27 @@
 import ConsoleLayout from '../layouts/ConsoleLayout.astro';
 import Directory from '../components/Directory.astro';
 import { tools } from '../data/tools';
-import { toolItemList } from '../lib/seo';
-import { siteUrl } from '../lib/urls';
+import {
+  datasetSchema,
+  organizationSchema,
+  toolItemList,
+  websiteSchema,
+} from '../lib/seo';
+import { homeDescription, homeTitle } from '../lib/pageMeta';
 ---
 
 <ConsoleLayout
+  title={homeTitle()}
+  description={homeDescription()}
   structuredData={[
     toolItemList(tools),
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: 'Performance Testing Tools',
-      url: siteUrl(),
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Organization',
-      name: 'QAInsights',
-      url: 'https://qainsights.com/',
-    },
-  ]}><Directory /></ConsoleLayout
+    websiteSchema(),
+    organizationSchema(),
+    datasetSchema(),
+  ]}
 >
+  <Directory
+    title={`${tools.length} performance testing tools`}
+    intro="Compare licenses, protocols, deployment models, and lifecycle status, then shortlist with the Test Rig."
+  />
+</ConsoleLayout>

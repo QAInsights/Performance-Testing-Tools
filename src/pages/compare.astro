@@ -4,6 +4,8 @@ import Footer from '../components/Footer.astro';
 import { tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 import { loadProfilePath } from '../lib/loadProfile';
+import { compareDescription, compareTitle } from '../lib/pageMeta';
+
 const serializedTools = tools.map(
   ({
     slug,
@@ -42,9 +44,16 @@ const serializedTools = tools.map(
     ),
   }),
 );
+
+// Static HTML ships empty; client hydrates from ?tools=. Empty rig is noindex.
+const emptyCompare = true;
 ---
 
-<ConsoleLayout title="Test Rig · Performance Testing Tools">
+<ConsoleLayout
+  title={compareTitle()}
+  description={compareDescription()}
+  noIndex={emptyCompare}
+>
   <main class="compare-page">
     <nav class="breadcrumbs mono">
       <a href={siteUrl()}>← Directory</a><span>/</span><strong>Test Rig</strong>
@@ -56,9 +65,36 @@ const serializedTools = tools.map(
       </p>
     </header>
     <div data-compare-matrix class="matrix panel"></div>
-    <p data-compare-empty class="empty panel" hidden>
-      Select tools from the directory to populate the rig.
-    </p>
+    <div data-compare-empty class="empty panel">
+      <p>
+        Select tools from the <a href={siteUrl()}>directory</a> to populate the
+        rig, or open a prebuilt comparison:
+      </p>
+      <ul class="empty-links">
+        <li>
+          <a
+            href={siteUrl(
+              'compare?tools=apache-jmeter,grafana-k6',
+            )}>Apache JMeter vs Grafana k6</a
+          >
+        </li>
+        <li>
+          <a href={siteUrl('compare?tools=gatling,grafana-k6')}
+            >Gatling vs Grafana k6</a
+          >
+        </li>
+        <li>
+          <a href={siteUrl('compare?tools=locust,grafana-k6')}
+            >Locust vs Grafana k6</a
+          >
+        </li>
+        <li>
+          <a href={siteUrl('compare?tools=blazemeter,grafana-cloud-k6')}
+            >BlazeMeter vs Grafana Cloud k6</a
+          >
+        </li>
+      </ul>
+    </div>
     <Footer />
   </main>
 </ConsoleLayout>
@@ -73,9 +109,37 @@ const serializedTools = tools.map(
   const data = serializedTools
     .filter((tool) => selected.includes(tool.slug))
     .slice(0, 3);
+
+  const setNoIndex = (on) => {
+    let robots = document.querySelector('meta[name="robots"]');
+    if (on) {
+      if (!robots) {
+        robots = document.createElement('meta');
+        robots.setAttribute('name', 'robots');
+        document.head.append(robots);
+      }
+      robots.setAttribute('content', 'noindex, nofollow');
+    } else if (robots && robots.getAttribute('content')?.includes('noindex')) {
+      // Populated shareable comparisons should be crawlable when tools are present.
+      robots.remove();
+    }
+  };
+
   if (!data.length) {
     if (empty) empty.hidden = false;
+    setNoIndex(true);
   } else if (matrix) {
+    if (empty) empty.hidden = true;
+    setNoIndex(false);
+    const names = data.map((tool) => tool.name);
+    document.title = `${names.join(' vs ')} Spec Comparison · Performance Testing Tools`;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) {
+      desc.setAttribute(
+        'content',
+        `Side-by-side comparison of ${names.join(', ')}: license, deployment, protocols, scripting languages, status, and pricing model.`,
+      );
+    }
     matrix.style.setProperty('--compare-columns', String(data.length));
     const fields = [
       ['Vendor', 'vendor'],
@@ -236,5 +300,15 @@ const serializedTools = tools.map(
     margin-top: 30px;
     padding: 30px;
     color: var(--color-surface-300);
+  }
+  .empty a {
+    color: var(--color-teal-300);
+  }
+  .empty-links {
+    margin: 16px 0 0;
+    padding-left: 18px;
+  }
+  .empty-links li + li {
+    margin-top: 8px;
   }
 </style>

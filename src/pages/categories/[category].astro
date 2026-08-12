@@ -4,6 +4,11 @@ import Directory from '../../components/Directory.astro';
 import { tools, type Category } from '../../data/tools';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl } from '../../lib/urls';
+import {
+  categoryDescription,
+  categoryIntro,
+  categoryTitle,
+} from '../../lib/pageMeta';
 
 export function getStaticPaths() {
   return [...new Set(tools.map((tool) => tool.category))].map((category) => ({
@@ -12,13 +17,14 @@ export function getStaticPaths() {
   }));
 }
 const { category } = Astro.props as { category: Category };
+const categoryTools = tools.filter((tool) => tool.category === category);
 ---
 
 <ConsoleLayout
-  title={`${category} · Performance Testing Tools`}
-  description={`Browse ${category.toLowerCase()} performance testing tools.`}
+  title={categoryTitle(category)}
+  description={categoryDescription(category)}
   structuredData={[
-    toolItemList(tools.filter((tool) => tool.category === category)),
+    toolItemList(categoryTools),
     breadcrumbs([
       { name: 'Directory', path: '' },
       {
@@ -34,6 +40,6 @@ const { category } = Astro.props as { category: Category };
   <Directory
     category={category}
     title={category}
-    intro={`A focused signal view of ${category.toLowerCase()} tools.`}
+    intro={categoryIntro(category)}
   />
 </ConsoleLayout>

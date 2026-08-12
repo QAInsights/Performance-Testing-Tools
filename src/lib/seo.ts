@@ -1,4 +1,7 @@
 import type { Tool } from '../data/tools';
+import type { EnrichmentEntry } from './enrichmentData';
+import { organizationProfile } from './organization';
+import { buildToolFaq, type FaqItem } from './toolFaq';
 import { absoluteUrl } from './urls';
 
 export function toolItemList(items: Tool[]) {
@@ -14,60 +17,84 @@ export function toolItemList(items: Tool[]) {
   };
 }
 
-export function toolSoftwareApplication(tool: Tool) {
+function softwareOffer(tool: Tool) {
+  if (tool.license === 'Open Source') {
+    return {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    };
+  }
+  if (tool.license === 'Freemium') {
+    return {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free tier available; paid plans for higher capacity',
+      availability: 'https://schema.org/InStock',
+    };
+  }
+  return {
+    '@type': 'Offer',
+    availability: 'https://schema.org/InStock',
+    priceSpecification: {
+      '@type': 'PriceSpecification',
+      priceCurrency: 'USD',
+      description: 'Contact vendor for pricing',
+    },
+    description: tool.pricingModel || 'Contact for pricing',
+  };
+}
+
+export function toolSoftwareApplication(
+  tool: Tool,
+  enrichment?: EnrichmentEntry,
+) {
+  const sameAs = [tool.url, tool.repoUrl].filter(
+    (url): url is string => Boolean(url),
+  );
+  const version = enrichment?.latestRelease?.version;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: tool.name,
     applicationCategory: tool.category,
-    operatingSystem: tool.osSupport.join(', '),
+    operatingSystem: tool.osSupport.join(', ') || undefined,
     description: tool.description,
-    url: tool.url,
-    offers:
-      tool.license === 'Open Source'
-        ? { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
-        : undefined,
+    url: absoluteUrl(`tools/${tool.slug}`),
+    downloadUrl: tool.url,
+    softwareVersion: version || undefined,
+    offers: softwareOffer(tool),
+    author: {
+      '@type': 'Organization',
+      name: enrichment?.authorOrCompany || tool.vendor,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: organizationProfile.name,
+      url: organizationProfile.url,
+    },
+    sameAs: sameAs.length ? sameAs : undefined,
   };
 }
 
-export function toolFaq(tool: Tool) {
-  const questions = [
-    [
-      'Is it open source?',
-      tool.license === 'Open Source'
-        ? `Yes. ${tool.name} is listed as open source.`
-        : tool.license === 'Commercial'
-          ? `No. ${tool.name} is listed as commercial.`
-          : `${tool.name} is listed as freemium.`,
-    ],
-    [
-      'What protocols does it support?',
-      tool.protocols.length
-        ? `${tool.name} supports ${tool.protocols.join(', ')}.`
-        : undefined,
-    ],
-    [
-      'Is it cloud or self-hosted?',
-      tool.deployment
-        ? `${tool.name} is listed as ${tool.deployment.toLowerCase()}.`
-        : undefined,
-    ],
-    [
-      'Is it still maintained?',
-      tool.status === 'Active'
-        ? `${tool.name} is listed as active.`
-        : tool.status === 'Discontinued'
-          ? `${tool.name} is listed as discontinued${tool.successor ? `; its successor is ${tool.successor}.` : '.'}`
-          : undefined,
-    ],
-  ].filter((item): item is [string, string] => Boolean(item[1]));
+export function toolFaq(
+  tool: Tool,
+  catalog: readonly Tool[] = [],
+  items?: FaqItem[],
+) {
+  const faqItems =
+    items ??
+    buildToolFaq(tool, catalog.length ? catalog : [tool]);
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: questions.map(([name, text]) => ({
+    mainEntity: faqItems.map((item) => ({
       '@type': 'Question',
-      name,
-      acceptedAnswer: { '@type': 'Answer', text },
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
     })),
   };
 }
@@ -84,3 +111,9 @@ export function breadcrumbs(items: Array<{ name: string; path: string }>) {
     })),
   };
 }
+
+export {
+  organizationSchema,
+  websiteSchema,
+  datasetSchema,
+} from './organization';

@@ -2,11 +2,16 @@
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
 import { baseUrl } from '../lib/urls';
+import { homeDescription, homeTitle } from '../lib/pageMeta';
+
 const {
-  title = 'Performance Testing Tools',
-  description = 'A curated directory of performance testing tools.',
+  title = homeTitle(),
+  description = homeDescription(),
+  structuredData = [],
+  canonical,
+  ogImage,
+  noIndex = false,
 } = Astro.props;
-const { structuredData = [], canonical, ogImage } = Astro.props;
 ---
 
 <!doctype html>
@@ -24,6 +29,7 @@ const { structuredData = [], canonical, ogImage } = Astro.props;
       canonical={canonical}
       ogImage={ogImage}
       structuredData={structuredData}
+      noIndex={noIndex}
     />
   </head>
   <body class="console-grid">

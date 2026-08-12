@@ -1141,6 +1141,27 @@ export const tools: Tool[] = [
     tags: ['nodejs', 'cli', 'http'],
   }),
   makeTool({
+    slug: 'reqfleet',
+    name: 'Reqfleet',
+    vendor: 'Reqfleet',
+    url: 'https://reqfleet.com/',
+    description:
+      'Cloud-native platform for distributed JMeter and Locust load tests with public or private regions and per-minute billing.',
+    longDescription:
+      'Reqfleet orchestrates distributed load tests using existing JMeter and Locust plans on managed public cloud engines or private regions (including VPC or on-premises Kubernetes). It provides live metrics, organization and team RBAC, browser/CLI/CI execution, and usage-based billing in VUM or compute-minute units with a free monthly allowance.',
+    category: 'Cloud Load Testing',
+    license: 'Freemium',
+    pricingModel:
+      'Free monthly VUM allowance; paid fleet credits and subscriptions; contact vendor for higher volume.',
+    deployment: 'Hybrid',
+    scriptingLanguages: ['Java', 'Groovy', 'Python'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Browser', 'Linux'],
+    status: 'Active',
+    cloudBased: true,
+    tags: ['jmeter', 'locust', 'saas', 'private-regions', 'ci-cd'],
+  }),
+  makeTool({
     slug: 'k6-cloud-legacy',
     name: 'k6 Cloud',
     vendor: 'Grafana Labs',

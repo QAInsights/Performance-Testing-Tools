@@ -1,0 +1,148 @@
+---
+import type { Tool } from '../data/tools';
+import { ecosystemLinksForTool } from '../lib/ecosystemLinks';
+import {
+  compareWithLinks,
+  languageChips,
+  protocolChips,
+  sameCategoryTools,
+} from '../lib/toolRelations';
+import { tools } from '../data/tools';
+
+interface Props {
+  tool: Tool;
+  catalog?: Tool[];
+}
+
+const { tool, catalog = tools } = Astro.props;
+const similar = sameCategoryTools(tool, catalog);
+const compares = compareWithLinks(tool, catalog);
+const languages = languageChips(tool);
+const protocols = protocolChips(tool);
+const ecosystem = ecosystemLinksForTool(tool);
+---
+
+<div class="related-sidebar">
+  {
+    compares.length > 0 && (
+      <section class="related-block">
+        <p class="eyebrow">COMPARE WITH</p>
+        <div class="similar-list">
+          {compares.map((item) => (
+            <a class="similar-item panel focus-ring" href={item.href}>
+              <span>{item.label}</span>
+              <small>Open Test Rig</small>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+  {
+    similar.length > 0 && (
+      <section class="related-block">
+        <p class="eyebrow">SAME CATEGORY</p>
+        <div class="similar-list">
+          {similar.map((item) => (
+            <a class="similar-item panel focus-ring" href={item.href}>
+              <span>{item.name}</span>
+              <small>{item.vendor}</small>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+  {
+    (languages.length > 0 || protocols.length > 0) && (
+      <section class="related-block">
+        <p class="eyebrow">FILTER DIRECTORY</p>
+        <div class="chip-row">
+          {languages.map((chip) => (
+            <a class="filter-chip focus-ring" href={chip.href}>
+              {chip.label}
+            </a>
+          ))}
+          {protocols.map((chip) => (
+            <a class="filter-chip focus-ring" href={chip.href}>
+              {chip.label}
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+  {
+    ecosystem.length > 0 && (
+      <section class="related-block">
+        <p class="eyebrow">ECOSYSTEM</p>
+        <div class="similar-list">
+          {ecosystem.map((link) => (
+            <a
+              class="similar-item panel focus-ring"
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span>{link.label}</span>
+              <small>External ↗</small>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+</div>
+
+<style>
+  .related-sidebar {
+    position: sticky;
+    top: 24px;
+    display: grid;
+    gap: 28px;
+  }
+  .related-block .eyebrow {
+    margin-bottom: 14px;
+  }
+  .similar-list {
+    display: grid;
+    gap: 10px;
+  }
+  .similar-item {
+    display: block;
+    padding: 12px;
+    color: var(--color-surface-100);
+    text-decoration: none;
+  }
+  .similar-item small {
+    display: block;
+    color: var(--color-surface-300);
+    font: 12px var(--font-mono);
+    margin-top: 4px;
+  }
+  .similar-item:hover {
+    border-color: var(--color-amber-400);
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .filter-chip {
+    border: 1px solid var(--color-teal-700);
+    border-radius: 2px;
+    color: var(--color-teal-300);
+    font: 12px var(--font-mono);
+    padding: 6px 8px;
+    text-decoration: none;
+  }
+  .filter-chip:hover {
+    border-color: var(--color-amber-400);
+    color: var(--color-amber-400);
+  }
+  @media (max-width: 700px) {
+    .related-sidebar {
+      position: static;
+    }
+  }
+</style>

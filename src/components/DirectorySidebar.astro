@@ -19,13 +19,20 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
     ></a
   >
   <div class="rail-rule"></div>
-  <div class="dataset-stats mono">
-    <strong>{toolsCount}</strong> tools · <strong>{categoriesCount}</strong> categories<br
-    />updated {datasetLastVerified}
+  <div class="dataset-stats" aria-label="Catalog stats">
+    <span class="stat-pill mono">
+      <strong>{toolsCount}</strong> tools
+    </span>
+    <span class="stat-pill mono">
+      <strong>{categoriesCount}</strong> categories
+    </span>
+    <span class="stat-pill stat-pill--muted mono">
+      updated {datasetLastVerified}
+    </span>
   </div>
   <nav class="rail-nav" aria-label="Primary">
     <a href={siteUrl()} class="active focus-ring">Directory</a>
-    <a href={siteUrl('about')} class="focus-ring">About <span>↗</span></a>
+    <a href={siteUrl('about')} class="focus-ring">About</a>
   </nav>
   <details class="filter-disclosure" open>
     <summary>FILTER SIGNALS</summary>
@@ -39,7 +46,12 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
                 <div class="sub-filter-options">
                   {options.map((option) => (
                     <label>
-                      <input type="checkbox" data-filter={key} value={option} />{' '}
+                      <input
+                        class="signal-check"
+                        type="checkbox"
+                        data-filter={key}
+                        value={option}
+                      />
                       <span>{option}</span>
                     </label>
                   ))}
@@ -50,7 +62,12 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
                 <legend>{key}</legend>
                 {options.map((option) => (
                   <label>
-                    <input type="checkbox" data-filter={key} value={option} />{' '}
+                    <input
+                      class="signal-check"
+                      type="checkbox"
+                      data-filter={key}
+                      value={option}
+                    />
                     <span>{option}</span>
                   </label>
                 ))}
@@ -61,14 +78,24 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
       }
       <fieldset class="filter-group">
         <legend>picks</legend>
-        <label
-          ><input type="checkbox" data-filter="pick" value="personal" />
-          <span>♥ personal</span></label
-        >
-        <label
-          ><input type="checkbox" data-filter="pick" value="general" />
-          <span>✓ general</span></label
-        >
+        <label>
+          <input
+            class="signal-check"
+            type="checkbox"
+            data-filter="pick"
+            value="personal"
+          />
+          <span>♥ personal</span>
+        </label>
+        <label>
+          <input
+            class="signal-check"
+            type="checkbox"
+            data-filter="pick"
+            value="general"
+          />
+          <span>✓ general</span>
+        </label>
       </fieldset>
     </div>
   </details>

@@ -3,15 +3,22 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import {
+  buildLlmsFullTxt,
+  buildLlmsTxt,
+  buildWebManifest,
+} from './llms-content.mjs';
 
-const { tools } = await import('../src/data/tools.ts');
-const { canonicalBase, joinBase, siteNoIndex, siteOrigin } = await import(
-  '../src/config/site.ts'
-);
+const { tools, datasetLastVerified } = await import('../src/data/tools.ts');
+const { canonicalBase, joinBase, siteBase, siteNoIndex, siteOrigin } =
+  await import('../src/config/site.ts');
+
 const root = fileURLToPath(new URL('..', import.meta.url));
 const publicDir = resolve(root, 'public');
 const ogDir = resolve(publicDir, 'og');
+const wellKnownDir = resolve(publicDir, '.well-known');
 await mkdir(ogDir, { recursive: true });
+await mkdir(wellKnownDir, { recursive: true });
 
 const escapeXml = (value) =>
   value
@@ -49,26 +56,16 @@ await Promise.all([
   ...ogPngs,
 ]);
 
-const concise = tools
-  .map(
-    (tool) =>
-      `- [${tool.name}](${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}) — ${tool.description} License: ${tool.license}; deployment: ${tool.deployment}; status: ${tool.status}.`,
-  )
-  .join('\n');
-const full = tools
-  .map(
-    (tool) =>
-      `## ${tool.name}\n- URL: ${tool.url}\n- Vendor: ${tool.vendor}\n- License: ${tool.license}\n- Deployment: ${tool.deployment}\n- Status: ${tool.status}\n- Category: ${tool.category}\n- Protocols: ${tool.protocols.join(', ')}\n- Description: ${tool.description}\n`,
-  )
-  .join('\n');
-await writeFile(
-  resolve(publicDir, 'llms.txt'),
-  `# Performance Testing Tools\n\nA curated directory of performance testing tools from QAInsights.\n\n${concise}\n`,
-);
-await writeFile(
-  resolve(publicDir, 'llms-full.txt'),
-  `# Performance Testing Tools — Full Catalog\n\n${full}`,
-);
+const llmsOptions = { datasetLastVerified, seoYear: 2026 };
+const llmsTxt = buildLlmsTxt(tools, siteOrigin, llmsOptions);
+const llmsFull = buildLlmsFullTxt(tools, siteOrigin, llmsOptions);
+await writeFile(resolve(publicDir, 'llms.txt'), llmsTxt);
+await writeFile(resolve(publicDir, 'llms-full.txt'), llmsFull);
+await writeFile(resolve(wellKnownDir, 'llms.txt'), llmsTxt);
+
+const manifest = buildWebManifest(siteBase);
+await writeFile(resolve(publicDir, 'manifest.webmanifest'), manifest);
+
 await writeFile(
   resolve(publicDir, 'robots.txt'),
   siteNoIndex

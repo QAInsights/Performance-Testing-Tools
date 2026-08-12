@@ -4,6 +4,15 @@ import type {
   EnrichmentEntry,
   EnrichmentSource,
 } from './enrichmentData';
+import { filterAiFeatures, rankSources } from './enrichmentQuality';
+
+export {
+  filterAiFeatures,
+  isGenuineAiFeature,
+  rankSources,
+  sanitizeEnrichmentForDisplay,
+  sourceTrustScore,
+} from './enrichmentQuality';
 
 export interface ExaResponse {
   output?: {
@@ -42,7 +51,11 @@ export const enrichmentSchema = {
 } as const;
 
 export const enrichmentSystemPrompt =
-  'Rely only on the retrieved sources. Prefer the tool’s official site, official repository, and official release notes. Return an empty string or empty array when a fact is not confidently found; never guess or invent versions or prices.';
+  'Rely only on the retrieved sources. Prefer the tool’s official site, official repository, and official release notes over third-party mirrors, Softpedia, alternativeTo, or SEO clones. ' +
+  'Return an empty string or empty array when a fact is not confidently found; never guess or invent versions, prices, or AI capabilities. ' +
+  'aiFeatures must list only genuine AI/ML capabilities (LLM assistants, generative test design, AI anomaly detection). ' +
+  'Do NOT put ordinary scripting (JSR223, Groovy, JavaScript), recorders, listeners, CI plugins, or dashboards in aiFeatures. Use features instead. ' +
+  'If the product has no documented AI features, return an empty aiFeatures array.';
 
 const asTrimmedString = (value: unknown): string =>
   typeof value === 'string' ? value.trim() : '';
@@ -68,10 +81,10 @@ export const buildExaRequestBody = (tool: Tool) => ({
   contents: { highlights: true },
 });
 
-const sourceKey = (source: EnrichmentSource) =>
-  `${source.url}\u0000${source.title}`;
-
-const responseSources = (response: ExaResponse): EnrichmentSource[] => {
+const responseSources = (
+  response: ExaResponse,
+  tool?: Pick<Tool, 'url' | 'repoUrl'>,
+): EnrichmentSource[] => {
   const grounded =
     response.output?.grounding?.flatMap((field) => field.citations ?? []) ?? [];
   const citations = grounded.length
@@ -85,14 +98,13 @@ const responseSources = (response: ExaResponse): EnrichmentSource[] => {
     .filter((source): source is EnrichmentSource =>
       /^https?:\/\//i.test(source.url),
     );
-  return [
-    ...new Map(sources.map((source) => [sourceKey(source), source])).values(),
-  ].slice(0, 6);
+  return rankSources(sources, tool, 6);
 };
 
 export const normalizeExaResponse = (
   response: ExaResponse,
   fetchedAt = new Date().toISOString(),
+  tool?: Pick<Tool, 'url' | 'repoUrl' | 'status'>,
 ): EnrichmentEntry => {
   const content = response.output?.content ?? {};
   const latestRelease = {
@@ -101,14 +113,18 @@ export const normalizeExaResponse = (
     notes: asTrimmedString(content.latestReleaseNotes),
   };
   const hasRelease = Object.values(latestRelease).some(Boolean);
+  const rawFeatures = asStringArray(content.features);
+  const features =
+    tool?.status === 'Discontinued' ? rawFeatures.slice(0, 3) : rawFeatures;
+
   const entry: EnrichmentEntry = {
     about: asTrimmedString(content.about) || undefined,
-    features: asStringArray(content.features),
+    features,
     pricing: asTrimmedString(content.pricing) || undefined,
     authorOrCompany: asTrimmedString(content.authorOrCompany) || undefined,
-    aiFeatures: asStringArray(content.aiFeatures),
+    aiFeatures: filterAiFeatures(asStringArray(content.aiFeatures, 12)),
     latestRelease: hasRelease ? latestRelease : undefined,
-    sources: responseSources(response),
+    sources: responseSources(response, tool),
     fetchedAt,
   };
   return Object.fromEntries(

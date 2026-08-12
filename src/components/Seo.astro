@@ -1,24 +1,31 @@
 ---
 import { absoluteUrl, baseUrl } from '../lib/urls';
 import { siteNoIndex } from '../config/site';
+import { siteName } from '../lib/pageMeta';
+
 const {
   title,
   description,
   canonical = Astro.url.pathname,
   ogImage = baseUrl('og/default.png'),
   structuredData = [],
+  noIndex = false,
 } = Astro.props;
+
 const schemas = Array.isArray(structuredData)
   ? structuredData
   : [structuredData];
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
   : absoluteUrl(ogImage);
+const robotsNoIndex = siteNoIndex || noIndex;
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />
-{siteNoIndex && <meta name="robots" content="noindex" />}
+{robotsNoIndex && <meta name="robots" content="noindex, nofollow" />}
 <meta name="theme-color" content="#0A0A0A" />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_US" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content="website" />
@@ -28,6 +35,7 @@ const absoluteOgImage = ogImage.startsWith('http')
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={absoluteOgImage} />
+<meta name="twitter:site" content="@QAInsights" />
 {
   schemas.map((schema) => (
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />

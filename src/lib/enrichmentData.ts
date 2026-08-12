@@ -1,4 +1,6 @@
 import enrichmentData from '../data/enrichment.json';
+import type { Tool } from '../data/tools';
+import { sanitizeEnrichmentForDisplay } from './enrichmentQuality';
 
 export interface EnrichmentSource {
   url: string;
@@ -29,5 +31,12 @@ export interface EnrichmentDataset {
 
 const dataset = enrichmentData as EnrichmentDataset;
 
-export const getEnrichment = (slug: string): EnrichmentEntry | undefined =>
+export const getRawEnrichment = (slug: string): EnrichmentEntry | undefined =>
   dataset.entries[slug];
+
+/** Prefer this for UI. Applies AI/source quality gates without mutating JSON. */
+export const getEnrichment = (
+  slug: string,
+  tool?: Pick<Tool, 'url' | 'repoUrl' | 'status'>,
+): EnrichmentEntry | undefined =>
+  sanitizeEnrichmentForDisplay(dataset.entries[slug], tool);

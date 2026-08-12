@@ -7,6 +7,8 @@ Performance Testing Tools is a dark-first, searchable directory of performance t
 
 Live site: <https://perf.jmeter.ai/>
 
+Machine-readable catalogs for answer engines: [`/llms.txt`](https://perf.jmeter.ai/llms.txt) and [`/llms-full.txt`](https://perf.jmeter.ai/llms-full.txt) (also at `/.well-known/llms.txt`).
+
 ## Run locally
 
 ```bash
@@ -35,9 +37,9 @@ The build defaults to the canonical root-hosted site:
 
 All three are overridable at build time:
 
-- `SITE_ORIGIN` — public origin used for canonical, Open Graph, sitemap, robots and generated catalog URLs.
-- `SITE_BASE` — path the copy is _served_ from (`/Performance-Testing-Tools` for the Pages copy). Canonical URLs always point at the root of `SITE_ORIGIN`, so a copy served under a sub-path still credits the canonical site.
-- `SITE_NOINDEX=1` — adds `noindex` and a disallow-all `robots.txt`, for secondary copies.
+- `SITE_ORIGIN` public origin used for canonical, Open Graph, sitemap, robots and generated catalog URLs.
+- `SITE_BASE` path the copy is _served_ from (`/Performance-Testing-Tools` for the Pages copy). Canonical URLs always point at the root of `SITE_ORIGIN`, so a copy served under a sub-path still credits the canonical site.
+- `SITE_NOINDEX=1` adds `noindex` and a disallow-all `robots.txt`, for secondary copies.
 
 Examples:
 
@@ -59,7 +61,7 @@ To add or correct a tool:
 4. Run `npm test`, `npm run typecheck`, and `npm run build`.
 5. For a public correction or suggestion, [open a GitHub issue](https://github.com/QAInsights/Performance-Testing-Tools/issues/new).
 
-Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, per-tool PNG OG images, and `public/robots.txt` from the dataset using the selected deployment origin and base.
+Build-time generation creates `public/llms.txt`, `public/llms-full.txt`, `public/.well-known/llms.txt`, `public/manifest.webmanifest` (scoped to `SITE_BASE`), per-tool PNG OG images, and `public/robots.txt` from the dataset using the selected deployment origin and base.
 
 ## Exa enrichment pipeline
 

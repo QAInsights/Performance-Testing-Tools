@@ -9,10 +9,29 @@ describe('generated public content', () => {
     expect(existsSync('public/llms-full.txt')).toBe(true);
     const concise = readFileSync('public/llms.txt', 'utf8');
     const full = readFileSync('public/llms-full.txt', 'utf8');
+    expect(concise).toContain('How to choose a load testing tool');
+    expect(concise).toContain('Canonical compare pairs');
+    expect(full).toContain('When not:');
     for (const tool of tools) {
       expect(concise).toContain(tool.name);
       expect(full).toContain(`## ${tool.name}`);
     }
+  });
+
+  it('publishes a well-known llms.txt copy', () => {
+    expect(existsSync('public/.well-known/llms.txt')).toBe(true);
+    expect(readFileSync('public/.well-known/llms.txt', 'utf8')).toContain(
+      'How to choose a load testing tool',
+    );
+  });
+
+  it('generates a root-scoped web manifest for the default base', () => {
+    const manifest = JSON.parse(
+      readFileSync('public/manifest.webmanifest', 'utf8'),
+    );
+    expect(manifest.start_url).toBe('/');
+    expect(manifest.scope).toBe('/');
+    expect(manifest.icons[0].src).toBe('/icons/icon-192.png');
   });
 
   it('uses indexable robots directives for the default build', () => {

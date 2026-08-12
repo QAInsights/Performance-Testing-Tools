@@ -1,6 +1,7 @@
 ---
 import { tools, type Category } from '../data/tools';
 import { siteUrl } from '../lib/urls';
+import { sponsorInquiryUrl } from '../data/sponsors';
 import ToolRow from './ToolRow.astro';
 import ToolCard from './ToolCard.astro';
 import DirectorySidebar from './DirectorySidebar.astro';
@@ -25,6 +26,7 @@ const {
 const visibleTools = category
   ? tools.filter((tool) => tool.category === category)
   : tools;
+const showSponsorSlot = !category;
 const categories = [...new Set(tools.map((tool) => tool.category))];
 const licenses = [...new Set(tools.map((tool) => tool.license))];
 const deployments = [...new Set(tools.map((tool) => tool.deployment))];
@@ -56,22 +58,33 @@ const optionGroups = [
     optionGroups={optionGroups}
   />
   <div class="directory-main">
-    <header class="topbar">
-      <div>
+    <header class:list={['topbar', showSponsorSlot && 'topbar--with-sponsor']}>
+      <div class="topbar-copy">
         <p class="eyebrow">
           PERFORMANCE TOOLING / {category ? 'CATEGORY VIEW' : 'LIVE DIRECTORY'}
         </p>
         <h1>{title}</h1>
         <p class="intro">{intro}</p>
       </div>
-      <div class="top-actions">
-        <button
-          class="icon-button focus-ring"
-          type="button"
-          data-palette-open
-          aria-label="Open command palette">⌘K</button
-        >
-      </div>
+      {
+        showSponsorSlot && (
+          <a
+            class="sponsor-slot focus-ring"
+            href={sponsorInquiryUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span class="sponsor-slot-label mono">Sponsored</span>
+            <span class="sponsor-slot-title">Book this slot</span>
+          </a>
+        )
+      }
+      <button
+        class="icon-button topbar-palette focus-ring"
+        type="button"
+        data-palette-open
+        aria-label="Open command palette">⌘K</button
+      >
     </header>
     <DirectoryControlBar />
     <div class="results-line mono">
@@ -107,8 +120,9 @@ const optionGroups = [
         >Reset filters</button
       >
     </div>
+    {/* Keep footer in the main column so the sticky rail never overlays links. */}
+    <Footer />
   </div>
-  <Footer />
   <CompareTray />
   <CommandPalette />
 </section>

@@ -1,13 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import {
   breadcrumbs,
+  datasetSchema,
+  organizationSchema,
   toolFaq,
   toolItemList,
   toolSoftwareApplication,
+  websiteSchema,
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
 import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { tools } from '../data/tools';
+import { buildToolFaq } from './toolFaq';
 
 describe('SEO structured data', () => {
   it('defaults to the perf.jmeter.ai origin without environment overrides', () => {
@@ -65,13 +69,39 @@ describe('SEO structured data', () => {
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {
+    const tool = tools[0];
     for (const value of [
       toolItemList(tools),
-      toolSoftwareApplication(tools[0]),
-      toolFaq(tools[0]),
+      toolSoftwareApplication(tool, {
+        fetchedAt: '2026-01-01',
+        latestRelease: { version: '1.0.0' },
+      }),
+      toolFaq(tool, tools, buildToolFaq(tool, tools)),
       breadcrumbs([{ name: 'Directory', path: '' }]),
+      websiteSchema(),
+      organizationSchema(),
+      datasetSchema(),
     ]) {
       expect(() => JSON.parse(JSON.stringify(value))).not.toThrow();
     }
+  });
+
+  it('includes SearchAction and Organization sameAs', () => {
+    const site = websiteSchema();
+    expect(site.potentialAction['@type']).toBe('SearchAction');
+    expect(site.potentialAction.target.urlTemplate).toContain('?q=');
+    const org = organizationSchema();
+    expect(org.sameAs).toContain('https://github.com/QAInsights');
+  });
+
+  it('uses free offer for open source and contact pricing for commercial', () => {
+    const oss = tools.find((tool) => tool.license === 'Open Source')!;
+    const commercial = tools.find((tool) => tool.license === 'Commercial')!;
+    expect(toolSoftwareApplication(oss).offers.price).toBe('0');
+    expect(toolSoftwareApplication(commercial).offers.price).toBeUndefined();
+    expect(
+      toolSoftwareApplication(commercial).offers.description ||
+        toolSoftwareApplication(commercial).offers.priceSpecification,
+    ).toBeTruthy();
   });
 });

@@ -4,6 +4,7 @@ import LoadProfile from '../components/LoadProfile.astro';
 import Footer from '../components/Footer.astro';
 import { datasetLastVerified, tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
+import { aboutDescription, aboutTitle } from '../lib/pageMeta';
 const archetypes = [
   ['Ramp', 'Gradual rise for protocol/API-oriented tools.', 'ghz'],
   [
@@ -25,7 +26,7 @@ const archetypes = [
 ] as const;
 ---
 
-<ConsoleLayout title="About · Performance Testing Tools">
+<ConsoleLayout title={aboutTitle()} description={aboutDescription()}>
   <main class="about-page">
     <nav class="breadcrumbs mono">
       <a href={siteUrl()}>← Directory</a><span>/</span><strong>About</strong>
@@ -83,6 +84,10 @@ const archetypes = [
         </p><p class="mono small">
           Last shared verification: {datasetLastVerified}
         </p>
+        <p>
+          Machine-readable catalogs: <a href={siteUrl('llms.txt')}>llms.txt</a> and
+          <a href={siteUrl('llms-full.txt')}>llms-full.txt</a>.
+        </p>
       </article>
     </div>
     <section class="submit panel">
@@ -119,9 +124,6 @@ const archetypes = [
   }
   .breadcrumbs a:hover {
     color: var(--color-amber-400);
-  }
-  .about-header {
-    margin-bottom: 48px;
   }
   .about-page h1 {
     max-width: 820px;
@@ -197,6 +199,9 @@ const archetypes = [
   }
   .about-card p:last-child {
     margin-bottom: 0;
+  }
+  .about-card a {
+    color: var(--color-teal-300);
   }
   .amber {
     color: var(--color-amber-400);

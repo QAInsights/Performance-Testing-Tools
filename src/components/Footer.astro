@@ -1,67 +1,49 @@
 ---
-
+import { ecosystemFooterLinks, llmsTxtHref } from '../lib/organization';
 ---
 
 <footer class="site-footer panel">
-  <div class="footer-links mono">
-    <a
-      href="https://qainsights.com/"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">qainsights.com ↗</a
-    >
-    <a
-      href="https://iamspeed.dev/"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">iamspeed.dev ↗</a
-    >
-    <a
-      href="https://jmeter.ai/"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">jmeter.ai ↗</a
-    >
-    <a
-      href="https://docs.jmeter.ai/"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">docs.jmeter.ai ↗</a
-    >
-    <a
-      href="https://ai.dosa.dev/"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">ai.dosa.dev ↗</a
-    >
-    <a
-      href="https://github.com/QAInsights/Performance-Testing-Tools"
-      target="_blank"
-      rel="noreferrer"
-      class="focus-ring">GitHub ↗</a
-    >
-  </div>
+  <nav class="footer-links mono" aria-label="Ecosystem and resources">
+    {
+      ecosystemFooterLinks.map((link) => (
+        <a
+          href={link.href}
+          target="_blank"
+          rel="noreferrer"
+          class="focus-ring"
+        >
+          {link.label} ↗
+        </a>
+      ))
+    }
+    <a href={llmsTxtHref()} class="focus-ring">llms.txt</a>
+  </nav>
 </footer>
 
 <style>
   .site-footer {
-    grid-column: 1 / -1;
     width: 100%;
+    max-width: 100%;
     margin-top: 40px;
     padding: 18px 22px;
+    box-sizing: border-box;
   }
   .footer-links {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 16px 24px;
+    gap: 12px 20px;
     font-size: 14px;
+    /* Prevent long link rows from clipping against a sticky rail / panel edge */
+    min-width: 0;
+    max-width: 100%;
   }
   .footer-links a {
     color: var(--color-teal-300);
     text-decoration: none;
     transition: color 0.15s ease;
+    white-space: nowrap;
   }
   .footer-links a:hover {
     color: var(--color-amber-400);

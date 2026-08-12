@@ -23,7 +23,7 @@ npx astro preview --host 127.0.0.1 --port 4321
   Manifest"). Don't attribute them to the change under test.
 - `base` / origin live in `src/config/site.ts`; runtime JS derives paths from
   `data-base` on `[data-directory]` and from `import.meta.env.BASE_URL`.
-- Prefer testing the built `dist` output over `astro dev` — some bugs (base-path
+- Prefer testing the built `dist` output over `astro dev` some bugs (base-path
   string concatenation, canonical URLs) only appear in the build.
 - A preview server may already be running on 4321; check with
   `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:4321/`
@@ -31,18 +31,18 @@ npx astro preview --host 127.0.0.1 --port 4321
 
 ## Where the behaviour lives
 
-- `src/components/Directory.astro` — one inline `<script>` drives search, checkbox
+- `src/components/Directory.astro` - one inline `<script>` drives search, checkbox
   filters, sort, table/grid toggle, URL sync (`history.replaceState`), the compare
   tray (sessionStorage key `ptt-compare`, cap of 3) and the Ctrl+K command palette.
-- `src/pages/compare.astro` — client-side matrix built from `?tools=a,b,c`
+- `src/pages/compare.astro` - client-side matrix built from `?tools=a,b,c`
   (max 3, unknown slugs silently dropped, `.different` marks differing rows).
 - `src/pages/tools/[slug].astro`, `categories/[category].astro`, `about.astro`.
-- `src/components/LoadProfile.astro` — waveform must be a cyan stroke with
+- `src/components/LoadProfile.astro` - waveform must be a cyan stroke with
   `fill: none`; a filled blob means the `.profile-line` rule was lost.
 - Tool-page enrichment (About / Features / Pricing / Author / AI features / Latest
   release / Sources panel) is read from the committed `src/data/enrichment.json`
   via `src/lib/enrichmentData.ts`, keyed by tool slug. Only seeded slugs render the
-  panel, and no API key or network access is needed to test it — never call the Exa
+  panel, and no API key or network access is needed to test it never call the Exa
   API from a test run.
 
 ## Useful selectors / interactions
@@ -59,7 +59,7 @@ npx astro preview --host 127.0.0.1 --port 4321
 - Palette: `[data-palette]`, opener `[data-palette-open]`, input `[data-palette-search]`,
   items `.palette-item`.
 
-## Known fragile areas — check these explicitly
+## Known fragile areas check these explicitly
 
 All four bit us once already and now have regression tests; re-check them after any
 change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls.ts`.
@@ -67,7 +67,7 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
 - **Palette styling**: the palette markup uses `.palette-backdrop`, `.palette`,
   `.palette-head`, `.palette-input`, `.palette-results`, `.palette-item`. If these
   rules go missing, the palette renders as unstyled text in normal document flow at
-  the bottom of the page — easy to miss because the DOM looks correct and the element
+  the bottom of the page easy to miss because the DOM looks correct and the element
   is "visible". Always take a _screenshot_ after Ctrl+K, and assert overlay-ness
   (fixed position, non-static z-index, box inside the viewport), not visibility.
 - **Palette entries**: `.tool-name` exists in both the table rows and the grid cards,
@@ -78,7 +78,7 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
 - **Base-path concatenation**: `import.meta.env.BASE_URL` has **no** trailing slash
   when a base is set, so `` `${BASE_URL}favicon.svg` `` yields
   `/Performance-Testing-Toolsfavicon.svg`. All joining goes through
-  `src/lib/urls.ts` — keep new call sites on it. To sweep the built HTML for this
+  `src/lib/urls.ts` keep new call sites on it. To sweep the built HTML for this
   class of bug, build with `SITE_BASE=/Performance-Testing-Tools` and then:
   ```bash
   cd dist && grep -rhoP 'href="/Performance-Testing-Tools[^"#]*"' --include=*.html . \
@@ -88,7 +88,7 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
   grep -o '<link rel="canonical" href="[^"]*"' index.html   # watch for a doubled base path
   ```
 - **Canonical/OG URLs**: pages that pass no explicit canonical are the risky ones
-  (`/`, `/about`, `/compare`) — `Astro.url.pathname` already contains the base, so a
+  (`/`, `/about`, `/compare`) `Astro.url.pathname` already contains the base, so a
   naive prepend doubles it. Check one of those pages, not just a tool page.
 
 ## Mobile / JS-off testing tips
@@ -101,6 +101,6 @@ change to `Directory.astro`, `Seo.astro`, `ConsoleLayout.astro` or `src/lib/urls
 
 ## Devin Secrets Needed
 
-None — the site is fully static with no backend, auth, or API keys. Enrichment
+None the site is fully static with no backend, auth, or API keys. Enrichment
 content is committed JSON; the Exa API key (`EXA_API_KEY`) is only needed to
 _refresh_ that data, never to test the site.
