@@ -1285,6 +1285,28 @@ export const tools: Tool[] = [
     tags: ['browser', 'selenium', 'api', 'har'],
   }),
   makeTool({
+    slug: 'the-grinder',
+    name: 'The Grinder',
+    vendor: 'The Grinder project',
+    url: 'https://grinder.sourceforge.net/',
+    repoUrl: 'https://github.com/cossme/grinder',
+    description:
+      'Historical Java load testing framework for distributed scripted performance tests.',
+    longDescription:
+      'The Grinder is a classic open-source Java load testing framework for distributing scripted tests across agents. Newer programs often prefer nGrinder or other active engines; this entry remains for lifecycle and historical reference.',
+    category: 'Load Testing',
+    license: 'Open Source',
+    pricingModel: 'Free; open-source license (see project).',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Jython', 'Java'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2003,
+    status: 'Discontinued',
+    successor: 'nGrinder',
+    tags: ['java', 'legacy', 'distributed'],
+  }),
+  makeTool({
     slug: 'ngrinder',
     name: 'nGrinder',
     vendor: 'Naver',
