@@ -348,7 +348,7 @@ const sourceHost = (url: string) => {
     display: flex;
     gap: 10px;
     color: var(--color-surface-300);
-    font-size: 11px;
+    font-size: 13px;
     margin-bottom: 26px;
   }
   .breadcrumbs a {
@@ -364,20 +364,47 @@ const sourceHost = (url: string) => {
     font-size: clamp(38px, 7vw, 82px);
     letter-spacing: -0.07em;
     margin: 0;
+    background: linear-gradient(
+      120deg,
+      var(--color-surface-100) 0%,
+      var(--color-teal-300) 30%,
+      var(--color-amber-400) 65%,
+      var(--color-cyan-500) 85%,
+      var(--color-surface-100) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    animation: headingGradient 7s linear infinite;
+  }
+  @keyframes headingGradient {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .detail-hero h1 {
+      animation: none;
+    }
   }
   .hero-content {
     min-width: 0;
   }
   .detail-vendor {
     color: var(--color-surface-300);
-    font: 14px var(--font-mono);
+    font: 15px var(--font-mono);
   }
   .detail-badges {
     margin-top: 24px;
   }
   .maintained-by {
     color: var(--color-surface-300);
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.08em;
     margin: 18px 0 0;
   }
@@ -398,12 +425,12 @@ const sourceHost = (url: string) => {
   .summary-strip dt,
   .metadata-grid dt {
     color: var(--color-surface-300);
-    font: 10px var(--font-mono);
+    font: 12px var(--font-mono);
     text-transform: uppercase;
   }
   .summary-strip dd {
     color: var(--color-surface-100);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.35;
     margin: 5px 0 0;
     overflow-wrap: anywhere;
@@ -416,7 +443,7 @@ const sourceHost = (url: string) => {
     padding: 14px 18px;
     border-color: var(--color-amber-400);
     color: var(--color-amber-400);
-    font: 12px var(--font-mono);
+    font: 14px var(--font-mono);
   }
   .status-callout span {
     color: var(--color-surface-300);
@@ -445,8 +472,8 @@ const sourceHost = (url: string) => {
   .detail-section > p,
   .detail-section li {
     color: var(--color-surface-300);
-    font-size: 13px;
-    line-height: 1.55;
+    font-size: 15px;
+    line-height: 1.6;
   }
   .feature-list {
     display: grid;
@@ -481,24 +508,24 @@ const sourceHost = (url: string) => {
     overflow-wrap: anywhere;
   }
   .source-list strong {
-    font: 11px var(--font-mono);
+    font: 13px var(--font-mono);
   }
   .source-list span {
     color: var(--color-surface-300);
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.4;
     margin-top: 2px;
   }
   .enrichment-stamp {
     color: var(--color-surface-400) !important;
-    font-size: 10px !important;
+    font-size: 12px !important;
     letter-spacing: 0.08em;
     margin: 18px 0 0;
   }
   .detail-copy h2,
   .faq-block h2 {
     color: var(--color-teal-300);
-    font: 12px var(--font-mono);
+    font: 13px var(--font-mono);
     letter-spacing: 0.1em;
     margin: 0 0 14px;
   }
@@ -516,7 +543,7 @@ const sourceHost = (url: string) => {
   .metadata-grid dd {
     margin: 6px 14px 0 0;
     color: var(--color-surface-100);
-    font-size: 13px;
+    font-size: 15px;
   }
   .spec-chips {
     display: flex;
@@ -528,7 +555,7 @@ const sourceHost = (url: string) => {
     border-radius: 2px;
     color: var(--color-teal-300);
     display: inline-block;
-    font: 10px var(--font-mono);
+    font: 12px var(--font-mono);
     line-height: 1.2;
     max-width: 100%;
     overflow-wrap: anywhere;
@@ -566,7 +593,7 @@ const sourceHost = (url: string) => {
   .similar-item small {
     display: block;
     color: var(--color-surface-300);
-    font: 10px var(--font-mono);
+    font: 12px var(--font-mono);
     margin-top: 4px;
   }
   .similar-item:hover {
@@ -594,7 +621,7 @@ const sourceHost = (url: string) => {
   }
   .disclosure-hint {
     color: var(--color-surface-300);
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.08em;
   }
   .source-details {
@@ -610,13 +637,13 @@ const sourceHost = (url: string) => {
     padding-top: 10px;
   }
   .faq-list strong {
-    font: 11px var(--font-mono);
+    font: 13px var(--font-mono);
     color: var(--color-surface-100);
   }
   .faq-list p {
     color: var(--color-surface-300);
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 15px;
+    line-height: 1.55;
   }
   @media (max-width: 700px) {
     .detail-page {

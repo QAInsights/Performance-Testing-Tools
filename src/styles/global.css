@@ -90,7 +90,7 @@ select {
 }
 .eyebrow {
   color: var(--color-teal-300);
-  font: 11px var(--font-mono);
+  font: 12px var(--font-mono);
   letter-spacing: 0.14em;
   margin: 0 0 12px;
 }
@@ -118,7 +118,7 @@ select {
   display: flex;
   gap: 10px;
   color: var(--color-surface-300);
-  font-size: 11px;
+  font-size: 13px;
 }
 .breadcrumbs a {
   color: var(--color-teal-300);
@@ -156,7 +156,7 @@ select {
 }
 .matrix-table thead th {
   color: var(--color-teal-300);
-  font: 11px var(--font-mono);
+  font: 12px var(--font-mono);
   vertical-align: top;
 }
 .matrix-table thead strong,
@@ -167,18 +167,18 @@ select {
 }
 .matrix-table thead small {
   color: var(--color-surface-300);
-  font: 10px var(--font-mono);
+  font: 12px var(--font-mono);
   margin-top: 4px;
 }
 .matrix-table tbody th {
   color: var(--color-teal-300);
-  font: 10px var(--font-mono);
+  font: 12px var(--font-mono);
   text-transform: uppercase;
   white-space: nowrap;
 }
 .matrix-table tbody td {
   color: var(--color-surface-300);
-  font-size: 12px;
+  font-size: 14px;
 }
 .matrix-table .different {
   color: var(--color-amber-400);

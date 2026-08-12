@@ -217,7 +217,7 @@ export const tools: Tool[] = [
     slug: 'gatling-enterprise',
     name: 'Gatling Enterprise',
     vendor: 'Gatling Corp.',
-    url: 'https://gatling.io/gatling-enterprise/',
+    url: 'https://gatling.io/pricing/',
     description:
       'Managed Gatling platform for distributed testing, observability, and team workflows.',
     longDescription:
@@ -238,7 +238,7 @@ export const tools: Tool[] = [
     slug: 'neoload',
     name: 'NeoLoad',
     vendor: 'Neotys / Tricentis',
-    url: 'https://www.tricentis.com/software-quality-assurance-tools-neoload',
+    url: 'https://www.tricentis.com/products/performance-testing-neoload',
     description:
       'Enterprise performance testing platform for web, API, mobile, and packaged applications.',
     longDescription:
@@ -621,7 +621,7 @@ export const tools: Tool[] = [
     scriptingLanguages: ['JavaScript'],
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Browser'],
-    status: 'Active',
+    status: 'Discontinued',
     cloudBased: true,
     tags: ['legacy', 'cloud'],
   }),
@@ -729,7 +729,7 @@ export const tools: Tool[] = [
     slug: 'silk-performer',
     name: 'Silk Performer',
     vendor: 'OpenText',
-    url: 'https://www.opentext.com/products/silk-performer',
+    url: 'https://www.opentext.com/products/enterprise-performance-engineering',
     description:
       'Enterprise performance testing suite for web, mobile, and distributed applications.',
     longDescription:
@@ -916,7 +916,7 @@ export const tools: Tool[] = [
     slug: 'tsung',
     name: 'Tsung',
     vendor: 'Tsung community',
-    url: 'https://tsung.erlang-projects.org/',
+    url: 'https://github.com/processone/tsung',
     repoUrl: 'https://github.com/processone/tsung',
     description:
       'Distributed open-source load testing tool for HTTP, WebDAV, LDAP, and other protocols.',
@@ -937,7 +937,7 @@ export const tools: Tool[] = [
     slug: 'siege',
     name: 'Siege',
     vendor: 'Joe Dog Software',
-    url: 'https://www.joedog.org/siege-home/',
+    url: 'https://github.com/JoeDog/siege',
     repoUrl: 'https://github.com/JoeDog/siege',
     description:
       'Open-source command-line utility for HTTP regression and benchmarking tests.',
@@ -1095,7 +1095,7 @@ export const tools: Tool[] = [
     protocols: ['TCP', 'WebSocket'],
     osSupport: ['Linux', 'macOS'],
     firstReleased: 2015,
-    status: 'Active',
+    status: 'Discontinued',
     tags: ['websocket', 'tcp', 'connections'],
   }),
   makeTool({

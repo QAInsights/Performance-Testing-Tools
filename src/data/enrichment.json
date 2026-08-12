@@ -310,7 +310,9 @@
       ],
       "pricing": "Artillery Cloud offers a free tier for hobby and proof-of-concept projects. Paid plans include a Team plan at $199/month and a Business/Scale plan at $499/month. Enterprise add-ons start at $1,199/month. Subscriptions are available via the Artillery website or AWS Marketplace. Annual billing options are available for a 20% discount.",
       "authorOrCompany": "Artillery Software",
-      "aiFeatures": ["AI-assisted analysis and debugging for test results"],
+      "aiFeatures": [
+        "AI-assisted analysis and debugging for test results"
+      ],
       "latestRelease": {
         "version": "2.0.33",
         "date": "2026-06-16",
@@ -641,46 +643,6 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:41.129Z"
-    },
-    "flood": {
-      "about": "Flood (formerly Flood IO) is a cloud-based load and performance testing service that enables organizations to automate the deployment of open-source load testing tools. It was founded in 2013 and acquired by Tricentis in July 2017. The platform is designed to allow performance testers to simulate high-traffic loads on websites, APIs, and applications to ensure scalability and stability.",
-      "features": [
-        "Cloud-based and on-premise load testing support",
-        "Supports open-source tools such as JMeter, Gatling, Flood Element, and Selenium",
-        "Geo-distributed load generation across multiple cloud regions (e.g., AWS, Azure, GCP)",
-        "Integration with CI/CD pipelines and external tools like GitHub, Jenkins, and New Relic",
-        "Real-time metrics, detailed reporting, and comparison analysis",
-        "API access for automation and script-less test case integration via Tricentis"
-      ],
-      "pricing": "Flood offers subscription-based pricing that utilizes Virtual User Hours (VUH). It includes both free and paid plans. Flood Agent for on-premise load generation is a free download.",
-      "authorOrCompany": "Flood is a product of Tricentis. It was originally founded by Tim Koopmans, Mikel Lindsaar, and Ivan Vanderbyl.",
-      "sources": [
-        {
-          "url": "https://www.flood.io/load-generators",
-          "title": "Start load injectors from anywhere in minutes."
-        },
-        {
-          "url": "https://stackshare.io/flood-io",
-          "title": "Flood IO - Reviews, Pros &amp; Cons | Companies using Flood IO"
-        },
-        {
-          "url": "https://sourceforge.net/software/product/Flood/",
-          "title": "Flood"
-        },
-        {
-          "url": "https://sugggest.com/software/flood-io",
-          "title": "Flood.io: Cloud Load Testing Service | Sugggest"
-        },
-        {
-          "url": "https://www.flood.io/company/about",
-          "title": "About Flood"
-        },
-        {
-          "url": "https://www.flood.io/blog/flood-has-joined-forces-with-tricentis",
-          "title": "Flood has joined forces with Tricentis"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:01:38.893Z"
     },
     "fortio": {
       "about": "Fortio (Φορτίο) is a fast, small, open-source load testing tool that originated as part of the Istio project before becoming an independent project. It serves as an HTTP and gRPC load generator, an advanced echo server, and provides a web UI and REST API for result visualization.",
@@ -1199,52 +1161,6 @@
       ],
       "fetchedAt": "2026-08-11T23:02:49.626Z"
     },
-    "load-multiplier": {
-      "about": "Load Multiplier (often referred to as LM Tools) is a highly scalable, software-based testing solution developed for load, performance, capacity, and stress testing. It supports various domains, including VoIP, BFSI, HTTP/Web/WebRTC/JSON/XML-based products, telecom products (non-RF), IP-based protocols, custom text/binary protocols, and Socket.IO. It is designed to simulate millions of endpoints or act as a wrapper over other software to simulate real-world scenarios.",
-      "features": [
-        "Supports Web, Custom protocols, HTTP, Websocket, WebRTC, VoIP, SIP, IMS, RTP, SRTP, JSON, XML, STUN/TURN/ICE, and proprietary protocols.",
-        "Provides simulation for servers (e.g., HTTP, SIP, IMS, WebRTC, Proprietary) and clients/endpoints.",
-        "Capable of simulating millions of endpoints and large-scale scenarios via cluster architecture.",
-        "Includes tools for message recording, content manipulation, and sequence manipulation.",
-        "Provides live statistics, reports, and graphs during testing.",
-        "Operates as a software-based tool installable on desktop machines or servers.",
-        "Offers flexible licensing models including monthly and perpetual/lifetime licenses."
-      ],
-      "pricing": "Users need to purchase a monthly or lifetime/perpetual license. Specific pricing details are not publicly stated; inquiries are directed to contact the vendor via email.",
-      "authorOrCompany": "Load Multiplier Pvt. Ltd., a software development company founded in 2016 and headquartered in Bengaluru, India.",
-      "latestRelease": {
-        "version": "\"\"",
-        "date": "2024 (as per copyright date)",
-        "notes": "\"\""
-      },
-      "sources": [
-        {
-          "url": "https://lmtools.com/content/lm-tools-license",
-          "title": "LM Tools License"
-        },
-        {
-          "url": "https://lmtools.com/content/lm-tools",
-          "title": "LM Tools | LM Tools"
-        },
-        {
-          "url": "https://lmtools.com/sites/default/files/docs/brochure/Load_Multiplier_Product_Brochure_v3R.pdf",
-          "title": "[PDF] Load Multiplier Pvt. Ltd. - LM Tools"
-        },
-        {
-          "url": "https://in.linkedin.com/company/loadmultiplier",
-          "title": "Load Multiplier Pvt. Ltd. - LinkedIn"
-        },
-        {
-          "url": "https://www.zaubacorp.com/company/LOAD-MULTIPLIER-PRIVATE-LIMITED/U72900KA2016PTC095102",
-          "title": "LOAD MULTIPLIER PRIVATE LIMITED"
-        },
-        {
-          "url": "https://lmtools.com/content/lm-tools-commonly-used-modules",
-          "title": "LM Tools - Commonly Used Modules | LM Tools"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:02:04.095Z"
-    },
     "loaderio": {
       "about": "Loader.io is a cloud-based load testing service that enables users to stress test web applications and APIs by simulating thousands of concurrent connections. It provides both a web interface and an API for registering and running tests.",
       "features": [
@@ -1571,46 +1487,6 @@
       ],
       "fetchedAt": "2026-08-11T23:02:18.748Z"
     },
-    "loadstorm": {
-      "about": "LoadStorm is a web-based, on-demand cloud load and performance testing tool designed to simulate high volumes of concurrent users for web and mobile applications to measure performance metrics such as response time, requests per second, throughput, and error rates.",
-      "features": [
-        "Cloud-based load generation using Amazon Web Services (AWS)",
-        "Support for up to 1,000,000 concurrent virtual users",
-        "Real-time performance metric graphs and analysis",
-        "Script creation from recorded network requests (HAR) without manual coding",
-        "Pay-as-you-go pricing model and free account options",
-        "LITE (easy-to-use) and PRO (advanced/enterprise) editions"
-      ],
-      "pricing": "LoadStorm offers a free account (up to 25 concurrent users) and a pay-as-you-go, storm-on-demand model for larger load tests, with costs scaling based on the number of virtual users.",
-      "authorOrCompany": "CustomerCentrix, LLC",
-      "sources": [
-        {
-          "url": "https://loadstorm.com/load-testing-company/",
-          "title": "Load Testing Company - LoadStorm"
-        },
-        {
-          "url": "https://www.prweb.com/releases/introducing_loadstorm_lite_innovative_cloud_load_testing_tool/prweb12098006.htm",
-          "title": "Introducing LoadStorm LITE: Innovative Cloud Load Testing Tool"
-        },
-        {
-          "url": "https://loadstorm.com/performance-testing-tool/",
-          "title": "Performance Testing Tool - LoadStorm"
-        },
-        {
-          "url": "https://loadstorm.com/pro/",
-          "title": "PRO Page - LoadStorm"
-        },
-        {
-          "url": "https://loadstorm.com/load-testing-faq/",
-          "title": "Load Testing FAQs - Frequently Asked Questions - LoadStorm"
-        },
-        {
-          "url": "https://loadstorm.com/knowledge-base/",
-          "title": "Knowledge Base - LoadStorm"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:02:09.933Z"
-    },
     "locust": {
       "about": "Locust is an open-source, modern load testing framework that allows users to write scalable load tests in plain Python, avoiding the need for clunky UIs or XML.",
       "features": [
@@ -1702,26 +1578,6 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:01:34.499Z"
-    },
-    "nouvola": {
-      "about": "Nouvola is an Information Technology and services company that provides a cloud-based, scalable performance and load-testing solution for web, mobile, and API applications.",
-      "features": [
-        "Cloud-based performance and load testing",
-        "Real-life user scenario testing",
-        "Integrated cloud performance analytics",
-        "DevOps ready support"
-      ],
-      "authorOrCompany": "Nouvola (also referred to as Cloudy Days, Inc.)",
-      "aiFeatures": [
-        "Performance and cloud performance analytics across various loads, devices, and geographies"
-      ],
-      "sources": [
-        {
-          "url": "https://nouvola.com",
-          "title": "Nouvola"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:01:43.321Z"
     },
     "octoperf": {
       "about": "OctoPerf is an enterprise-grade performance and load testing platform available as SaaS and on-premise, designed to help engineering teams simulate realistic user traffic, identify bottlenecks, and validate application scalability. It is built on the Apache JMeter engine and enhances it with scalable cloud execution, advanced reporting, and collaboration features.",
@@ -1980,48 +1836,6 @@
       ],
       "fetchedAt": "2026-08-11T23:02:18.462Z"
     },
-    "stormforger": {
-      "about": "StormForger (or StormForge) provides a cloud-based performance and load testing platform designed for HTTP-based APIs. It is a load testing-as-a-service solution that includes performance analysis capabilities.",
-      "features": [
-        "Cloud-based load testing for HTTP APIs",
-        "Performance analysis and reporting",
-        "CI/CD integration (supports GitHub Actions, GitLab CI)",
-        "Test case definition with support for requests (GET, POST, PUT, PATCH, DELETE, HEAD)",
-        "Content extraction (JSONPath, XPath, regex)",
-        "Checks and assertions for test validation",
-        "Variable support for dynamic values",
-        "Non-functional requirement checking"
-      ],
-      "pricing": "The service currently operates on an invitation-only basis and does not accept new customers at this time. Information regarding specific pricing tiers is not publicly available on the site, though historical mentions indicate a free tier previously existed.",
-      "authorOrCompany": "StormForger GmbH",
-      "sources": [
-        {
-          "url": "https://stormforger.com/blog//",
-          "title": "Storm Forecast Blog | StormForger"
-        },
-        {
-          "url": "https://app.stormforger.com/users/sign_up",
-          "title": "Invitation Only"
-        },
-        {
-          "url": "https://docs.stormforger.com/perftest/",
-          "title": "Performance Testing"
-        },
-        {
-          "url": "https://docs.stormforger.com/perftest/guides/github-actions/",
-          "title": "Testing with GitHub Actions"
-        },
-        {
-          "url": "https://docs.stormforger.com/perftest/guides/gitlab/",
-          "title": "Testing with GitLab CI"
-        },
-        {
-          "url": "https://docs.stormforger.com/perftest/reference/checks-assertions/",
-          "title": "Checks & Assertions"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:01:42.988Z"
-    },
     "stresstimulus": {
       "about": "StresStimulus is a load testing, stress testing, and performance testing tool for websites, mobile apps, and enterprise applications, developed by Stimulus Technology. It allows users to emulate hundreds or thousands of concurrent virtual users to monitor performance, pinpoint bottlenecks, and assess scalability.",
       "features": [
@@ -2121,43 +1935,6 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:32.910Z"
-    },
-    "tcpkali": {
-      "about": "tcpkali is a high-performance TCP and WebSocket load generator and sink designed to stress-test and benchmark network systems. It can operate in client mode (generating traffic to specified hosts) or server mode (accepting connections and discarding data).",
-      "features": [
-        "Opens millions of connections from a single host using interface aliases",
-        "Efficient multi-core operation using all available cores by default",
-        "Bandwidth-controlled traffic generation for upstream and downstream throughput",
-        "Customizable message patterns (first and subsequent messages)",
-        "Latency percentile measurement using HdrHistogram",
-        "Stats reporting to StatsD/DataDog"
-      ],
-      "pricing": "Open source and free (no pricing information found)",
-      "authorOrCompany": "Originally developed at Machine Zone (author Lev Walkin), the project is now maintained at https://github.com/launchdarkly/tcpkali.",
-      "latestRelease": {
-        "version": "1.2.0 (as referenced in historical man pages)",
-        "date": "",
-        "notes": ""
-      },
-      "sources": [
-        {
-          "url": "https://github.com/launchdarkly/tcpkali/blob/master/doc/tcpkali.man.md",
-          "title": "doc/tcpkali.man.md"
-        },
-        {
-          "url": "https://github.com/launchdarkly/tcpkali",
-          "title": "launchdarkly/tcpkali"
-        },
-        {
-          "url": "https://www.gsp.com/cgi-bin/man.cgi?section=1&topic=tcpkali",
-          "title": "tcpkali(1)"
-        },
-        {
-          "url": "https://manpage.me/index.cgi?apropos=0&manpath=FreeBSD+11.1-RELEASE+and+Ports&q=tcpkali&sektion=1",
-          "title": "tcpkali(1) man page"
-        }
-      ],
-      "fetchedAt": "2026-08-11T23:02:44.687Z"
     },
     "tsung": {
       "about": "Tsung is an open-source, multi-protocol distributed load testing and benchmarking framework designed to simulate huge numbers of concurrent users for stress testing IP-based client/server applications. Originally developed in Erlang, it is highly scalable and supports a wide range of protocols, including HTTP, WebDAV, SOAP, PostgreSQL, MySQL, LDAP, MQTT, AMQP, and XMPP/Jabber.",
