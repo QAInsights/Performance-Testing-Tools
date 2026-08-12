@@ -16,13 +16,13 @@ describe('tool relation links', () => {
 
     const compares = compareWithLinks(tool, tools, 3);
     expect(compares.length).toBeGreaterThan(0);
-    expect(compares[0].href).toMatch(/compare\?tools=/);
+    expect(compares[0].href).toMatch(/\/(vs\/|compare\?tools=)/);
     expect(compares[0].slugs).toContain('apache-jmeter');
   });
 
   it('builds filter chips for languages and protocols', () => {
     const tool = tools.find((item) => item.slug === 'apache-jmeter')!;
-    expect(languageChips(tool)[0].href).toMatch(/language=/);
-    expect(protocolChips(tool)[0].href).toMatch(/protocol=/);
+    expect(languageChips(tool)[0].href).toMatch(/languages\/|language=/);
+    expect(protocolChips(tool)[0].href).toMatch(/protocols\/|protocol=/);
   });
 });

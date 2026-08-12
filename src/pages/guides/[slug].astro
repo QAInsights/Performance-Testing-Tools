@@ -1,0 +1,76 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { tools } from '../../data/tools';
+import { GUIDE_LANDINGS } from '../../data/landings';
+import { filterToolsForLanding, landingPath } from '../../lib/landingContent';
+import { breadcrumbs, toolItemList } from '../../lib/seo';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import '../../styles/editorial.css';
+
+export function getStaticPaths() {
+  return GUIDE_LANDINGS.map((landing) => ({
+    params: { slug: landing.slug },
+    props: {
+      landing,
+      matched: filterToolsForLanding(landing, tools),
+    },
+  }));
+}
+
+const { landing, matched } = Astro.props;
+const path = landingPath(landing);
+const paragraphs = landing.intro.split('\n\n');
+---
+
+<ConsoleLayout
+  title={`${landing.title} · Performance Testing Tools`}
+  description={landing.description}
+  canonical={absoluteUrl(path)}
+  structuredData={[
+    toolItemList(matched),
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      { name: 'Guides', path: 'guides/best-open-source-load-testing-tools' },
+      { name: landing.title, path },
+    ]),
+  ]}
+>
+  <main class="editorial-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Directory</a><span>/</span>
+      <strong>Guides</strong><span>/</span>
+      <strong>{landing.title}</strong>
+    </nav>
+    <p class="eyebrow">GUIDE / EDITORIAL</p>
+    <h1>{landing.title}</h1>
+    <div class="answer-box">
+      <span class="answer-box-label">Answer</span>
+      {paragraphs[0]}
+    </div>
+    <div class="editorial-prose editorial-section">
+      {paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+    <section class="editorial-section">
+      <h2>Tools in this guide ({matched.length})</h2>
+      <div class="tool-list">
+        {
+          matched.map((tool) => (
+            <a class="panel focus-ring" href={siteUrl(`tools/${tool.slug}`)}>
+              <strong>{tool.name}</strong>
+              <small>
+                {tool.vendor} · {tool.license} · {tool.deployment} ·{' '}
+                {tool.status}
+              </small>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+    <section class="cta-band panel">
+      <p>Compare up to three tools in the Test Rig or filter the live directory.</p>
+      <a class="button button--amber" href={siteUrl()}>Open directory</a>
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>

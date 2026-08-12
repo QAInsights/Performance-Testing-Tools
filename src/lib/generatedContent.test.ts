@@ -34,6 +34,14 @@ describe('generated public content', () => {
     expect(manifest.icons[0].src).toBe('/icons/icon-192.png');
   });
 
+  it('publishes an open tools.json catalog for agents', () => {
+    expect(existsSync('public/tools.json')).toBe(true);
+    const catalog = JSON.parse(readFileSync('public/tools.json', 'utf8'));
+    expect(catalog.count).toBe(tools.length);
+    expect(catalog.tools).toHaveLength(tools.length);
+    expect(existsSync('public/tools/apache-jmeter.json')).toBe(true);
+  });
+
   it('uses indexable robots directives for the default build', () => {
     expect(siteNoIndex).toBe(false);
     expect(readFileSync('public/robots.txt', 'utf8')).toContain('Allow: /');

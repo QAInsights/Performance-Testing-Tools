@@ -1,4 +1,6 @@
 import type { Tool } from '../data/tools';
+import { staticVsPath } from '../data/comparisons';
+import { PROTOCOL_LANDINGS, LANGUAGE_LANDINGS } from '../data/landings';
 import { siteUrl } from './urls';
 
 export interface RelatedToolLink {
@@ -12,6 +14,7 @@ export interface ComparePairLink {
   label: string;
   href: string;
   slugs: string[];
+  staticPage: boolean;
 }
 
 export interface FilterChip {
@@ -70,10 +73,14 @@ export function compareWithLinks(
 
   return peers.map((peer) => {
     const slugs = [tool.slug, peer.slug].sort();
+    const vs = staticVsPath(tool.slug, peer.slug);
     return {
       label: `${tool.name} vs ${peer.name}`,
-      href: siteUrl(`compare?tools=${slugs.join(',')}`),
+      href: vs
+        ? siteUrl(vs)
+        : siteUrl(`compare?tools=${slugs.join(',')}`),
       slugs,
+      staticPage: Boolean(vs),
     };
   });
 }
@@ -82,17 +89,30 @@ export function languageChips(
   tool: Tool,
   limit = 4,
 ): FilterChip[] {
-  return tool.scriptingLanguages.slice(0, limit).map((language) => ({
-    label: language,
-    kind: 'language' as const,
-    href: siteUrl(`?language=${encodeURIComponent(language)}`),
-  }));
+  return tool.scriptingLanguages.slice(0, limit).map((language) => {
+    const landing = LANGUAGE_LANDINGS.find(
+      (item) => item.slug === language.toLowerCase(),
+    );
+    return {
+      label: language,
+      kind: 'language' as const,
+      href: landing
+        ? siteUrl(`languages/${landing.slug}`)
+        : siteUrl(`?language=${encodeURIComponent(language)}`),
+    };
+  });
 }
 
 export function protocolChips(tool: Tool, limit = 6): FilterChip[] {
-  return tool.protocols.slice(0, limit).map((protocol) => ({
-    label: protocol,
-    kind: 'protocol' as const,
-    href: siteUrl(`?protocol=${encodeURIComponent(protocol)}`),
-  }));
+  return tool.protocols.slice(0, limit).map((protocol) => {
+    const key = protocol.toLowerCase() === 'https' ? 'http' : protocol.toLowerCase();
+    const landing = PROTOCOL_LANDINGS.find((item) => item.slug === key);
+    return {
+      label: protocol,
+      kind: 'protocol' as const,
+      href: landing
+        ? siteUrl(`protocols/${landing.slug}`)
+        : siteUrl(`?protocol=${encodeURIComponent(protocol)}`),
+    };
+  });
 }

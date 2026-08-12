@@ -1,0 +1,134 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { tools } from '../../data/tools';
+import { TIER_A_COMPARISONS } from '../../data/comparisons';
+import { resolveComparison } from '../../lib/comparisonContent';
+import { breadcrumbs, toolItemList } from '../../lib/seo';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import { seoYear } from '../../lib/pageMeta';
+import '../../styles/editorial.css';
+
+export function getStaticPaths() {
+  return TIER_A_COMPARISONS.flatMap((spec) => {
+    const resolved = resolveComparison(spec, tools);
+    if (!resolved) return [];
+    return [
+      {
+        params: { pair: spec.pairPath },
+        props: { spec, ...resolved },
+      },
+    ];
+  });
+}
+
+const { spec, left, right, rows } = Astro.props;
+const title = `${spec.leftLabel} vs ${spec.rightLabel} (${seoYear}) · Spec Comparison`;
+const description = `${spec.leftLabel} vs ${spec.rightLabel}: license, deployment, protocols, scripting, and curator guidance for performance engineers.`;
+const compareQuery = [left.slug, right.slug].sort().join(',');
+---
+
+<ConsoleLayout
+  title={title}
+  description={description}
+  canonical={absoluteUrl(`vs/${spec.pairPath}`)}
+  structuredData={[
+    toolItemList([left, right]),
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      { name: `${spec.leftLabel} vs ${spec.rightLabel}`, path: `vs/${spec.pairPath}` },
+    ]),
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: `What is the difference between ${spec.leftLabel} and ${spec.rightLabel}?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: spec.answerBox,
+          },
+        },
+      ],
+    },
+  ]}
+>
+  <main class="editorial-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Directory</a><span>/</span>
+      <a href={siteUrl('compare')}>Compare</a><span>/</span>
+      <strong>{spec.leftLabel} vs {spec.rightLabel}</strong>
+    </nav>
+    <p class="eyebrow">STATIC COMPARISON / TIER A</p>
+    <h1>{spec.leftLabel} vs {spec.rightLabel}</h1>
+    <div class="answer-box">
+      <span class="answer-box-label">Answer</span>
+      {spec.answerBox}
+    </div>
+    <section class="editorial-section">
+      <h2>Curator verdict</h2>
+      <div class="editorial-prose"><p>{spec.verdict}</p></div>
+    </section>
+    <section class="editorial-section">
+      <h2>Spec matrix</h2>
+      <div class="spec-table-wrap panel">
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>
+                <a href={siteUrl(`tools/${left.slug}`)}>{left.name}</a>
+              </th>
+              <th>
+                <a href={siteUrl(`tools/${right.slug}`)}>{right.name}</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              rows.map((row) => (
+                <tr>
+                  <th scope="row">{row.field}</th>
+                  <td class={row.different ? 'different' : undefined}>
+                    {row.left}
+                  </td>
+                  <td class={row.different ? 'different' : undefined}>
+                    {row.right}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="editorial-section">
+      <h2>How to choose</h2>
+      <ul class="decision-list">
+        {spec.decisions.map((item) => <li>{item}</li>)}
+      </ul>
+      <div class="editorial-actions">
+        <a class="button button--amber" href={siteUrl(`tools/${left.slug}`)}
+          >{left.name} listing</a
+        >
+        <a class="button button--ghost" href={siteUrl(`tools/${right.slug}`)}
+          >{right.name} listing</a
+        >
+        <a
+          class="button button--ghost"
+          href={siteUrl(`compare?tools=${compareQuery}`)}
+          >Open Test Rig</a
+        >
+      </div>
+    </section>
+    <section class="cta-band panel">
+      <p>
+        Need more than two tools or a shareable matrix? Use the live Test Rig
+        from the directory compare tray.
+      </p>
+      <a class="button button--amber" href={siteUrl()}>Browse directory</a>
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>

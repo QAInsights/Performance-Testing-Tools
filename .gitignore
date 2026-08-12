@@ -5,7 +5,10 @@ test-results/
 playwright-report/
 public/llms.txt
 public/llms-full.txt
+public/.well-known/llms.txt
 public/robots.txt
+public/tools.json
+public/tools/
 public/og/*.svg
 public/og/*.png
 .env

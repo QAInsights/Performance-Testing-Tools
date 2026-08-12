@@ -1,0 +1,113 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { tools } from '../../data/tools';
+import { ALTERNATIVES_HUBS } from '../../data/comparisons';
+import {
+  alternativesForHub,
+  preferredCompareHref,
+} from '../../lib/comparisonContent';
+import { breadcrumbs, toolItemList } from '../../lib/seo';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import { seoYear } from '../../lib/pageMeta';
+import '../../styles/editorial.css';
+
+export function getStaticPaths() {
+  return ALTERNATIVES_HUBS.flatMap((hub) => {
+    const tool = tools.find((item) => item.slug === hub.toolSlug);
+    if (!tool) return [];
+    return [
+      {
+        params: { slug: hub.toolSlug },
+        props: {
+          hub,
+          tool,
+          alternatives: alternativesForHub(hub, tools),
+        },
+      },
+    ];
+  });
+}
+
+const { hub, tool, alternatives } = Astro.props;
+const title = `${hub.headline} (${seoYear}) · Curated Directory`;
+---
+
+<ConsoleLayout
+  title={title}
+  description={hub.intro.slice(0, 160)}
+  canonical={absoluteUrl(`alternatives/${hub.toolSlug}`)}
+  structuredData={[
+    toolItemList([tool, ...alternatives]),
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      { name: hub.headline, path: `alternatives/${hub.toolSlug}` },
+    ]),
+  ]}
+>
+  <main class="editorial-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Directory</a><span>/</span>
+      <a href={siteUrl(`tools/${tool.slug}`)}>{tool.name}</a><span>/</span>
+      <strong>Alternatives</strong>
+    </nav>
+    <p class="eyebrow">ALTERNATIVES HUB</p>
+    <h1>{hub.headline}</h1>
+    <div class="answer-box">
+      <span class="answer-box-label">Answer</span>
+      {hub.intro.split('. ').slice(0, 2).join('. ')}.
+    </div>
+    <div class="editorial-prose editorial-section">
+      <p>{hub.intro}</p>
+    </div>
+    <section class="editorial-section">
+      <h2>Baseline tool</h2>
+      <div class="tool-list">
+        <a class="panel focus-ring" href={siteUrl(`tools/${tool.slug}`)}>
+          <strong>{tool.name}</strong>
+          <small
+            >{tool.vendor} · {tool.license} · {tool.deployment} · {tool.status}</small
+          >
+        </a>
+      </div>
+    </section>
+    <section class="editorial-section">
+      <h2>When to stay</h2>
+      <ul class="decision-list">
+        {hub.whenToStay.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+    <section class="editorial-section">
+      <h2>When to consider switching</h2>
+      <ul class="decision-list">
+        {hub.whenToSwitch.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+    <section class="editorial-section">
+      <h2>Active alternatives to compare</h2>
+      <div class="tool-list">
+        {
+          alternatives.map((item) => {
+            const vs = preferredCompareHref(tool.slug, item.slug);
+            return (
+              <a class="panel focus-ring" href={siteUrl(`tools/${item.slug}`)}>
+                <strong>{item.name}</strong>
+                <small>
+                  {item.vendor} · {item.license} · {item.category}
+                  {vs.startsWith('vs/') ? ` · vs page available` : ''}
+                </small>
+              </a>
+            );
+          })
+        }
+      </div>
+      <div class="editorial-actions">
+        <a class="button button--amber" href={siteUrl(`tools/${tool.slug}`)}
+          >Open {tool.name} page</a
+        >
+        <a class="button button--ghost" href={siteUrl()}>Full directory</a>
+      </div>
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>

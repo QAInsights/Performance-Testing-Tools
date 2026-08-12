@@ -5,12 +5,18 @@ import ToolBadges from '../../components/ToolBadges.astro';
 import Footer from '../../components/Footer.astro';
 import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
 import { datasetLastVerified, tools } from '../../data/tools';
-import { siteUrl } from '../../lib/urls';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
 import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
-import { absoluteUrl } from '../../lib/urls';
 import { getEnrichment } from '../../lib/enrichmentData';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
+import {
+  architectureLine,
+  bestFor,
+  notBestFor,
+  toolAnswerBox,
+} from '../../lib/toolEntity';
+import { ALTERNATIVES_HUBS } from '../../data/comparisons';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({
@@ -21,6 +27,13 @@ export function getStaticPaths() {
 const { tool } = Astro.props;
 const enrichment = getEnrichment(tool.slug, tool);
 const faqItems = buildToolFaq(tool, tools);
+const answerBox = toolAnswerBox(tool, enrichment);
+const bestForItems = bestFor(tool);
+const notBestForItems = notBestFor(tool);
+const architecture = architectureLine(tool);
+const alternativesHub = ALTERNATIVES_HUBS.find(
+  (hub) => hub.toolSlug === tool.slug,
+);
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
   : datasetLastVerified;
@@ -145,12 +158,50 @@ const sourceHost = (url: string) => {
         </aside>
       )
     }
+    <div class="answer-box panel">
+      <span class="answer-box-label mono">Answer</span>
+      <p>{answerBox}</p>
+    </div>
     <div class="detail-grid">
       <article class="detail-copy">
         <section class="detail-section">
           <h2>About</h2>
           <p class="lead">{about}</p>
         </section>
+        <section class="detail-section">
+          <h2>Best for</h2>
+          <ul class="feature-list">
+            {bestForItems.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+        <section class="detail-section">
+          <h2>Not the best fit when</h2>
+          <ul class="feature-list">
+            {notBestForItems.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+        <section class="detail-section">
+          <h2>Architecture and concurrency</h2>
+          <p>{architecture}</p>
+        </section>
+        {
+          alternativesHub && (
+            <section class="detail-section">
+              <h2>Alternatives hub</h2>
+              <p>
+                Looking for replacements or peers? See the curated{' '}
+                <a href={siteUrl(`alternatives/${tool.slug}`)}>
+                  {tool.name} alternatives
+                </a>{' '}
+                page.
+              </p>
+            </section>
+          )
+        }
         {
           enrichment?.features && enrichment.features.length > 0 && (
             <section class="detail-section">
@@ -411,6 +462,28 @@ const sourceHost = (url: string) => {
     line-height: 1.35;
     margin: 5px 0 0;
     overflow-wrap: anywhere;
+  }
+  .answer-box {
+    margin-top: 14px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--color-amber-400);
+  }
+  .answer-box-label {
+    display: block;
+    color: var(--color-amber-400);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .answer-box p {
+    margin: 0;
+    color: var(--color-surface-100);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .detail-copy a {
+    color: var(--color-teal-300);
   }
   .status-callout {
     display: flex;

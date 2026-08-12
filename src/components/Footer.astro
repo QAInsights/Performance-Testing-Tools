@@ -1,5 +1,6 @@
 ---
 import { ecosystemFooterLinks, llmsTxtHref } from '../lib/organization';
+import { siteUrl } from '../lib/urls';
 ---
 
 <footer class="site-footer panel">
@@ -17,6 +18,7 @@ import { ecosystemFooterLinks, llmsTxtHref } from '../lib/organization';
       ))
     }
     <a href={llmsTxtHref()} class="focus-ring">llms.txt</a>
+    <a href={siteUrl('tools.json')} class="focus-ring">tools.json</a>
   </nav>
 </footer>
 

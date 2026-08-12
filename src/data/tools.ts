@@ -1141,6 +1141,27 @@ export const tools: Tool[] = [
     tags: ['nodejs', 'cli', 'http'],
   }),
   makeTool({
+    slug: 'oha',
+    name: 'oha',
+    vendor: 'hatoo',
+    url: 'https://github.com/hatoo/oha',
+    repoUrl: 'https://github.com/hatoo/oha',
+    description:
+      'Fast HTTP load generator inspired by hey and vegeta, written in Rust with TUI output.',
+    longDescription:
+      'oha is a Rust-based HTTP benchmarking CLI that generates load against HTTP endpoints and reports latency and throughput. It is commonly used for quick micro-benchmarks with a terminal UI.',
+    category: 'Micro-benchmark CLI',
+    license: 'Open Source',
+    pricingModel: 'Free; MIT License.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Rust'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2020,
+    status: 'Active',
+    tags: ['rust', 'cli', 'http', 'tui'],
+  }),
+  makeTool({
     slug: 'reqfleet',
     name: 'Reqfleet',
     vendor: 'Reqfleet',

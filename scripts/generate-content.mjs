@@ -66,6 +66,50 @@ await writeFile(resolve(wellKnownDir, 'llms.txt'), llmsTxt);
 const manifest = buildWebManifest(siteBase);
 await writeFile(resolve(publicDir, 'manifest.webmanifest'), manifest);
 
+// Open dataset for agents and backlinks (W6 / W7)
+const toolsPublicDir = resolve(publicDir, 'tools');
+await mkdir(toolsPublicDir, { recursive: true });
+const catalogJson = {
+  generatedAt: new Date().toISOString(),
+  datasetLastVerified,
+  count: tools.length,
+  tools: tools.map((tool) => ({
+    slug: tool.slug,
+    name: tool.name,
+    vendor: tool.vendor,
+    url: tool.url,
+    repoUrl: tool.repoUrl ?? null,
+    description: tool.description,
+    category: tool.category,
+    license: tool.license,
+    pricingModel: tool.pricingModel,
+    deployment: tool.deployment,
+    scriptingLanguages: tool.scriptingLanguages,
+    protocols: tool.protocols,
+    osSupport: tool.osSupport,
+    firstReleased: tool.firstReleased ?? null,
+    status: tool.status,
+    successor: tool.successor ?? null,
+    personalPick: tool.personalPick,
+    generalPick: tool.generalPick,
+    tags: tool.tags,
+    directoryUrl: `${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}`.replace(
+      /\/$/,
+      '',
+    ),
+  })),
+};
+await writeFile(
+  resolve(publicDir, 'tools.json'),
+  `${JSON.stringify(catalogJson, null, 2)}\n`,
+);
+for (const tool of catalogJson.tools) {
+  await writeFile(
+    resolve(toolsPublicDir, `${tool.slug}.json`),
+    `${JSON.stringify(tool, null, 2)}\n`,
+  );
+}
+
 await writeFile(
   resolve(publicDir, 'robots.txt'),
   siteNoIndex

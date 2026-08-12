@@ -2,12 +2,16 @@
 
 [![CI](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml/badge.svg)](https://github.com/QAInsights/Performance-Testing-Tools/actions/workflows/ci.yml)
 [![Live directory](https://img.shields.io/badge/live-directory-007F7C)](https://perf.jmeter.ai/)
+[![Tools](https://img.shields.io/badge/tools-55+-18A09B)](https://perf.jmeter.ai/)
+[![Last verified](https://img.shields.io/badge/last_verified-2026--08--11-FBB03B)](https://perf.jmeter.ai/)
 
 Performance Testing Tools is a dark-first, searchable directory of performance testing tools curated by [QAInsights](https://qainsights.com/). It is designed for engineers comparing load, protocol, cloud, enterprise, and micro-benchmark tooling without losing historical context.
 
 Live site: <https://perf.jmeter.ai/>
 
-Machine-readable catalogs for answer engines: [`/llms.txt`](https://perf.jmeter.ai/llms.txt) and [`/llms-full.txt`](https://perf.jmeter.ai/llms-full.txt) (also at `/.well-known/llms.txt`).
+Machine-readable catalogs for answer engines: [`/llms.txt`](https://perf.jmeter.ai/llms.txt), [`/llms-full.txt`](https://perf.jmeter.ai/llms-full.txt) (also at `/.well-known/llms.txt`), open dataset [`/tools.json`](https://perf.jmeter.ai/tools.json), and per-tool JSON under [`/tools/{slug}.json`](https://perf.jmeter.ai/tools/apache-jmeter.json).
+
+Static SEO surfaces include Tier-A [`/vs/*`](https://perf.jmeter.ai/vs/apache-jmeter-vs-grafana-k6) comparisons, [`/alternatives/*`](https://perf.jmeter.ai/alternatives/apache-jmeter) hubs, and protocol/language/deployment landings.
 
 ## Run locally
 
