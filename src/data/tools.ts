@@ -1,4 +1,4 @@
-export const datasetLastVerified = '2026-08-11';
+export const datasetLastVerified = '2026-08-12';
 
 export type Category =
   | 'Load Testing'
@@ -1214,7 +1214,8 @@ export const tools: Tool[] = [
       'LoadView is Dotcom-Monitor’s cloud performance testing product. It emphasizes real-browser load for user experience under concurrency, alongside API and protocol-level tests, with globally distributed injectors and managed reporting.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
-    pricingModel: 'Paid cloud plans; contact vendor for pricing and free trial options.',
+    pricingModel:
+      'Paid cloud plans; contact vendor for pricing and free trial options.',
     deployment: 'Cloud',
     scriptingLanguages: ['JavaScript', 'C#'],
     protocols: ['HTTP', 'HTTPS'],
@@ -1381,7 +1382,8 @@ export const tools: Tool[] = [
       'Grafana k6 browser extends k6 with browser-level APIs so teams can combine protocol load with frontend interactions and browser performance metrics. It is part of the k6 ecosystem and can run locally or with Grafana Cloud k6 depending on plan.',
     category: 'Browser/RUM',
     license: 'Open Source',
-    pricingModel: 'Free open-source module; cloud execution via Grafana Cloud k6 plans.',
+    pricingModel:
+      'Free open-source module; cloud execution via Grafana Cloud k6 plans.',
     deployment: 'Hybrid',
     scriptingLanguages: ['JavaScript', 'TypeScript'],
     protocols: ['HTTP', 'HTTPS'],
@@ -1410,6 +1412,66 @@ export const tools: Tool[] = [
     successor: 'Grafana Cloud k6',
     cloudBased: true,
     tags: ['renamed', 'k6', 'legacy'],
+  }),
+  makeTool({
+    slug: 'apex-hammer',
+    name: 'Apex Hammer',
+    vendor: 'Salesforce',
+    url: 'https://help.salesforce.com/s/articleView?id=platform.apex_hammer_execution_status.htm&type=5',
+    description:
+      'Salesforce-run process that re-executes org Apex tests on the current and next release to catch regressions before upgrades.',
+    longDescription:
+      'Apex Hammer is an automated Salesforce platform process rather than a self-service tool. Before each major release, Salesforce runs an org’s Apex tests in both the current version and the upcoming release and compares the results, flagging behavior changes in custom code ahead of the upgrade. Admins can review Apex Hammer execution status for their org in Setup.',
+    category: 'Load Testing',
+    license: 'Commercial',
+    pricingModel:
+      'Bundled with the Salesforce platform; operated by Salesforce rather than sold separately.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['Apex'],
+    protocols: [],
+    osSupport: ['Browser'],
+    status: 'Active',
+    tags: ['salesforce', 'platform', 'regression'],
+  }),
+  makeTool({
+    slug: 'scale-test',
+    name: 'Scale Test',
+    vendor: 'Salesforce',
+    url: 'https://www.salesforce.com/platform/application-scaling-performance-testing/',
+    description:
+      'Salesforce service that simulates peak load in a production-like sandbox to verify application scalability before surges.',
+    longDescription:
+      'Scale Test gives teams a production-like Salesforce sandbox to simulate peak loads and traffic surges against a declared requests-per-second target. Tests run inside a confirmed 24-hour window with real-time visibility through Scale Center monitoring, and the ApexGuru AI analysis highlights inefficient Apex code and SOQL or DML patterns.',
+    category: 'Cloud Load Testing',
+    license: 'Commercial',
+    pricingModel:
+      'Commercial service booked through Salesforce; pricing varies by scope and test window.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['Apex'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    cloudBased: true,
+    tags: ['salesforce', 'saas', 'ai-assisted'],
+  }),
+  makeTool({
+    slug: 'eggplant',
+    name: 'Eggplant',
+    vendor: 'Keysight',
+    url: 'https://www.keysight.com/us/en/products/design-engineering-software/software-quality-engineering/performance-monitoring-eggplant-monitoring.html',
+    description:
+      'Keysight quality suite spanning Eggplant Performance load testing and Eggplant Monitoring synthetic checks.',
+    longDescription:
+      'Eggplant is Keysight’s software quality suite, tracing back to Redstone Software and TestPlant before Keysight’s 2020 acquisition. Eggplant Performance generates protocol and scripted user-journey load with SenseTalk across web, mobile, desktop, and enterprise applications, while Eggplant Monitoring runs continuous synthetic checks on the same digital experiences.',
+    category: 'Enterprise Suite',
+    license: 'Commercial',
+    pricingModel: 'Commercial licenses; contact Keysight for plans and trials.',
+    deployment: 'Hybrid',
+    scriptingLanguages: ['SenseTalk'],
+    protocols: ['HTTP', 'HTTPS', 'WebSocket'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    status: 'Active',
+    tags: ['enterprise', 'synthetic-monitoring', 'load-testing'],
   }),
 ];
 
