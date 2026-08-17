@@ -44,7 +44,7 @@ describe('SEO structured data', () => {
     expect(baseUrl('/og/default.png')).toBe(joinBase('og/default.png'));
   });
 
-  it('supports a root deployment without a Pages segment', () => {
+  it('supports a root deployment without a sub-path segment', () => {
     expect(joinBase('favicon.svg', '/')).toBe('/favicon.svg');
     expect(joinBase('manifest.webmanifest', '/')).toBe('/manifest.webmanifest');
     expect(joinBase('sitemap-index.xml', '/')).toBe('/sitemap-index.xml');
@@ -73,30 +73,23 @@ describe('SEO structured data', () => {
     );
   });
 
-  it('keeps Pages serving paths out of canonical URLs', () => {
+  it('keeps serving paths out of canonical URLs', () => {
     expect(
       absoluteUrl(
-        '/Performance-Testing-Tools/tools/grafana-k6',
-        'https://perf.jmeter.ai',
+        '/foo/tools/grafana-k6',
+        'https://example.com',
         canonicalBase,
-        '/Performance-Testing-Tools',
+        '/foo',
       ),
-    ).toBe('https://perf.jmeter.ai/tools/grafana-k6/');
+    ).toBe('https://example.com/tools/grafana-k6/');
   });
 
-  it('excludes the empty compare rig from root and Pages sitemaps', () => {
+  it('excludes the empty compare rig from root and sub-path sitemaps', () => {
     expect(isSitemapPage('https://perf.jmeter.ai/compare/')).toBe(false);
-    expect(
-      isSitemapPage(
-        'https://qainsights.github.io/Performance-Testing-Tools/compare/',
-        '/Performance-Testing-Tools',
-      ),
-    ).toBe(false);
-    expect(
-      isSitemapPage(
-        'https://qainsights.github.io/Performance-Testing-Tools/about/',
-      ),
-    ).toBe(true);
+    expect(isSitemapPage('https://example.com/foo/compare/', '/foo')).toBe(
+      false,
+    );
+    expect(isSitemapPage('https://example.com/foo/about/', '/foo')).toBe(true);
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

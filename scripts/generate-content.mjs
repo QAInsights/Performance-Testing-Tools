@@ -10,8 +10,9 @@ import {
 } from './llms-content.mjs';
 
 const { tools, datasetLastVerified } = await import('../src/data/tools.ts');
-const { canonicalBase, joinBase, siteBase, siteBlockedMirror, siteOrigin } =
-  await import('../src/config/site.ts');
+const { canonicalBase, joinBase, siteBase, siteOrigin } = await import(
+  '../src/config/site.ts'
+);
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const publicDir = resolve(root, 'public');
@@ -109,7 +110,5 @@ for (const tool of catalogJson.tools) {
 
 await writeFile(
   resolve(publicDir, 'robots.txt'),
-  siteBlockedMirror
-    ? 'User-agent: *\nDisallow: /\n'
-    : `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}${joinBase('sitemap-index.xml', canonicalBase)}\n`,
+  `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}${joinBase('sitemap-index.xml', canonicalBase)}\n`,
 );

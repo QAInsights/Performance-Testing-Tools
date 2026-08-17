@@ -42,14 +42,12 @@ The build defaults to the canonical root-hosted site:
 These are overridable at build time:
 
 - `SITE_ORIGIN` public origin used for canonical, Open Graph, sitemap, robots and generated catalog URLs.
-- `SITE_BASE` path the copy is _served_ from (`/Performance-Testing-Tools` for the Pages copy).
-- `SITE_BLOCKED_MIRROR=1` marks a blocked mirror copy and emits a disallow-all `robots.txt`. It does not add a site-wide `noindex` meta tag; use the per-page `noIndex` prop for intentionally unindexable pages.
+- `SITE_BASE` path the copy is _served_ from, such as `/foo` for a sub-path deployment.
 
 Examples:
 
 ```bash
 npm run build                                                        # perf.jmeter.ai
-SITE_BASE=/Performance-Testing-Tools SITE_ORIGIN=https://qainsights.github.io SITE_BLOCKED_MIRROR=1 npm run build # Pages copy
 SITE_ORIGIN=https://example.com npm run build                        # another host
 ```
 
@@ -81,9 +79,9 @@ Use `--all`, `--stale-days=<n>`, `--concurrency=<n>`, and `--dry-run` for broade
 
 ## Testing and deployment
 
-Vitest covers dataset, SEO JSON-LD, and load-profile invariants. Playwright covers the project Pages base path, search URL state, filtering, and command palette behavior. The static Astro build produces the directory, category pages, detail pages, comparison page, and about page.
+Vitest covers dataset, SEO JSON-LD, and load-profile invariants. Playwright covers the configured base path, search URL state, filtering, and command palette behavior. The static Astro build produces the directory, category pages, detail pages, comparison page, and about page.
 
-GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The default build targets the canonical Vercel deployment at <https://perf.jmeter.ai/>. The deploy workflow also publishes a project-base build to GitHub Pages at <https://qainsights.github.io/Performance-Testing-Tools/>. That blocked mirror uses its own origin for self-referential URLs and emits `Disallow: /` without a site-wide `noindex` meta tag. Repository owners must switch Pages → Build and deployment → Source to **GitHub Actions** once.
+GitHub Actions runs formatting, linting, type checks, unit tests, Playwright, and the production build. The default build targets the canonical Vercel deployment at <https://perf.jmeter.ai/>.
 
 ## Original context
 

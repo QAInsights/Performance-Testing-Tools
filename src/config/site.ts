@@ -15,9 +15,6 @@ export const siteBase =
     ? '/'
     : `/${configuredBase.replace(/^\/+|\/+$/g, '')}`;
 export const canonicalBase = siteBase;
-export const siteBlockedMirror =
-  environment.SITE_BLOCKED_MIRROR === '1' ||
-  environment.SITE_BLOCKED_MIRROR === 'true';
 
 export function joinBase(path = '', base = siteBase): string {
   const normalizedBase = base === '/' ? '' : base.replace(/^\/+|\/+$/g, '');
