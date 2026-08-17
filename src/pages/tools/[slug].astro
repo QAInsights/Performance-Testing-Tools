@@ -171,17 +171,13 @@ const sourceHost = (url: string) => {
         <section class="detail-section">
           <h2>Best for</h2>
           <ul class="feature-list">
-            {bestForItems.map((item) => (
-              <li>{item}</li>
-            ))}
+            {bestForItems.map((item) => <li>{item}</li>)}
           </ul>
         </section>
         <section class="detail-section">
           <h2>Not the best fit when</h2>
           <ul class="feature-list">
-            {notBestForItems.map((item) => (
-              <li>{item}</li>
-            ))}
+            {notBestForItems.map((item) => <li>{item}</li>)}
           </ul>
         </section>
         <section class="detail-section">

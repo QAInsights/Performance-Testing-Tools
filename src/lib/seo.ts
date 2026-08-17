@@ -51,8 +51,8 @@ export function toolSoftwareApplication(
   tool: Tool,
   enrichment?: EnrichmentEntry,
 ) {
-  const sameAs = [tool.url, tool.repoUrl].filter(
-    (url): url is string => Boolean(url),
+  const sameAs = [tool.url, tool.repoUrl].filter((url): url is string =>
+    Boolean(url),
   );
   const version = enrichment?.latestRelease?.version;
 
@@ -86,8 +86,7 @@ export function toolFaq(
   items?: FaqItem[],
 ) {
   const faqItems =
-    items ??
-    buildToolFaq(tool, catalog.length ? catalog : [tool]);
+    items ?? buildToolFaq(tool, catalog.length ? catalog : [tool]);
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

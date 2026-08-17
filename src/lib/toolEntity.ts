@@ -10,7 +10,12 @@ export function toolAnswerBox(
   const core = about.replace(/\s+/g, ' ').trim();
   const words = core.split(/\s+/);
   const trimmed =
-    words.length > 55 ? `${words.slice(0, 55).join(' ').replace(/[,:;]?$/, '')}.` : core;
+    words.length > 55
+      ? `${words
+          .slice(0, 55)
+          .join(' ')
+          .replace(/[,:;]?$/, '')}.`
+      : core;
   const status =
     tool.status === 'Discontinued'
       ? tool.successor
@@ -25,21 +30,33 @@ export function bestFor(tool: Tool): string[] {
   if (tool.category === 'Micro-benchmark CLI') {
     items.push('Quick HTTP or protocol micro-benchmarks from a single machine');
   } else if (tool.category === 'Cloud Load Testing') {
-    items.push('Teams that want managed load generation without operating injectors');
+    items.push(
+      'Teams that want managed load generation without operating injectors',
+    );
   } else if (tool.category === 'Enterprise Suite') {
-    items.push('Enterprise programs that need suite-level analysis and governance');
+    items.push(
+      'Enterprise programs that need suite-level analysis and governance',
+    );
   } else if (tool.category === 'Protocol/API Load') {
     items.push('API and protocol throughput or latency campaigns');
   } else {
-    items.push(`${tool.category} scenarios across typical web and service stacks`);
+    items.push(
+      `${tool.category} scenarios across typical web and service stacks`,
+    );
   }
 
   if (tool.license === 'Open Source') {
-    items.push('Teams that prefer open-source licensing and self-hosting options');
+    items.push(
+      'Teams that prefer open-source licensing and self-hosting options',
+    );
   } else if (tool.license === 'Freemium') {
-    items.push('Teams that want a free tier before committing to paid capacity');
+    items.push(
+      'Teams that want a free tier before committing to paid capacity',
+    );
   } else {
-    items.push('Organizations budgeting for commercial licenses or subscriptions');
+    items.push(
+      'Organizations budgeting for commercial licenses or subscriptions',
+    );
   }
 
   if (tool.scriptingLanguages.length) {
@@ -53,16 +70,22 @@ export function bestFor(tool: Tool): string[] {
 export function notBestFor(tool: Tool): string[] {
   const items: string[] = [];
   if (tool.status === 'Discontinued') {
-    items.push('New greenfield programs (prefer an active successor or alternative)');
+    items.push(
+      'New greenfield programs (prefer an active successor or alternative)',
+    );
   }
   if (tool.category === 'Micro-benchmark CLI') {
-    items.push('Full multi-protocol enterprise journeys and rich business-flow reporting');
+    items.push(
+      'Full multi-protocol enterprise journeys and rich business-flow reporting',
+    );
   }
   if (tool.deployment === 'Cloud') {
     items.push('Strictly air-gapped environments with no approved cloud path');
   }
   if (tool.deployment === 'Self-hosted') {
-    items.push('Teams unwilling to operate generators, results storage, and scaling');
+    items.push(
+      'Teams unwilling to operate generators, results storage, and scaling',
+    );
   }
   if (tool.license === 'Commercial') {
     items.push('Projects that require a fully free open-source stack only');

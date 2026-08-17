@@ -1,8 +1,4 @@
-import {
-  datasetLastVerified,
-  tools,
-  type Tool,
-} from '../data/tools';
+import { datasetLastVerified, tools, type Tool } from '../data/tools';
 import { siteOrigin } from '../config/site';
 import { seoYear } from './pageMeta';
 import * as llms from '../../scripts/llms-content.mjs';

@@ -36,7 +36,10 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
     toolItemList([left, right]),
     breadcrumbs([
       { name: 'Directory', path: '' },
-      { name: `${spec.leftLabel} vs ${spec.rightLabel}`, path: `vs/${spec.pairPath}` },
+      {
+        name: `${spec.leftLabel} vs ${spec.rightLabel}`,
+        path: `vs/${spec.pairPath}`,
+      },
     ]),
     {
       '@context': 'https://schema.org',
@@ -117,8 +120,7 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
         >
         <a
           class="button button--ghost"
-          href={siteUrl(`compare?tools=${compareQuery}`)}
-          >Open Test Rig</a
+          href={siteUrl(`compare?tools=${compareQuery}`)}>Open Test Rig</a
         >
       </div>
     </section>

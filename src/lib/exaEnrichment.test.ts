@@ -89,10 +89,7 @@ describe('Exa enrichment helpers', () => {
     const cleaned = sanitizeEnrichmentForDisplay(
       {
         fetchedAt: '2026-01-01',
-        aiFeatures: [
-          'JSR223 samplers with Groovy',
-          'AI anomaly detection',
-        ],
+        aiFeatures: ['JSR223 samplers with Groovy', 'AI anomaly detection'],
         features: ['a', 'b', 'c', 'd'],
       },
       { url: 'https://example.com', status: 'Discontinued' },

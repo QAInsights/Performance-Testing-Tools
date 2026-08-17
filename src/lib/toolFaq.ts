@@ -6,10 +6,7 @@ export interface FaqItem {
 }
 
 const wordCount = (text: string) =>
-  text
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean).length;
+  text.trim().split(/\s+/).filter(Boolean).length;
 
 /** Clamp answer copy into the 40 to 80 word AEO band without truncating mid-sentence when possible. */
 export function clampAnswer(text: string, min = 40, max = 80): string {
@@ -18,10 +15,7 @@ export function clampAnswer(text: string, min = 40, max = 80): string {
   if (words.length <= max && words.length >= min) return clean;
   if (words.length > max) {
     const sliced = words.slice(0, max).join(' ');
-    const lastStop = Math.max(
-      sliced.lastIndexOf('.'),
-      sliced.lastIndexOf(';'),
-    );
+    const lastStop = Math.max(sliced.lastIndexOf('.'), sliced.lastIndexOf(';'));
     if (lastStop > sliced.length * 0.5) {
       return sliced.slice(0, lastStop + 1).trim();
     }
@@ -79,7 +73,10 @@ function whoIsItFor(tool: Tool): FaqItem {
   return { question: `Who is ${tool.name} for?`, answer };
 }
 
-function differsFromRival(tool: Tool, catalog: readonly Tool[]): FaqItem | null {
+function differsFromRival(
+  tool: Tool,
+  catalog: readonly Tool[],
+): FaqItem | null {
   const rival = nearestRivals(tool, catalog, 1)[0];
   if (!rival) return null;
 
@@ -200,7 +197,9 @@ function knownLimitations(tool: Tool): FaqItem {
     );
   }
   if (!tool.protocols.length) {
-    limits.push('protocol coverage is not fully recorded in this catalog entry');
+    limits.push(
+      'protocol coverage is not fully recorded in this catalog entry',
+    );
   }
   if (!limits.length) {
     limits.push(
@@ -224,10 +223,7 @@ const ensureAnswerBand = (answer: string): string => {
   return clampAnswer(text, 40, 80);
 };
 
-export function buildToolFaq(
-  tool: Tool,
-  catalog: readonly Tool[],
-): FaqItem[] {
+export function buildToolFaq(tool: Tool, catalog: readonly Tool[]): FaqItem[] {
   const items = [
     whoIsItFor(tool),
     differsFromRival(tool, catalog),

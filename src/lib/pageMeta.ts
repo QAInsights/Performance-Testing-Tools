@@ -1,4 +1,9 @@
-import { datasetLastVerified, tools, type Category, type Tool } from '../data/tools';
+import {
+  datasetLastVerified,
+  tools,
+  type Category,
+  type Tool,
+} from '../data/tools';
 
 /** Calendar year used in SEO titles (refresh when the strategy year rolls). */
 export const seoYear = 2026;

@@ -93,10 +93,11 @@ const catalogJson = {
     personalPick: tool.personalPick,
     generalPick: tool.generalPick,
     tags: tool.tags,
-    directoryUrl: `${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}`.replace(
-      /\/$/,
-      '',
-    ),
+    directoryUrl:
+      `${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}`.replace(
+        /\/$/,
+        '',
+      ),
   })),
 };
 await writeFile(
