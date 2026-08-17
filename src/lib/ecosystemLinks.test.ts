@@ -19,7 +19,9 @@ describe('ecosystem links', () => {
     const dsl = tools.find((tool) => tool.slug === 'jmeter-java-dsl')!;
     expect(isJmeterFamily(dsl)).toBe(true);
     expect(
-      ecosystemLinksForTool(dsl).some((link) => link.href.includes('jmeter.ai')),
+      ecosystemLinksForTool(dsl).some((link) =>
+        link.href.includes('jmeter.ai'),
+      ),
     ).toBe(true);
 
     const k6Browser = tools.find((tool) => tool.slug === 'grafana-k6-browser')!;

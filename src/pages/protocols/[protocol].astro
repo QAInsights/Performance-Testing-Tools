@@ -58,8 +58,7 @@ const paragraphs = landing.intro.split('\n\n');
             <a class="panel focus-ring" href={siteUrl(`tools/${tool.slug}`)}>
               <strong>{tool.name}</strong>
               <small>
-                {tool.license} · {tool.deployment} ·{' '}
-                {tool.protocols.join(', ')}
+                {tool.license} · {tool.deployment} · {tool.protocols.join(', ')}
               </small>
             </a>
           ))

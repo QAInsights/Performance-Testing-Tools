@@ -76,19 +76,14 @@ export function compareWithLinks(
     const vs = staticVsPath(tool.slug, peer.slug);
     return {
       label: `${tool.name} vs ${peer.name}`,
-      href: vs
-        ? siteUrl(vs)
-        : siteUrl(`compare?tools=${slugs.join(',')}`),
+      href: vs ? siteUrl(vs) : siteUrl(`compare?tools=${slugs.join(',')}`),
       slugs,
       staticPage: Boolean(vs),
     };
   });
 }
 
-export function languageChips(
-  tool: Tool,
-  limit = 4,
-): FilterChip[] {
+export function languageChips(tool: Tool, limit = 4): FilterChip[] {
   return tool.scriptingLanguages.slice(0, limit).map((language) => {
     const landing = LANGUAGE_LANDINGS.find(
       (item) => item.slug === language.toLowerCase(),
@@ -105,7 +100,8 @@ export function languageChips(
 
 export function protocolChips(tool: Tool, limit = 6): FilterChip[] {
   return tool.protocols.slice(0, limit).map((protocol) => {
-    const key = protocol.toLowerCase() === 'https' ? 'http' : protocol.toLowerCase();
+    const key =
+      protocol.toLowerCase() === 'https' ? 'http' : protocol.toLowerCase();
     const landing = PROTOCOL_LANDINGS.find((item) => item.slug === key);
     return {
       label: protocol,

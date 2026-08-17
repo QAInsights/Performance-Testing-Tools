@@ -220,7 +220,10 @@ export function comparisonForTools(
   );
 }
 
-export function staticVsPath(leftSlug: string, rightSlug: string): string | null {
+export function staticVsPath(
+  leftSlug: string,
+  rightSlug: string,
+): string | null {
   const found = comparisonForTools(leftSlug, rightSlug);
   return found ? `vs/${found.pairPath}` : null;
 }

@@ -26,7 +26,8 @@ export function filterToolsForLanding(
         );
         if (!ok) return false;
       }
-      if (match.deployment && tool.deployment !== match.deployment) return false;
+      if (match.deployment && tool.deployment !== match.deployment)
+        return false;
       if (match.openSource && tool.license !== 'Open Source') return false;
       if (match.discontinued && tool.status !== 'Discontinued') return false;
       if (match.openSource && tool.status === 'Discontinued') return false;

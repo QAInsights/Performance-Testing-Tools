@@ -66,7 +66,9 @@ const title = `${hub.headline} (${seoYear}) · Curated Directory`;
         <a class="panel focus-ring" href={siteUrl(`tools/${tool.slug}`)}>
           <strong>{tool.name}</strong>
           <small
-            >{tool.vendor} · {tool.license} · {tool.deployment} · {tool.status}</small
+            >{tool.vendor} · {tool.license} · {tool.deployment} · {
+              tool.status
+            }</small
           >
         </a>
       </div>

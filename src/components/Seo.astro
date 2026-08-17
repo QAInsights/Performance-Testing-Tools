@@ -1,6 +1,5 @@
 ---
 import { absoluteUrl, baseUrl } from '../lib/urls';
-import { siteNoIndex } from '../config/site';
 import { siteName } from '../lib/pageMeta';
 
 const {
@@ -18,11 +17,10 @@ const schemas = Array.isArray(structuredData)
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
   : absoluteUrl(ogImage);
-const robotsNoIndex = siteNoIndex || noIndex;
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />
-{robotsNoIndex && <meta name="robots" content="noindex, nofollow" />}
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
 <meta name="theme-color" content="#0A0A0A" />
 <meta property="og:site_name" content={siteName} />
 <meta property="og:locale" content="en_US" />

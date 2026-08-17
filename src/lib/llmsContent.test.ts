@@ -16,6 +16,12 @@ describe('llms content builders', () => {
     expect(text).toContain('Canonical compare pairs');
     expect(text).toContain('llms-full.txt');
     expect(text).toContain('sitemap-index.xml');
+    expect(text).toContain('https://perf.jmeter.ai/tools/apache-jmeter/');
+    expect(text).toContain(
+      'https://perf.jmeter.ai/compare/?tools=apache-jmeter,gatling',
+    );
+    expect(text).toContain('https://perf.jmeter.ai/llms-full.txt');
+    expect(text).toContain('https://perf.jmeter.ai/sitemap-index.xml');
     for (const tool of tools) {
       expect(text).toContain(tool.name);
     }
@@ -38,10 +44,8 @@ describe('llms content builders', () => {
     expect(root.scope).toBe('/');
     expect(root.icons[0].src).toBe('/icons/icon-192.png');
 
-    const pages = JSON.parse(buildWebManifest('/Performance-Testing-Tools'));
-    expect(pages.start_url).toBe('/Performance-Testing-Tools/');
-    expect(pages.icons[0].src).toBe(
-      '/Performance-Testing-Tools/icons/icon-192.png',
-    );
+    const subPath = JSON.parse(buildWebManifest('/foo'));
+    expect(subPath.start_url).toBe('/foo/');
+    expect(subPath.icons[0].src).toBe('/foo/icons/icon-192.png');
   });
 });
