@@ -16,6 +16,12 @@ describe('llms content builders', () => {
     expect(text).toContain('Canonical compare pairs');
     expect(text).toContain('llms-full.txt');
     expect(text).toContain('sitemap-index.xml');
+    expect(text).toContain('https://perf.jmeter.ai/tools/apache-jmeter/');
+    expect(text).toContain(
+      'https://perf.jmeter.ai/compare/?tools=apache-jmeter,gatling',
+    );
+    expect(text).toContain('https://perf.jmeter.ai/llms-full.txt');
+    expect(text).toContain('https://perf.jmeter.ai/sitemap-index.xml');
     for (const tool of tools) {
       expect(text).toContain(tool.name);
     }

@@ -12,11 +12,13 @@ export const CANONICAL_COMPARE_PAIRS = [
 ];
 
 const joinCanonical = (path, origin) => {
-  const clean = String(path || '')
-    .replace(/^\/+|\/+$/g, '')
-    .replace(/^/, '');
-  if (!clean) return origin.replace(/\/$/, '');
-  return `${origin.replace(/\/$/, '')}/${clean}`;
+  const raw = String(path || '').replace(/^\/+/, '');
+  const [, pathname = '', suffix = ''] = raw.match(/^([^?#]*)([?#].*)?$/) || [];
+  const cleanPath = pathname.replace(/\/+$/, '');
+  if (!cleanPath) return `${origin.replace(/\/+$/, '')}/${suffix}`;
+  const hasFileExtension = /(?:^|\/)[^/]+\.[^/]+$/.test(cleanPath);
+  const pagePath = hasFileExtension ? cleanPath : `${cleanPath}/`;
+  return `${origin.replace(/\/+$/, '')}/${pagePath}${suffix}`;
 };
 
 const toolUrl = (slug, origin) => joinCanonical(`tools/${slug}`, origin);

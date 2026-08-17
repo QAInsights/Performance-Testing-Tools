@@ -68,6 +68,9 @@ describe('SEO structured data', () => {
       'https://perf.jmeter.ai/og/default.png',
     );
     expect(absoluteUrl('llms.txt')).toBe('https://perf.jmeter.ai/llms.txt');
+    expect(absoluteUrl('compare?tools=apache-jmeter,grafana-k6')).toBe(
+      'https://perf.jmeter.ai/compare/?tools=apache-jmeter,grafana-k6',
+    );
   });
 
   it('keeps Pages serving paths out of canonical URLs', () => {

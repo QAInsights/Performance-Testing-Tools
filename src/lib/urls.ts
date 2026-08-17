@@ -29,11 +29,15 @@ export function absoluteUrl(
       ? cleanPath.slice(servingSegment.length).replace(/^\/+/, '')
       : cleanPath;
   const joinedPath = joinBase(canonicalPath, base);
-  const pathWithoutQuery = joinedPath.split(/[?#]/, 1)[0];
-  const hasFileExtension = /\/[^/]+\.[^/]+$/.test(pathWithoutQuery);
+  const [, joinedPathname, suffix = ''] =
+    joinedPath.match(/^([^?#]*)([?#].*)?$/) || [];
+  const hasFileExtension = /(?:^|\/)[^/]+\.[^/]+$/.test(joinedPathname);
   const normalizedOrigin = origin.replace(/\/+$/, '');
   if (hasFileExtension) {
-    return `${normalizedOrigin}${joinedPath}`.replace(/\/$/, '');
+    return `${normalizedOrigin}${joinedPathname}${suffix}`;
   }
-  return `${normalizedOrigin}${joinedPath.endsWith('/') ? joinedPath : `${joinedPath}/`}`;
+  const pagePath = joinedPathname.endsWith('/')
+    ? joinedPathname
+    : `${joinedPathname}/`;
+  return `${normalizedOrigin}${pagePath}${suffix}`;
 }
