@@ -15,8 +15,9 @@ import { buildToolFaq } from './toolFaq';
 import { isSitemapPage } from './sitemap';
 
 describe('SEO structured data', () => {
-  it('defaults to the perf.jmeter.ai origin without environment overrides', () => {
+  it('defaults to the production origin instead of a Vercel deployment URL', () => {
     expect(siteOrigin).toBe('https://perf.jmeter.ai');
+    expect(siteOrigin).not.toContain('.vercel.app');
   });
 
   it('builds absolute URLs with exactly one project base segment', () => {

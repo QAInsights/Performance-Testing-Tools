@@ -2,11 +2,7 @@ const environment = typeof process === 'undefined' ? {} : process.env;
 const defaultOrigin = 'https://perf.jmeter.ai';
 const defaultBase = '/';
 
-const configuredOrigin =
-  environment.SITE_ORIGIN ||
-  (environment.VERCEL_URL
-    ? `https://${environment.VERCEL_URL}`
-    : defaultOrigin);
+const configuredOrigin = environment.SITE_ORIGIN || defaultOrigin;
 const configuredBase = environment.SITE_BASE ?? defaultBase;
 
 export const siteOrigin = configuredOrigin.replace(/\/+$/, '');
