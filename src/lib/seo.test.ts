@@ -12,6 +12,7 @@ import { absoluteUrl, baseUrl } from './urls';
 import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
+import { isSitemapPage } from './sitemap';
 
 describe('SEO structured data', () => {
   it('defaults to the perf.jmeter.ai origin without environment overrides', () => {
@@ -27,7 +28,10 @@ describe('SEO structured data', () => {
     ]) {
       const url = absoluteUrl(path);
       expect(url).toBe(
-        `${siteOrigin}${joinBase(path, canonicalBase)}`.replace(/\/$/, ''),
+        `${siteOrigin}${joinBase(path, canonicalBase)}/`.replace(
+          `${siteOrigin}//`,
+          `${siteOrigin}/`,
+        ),
       );
       if (siteBase !== '/') {
         expect(url).not.toContain(`${siteBase}${siteBase}`);
@@ -40,14 +44,14 @@ describe('SEO structured data', () => {
     expect(baseUrl('/og/default.png')).toBe(joinBase('og/default.png'));
   });
 
-  it('supports a root deployment without a Pages segment', () => {
+  it('supports a root deployment without a sub-path segment', () => {
     expect(joinBase('favicon.svg', '/')).toBe('/favicon.svg');
     expect(joinBase('manifest.webmanifest', '/')).toBe('/manifest.webmanifest');
     expect(joinBase('sitemap-index.xml', '/')).toBe('/sitemap-index.xml');
     expect(joinBase('', '/')).toBe('/');
     expect(
       absoluteUrl('about', 'https://performance-testing-tools.vercel.app', '/'),
-    ).toBe('https://performance-testing-tools.vercel.app/about');
+    ).toBe('https://performance-testing-tools.vercel.app/about/');
     expect(
       absoluteUrl(
         'og/default.png',
@@ -57,15 +61,35 @@ describe('SEO structured data', () => {
     ).toBe('https://performance-testing-tools.vercel.app/og/default.png');
   });
 
-  it('keeps Pages serving paths out of canonical URLs', () => {
+  it('keeps page URLs slash-terminated while leaving file URLs unchanged', () => {
+    expect(absoluteUrl('')).toBe('https://perf.jmeter.ai/');
+    expect(absoluteUrl('about')).toBe('https://perf.jmeter.ai/about/');
+    expect(absoluteUrl('og/default.png')).toBe(
+      'https://perf.jmeter.ai/og/default.png',
+    );
+    expect(absoluteUrl('llms.txt')).toBe('https://perf.jmeter.ai/llms.txt');
+    expect(absoluteUrl('compare?tools=apache-jmeter,grafana-k6')).toBe(
+      'https://perf.jmeter.ai/compare/?tools=apache-jmeter,grafana-k6',
+    );
+  });
+
+  it('keeps serving paths out of canonical URLs', () => {
     expect(
       absoluteUrl(
-        '/Performance-Testing-Tools/tools/grafana-k6',
-        'https://perf.jmeter.ai',
+        '/foo/tools/grafana-k6',
+        'https://example.com',
         canonicalBase,
-        '/Performance-Testing-Tools',
+        '/foo',
       ),
-    ).toBe('https://perf.jmeter.ai/tools/grafana-k6');
+    ).toBe('https://example.com/tools/grafana-k6/');
+  });
+
+  it('excludes the empty compare rig from root and sub-path sitemaps', () => {
+    expect(isSitemapPage('https://perf.jmeter.ai/compare/')).toBe(false);
+    expect(isSitemapPage('https://example.com/foo/compare/', '/foo')).toBe(
+      false,
+    );
+    expect(isSitemapPage('https://example.com/foo/about/', '/foo')).toBe(true);
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

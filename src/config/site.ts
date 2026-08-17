@@ -14,9 +14,7 @@ export const siteBase =
   configuredBase === '/' || configuredBase === ''
     ? '/'
     : `/${configuredBase.replace(/^\/+|\/+$/g, '')}`;
-export const canonicalBase = '/';
-export const siteNoIndex =
-  environment.SITE_NOINDEX === '1' || environment.SITE_NOINDEX === 'true';
+export const canonicalBase = siteBase;
 
 export function joinBase(path = '', base = siteBase): string {
   const normalizedBase = base === '/' ? '' : base.replace(/^\/+|\/+$/g, '');
