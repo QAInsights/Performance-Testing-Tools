@@ -26,8 +26,8 @@ jobs:
       - run: npm run build
         env:
           SITE_BASE: /Performance-Testing-Tools
-          SITE_ORIGIN: https://perf.jmeter.ai
-          SITE_NOINDEX: '1'
+          SITE_ORIGIN: https://qainsights.github.io
+          SITE_BLOCKED_MIRROR: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

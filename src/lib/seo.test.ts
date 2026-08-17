@@ -12,6 +12,7 @@ import { absoluteUrl, baseUrl } from './urls';
 import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
+import { isSitemapPage } from './sitemap';
 
 describe('SEO structured data', () => {
   it('defaults to the perf.jmeter.ai origin without environment overrides', () => {
@@ -27,7 +28,10 @@ describe('SEO structured data', () => {
     ]) {
       const url = absoluteUrl(path);
       expect(url).toBe(
-        `${siteOrigin}${joinBase(path, canonicalBase)}`.replace(/\/$/, ''),
+        `${siteOrigin}${joinBase(path, canonicalBase)}/`.replace(
+          `${siteOrigin}//`,
+          `${siteOrigin}/`,
+        ),
       );
       if (siteBase !== '/') {
         expect(url).not.toContain(`${siteBase}${siteBase}`);
@@ -47,7 +51,7 @@ describe('SEO structured data', () => {
     expect(joinBase('', '/')).toBe('/');
     expect(
       absoluteUrl('about', 'https://performance-testing-tools.vercel.app', '/'),
-    ).toBe('https://performance-testing-tools.vercel.app/about');
+    ).toBe('https://performance-testing-tools.vercel.app/about/');
     expect(
       absoluteUrl(
         'og/default.png',
@@ -55,6 +59,15 @@ describe('SEO structured data', () => {
         '/',
       ),
     ).toBe('https://performance-testing-tools.vercel.app/og/default.png');
+  });
+
+  it('keeps page URLs slash-terminated while leaving file URLs unchanged', () => {
+    expect(absoluteUrl('')).toBe('https://perf.jmeter.ai/');
+    expect(absoluteUrl('about')).toBe('https://perf.jmeter.ai/about/');
+    expect(absoluteUrl('og/default.png')).toBe(
+      'https://perf.jmeter.ai/og/default.png',
+    );
+    expect(absoluteUrl('llms.txt')).toBe('https://perf.jmeter.ai/llms.txt');
   });
 
   it('keeps Pages serving paths out of canonical URLs', () => {
@@ -65,7 +78,22 @@ describe('SEO structured data', () => {
         canonicalBase,
         '/Performance-Testing-Tools',
       ),
-    ).toBe('https://perf.jmeter.ai/tools/grafana-k6');
+    ).toBe('https://perf.jmeter.ai/tools/grafana-k6/');
+  });
+
+  it('excludes the empty compare rig from root and Pages sitemaps', () => {
+    expect(isSitemapPage('https://perf.jmeter.ai/compare/')).toBe(false);
+    expect(
+      isSitemapPage(
+        'https://qainsights.github.io/Performance-Testing-Tools/compare/',
+        '/Performance-Testing-Tools',
+      ),
+    ).toBe(false);
+    expect(
+      isSitemapPage(
+        'https://qainsights.github.io/Performance-Testing-Tools/about/',
+      ),
+    ).toBe(true);
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

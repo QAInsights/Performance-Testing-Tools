@@ -28,5 +28,12 @@ export function absoluteUrl(
     (cleanPath === servingSegment || cleanPath.startsWith(`${servingSegment}/`))
       ? cleanPath.slice(servingSegment.length).replace(/^\/+/, '')
       : cleanPath;
-  return `${origin}${joinBase(canonicalPath, base)}`.replace(/\/$/, '');
+  const joinedPath = joinBase(canonicalPath, base);
+  const pathWithoutQuery = joinedPath.split(/[?#]/, 1)[0];
+  const hasFileExtension = /\/[^/]+\.[^/]+$/.test(pathWithoutQuery);
+  const normalizedOrigin = origin.replace(/\/+$/, '');
+  if (hasFileExtension) {
+    return `${normalizedOrigin}${joinedPath}`.replace(/\/$/, '');
+  }
+  return `${normalizedOrigin}${joinedPath.endsWith('/') ? joinedPath : `${joinedPath}/`}`;
 }
