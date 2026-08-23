@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-12T22:09:57.030Z",
+  "generatedAt": "2026-08-15T06:25:15.016Z",
   "entries": {
     "agileload": {
       "about": "AgileLoad is an enterprise-class load, stress, and performance testing tool designed to identify performance bottlenecks in web, mobile, and API applications. It allows teams to simulate concurrent user traffic from on-premises or cloud environments and provides end-to-end diagnostics and reporting.",
@@ -623,6 +623,82 @@
       ],
       "fetchedAt": "2026-08-11T23:02:32.551Z"
     },
+    "browserup": {
+      "about": "BrowserUp is a load testing platform designed to shift testing earlier in the software development lifecycle by allowing teams to run load tests using their existing application code, test scripts, and page object models. It supports real-browser testing (via tools like Playwright and Selenium), API-level testing, and HTTP-level testing, providing detailed reporting and the ability to run distributed tests in a user's own AWS account or local Docker environment.",
+      "features": [
+        "Code-based load testing in various languages (Java, JavaScript/Node, Python, Ruby, C#/.NET)",
+        "Support for real-browser testing (Playwright, Selenium, Capybara) and API/HTTP-level testing",
+        "Distributed load generation in AWS or local Docker containers",
+        "Automatic collection of Browser Core Web Vitals (LCP, FID, INP) for real-browser tests",
+        "Command-line interface (CLI) for test configuration and cluster management",
+        "Web UI for test monitoring, reporting (Summary, Connection, Hits, URLs, Websockets), and report studio for custom reports",
+        "Role-based access control and workspace management"
+      ],
+      "pricing": "BrowserUp offers a freemium model (50 simultaneous users). Paid subscription tiers include: Team ($199/mo, 100 concurrent users), Pro ($499/mo, 1000 users), and Premium ($1499/mo, 3000 users). Enterprise plans are available via custom quote.",
+      "authorOrCompany": "BrowserUp Inc.",
+      "sources": [
+        {
+          "url": "https://browserup.github.io/docs/en/load/reports.html",
+          "title": "Reports docs"
+        },
+        {
+          "url": "https://browserup.github.io/docs/en/load/why-browserup.html",
+          "title": "Why BrowserUp? docs"
+        },
+        {
+          "url": "https://browserup.com/",
+          "title": "BrowserUp - Load Test Your Website Using Your Selenium ..."
+        },
+        {
+          "url": "https://browserup.com/docs/en/cluster/commands/upload_license.html",
+          "title": "upload-license"
+        },
+        {
+          "url": "https://browserup.com/docs/en/load/browser-core-vitals-load-test.html",
+          "title": "Browser Core Web Vitals"
+        },
+        {
+          "url": "https://browserup.com/docs/en/load/browserup-load-yaml.html",
+          "title": "Load test config - browserup.load.yaml"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:10.637Z"
+    },
+    "cassowary": {
+      "about": "Cassowary is a modern, cross-platform HTTP/S load-testing tool written in Go, designed for developers, testers, and sysadmins. It draws inspiration from projects like k6, ab, and httpstat.",
+      "features": [
+        "Two load testing modes: standard and spread (where URL paths are specified from a file)",
+        "CI-friendly for pipeline integration",
+        "Flexible metrics exporting including Cloudwatch, Prometheus (via PushGateway), and JSON file",
+        "Configurable HTTP client and arbitrary HTTP headers support",
+        "Supports GET, POST, PUT, and PATCH methods, with POST/PUT/PATCH data definable in a file",
+        "Cross-platform (single pre-built binary for Linux, Mac OSX, and Windows)",
+        "Importable as a module in Go applications",
+        "Visualizations: can export request data as histograms and boxplots in PNG format"
+      ],
+      "pricing": "Free and open-source (MIT License)",
+      "authorOrCompany": "Roger Welin",
+      "latestRelease": {
+        "version": "v0.17.0",
+        "date": "2024-04-24",
+        "notes": "Minor release (v0.17.0) featuring a Go version bump to 1.22, the addition of an --insecure flag for skipping TLS certificate verification, and a --silent flag for suppressing terminal output to facilitate integration with external exporters."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/rogerwelin",
+          "title": "Roger Welin"
+        },
+        {
+          "url": "https://github.com/rogerwelin/cassowary",
+          "title": "rogerwelin/cassowary: :rocket: Modern cross-platform ..."
+        },
+        {
+          "url": "https://github.com/rogerwelin/cassowary/releases",
+          "title": "Releases · rogerwelin/cassowary · GitHub"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:02.515Z"
+    },
     "drill": {
       "about": "Drill is a lightweight HTTP load testing application written in Rust, designed as an alternative to tools that require a JVM or other heavy runtimes. It is inspired by Ansible syntax.",
       "features": [
@@ -727,6 +803,54 @@
         }
       ],
       "fetchedAt": "2026-08-12T22:09:57.030Z"
+    },
+    "flood": {
+      "about": "Flood is a load and performance testing platform that allows teams to automate the deployment of load testing tools in the cloud. Founded in 2013, it was acquired by Tricentis in 2017 and operates as part of the Tricentis performance testing suite.",
+      "features": [
+        "Cloud-based and on-premise load generator orchestration",
+        "Browser-based load testing via Flood Element (built on Playwright/TypeScript)",
+        "Support for protocol-level load testing (PLU) and browser-level load testing (BLU)",
+        "Integration with AWS and Azure for global load simulation coverage",
+        "Real-time dashboard for test monitoring and analysis",
+        "Secure firewall tunneling via Aqueduct"
+      ],
+      "pricing": "Flood offers free and paid subscription plans, with consumption-based pricing calculated using Virtual User Hours (VUH).",
+      "authorOrCompany": "Tricentis",
+      "aiFeatures": [
+        "Agentic Performance Testing (available via Tricentis NeoLoad integration, providing AI-driven workflows and context-aware chat for performance validation)"
+      ],
+      "latestRelease": {
+        "version": "\"Flood Element 2.0\"",
+        "date": "\"\"",
+        "notes": "\"\""
+      },
+      "sources": [
+        {
+          "url": "https://element.flood.io/",
+          "title": "Load Test Your App Using Real Browsers"
+        },
+        {
+          "url": "https://element.flood.io/docs/1.5/tutorials/woocommerce",
+          "title": "WooCommerce"
+        },
+        {
+          "url": "https://element.flood.io/docs/next/tutorials/youtube",
+          "title": "Video Streaming"
+        },
+        {
+          "url": "https://guides.flood.io/infrastructure/standalone-infrastructure",
+          "title": "Standalone Infrastructure: Flood Agent"
+        },
+        {
+          "url": "https://www.flood.io/analysis",
+          "title": "Thousands of users, hundreds of tests— in one dashboard."
+        },
+        {
+          "url": "https://www.flood.io/blog/flood-has-joined-forces-with-tricentis",
+          "title": "Flood has joined forces with Tricentis"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:53.551Z"
     },
     "fortio": {
       "about": "Fortio (Φορτίο) is a fast, small, open-source load testing tool that originated as part of the Istio project before becoming an independent project. It serves as an HTTP and gRPC load generator, an advanced echo server, and provides a web UI and REST API for result visualization.",
@@ -1117,6 +1241,51 @@
       ],
       "fetchedAt": "2026-08-11T23:01:50.942Z"
     },
+    "grafana-k6-browser": {
+      "about": "Grafana k6 browser is a module within the k6 load testing tool that enables browser automation and end-to-end web testing. It provides browser-level APIs to interact with web browsers via the Chrome DevTools Protocol (CDP), allowing developers to perform browser-level performance testing and collect frontend metrics.",
+      "features": [
+        "Browser-level performance testing and automation",
+        "Integration with core k6 features, including thresholds and performance monitoring",
+        "Collection of Web Vital metrics (LCP, CLS, INP, FCP, TTFB)",
+        "Device emulation for mobile environments",
+        "Headless browser support for automated testing environments",
+        "Playwright-inspired API design for interactions (clicking, typing, navigation)"
+      ],
+      "pricing": "The k6 tool itself is open-source. Browser-level testing is available in Grafana Cloud under performance testing subscriptions, which are billed based on usage (Virtual User Hours) and concurrency limits.",
+      "authorOrCompany": "Grafana Labs",
+      "latestRelease": {
+        "version": "v2.1.0",
+        "date": "2026-06-30",
+        "notes": "Release v2.1.0 introduced an opt-in feature-flag system (the --features flag), a context-level proxy option for browser contexts, and subcommand discovery in k6 x."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/grafana/k6",
+          "title": "GitHub - grafana/k6: A modern load testing tool, using Go and JavaScript"
+        },
+        {
+          "url": "https://github.com/grafana/k6/releases/tag/v2.1.0",
+          "title": "v2.1.0"
+        },
+        {
+          "url": "https://community.grafana.com/t/concurrent-tests-runs-and-browser-vu-instance-allocation/164046/3",
+          "title": "Concurrent tests runs and Browser VU instance allocation - Grafana k6 / k6-browser - Grafana Labs Community Forums"
+        },
+        {
+          "url": "https://community.grafana.com/t/k6-browser-load-testing-large-scale/129784/2",
+          "title": "K6 browser load testing (large scale) - Grafana k6 - Grafana Labs Community Forums"
+        },
+        {
+          "url": "https://grafana.com/docs/grafana-cloud/cost-management-and-billing/analyze-costs/reduce-costs/performance-testing-costs/",
+          "title": "Reduce Grafana Cloud Performance Testing costs | Grafana Cloud documentation"
+        },
+        {
+          "url": "https://grafana.com/docs/k6/latest/javascript-api/k6-browser/",
+          "title": "k6/browser | Grafana k6 documentation"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:14.423Z"
+    },
     "hey": {
       "about": "hey is a tiny program that serves as an HTTP load generator and an alternative to ApacheBench (ab). It was formerly known as rakyll/boom.",
       "features": [
@@ -1159,6 +1328,53 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:28.451Z"
+    },
+    "jmeter-java-dsl": {
+      "about": "JMeter Java DSL is an open-source library that provides a simple Java API for defining and running Apache JMeter performance tests. Developed and supported by Abstracta, it allows developers to create test plans as code, facilitating version control, IDE integration (such as auto-completion and debugging), and CI/CD pipeline integration.",
+      "features": [
+        "Java API for JMeter test plan creation",
+        "IDE integration (auto-completion and debugging support)",
+        "Git-friendly performance test definition",
+        "CI/CD pipeline integration (JUnit support)",
+        "DSL recorder for capturing performance tests",
+        "jmx2dsl CLI for generating DSL code from existing JMX files",
+        "Cloud execution support (BlazeMeter, OctoPerf, Azure Load Testing)",
+        "Extensibility for JMeter-supported protocols and plugins"
+      ],
+      "pricing": "Open-source (free); enterprise-level support is available through Abstracta.",
+      "authorOrCompany": "Abstracta",
+      "latestRelease": {
+        "version": "2.2",
+        "date": "2025-12-11",
+        "notes": "Adds support for the WebSocket protocol and fixes an issue with the OctoPerf integration."
+      },
+      "sources": [
+        {
+          "url": "https://abstracta.github.io/jmeter-java-dsl/",
+          "title": "jmeter-java-dsl"
+        },
+        {
+          "url": "https://abstracta.github.io/jmeter-java-dsl/guide/",
+          "title": "User guide | jmeter-java-dsl"
+        },
+        {
+          "url": "https://abstracta.github.io/jmeter-java-dsl/motivation/",
+          "title": "Motivation | jmeter-java-dsl"
+        },
+        {
+          "url": "https://abstracta.github.io/jmeter-java-dsl/support/",
+          "title": "Support | jmeter-java-dsl"
+        },
+        {
+          "url": "https://github.com/abstracta/jmeter-java-dsl",
+          "title": "GitHub - abstracta/jmeter-java-dsl: Simple JMeter performance tests API"
+        },
+        {
+          "url": "https://github.com/abstracta/jmeter-java-dsl/releases/tag/v2.2",
+          "title": "2.2"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:06.473Z"
     },
     "jmeter-plugins": {
       "about": "JMeter Plugins is an independent, open-source project that serves as a marketplace for additional plugins for the Apache JMeter performance testing tool.",
@@ -1244,6 +1460,43 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:49.626Z"
+    },
+    "load-multiplier": {
+      "about": "Load Multiplier is a highly scalable software testing solution designed for performance, load, stress, and capacity testing of various network protocols and applications, including VoIP, HTTP, Web, WebRTC, JSON, XML, SIP, IMS, and custom proprietary protocols. It acts as a simulator for endpoints and servers, allowing users to simulate real-world traffic scenarios.",
+      "features": [
+        "Support for web, custom, HTTP, WebSocket, WebRTC, VoIP, SIP, IMS, RTP, SRTP, JSON, XML, and STUN/TURN/ICE protocols",
+        "Scalable simulation of millions of endpoints",
+        "Wrapper functionality to act as a simulator over existing software instances",
+        "Components include Web server (UI), Controller (central agent), and Multiplier (simulation agent)",
+        "Free trial version available (100 virtual users for one month)",
+        "Cloud deployment support (e.g., AWS, Digital Ocean)",
+        "Functional, load, performance, stress, and capacity testing capabilities"
+      ],
+      "pricing": "Offers a free version limited to 100 virtual users for one month; otherwise, specific pricing information is not publicly disclosed.",
+      "authorOrCompany": "Load Multiplier Pvt. Ltd.",
+      "sources": [
+        {
+          "url": "https://in.linkedin.com/company/loadmultiplier",
+          "title": "Load Multiplier Pvt. Ltd."
+        },
+        {
+          "url": "https://lmtools.com/content/free-version-lm-tools",
+          "title": "Free Version LM Tools | LM Tools"
+        },
+        {
+          "url": "https://lmtools.com/content/lm-tools",
+          "title": "LM Tools | LM Tools"
+        },
+        {
+          "url": "https://lmtools.com/sites/default/files/docs/brochure/Load_Multiplier_Product_Brochure_v3R.pdf",
+          "title": "Load Multiplier Pvt. Ltd."
+        },
+        {
+          "url": "https://lmtools.com/use-cases",
+          "title": "Multiplier Use Cases | LM Tools"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:56.599Z"
     },
     "loaderio": {
       "about": "Loader.io is a cloud-based load testing service that enables users to stress test web applications and APIs by simulating thousands of concurrent connections. It provides both a web interface and an API for registering and running tests.",
@@ -1571,6 +1824,91 @@
       ],
       "fetchedAt": "2026-08-11T23:02:18.748Z"
     },
+    "loadstorm": {
+      "about": "LoadStorm is an on-demand, cloud-based web application load and performance testing tool designed to simulate large volumes of HTTP traffic. It focuses on cost-effectiveness and scalability, utilizing Amazon Web Services to generate traffic.",
+      "features": [
+        "Cloud-based platform with no hardware or software installation required",
+        "Scalable load testing supporting up to 1,000,000 concurrent virtual users (VUsers)",
+        "Interactive real-time graphing of performance metrics",
+        "Script recording and editing capabilities",
+        "QuickStorm feature for rapid initial performance insights and benchmarking",
+        "Optional performance engineering consulting services"
+      ],
+      "pricing": "Offers both pay-as-you-go (\"Storm on Demand\") pricing based on VUser volume and subscription plans. A free trial and limited free account (allowing up to 25-50 concurrent VUsers) are available.",
+      "authorOrCompany": "CustomerCentrix, LLC.",
+      "latestRelease": {
+        "version": "1.0",
+        "date": "2025-09-14",
+        "notes": "The identified latest release note refers to general product information updates rather than specific feature release notes."
+      },
+      "sources": [
+        {
+          "url": "https://load-storm.software.informer.com/",
+          "title": "Load Storm Download - LoadStorm is an on-demand load and performance testing"
+        },
+        {
+          "url": "https://loadstorm.com/2014/12/quickstorms-overview/",
+          "title": "Introducing QuickStorm - LoadStorm"
+        },
+        {
+          "url": "https://loadstorm.com/faq-topics/1-getting-started/",
+          "title": "Getting Started Archives - LoadStorm"
+        },
+        {
+          "url": "https://loadstorm.com/june-17-2014-press-release/",
+          "title": "June 17, 2014 Press Release - LoadStorm"
+        },
+        {
+          "url": "https://loadstorm.com/knowledge-base/",
+          "title": "Knowledge Base - LoadStorm"
+        },
+        {
+          "url": "https://loadstorm.com/load-testing-company/",
+          "title": "Load Testing Company - LoadStorm"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:56.973Z"
+    },
+    "loadview": {
+      "about": "LoadView is a cloud-based, on-demand performance and load testing platform designed to simulate real-world user traffic on websites, web applications, and web services/APIs using real browsers.",
+      "features": [
+        "EveryStep Web Recorder for point-and-click scripting across 40+ browsers and devices",
+        "Support for custom load curves (Step, Goal-based, and Dynamic Adjustable)",
+        "Geo-distributed load injection network",
+        "Native support for Postman collections, JMeter, and Selenium scripts",
+        "On-premise agents for testing behind firewalls",
+        "Real-time performance reporting with waterfall charts"
+      ],
+      "pricing": "Offers flexible pricing including a pay-as-you-go On-Demand plan and monthly/annual subscription plans (starting at $129/month) with resource rollover, plus custom Enterprise plans.",
+      "authorOrCompany": "Dotcom-Monitor",
+      "sources": [
+        {
+          "url": "https://www.loadview-testing.com/",
+          "title": "LoadView: Website Load Testing & Performance Tools"
+        },
+        {
+          "url": "https://www.loadview-testing.com/about-us/",
+          "title": "About Us"
+        },
+        {
+          "url": "https://www.loadview-testing.com/compare/loadrunner-vs-loadview/",
+          "title": "LoadRunner vs LoadView - LoadView"
+        },
+        {
+          "url": "https://www.loadview-testing.com/features/",
+          "title": "Flexible, Cloud-based Testing for Complex Systems"
+        },
+        {
+          "url": "https://www.loadview-testing.com/features/point-click-scripting/",
+          "title": "Create Complex Scripts in Minutes | LoadView EveryStep Web Recorder"
+        },
+        {
+          "url": "https://www.loadview-testing.com/pricing/",
+          "title": "LoadView Pricing | Subscription & On-Demand Load ..."
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:05.763Z"
+    },
     "locust": {
       "about": "Locust is an open-source, modern load testing framework that allows users to write scalable load tests in plain Python, avoiding the need for clunky UIs or XML.",
       "features": [
@@ -1610,6 +1948,51 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:01:34.259Z"
+    },
+    "molotov": {
+      "about": "Molotov is a simple, open-source load testing tool designed for writing load tests in Python using asyncio and aiohttp.",
+      "features": [
+        "Support for scenario-based load testing using Python coroutines",
+        "Autosizing feature to ramp up workers based on failure rates",
+        "Support for gRPC load testing",
+        "Integration with aiohttp for HTTP/HTTPS load testing",
+        "Flexible configuration for duration, runs, and worker processes",
+        "Fixtures support for setup and teardown of tests and session configurations"
+      ],
+      "pricing": "Open source, distributed under the Apache License 2.0.",
+      "authorOrCompany": "Tarek Ziadé",
+      "latestRelease": {
+        "version": "2.7",
+        "date": "Not explicitly specified in repository or documentation",
+        "notes": "Version 2.7 introduced support for gRPC load testing."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/tarekziade/molotov",
+          "title": "tarekziade/molotov: Load Testing Tool"
+        },
+        {
+          "url": "https://molotov.readthedocs.io/en/latest/",
+          "title": "Molotov 2.7 documentation - Read the Docs"
+        },
+        {
+          "url": "https://molotov.readthedocs.io/en/latest/index.html",
+          "title": "https://molotov.readthedocs.io/en/latest/index.html"
+        },
+        {
+          "url": "https://molotov.readthedocs.io/en/stable/",
+          "title": "https://molotov.readthedocs.io/en/stable/"
+        },
+        {
+          "url": "https://molotov.readthedocs.io/en/stable/tutorial/",
+          "title": "Step-by-step tutorial — Molotov 2.6 documentation"
+        },
+        {
+          "url": "https://pypi.org/project/molotov/",
+          "title": "molotov v2.6"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:13.644Z"
     },
     "neoload": {
       "about": "NeoLoad is an enterprise-grade load generation and performance testing platform from Tricentis designed to validate system responsiveness, scalability, and performance under load across web, mobile, API, and microservices applications.",
@@ -1663,6 +2046,89 @@
       ],
       "fetchedAt": "2026-08-11T23:01:34.499Z"
     },
+    "ngrinder": {
+      "about": "nGrinder is an open-source enterprise-level performance testing platform that enables users to execute simultaneous script creation, test execution, monitoring, and result report generation. It consists of two main components: a web-based controller for test management and script creation, and agents that function as virtual user generators to create load.",
+      "features": [
+        "Use Jython or Groovy script to create test scenarios and generate load in the JVM using multiple agents.",
+        "Web-based interface for project management, monitoring, and result reporting.",
+        "Supports distributed agent deployment across multiple network regions.",
+        "Concurrent test execution with efficient agent utilization and dynamic assignment.",
+        "Built-in script management with integrated Subversion.",
+        "System and agent monitoring with real-time log access.",
+        "Agent auto-update feature.",
+        "Role-based administration including user management and test execution policies."
+      ],
+      "pricing": "Open-source (Apache License 2.0). No pricing information exists as it is a free, open-source software project.",
+      "authorOrCompany": "Naver",
+      "latestRelease": {
+        "version": "3.5.9-p1",
+        "date": "2024-06-13",
+        "notes": "Version 3.5.9 includes fixes for security vulnerabilities, updates to the base JDK version (to JDK 11), and bug fixes related to Maven/Gradle command execution on Windows and script validation in Docker environments."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/naver/ngrinder",
+          "title": "naver/ngrinder: enterprise level performance testing solution"
+        },
+        {
+          "url": "https://github.com/naver/ngrinder/blob/develop/docker/README.md",
+          "title": "docker/README.md"
+        },
+        {
+          "url": "https://github.com/naver/ngrinder/releases/tag/ngrinder-3.5.9-20230227",
+          "title": "ngrinder-3.5.9"
+        },
+        {
+          "url": "https://github.com/naver/ngrinder/wiki/Architecture",
+          "title": "Architecture · naver/ngrinder Wiki · GitHub"
+        },
+        {
+          "url": "https://github.com/naver/ngrinder/wiki/General-Administration-Guide",
+          "title": "General Administration Guide · naver/ngrinder Wiki · GitHub"
+        },
+        {
+          "url": "https://naver.github.io/ngrinder/",
+          "title": "nGrinder - NAVER Open Source - GitHub Pages"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:10.110Z"
+    },
+    "nouvola": {
+      "about": "Nouvola (Cloudy Days Inc.) was a provider of cloud-based performance and load-testing solutions designed for web, mobile, API, and IoT applications. The company, which is no longer in operation, focused on helping developers, DevOps, and engineering managers identify performance bottlenecks through synthetic user testing and real-time performance analytics.",
+      "features": [
+        "Cloud-based performance and load testing",
+        "Support for web, mobile, API, and IoT applications",
+        "Synthetic user testing and performance analytics",
+        "Recording and replaying of web transactions for test generation",
+        "Integration with DevOps pipelines",
+        "Deployment via AWS Marketplace (as DiveCloud)"
+      ],
+      "pricing": "Nouvola previously offered usage-based subscription tiers, including options via AWS Marketplace.",
+      "authorOrCompany": "Nouvola (Cloudy Days Inc.)",
+      "sources": [
+        {
+          "url": "https://mindmaps.abcc-platform.org.uk/firms/55918",
+          "title": "Nouvola | Company\n | RadialReport"
+        },
+        {
+          "url": "https://www.cbinsights.com/company/nouvola",
+          "title": "Nouvola - Products, Competitors, Financials, Employees, Headquarters Locations"
+        },
+        {
+          "url": "https://www.freepatentsonline.com/y2016/0301732.html",
+          "title": "Systems and Methods for Recording and Replaying of Web Transactions - Cloudy Days Inc. dba Nouvola"
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/nouvola-divecloud-now-available-on-aws-marketplace-300491474.html",
+          "title": "Nouvola DiveCloud Now Available on AWS MarketPlace"
+        },
+        {
+          "url": "https://www.serchen.com/company/nouvola",
+          "title": "Nouvola Product Details | Reviews, Pricing and Alternatives | 2026"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:52.491Z"
+    },
     "octoperf": {
       "about": "OctoPerf is an enterprise-grade performance and load testing platform available as SaaS and on-premise, designed to help engineering teams simulate realistic user traffic, identify bottlenecks, and validate application scalability. It is built on the Apache JMeter engine and enhances it with scalable cloud execution, advanced reporting, and collaboration features.",
       "features": [
@@ -1713,6 +2179,49 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:01:59.420Z"
+    },
+    "oha": {
+      "about": "oha (Ohayou/おはよう) is a tiny, Rust-based HTTP load generator that sends load to web applications and displays real-time statistics via a terminal user interface (TUI). It is inspired by the tool rakyll/hey.",
+      "features": [
+        "Real-time TUI animation using ratatui",
+        "Rate limiting (queries per second)",
+        "Latency correction to avoid coordinated omission problem",
+        "Support for custom HTTP headers, methods, and body input (strings or files)",
+        "Support for HTTP/2, multipart POST, and basic authentication",
+        "Proxy support with configurable HTTP versioning",
+        "JSON output format support",
+        "Experimental HTTP/3 support via feature flag"
+      ],
+      "pricing": "Open source (free)",
+      "authorOrCompany": "hatoo",
+      "latestRelease": {
+        "version": "v1.14.0",
+        "date": "2026-02-28",
+        "notes": "v1.14.0 included a fix for issue #857 and general maintenance improvements."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/hatoo/oha",
+          "title": "hatoo/oha: Ohayou(おはよう), HTTP load generator ..."
+        },
+        {
+          "url": "https://github.com/hatoo/oha/releases/tag/v1.14.0",
+          "title": "v1.14.0"
+        },
+        {
+          "url": "https://crates.io/crates/oha",
+          "title": "oha"
+        },
+        {
+          "url": "https://docs.rs/crate/oha/1.11.0",
+          "title": "oha 1.11.0 - Docs.rs"
+        },
+        {
+          "url": "https://docs.rs/crate/oha/1.5.0",
+          "title": "oha 1.5.0 - Docs.rs"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:00.252Z"
     },
     "pureload": {
       "about": "PureLoad is a flexible testing solution for applications and networks provided by Emblasoft.",
@@ -1827,6 +2336,55 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:01:46.088Z"
+    },
+    "reqfleet": {
+      "about": "Reqfleet is a cloud-native platform for distributed load testing that automates infrastructure management for JMeter and Locust scripts. It supports execution on both public cloud and private infrastructure (Bring Your Own Compute).",
+      "features": [
+        "Distributed load testing infrastructure for JMeter and Locust",
+        "Private region (VPC/on-premises) execution support without inbound exposure",
+        "Per-minute billing based on Virtual User Minutes (VUM) or Compute Minutes (CM)",
+        "Bring Your Own Compute (BYOC) with 50% discount on usage",
+        "Role-based access control (RBAC) and organization/team management",
+        "Integration with GitHub Actions and CLI support for automation",
+        "Support for SSO via OIDC and SAML"
+      ],
+      "pricing": "Reqfleet offers a free tier with monthly credit allowances, alongside tiered subscriptions (Pro, Team, Enterprise). Pricing is based on Virtual User Minutes (VUM) or Compute Minutes (CM). Additional metered credits are available for purchase.",
+      "authorOrCompany": "Reqfleet is owned, built, and operated by Lantern24.",
+      "aiFeatures": [
+        "Generative test design for load test plans via AI-assisted prompts"
+      ],
+      "latestRelease": {
+        "version": "Not publicly documented as a semantic version number; referenced via ongoing platform development and Go 1.27 benchmarks.",
+        "date": "2026-07-01",
+        "notes": "The engineering blog post from July 2026 discusses internal technical benchmarks and optimizations related to Go 1.27 and JSON library performance."
+      },
+      "sources": [
+        {
+          "url": "https://reqfleet.com/",
+          "title": "Reqfleet"
+        },
+        {
+          "url": "https://reqfleet.com/aboutus",
+          "title": "About us | Reqfleet"
+        },
+        {
+          "url": "https://reqfleet.com/blog",
+          "title": "Reqfleet Engineering Blog"
+        },
+        {
+          "url": "https://reqfleet.com/blog/benchmarking-go-1-27-encoding-json-the-any-trap",
+          "title": "Benchmarking Go 1.27 encoding/json: The any Trap | Reqfleet Blog"
+        },
+        {
+          "url": "https://reqfleet.com/docs",
+          "title": "Reqfleet Documentation | Reqfleet"
+        },
+        {
+          "url": "https://reqfleet.com/docs/concepts/byoc",
+          "title": "Bring Your Own Compute (BYOC) | Reqfleet Documentation"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:01.574Z"
     },
     "scale-test": {
       "about": "Scale Test is a paid Salesforce add-on designed to assist organizations in preparing for peak traffic and business growth by simulating production-like load within a full-copy sandbox environment. It enables developers and administrators to create, schedule, and execute performance tests to identify scalability issues, performance bottlenecks, and infrastructure limits before they impact production environments.",
@@ -1965,6 +2523,86 @@
       ],
       "fetchedAt": "2026-08-11T23:02:18.462Z"
     },
+    "smartmeter": {
+      "about": "SmartMeter.io is a performance testing tool designed to simplify Apache JMeter-based load testing by providing a user-friendly interface, automated reporting, and CI integration.",
+      "features": [
+        "Distributed load testing",
+        "Automated test reporting",
+        "Acceptance criteria for automatic test evaluation",
+        "Continuous Integration (CI) support",
+        "Predefined test templates",
+        "Backup of reports and test logs for comparison",
+        "Customizable report templates"
+      ],
+      "pricing": "SmartMeter.io is available in a free version, as well as Pro and Enterprise versions. Licensing details are available via contact.",
+      "authorOrCompany": "SmartMeter.io",
+      "latestRelease": {
+        "version": "1.11.0",
+        "date": "2021-02-16",
+        "notes": "Version 1.11.0 introduced support for JMeter 5.4.1."
+      },
+      "sources": [
+        {
+          "url": "https://www.smartmeter.io/blog/-a3523--iqyElxMf/what-s-new-in-smartmeter.io-1.10-2.0",
+          "title": "What’s new in SmartMeter.io 1.11.0"
+        },
+        {
+          "url": "https://www.smartmeter.io/blog/jmeter-distributed-load-testing-made-simple",
+          "title": "JMeter distributed load testing made simple"
+        },
+        {
+          "url": "https://www.smartmeter.io/blog/performance-testing-continuous-integration-environment",
+          "title": "Making Performance Testing part of your Continuous Integration Environment"
+        },
+        {
+          "url": "https://www.smartmeter.io/blog/smartmeter-load-test-report",
+          "title": "Save Yourself Some Work and Get a Great Load Test Report, Even from JMeter"
+        },
+        {
+          "url": "https://www.smartmeter.io/contact",
+          "title": "Contact | SmartMeter"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:05.690Z"
+    },
+    "stormforger": {
+      "about": "StormForger is a performance testing as a service platform designed for HTTP APIs, providing an expressive JavaScript DSL to define test cases.",
+      "features": [
+        "JavaScript DSL for test case definition",
+        "Support for HTTP verbs (GET, POST, PUT, PATCH, DELETE, HEAD)",
+        "Dynamic content extraction via JSONPath, XPath, and regular expressions",
+        "Integration of various data sources and generators (random numbers, strings, file fixtures)"
+      ],
+      "pricing": "Public pricing plans are not listed; a free trial is available. StormForge (now often referred to as StormForge) offers pay-as-you-go billing options via AWS Marketplace for its optimization products.",
+      "authorOrCompany": "StormForger",
+      "sources": [
+        {
+          "url": "https://docs.stormforger.com/perftest/reference/content-extraction/",
+          "title": "Content Extraction"
+        },
+        {
+          "url": "https://docs.stormforger.com/perftest/reference/data-sources/",
+          "title": "Data Sources"
+        },
+        {
+          "url": "https://docs.stormforger.com/perftest/reference/javascript-definition/",
+          "title": "JavaScript Definition"
+        },
+        {
+          "url": "https://docs.stormforger.com/perftest/reference/requests/",
+          "title": "Requests | StormForge Documentation"
+        },
+        {
+          "url": "https://docs.stormforger.com/perftest/reference/sessions/",
+          "title": "Sessions | StormForge Documentation"
+        },
+        {
+          "url": "https://www.crunchbase.com/organization/stormforger",
+          "title": "StormForger - Crunchbase Company Profile & Funding"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:51.998Z"
+    },
     "stresstimulus": {
       "about": "StresStimulus is a load testing, stress testing, and performance testing tool for websites, mobile apps, and enterprise applications, developed by Stimulus Technology. It allows users to emulate hundreds or thousands of concurrent virtual users to monitor performance, pinpoint bottlenecks, and assess scalability.",
       "features": [
@@ -2064,6 +2702,86 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:32.910Z"
+    },
+    "tcpkali": {
+      "about": "tcpkali is a high-performance, open-source command-line tool designed for load testing and benchmarking TCP and WebSocket servers. It functions as both a traffic generator (client mode) and a data sink (server mode), capable of handling massive numbers of concurrent connections with minimal resource consumption.",
+      "features": [
+        "Supports raw TCP and WebSocket (RFC6455) protocols.",
+        "Generates massive concurrent connections from a single host using interface aliases.",
+        "Efficient multi-core utilization via the --workers option.",
+        "Allows granular control over upstream and downstream bandwidth.",
+        "Supports custom message generation for traffic patterns.",
+        "Measures response latency percentiles using HdrHistogram.",
+        "Integrates with StatsD and DataDog for statistics reporting."
+      ],
+      "pricing": "Free; licensed under the BSD 2-Clause License.",
+      "authorOrCompany": "Machine Zone",
+      "latestRelease": {
+        "version": "1.1.1",
+        "date": "2018-01-04",
+        "notes": "The latest version listed in package repositories is 1.1.1, associated with the 2018-01-04 release."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/launchdarkly/tcpkali",
+          "title": "launchdarkly/tcpkali"
+        },
+        {
+          "url": "https://github.com/launchdarkly/tcpkali/blob/master/doc/tcpkali.man.md",
+          "title": "doc/tcpkali.man.md"
+        },
+        {
+          "url": "https://github.com/Syuq/tcpkali-archlinux",
+          "title": "Syuq/tcpkali-archlinux"
+        },
+        {
+          "url": "https://mynixos.com/nixpkgs/package/tcpkali",
+          "title": "tcpkali - MyNixOS"
+        },
+        {
+          "url": "https://perf.jmeter.ai/tools/tcpkali",
+          "title": "tcpkali Review, Pricing, License & Specs"
+        },
+        {
+          "url": "https://ports.macports.org/port/tcpkali/details/",
+          "title": "tcpkali"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:24:57.025Z"
+    },
+    "the-grinder": {
+      "about": "The Grinder is a Java-based open-source load testing framework designed to facilitate distributed testing across multiple load injector machines. It is used for load, capacity, functional, and stress testing.",
+      "features": [
+        "Distributed load testing framework with console-based monitoring and control of multiple injector machines",
+        "Dynamic test scripting using Jython and Clojure languages",
+        "Support for testing any Java-accessible system, including HTTP/HTTPS (web services), JDBC databases, RMI, IIOP, SOAP, and custom protocols",
+        "HTTP plug-in with support for cookie management, SSL, and connection throttling",
+        "TCP proxy utility for protocol interception and script recording",
+        "Graphical user interface (Java Swing) for console management and process monitoring",
+        "Centralized script editing and distribution capabilities"
+      ],
+      "pricing": "Open-source (distributed under a BSD-style license).",
+      "authorOrCompany": "The Grinder project; originally developed by Paco Gómez and Peter Zadrozny, later maintained by Philip Aston. The repository at https://github.com/cossme/grinder is a fork initiated by Cyril and Olivier in 2018.",
+      "latestRelease": {
+        "version": "4.0.0",
+        "date": "2018-03-11",
+        "notes": "The 4.0.0 release introduced a new web-based graphical console."
+      },
+      "sources": [
+        {
+          "url": "https://cossme.github.io/grinder/",
+          "title": "The Grinder | A Java Load Testing Framework"
+        },
+        {
+          "url": "https://cossme.github.io/grinder/guide/features.html",
+          "title": "The Grinder | A Java Load Testing Framework"
+        },
+        {
+          "url": "https://github.com/cossme/grinder/releases",
+          "title": "Releases · cossme/grinder"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:10.238Z"
     },
     "tsung": {
       "about": "Tsung is an open-source, multi-protocol distributed load testing and benchmarking framework designed to simulate huge numbers of concurrent users for stress testing IP-based client/server applications. Originally developed in Erlang, it is highly scalable and supports a wide range of protocols, including HTTP, WebDAV, SOAP, PostgreSQL, MySQL, LDAP, MQTT, AMQP, and XMPP/Jabber.",
@@ -2348,6 +3066,47 @@
         }
       ],
       "fetchedAt": "2026-08-11T23:02:45.489Z"
+    },
+    "yandex-tank": {
+      "about": "Yandex.Tank is an extensible open source load testing tool designed for advanced Linux users, primarily used for performance benchmarking as part of automated load testing suites.",
+      "features": [
+        "Support for multiple load generators (Phantom, JMeter, BFG, Pandora)",
+        "Performance analytics backend integration (Yandex.Overload)",
+        "Support for various ammo formats (e.g., plain URL list, access.log)",
+        "Test autostop functionality based on performance conditions",
+        "Customizable and extendable monitoring over SSH",
+        "Extensible plugin architecture for artifacts, monitoring, and result processing"
+      ],
+      "pricing": "Open source (GNU LGPLv3 license)",
+      "authorOrCompany": "Yandex",
+      "latestRelease": {
+        "version": "1.15.12",
+        "date": "",
+        "notes": "Historical major release notes are maintained in the repository wiki, noting shifts in Python support and plugin compatibility. No specific latest release date or recent notes provided for the current documentation version."
+      },
+      "sources": [
+        {
+          "url": "https://github.com/yandex/yandex-tank",
+          "title": "yandex/yandex-tank: Load and performance benchmark tool"
+        },
+        {
+          "url": "https://github.com/yandex/yandex-tank/wiki",
+          "title": "Home · yandex/yandex-tank Wiki"
+        },
+        {
+          "url": "https://yandextank.readthedocs.io/en/latest/core_and_modules.html",
+          "title": "https://yandextank.readthedocs.io/en/latest/core_and_modules.html"
+        },
+        {
+          "url": "https://yandextank.readthedocs.io/en/latest/index.html",
+          "title": "Welcome to Yandex.Tank’s documentation! — Yandex.Tank 1.15.12 documentation"
+        },
+        {
+          "url": "https://yandextank.readthedocs.io/en/latest/intro.html",
+          "title": "https://yandextank.readthedocs.io/en/latest/intro.html"
+        }
+      ],
+      "fetchedAt": "2026-08-15T06:25:15.016Z"
     }
   }
 }
