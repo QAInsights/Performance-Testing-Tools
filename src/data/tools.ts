@@ -1473,6 +1473,26 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['enterprise', 'synthetic-monitoring', 'load-testing'],
   }),
+  makeTool({
+    slug: 'spillway',
+    name: 'Spillway',
+    vendor: 'Craig Edwards',
+    url: 'https://spillwayapp.com/',
+    description:
+      'Native macOS app for HTTP API load testing with visual test plans and live percentile charts.',
+    longDescription:
+      'Spillway is a SwiftUI macOS app that treats each load test as a document you edit, save, and share instead of a script or YAML file. Plans are composed visually from HTTP requests, loops, conditions, think times, CSV data, and regex or JSON extractors feeding token expressions, and can be driven with either a virtual-user or a target throughput model with ramp, spike, and soak shapes. Runs stream live throughput, error-rate, and p50/p90/p95/p99 charts alongside per-sample request and response inspection, and two executions can be compared to spot regressions. OAuth 2.0, custom headers, cookie jars, and client certificates are built in; distributed runs across multiple machines are announced as coming soon.',
+    category: 'Protocol/API Load',
+    license: 'Freemium',
+    pricingModel: 'Free download on the Mac App Store with in-app purchases.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['None'],
+    protocols: ['HTTP', 'HTTPS', 'REST'],
+    osSupport: ['macOS'],
+    firstReleased: 2026,
+    status: 'Active',
+    tags: ['macos', 'api', 'gui', 'no-code'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
