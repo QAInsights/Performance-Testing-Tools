@@ -1493,6 +1493,27 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['macos', 'api', 'gui', 'no-code'],
   }),
+  makeTool({
+    slug: 'goreplay',
+    name: 'GoReplay',
+    vendor: 'Probe Labs',
+    url: 'https://goreplay.org/',
+    repoUrl: 'https://github.com/probelabs/goreplay',
+    description:
+      'Captures live production HTTP traffic and replays it for shadow testing, load testing, and analysis.',
+    longDescription:
+      'GoReplay is a Go daemon that listens passively on network interfaces instead of sitting in the request path, so recording production traffic requires no infrastructure change beyond running the binary alongside the service. Captured traffic can be written to file, replayed against a staging environment, split across several targets, or amplified to generate load from real request mixes rather than synthetic scripts. Requests pass through optional middleware programs that read and rewrite payloads over stdin/stdout — a Node.js framework is provided and any language works — which covers token refresh, data masking, and rewriting. The LGPLv3 core handles HTTP capture and replay; GoReplay PRO adds binary protocols such as Thrift and Protocol Buffers, cloud storage of recorded traffic, TCP session replication, and data masking.',
+    category: 'Protocol/API Load',
+    license: 'Open Source',
+    pricingModel: 'Free LGPLv3 core; GoReplay PRO from $3,000 per year.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['JavaScript', 'Go'],
+    protocols: ['HTTP', 'HTTPS', 'TCP'],
+    osSupport: ['Linux', 'macOS', 'Windows'],
+    firstReleased: 2013,
+    status: 'Active',
+    tags: ['traffic-replay', 'shadow-testing', 'golang'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
