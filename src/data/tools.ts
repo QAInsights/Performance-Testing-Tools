@@ -1514,6 +1514,28 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['traffic-replay', 'shadow-testing', 'golang'],
   }),
+  makeTool({
+    slug: 'lps-tool',
+    name: 'LPS Tool',
+    vendor: 'Mohamad Haidar',
+    url: 'https://lpsload.io/',
+    repoUrl: 'https://github.com/mohaidr/LPS',
+    description:
+      'Declarative .NET CLI that describes HTTP load tests in YAML and streams results to a live dashboard.',
+    longDescription:
+      'LPS (Load, Performance and Stress) is a .NET 8 global tool installed with `dotnet tool install --global lps` and driven entirely by a YAML file, so scenarios need no scripting or code. Tests are structured as rounds of iterations executed by virtual clients, with iteration modes shaping request timing to mimic steady users or bursts, and declarative helper methods generating random values, counters, and timestamps. Runs can be spread across nodes in a master-slave topology while a real-time dashboard tracks metrics, and a watchdog throttles tests before the generating machine saturates. SkipIf expressions branch at runtime, termination rules stop a run on sustained errors, and failure criteria act as post-run quality gates on error rate and percentiles.',
+    category: 'Protocol/API Load',
+    license: 'Freemium',
+    pricingModel:
+      'Free for non-commercial use under AGPL-3.0 with additional terms; commercial use needs a paid license.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['YAML'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2022,
+    status: 'Active',
+    tags: ['dotnet', 'yaml', 'cli', 'distributed'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
