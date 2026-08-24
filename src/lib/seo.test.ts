@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   breadcrumbs,
   datasetSchema,
@@ -128,5 +128,79 @@ describe('SEO structured data', () => {
       toolSoftwareApplication(commercial).offers.description ||
         toolSoftwareApplication(commercial).offers.priceSpecification,
     ).toBeTruthy();
+  });
+});
+
+describe('canonical origin environment precedence', () => {
+  type ControlledEnvironment = {
+    SITE_ORIGIN?: string;
+    VERCEL_URL?: string;
+  };
+
+  async function loadSiteOrigin(environment: ControlledEnvironment) {
+    const previous = {
+      SITE_ORIGIN: process.env.SITE_ORIGIN,
+      VERCEL_URL: process.env.VERCEL_URL,
+    };
+
+    if (environment.SITE_ORIGIN === undefined) {
+      delete process.env.SITE_ORIGIN;
+    } else {
+      process.env.SITE_ORIGIN = environment.SITE_ORIGIN;
+    }
+
+    if (environment.VERCEL_URL === undefined) {
+      delete process.env.VERCEL_URL;
+    } else {
+      process.env.VERCEL_URL = environment.VERCEL_URL;
+    }
+
+    try {
+      vi.resetModules();
+      const site = await import('../config/site');
+      return site.siteOrigin;
+    } finally {
+      if (previous.SITE_ORIGIN === undefined) {
+        delete process.env.SITE_ORIGIN;
+      } else {
+        process.env.SITE_ORIGIN = previous.SITE_ORIGIN;
+      }
+
+      if (previous.VERCEL_URL === undefined) {
+        delete process.env.VERCEL_URL;
+      } else {
+        process.env.VERCEL_URL = previous.VERCEL_URL;
+      }
+
+      vi.resetModules();
+    }
+  }
+
+  it('keeps the production origin when only VERCEL_URL is set', async () => {
+    const origin = await loadSiteOrigin({
+      VERCEL_URL: 'preview-project.vercel.app',
+    });
+
+    expect(origin).toBe('https://perf.jmeter.ai');
+    expect(origin).not.toContain('.vercel.app');
+  });
+
+  it('uses SITE_ORIGIN and strips trailing slashes', async () => {
+    const origin = await loadSiteOrigin({
+      SITE_ORIGIN: 'https://alternate.example///',
+      VERCEL_URL: 'preview-project.vercel.app',
+    });
+
+    expect(origin).toBe('https://alternate.example');
+  });
+
+  it('does not let VERCEL_URL override an explicit SITE_ORIGIN', async () => {
+    const origin = await loadSiteOrigin({
+      SITE_ORIGIN: 'https://alternate.example',
+      VERCEL_URL: 'production-project.vercel.app',
+    });
+
+    expect(origin).toBe('https://alternate.example');
+    expect(origin).not.toContain('production-project.vercel.app');
   });
 });
