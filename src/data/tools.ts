@@ -1556,6 +1556,27 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['jmeter', 'reporting', 'analysis', 'beta'],
   }),
+  makeTool({
+    slug: 'bees-with-machine-guns',
+    name: 'Bees with Machine Guns',
+    vendor: 'Chicago Tribune News Applications team',
+    url: 'https://github.com/newsapps/beeswithmachineguns',
+    repoUrl: 'https://github.com/newsapps/beeswithmachineguns',
+    description:
+      'Python CLI that spins up throwaway EC2 instances and runs ApacheBench from each to load test a URL.',
+    longDescription:
+      'Bees with Machine Guns is a Python command-line utility from the Chicago Tribune news apps team that turns short-lived EC2 instances into distributed load generators. The workflow is three commands: "bees up" launches a fleet in your own AWS account using an EC2 keypair and security group you supply, "bees attack" runs ApacheBench (or optionally hurl) on every instance with a shared request and concurrency budget and aggregates the per-instance summaries, and "bees down" terminates them — nothing is torn down automatically, so a forgotten fleet keeps billing. Later contributions added multi-region fleets driven by a bundled regions.json of AMIs, POST payload files and content types, custom instance tags, and cipher-suite selection. Because load comes from many source IPs it sidesteps the single-generator bottleneck and per-IP rate limits, but the model inherits ApacheBench limits: single URLs and flat request bursts rather than scripted user journeys, and no live results while a run is in flight. The MIT-licensed repository targets Python 2.6 through 3.6 with boto and paramiko and has seen no commits since December 2017, so expect stale AMIs and boto2-era AWS APIs.',
+    category: 'Load Testing',
+    license: 'Open Source',
+    pricingModel: 'Free; MIT license. You pay AWS for the EC2 instances used.',
+    deployment: 'Hybrid',
+    scriptingLanguages: ['Python'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['macOS', 'Linux'],
+    firstReleased: 2010,
+    status: 'Discontinued',
+    tags: ['python', 'cli', 'aws', 'distributed'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
