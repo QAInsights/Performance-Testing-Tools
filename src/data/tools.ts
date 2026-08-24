@@ -6,7 +6,8 @@ export type Category =
   | 'Micro-benchmark CLI'
   | 'Cloud Load Testing'
   | 'Enterprise Suite'
-  | 'Browser/RUM';
+  | 'Browser/RUM'
+  | 'Results Analysis';
 export type License = 'Open Source' | 'Commercial' | 'Freemium';
 export type Deployment = 'Cloud' | 'Self-hosted' | 'Hybrid';
 export type Status = 'Active' | 'Discontinued' | 'Unknown';
@@ -1535,6 +1536,25 @@ export const tools: Tool[] = [
     firstReleased: 2022,
     status: 'Active',
     tags: ['dotnet', 'yaml', 'cli', 'distributed'],
+  }),
+  makeTool({
+    slug: 'jmeterhub',
+    name: 'JMeterHub',
+    vendor: 'JMeterHub',
+    url: 'https://www.jmeterhub.com/',
+    description:
+      'Browser-based JMeter results analyzer that turns .jtl files into aggregate reports, charts, and run comparisons.',
+    longDescription:
+      'JMeterHub analyses JMeter results rather than generating load: its JTL Analyzer opens a CSV or XML result file and produces per-transaction aggregate reports with averages, medians, 90th, 95th, and 99th percentiles, throughput, error rate, and Apdex. Response-time, throughput, and error-rate charts export as PNGs, tables copy as rich HTML so they paste into Confluence or Word as real tables, and label filters isolate or exclude transactions before copying. A baseline run can be placed beside a new one to read per-transaction regressions as deltas. On the free tier the result file is parsed in the browser and never uploaded. The site is in beta, with saved analyses, PDF export, custom SLA thresholds, and AI-written conclusions announced for a paid tier.',
+    category: 'Results Analysis',
+    license: 'Freemium',
+    pricingModel: 'Free analyzer; Pro tier announced at $5 per month.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['None'],
+    protocols: ['None'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    tags: ['jmeter', 'reporting', 'analysis', 'beta'],
   }),
 ];
 
