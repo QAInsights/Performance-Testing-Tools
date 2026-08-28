@@ -7,7 +7,8 @@ export type Category =
   | 'Cloud Load Testing'
   | 'Enterprise Suite'
   | 'Browser/RUM'
-  | 'Results Analysis';
+  | 'Results Analysis'
+  | 'AI/LLM Inference';
 export type License = 'Open Source' | 'Commercial' | 'Freemium';
 export type Deployment = 'Cloud' | 'Self-hosted' | 'Hybrid';
 export type Status = 'Active' | 'Discontinued' | 'Unknown';
@@ -1576,6 +1577,71 @@ export const tools: Tool[] = [
     firstReleased: 2010,
     status: 'Discontinued',
     tags: ['python', 'cli', 'aws', 'distributed'],
+  }),
+  makeTool({
+    slug: 'inference-perf',
+    name: 'Inference Perf',
+    vendor: 'Kubernetes SIGs',
+    url: 'https://github.com/kubernetes-sigs/inference-perf',
+    repoUrl: 'https://github.com/kubernetes-sigs/inference-perf',
+    description:
+      'Model-server-agnostic GenAI inference benchmarking tool that measures TTFT, TPOT, throughput, and goodput.',
+    longDescription:
+      'Inference Perf came out of the Kubernetes wg-serving effort to standardise how inference benchmarks and their metrics are reported, so numbers from different model servers can be compared apples-to-apples. A run is described in YAML (or CLI overrides) covering the server, the data source, and a multi-stage load schedule, then executed by a multi-process generator the project reports as scaling past 10k QPS, with automatic saturation sweeps to find where a deployment breaks. Reported metrics are the inference-specific ones — time to first token, time per output token, inter-token latency, input/output token throughput, and goodput against your own SLO constraints — with charts generated for QPS versus latency and throughput. Workloads come from real datasets such as ShareGPT, CNN DailyMail, Billsum, and VisionArena, from synthetic distributions with exact input/output shapes, or from replayed traces including OpenTelemetry traces for agentic call trees; shared-prefix and multi-turn chat scenarios exercise KV cache reuse. vLLM, SGLang, and TGI are verified with server-side aggregate and time-series metrics scraped alongside the client view, and any OpenAI-compatible endpoint works. It installs from PyPI, ships a container image, and has a manifest set for running benchmarks as Kubernetes jobs.',
+    category: 'AI/LLM Inference',
+    license: 'Open Source',
+    pricingModel: 'Free; Apache License 2.0.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Python', 'YAML'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Linux', 'macOS'],
+    firstReleased: 2025,
+    status: 'Active',
+    tags: ['ai', 'llm', 'python', 'kubernetes', 'cli'],
+  }),
+  makeTool({
+    slug: 'aiperf',
+    name: 'AIPerf',
+    vendor: 'NVIDIA',
+    url: 'https://github.com/ai-dynamo/aiperf',
+    repoUrl: 'https://github.com/ai-dynamo/aiperf',
+    description:
+      'NVIDIA CLI that profiles generative AI endpoints and reports LLM latency and throughput percentiles.',
+    longDescription:
+      'AIPerf is the benchmarking client in NVIDIA’s ai-dynamo stack: `aiperf profile` points at any OpenAI-compatible endpoint — vLLM, TGI, Ollama, NIM, or a hosted API — and reports time to first token, time to second token, request latency, inter-token latency, per-user and aggregate output token throughput, and sequence lengths as avg/min/max/p99/p90/p50/std, exported to CSV and JSON alongside a live terminal dashboard (or headless output for CI). Load can be driven by fixed concurrency, request rate, request rate capped by max concurrency, or deterministic trace replay, with constant, Poisson, and gamma arrival patterns, gradual ramping, warmup phases, adaptive SLA-boundary discovery, request cancellation, and multi-URL load balancing. Ten services communicate over ZMQ so a single run can scale across processes, and a plugin system extends endpoints, datasets, transports, and metrics. Datasets include ShareGPT, MMStar for vision models, AIMO math traces, production captures from SageMaker and BurstGPT, and inline or custom formats; optional extras stream results to MLflow, OpenTelemetry, or Weights & Biases.',
+    category: 'AI/LLM Inference',
+    license: 'Open Source',
+    pricingModel: 'Free; Apache License 2.0.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Python', 'YAML'],
+    protocols: ['HTTP', 'HTTPS', 'SSE'],
+    osSupport: ['Linux', 'macOS', 'Windows'],
+    firstReleased: 2025,
+    status: 'Active',
+    tags: ['ai', 'llm', 'python', 'cli', 'tui'],
+  }),
+  makeTool({
+    slug: 'iamspeed',
+    name: 'I am speed',
+    vendor: 'NaveenKumar Namachivayam',
+    url: 'https://iamspeed.dev/',
+    repoUrl: 'https://github.com/QAInsights/iamspeed.dev',
+    description:
+      'Fast.com-style browser benchmark for LLM APIs, streaming live tokens/sec, TTFT, and TTLT per provider.',
+    longDescription:
+      'I am speed is a fast.com for LLM APIs: open the page, paste your own API key, hit Run, and watch tokens stream in with live tokens per second, time to first token, and time to last token. Everything runs in the browser against the provider directly — nothing is proxied through a server and keys are stored locally under AES-GCM encryption — so the numbers reflect the path your own client would take. OpenAI, Anthropic, Groq, Cerebras, Fireworks AI, Mistral, OpenRouter, Google Gemini, x.ai, z.ai, and local servers such as Ollama, LM Studio, and llama.cpp are supported, with model discovery from the endpoint for local setups (which must allow browser CORS, and need a tunnel or a local build to avoid mixed-content blocking on the hosted site). Race Mode runs the same prompt against two or three providers in parallel and animates them on a racetrack, deciding the winner by TTLT with tokens per second as tiebreaker and a separate award for the lowest TTFT. Results can be submitted to a public leaderboard backed by DynamoDB for provider and model comparisons. The Astro app is MIT licensed and runs locally with npm for private benchmarking.',
+    category: 'AI/LLM Inference',
+    license: 'Open Source',
+    pricingModel:
+      'Free; MIT license. You pay your LLM provider for the tokens a benchmark consumes.',
+    deployment: 'Hybrid',
+    scriptingLanguages: ['None'],
+    protocols: ['HTTPS', 'SSE'],
+    osSupport: ['Browser'],
+    firstReleased: 2026,
+    status: 'Active',
+    personalPick: true,
+    tags: ['ai', 'llm', 'browser', 'web-ui', 'quick-start'],
   }),
 ];
 

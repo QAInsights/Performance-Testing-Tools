@@ -58,7 +58,9 @@ function whoIsItFor(tool: Tool): FaqItem {
             ? 'teams validating real-browser or end-user experience under load'
             : tool.category === 'Protocol/API Load'
               ? 'engineers focused on API and protocol-level throughput and latency'
-              : 'engineers designing load, stress, and performance tests for web and service systems';
+              : tool.category === 'AI/LLM Inference'
+                ? 'teams benchmarking LLM and generative AI endpoints on token latency and throughput'
+                : 'engineers designing load, stress, and performance tests for web and service systems';
 
   const licenseNote =
     tool.license === 'Open Source'

@@ -39,6 +39,10 @@ export function bestFor(tool: Tool): string[] {
     );
   } else if (tool.category === 'Protocol/API Load') {
     items.push('API and protocol throughput or latency campaigns');
+  } else if (tool.category === 'AI/LLM Inference') {
+    items.push(
+      'Token-level latency and throughput benchmarks against LLM inference endpoints',
+    );
   } else {
     items.push(
       `${tool.category} scenarios across typical web and service stacks`,
