@@ -8,9 +8,12 @@ export function brandMark(x, y, size) {
   return `<g transform="translate(${x} ${y}) scale(${size / 64})">${tile}${bars}</g>`;
 }
 
-/** Standalone square icon. `padding` is the share of the canvas kept clear around the mark. */
+/** Standalone square icon. Untiled marks are fitted to their 44x44 artwork box. */
 export function brandIcon(size, { padding = 0, tiled = true } = {}) {
   const inner = size * (1 - 2 * padding);
   const offset = size * padding;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" fill="#0A0A0A"/><g transform="translate(${offset} ${offset}) scale(${inner / 64})">${tiled ? tile : ''}${bars}</g></svg>`;
+  const transform = tiled
+    ? `translate(${offset} ${offset}) scale(${inner / 64})`
+    : `translate(${offset} ${offset}) scale(${inner / 44}) translate(-8 -8)`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" fill="#0A0A0A"/><g transform="${transform}">${tiled ? tile : ''}${bars}</g></svg>`;
 }
