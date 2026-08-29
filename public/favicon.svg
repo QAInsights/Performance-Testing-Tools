@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#0A0A0A"/><path d="M8 42h10l7-20 8 28 7-18h16" fill="none" stroke="#1EAEDB" stroke-width="5"/><circle cx="8" cy="42" r="4" fill="#FBB03B"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Performance Testing Tools">
+  <rect x="1.5" y="1.5" width="61" height="61" rx="14" fill="#101313" stroke="#007f7c" stroke-width="3"/>
+  <rect x="12" y="40" width="10" height="12" rx="3" fill="#007f7c"/>
+  <rect x="24" y="32" width="10" height="20" rx="3" fill="#18a09b"/>
+  <rect x="36" y="22" width="10" height="30" rx="3" fill="#70d3cb"/>
+  <path d="M14 22l12-8 10 5 10-8" fill="none" stroke="#fbb03b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

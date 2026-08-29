@@ -1,6 +1,7 @@
 ---
 import { datasetLastVerified, type Category } from '../data/tools';
 import { siteUrl } from '../lib/urls';
+import Logo from './Logo.astro';
 
 interface Props {
   category?: Category;
@@ -14,7 +15,7 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
 
 <aside class="rail panel">
   <a href={siteUrl()} class="brand focus-ring"
-    ><span class="brand-mark">↗</span><span
+    ><Logo class="brand-mark" /><span
       >PERFORMANCE<br /><b>TESTING TOOLS</b></span
     ></a
   >

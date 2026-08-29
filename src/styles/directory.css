@@ -16,6 +16,7 @@
 }
 .brand {
   display: flex;
+  align-items: center;
   gap: 10px;
   color: var(--color-surface-100);
   text-decoration: none;
@@ -23,9 +24,7 @@
   letter-spacing: 0.08em;
 }
 .brand-mark {
-  color: var(--color-amber-400);
-  font-size: 32px;
-  line-height: 22px;
+  flex: none;
 }
 .brand b {
   color: var(--color-teal-300);
