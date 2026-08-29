@@ -8,6 +8,7 @@ const {
   canonical = Astro.url.pathname,
   ogImage = baseUrl('og/default.png'),
   ogType = 'website',
+  markdownHref,
   structuredData = [],
   noIndex = false,
 } = Astro.props;
@@ -21,6 +22,15 @@ const absoluteOgImage = ogImage.startsWith('http')
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />
+{
+  markdownHref && (
+    <link
+      rel="alternate"
+      type="text/markdown"
+      href={absoluteUrl(markdownHref)}
+    />
+  )
+}
 {noIndex && <meta name="robots" content="noindex, nofollow" />}
 <meta name="theme-color" content="#0A0A0A" />
 <meta property="og:site_name" content={siteName} />

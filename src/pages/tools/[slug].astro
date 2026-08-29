@@ -86,6 +86,7 @@ const sourceHost = (url: string) => {
   description={toolDescription(tool)}
   ogImage={siteUrl(`og/${tool.slug}.png`)}
   ogType="article"
+  markdownHref={siteUrl(`tools/${tool.slug}.md`)}
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
     toolSoftwareApplication(tool, enrichment),
@@ -361,6 +362,8 @@ const sourceHost = (url: string) => {
               <p class="enrichment-stamp mono">
                 LAST VERIFIED · {enrichmentDate}
                 {enrichment?.fetchedAt ? ' · GROUNDED VIA EXA' : ''}
+                {' · '}
+                <a href={siteUrl('about#methodology')}>CURATED BY QAINSIGHTS</a>
               </p>
             </section>
           )
@@ -369,6 +372,8 @@ const sourceHost = (url: string) => {
           !enrichment?.sources?.length && (
             <p class="enrichment-stamp mono catalog-stamp">
               CATALOG LAST VERIFIED · {datasetLastVerified}
+              {' · '}
+              <a href={siteUrl('about#methodology')}>CURATED BY QAINSIGHTS</a>
             </p>
           )
         }
@@ -394,7 +399,7 @@ const sourceHost = (url: string) => {
         }
       </div>
     </section>
-    <Footer />
+    <Footer markdownHref={siteUrl(`tools/${tool.slug}.md`)} />
   </main>
 </ConsoleLayout>
 

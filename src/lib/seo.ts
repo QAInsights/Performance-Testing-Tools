@@ -83,6 +83,11 @@ export function toolSoftwareApplication(
       name: siteName,
       url: absoluteUrl(''),
     },
+    creator: {
+      '@type': 'Organization',
+      name: 'QAInsights',
+      url: 'https://qainsights.com/',
+    },
     downloadUrl: tool.url,
     softwareVersion: version || undefined,
     offers: softwareOffer(tool),

@@ -91,6 +91,9 @@ describe('SEO structured data', () => {
       false,
     );
     expect(isSitemapPage('https://example.com/foo/about/', '/foo')).toBe(true);
+    expect(isSitemapPage('https://perf.jmeter.ai/tools/apache-jmeter.md')).toBe(
+      false,
+    );
   });
 
   it('resolves sitemap lastmod dates from enrichment with dataset fallback', () => {
@@ -143,7 +146,16 @@ describe('SEO structured data', () => {
       name: 'Performance Testing Tools',
       url: 'https://perf.jmeter.ai/',
     });
+    expect(application.creator).toEqual({
+      '@type': 'Organization',
+      name: 'QAInsights',
+      url: 'https://qainsights.com/',
+    });
     expect(application).not.toHaveProperty('aggregateRating');
+    expect(datasetSchema()).toMatchObject({
+      creator: application.creator,
+      maintainer: application.creator,
+    });
     expect(toolFaq(tool, tools, undefined, enrichment).dateModified).toBe(
       '2026-01-01',
     );

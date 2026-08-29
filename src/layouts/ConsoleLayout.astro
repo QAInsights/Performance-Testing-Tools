@@ -11,6 +11,7 @@ const {
   canonical,
   ogImage,
   ogType = 'website',
+  markdownHref,
   noIndex = false,
 } = Astro.props;
 ---
@@ -43,6 +44,7 @@ const {
       canonical={canonical}
       ogImage={ogImage}
       ogType={ogType}
+      markdownHref={markdownHref}
       structuredData={structuredData}
       noIndex={noIndex}
     />
