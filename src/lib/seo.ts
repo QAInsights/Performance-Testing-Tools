@@ -84,22 +84,16 @@ export function toolSoftwareApplication(
       name: siteName,
       url: absoluteUrl(''),
     },
-    creator: {
-      '@type': 'Organization',
-      name: 'QAInsights',
-      url: 'https://qainsights.com/',
-    },
     downloadUrl: tool.url,
     softwareVersion: version || undefined,
     offers: softwareOffer(tool),
     author: {
-      '@type': 'Person',
-      ...curatorPerson,
+      '@type': 'Organization',
+      name: enrichment?.authorOrCompany || tool.vendor,
     },
     publisher: {
       '@type': 'Organization',
-      name: organizationProfile.name,
-      url: organizationProfile.url,
+      name: enrichment?.authorOrCompany || tool.vendor,
     },
     sameAs: sameAs.length ? sameAs : undefined,
   };
@@ -119,6 +113,15 @@ export function toolFaq(
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     dateModified,
+    author: {
+      '@type': 'Person',
+      ...curatorPerson,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: organizationProfile.name,
+      url: organizationProfile.url,
+    },
     mainEntity: faqItems.map((item) => ({
       '@type': 'Question',
       name: item.question,

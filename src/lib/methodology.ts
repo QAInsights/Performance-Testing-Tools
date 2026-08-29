@@ -2,7 +2,7 @@ export const curator = 'QAInsights';
 export const curatorPerson = {
   name: 'NaveenKumar Namachivayam',
   url: 'https://qainsights.com/about-naveenkumar/',
-  jobTitle: 'Performance Test Engineer',
+  jobTitle: 'Full Stack Developer',
   sameAs: [
     'https://qainsights.com/about-naveenkumar/',
     'https://www.linkedin.com/in/naveenkumarn',

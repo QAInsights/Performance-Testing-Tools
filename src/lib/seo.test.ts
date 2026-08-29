@@ -147,20 +147,41 @@ describe('SEO structured data', () => {
       name: 'Performance Testing Tools',
       url: 'https://perf.jmeter.ai/',
     });
-    expect(application.creator).toEqual({
-      '@type': 'Organization',
-      name: 'QAInsights',
-      url: 'https://qainsights.com/',
-    });
     expect(application.author).toEqual({
+      '@type': 'Organization',
+      name: 'Apache Software Foundation',
+    });
+    expect(application.author.name).toBe(tool.vendor);
+    expect(application.publisher).toEqual({
+      '@type': 'Organization',
+      name: 'Apache Software Foundation',
+    });
+    expect(application).not.toHaveProperty('creator');
+    expect(application).not.toHaveProperty('aggregateRating');
+    expect(datasetSchema()).toMatchObject({
+      creator: [
+        {
+          '@type': 'Organization',
+          name: 'QAInsights',
+          url: 'https://qainsights.com/',
+        },
+        { '@type': 'Person', ...curatorPerson },
+      ],
+      maintainer: {
+        '@type': 'Organization',
+        name: 'QAInsights',
+        url: 'https://qainsights.com/',
+      },
+      author: { '@type': 'Person', ...curatorPerson },
+    });
+    expect(toolFaq(tool, tools).author).toEqual({
       '@type': 'Person',
       ...curatorPerson,
     });
-    expect(application).not.toHaveProperty('aggregateRating');
-    expect(datasetSchema()).toMatchObject({
-      creator: [application.creator, application.author],
-      maintainer: application.creator,
-      author: application.author,
+    expect(toolFaq(tool, tools).publisher).toEqual({
+      '@type': 'Organization',
+      name: 'QAInsights',
+      url: 'https://qainsights.com/',
     });
     expect(toolFaq(tool, tools, undefined, enrichment).dateModified).toBe(
       '2026-01-01',
