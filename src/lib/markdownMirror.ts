@@ -10,7 +10,12 @@ import { toolSentence } from './derivedComparisons';
 import { buildToolFaq } from './toolFaq';
 import { architectureLine, bestFor, notBestFor } from './toolEntity';
 import { absoluteUrl } from './urls';
-import { correctionsUrl, curator, methodologyPoints } from './methodology';
+import {
+  correctionsUrl,
+  curator,
+  curatorPerson,
+  methodologyPoints,
+} from './methodology';
 import type { AlternativesHub, ComparisonSpec } from '../data/comparisons';
 
 const line = (value: string) => value.trim();
@@ -26,7 +31,7 @@ export const answerBoxSplit = (value: string): string | undefined => {
     : undefined;
 };
 const footer = (origin: string) =>
-  `---\nCurated by ${curator} · methodology: ${absoluteUrl('about#methodology', origin)} · corrections: ${correctionsUrl}`;
+  `---\nCurated by ${curatorPerson.name} (${curator}) · methodology: ${absoluteUrl('about#methodology', origin)} · corrections: ${correctionsUrl}`;
 
 export function toolMarkdown(
   tool: Tool,

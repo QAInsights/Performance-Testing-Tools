@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { datasetLastVerified, tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 import { aboutDescription, aboutTitle } from '../lib/pageMeta';
-import { methodologyPoints } from '../lib/methodology';
+import { curatorPerson, methodologyPoints } from '../lib/methodology';
 const archetypes = [
   ['Ramp', 'Gradual rise for protocol/API-oriented tools.', 'ghz'],
   [
@@ -93,6 +93,11 @@ const archetypes = [
     </div>
     <section id="methodology" class="methodology panel about-card">
       <h2>How this directory is maintained</h2>
+      <p>
+        Curated by <a href={curatorPerson.url} target="_blank" rel="noreferrer"
+          >{curatorPerson.name}</a
+        > of QAInsights.
+      </p>
       <ul>
         {methodologyPoints.map((point) => <li>{point}</li>)}
       </ul>

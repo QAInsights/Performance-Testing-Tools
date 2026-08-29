@@ -15,6 +15,7 @@ import {
 } from './markdownMirror';
 import { buildLlmsFullTxt, buildLlmsTxt } from './llmsContent';
 import { siteOrigin } from '../config/site';
+import { curatorPerson } from './methodology';
 
 describe('generated public content', () => {
   it('contains every tool in both LLM catalogs', () => {
@@ -73,6 +74,9 @@ describe('generated public content', () => {
       );
       expect(body).toMatch(/^- Last verified: \d{4}-\d{2}-\d{2}$/m);
       expect(body).not.toMatch(/^- Last verified: .*T.*$/m);
+      expect(body).toContain(
+        `Curated by ${curatorPerson.name} (QAInsights) · methodology:`,
+      );
       expect(body.trim()).not.toBe('');
       invalid(body);
     }
@@ -119,6 +123,7 @@ describe('generated public content', () => {
       expect(text).toContain(`- [${spec.leftLabel} vs ${spec.rightLabel}](`);
     }
     expect(text).toContain('## Methodology');
+    expect(text).toContain(`curated by ${curatorPerson.name}.`);
     const full = buildLlmsFullTxt(tools, siteOrigin);
     expect(full).toContain('## Comparisons');
     expect(full).toContain('### JMeter vs k6');

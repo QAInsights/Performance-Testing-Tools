@@ -1,6 +1,7 @@
 import { datasetLastVerified, type Tool } from '../data/tools';
 import type { EnrichmentEntry } from './enrichmentData';
 import { organizationProfile } from './organization';
+import { curatorPerson } from './methodology';
 import { siteName } from './pageMeta';
 import { buildToolFaq, type FaqItem } from './toolFaq';
 import { absoluteUrl } from './urls';
@@ -83,11 +84,6 @@ export function toolSoftwareApplication(
       name: siteName,
       url: absoluteUrl(''),
     },
-    creator: {
-      '@type': 'Organization',
-      name: 'QAInsights',
-      url: 'https://qainsights.com/',
-    },
     downloadUrl: tool.url,
     softwareVersion: version || undefined,
     offers: softwareOffer(tool),
@@ -97,8 +93,7 @@ export function toolSoftwareApplication(
     },
     publisher: {
       '@type': 'Organization',
-      name: organizationProfile.name,
-      url: organizationProfile.url,
+      name: enrichment?.authorOrCompany || tool.vendor,
     },
     sameAs: sameAs.length ? sameAs : undefined,
   };
@@ -118,6 +113,15 @@ export function toolFaq(
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     dateModified,
+    author: {
+      '@type': 'Person',
+      ...curatorPerson,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: organizationProfile.name,
+      url: organizationProfile.url,
+    },
     mainEntity: faqItems.map((item) => ({
       '@type': 'Question',
       name: item.question,

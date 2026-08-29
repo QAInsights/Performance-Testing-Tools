@@ -11,6 +11,7 @@ import { seoYear } from './pageMeta';
 import { answerBoxSplit, methodologyMarkdown } from './markdownMirror';
 import { absoluteUrl } from './urls';
 import { notBestFor, bestFor } from './toolEntity';
+import { curatorPerson, curator } from './methodology';
 
 const join = (values: readonly string[], fallback = 'n/a') =>
   values.length ? values.join(', ') : fallback;
@@ -179,7 +180,7 @@ export function buildLlmsTxt(
   return [
     '# Performance Testing Tools',
     '',
-    `A decision-ready, curated directory of ${catalog.length} performance testing tools (${year}) from QAInsights.`,
+    `A decision-ready, curated directory of ${catalog.length} performance testing tools (${year}) from ${curator}, curated by ${curatorPerson.name}.`,
     `Canonical site: ${origin}`,
     '',
     '## How to choose a load testing tool',

@@ -13,6 +13,7 @@ import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { datasetLastVerified, tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
 import { isSitemapPage, sitemapLastmod } from './sitemap';
+import { curatorPerson } from './methodology';
 
 describe('SEO structured data', () => {
   it('defaults to the production origin instead of a Vercel deployment URL', () => {
@@ -146,15 +147,41 @@ describe('SEO structured data', () => {
       name: 'Performance Testing Tools',
       url: 'https://perf.jmeter.ai/',
     });
-    expect(application.creator).toEqual({
+    expect(application.author).toEqual({
+      '@type': 'Organization',
+      name: 'Apache Software Foundation',
+    });
+    expect(application.author.name).toBe(tool.vendor);
+    expect(application.publisher).toEqual({
+      '@type': 'Organization',
+      name: 'Apache Software Foundation',
+    });
+    expect(application).not.toHaveProperty('creator');
+    expect(application).not.toHaveProperty('aggregateRating');
+    expect(datasetSchema()).toMatchObject({
+      creator: [
+        {
+          '@type': 'Organization',
+          name: 'QAInsights',
+          url: 'https://qainsights.com/',
+        },
+        { '@type': 'Person', ...curatorPerson },
+      ],
+      maintainer: {
+        '@type': 'Organization',
+        name: 'QAInsights',
+        url: 'https://qainsights.com/',
+      },
+      author: { '@type': 'Person', ...curatorPerson },
+    });
+    expect(toolFaq(tool, tools).author).toEqual({
+      '@type': 'Person',
+      ...curatorPerson,
+    });
+    expect(toolFaq(tool, tools).publisher).toEqual({
       '@type': 'Organization',
       name: 'QAInsights',
       url: 'https://qainsights.com/',
-    });
-    expect(application).not.toHaveProperty('aggregateRating');
-    expect(datasetSchema()).toMatchObject({
-      creator: application.creator,
-      maintainer: application.creator,
     });
     expect(toolFaq(tool, tools, undefined, enrichment).dateModified).toBe(
       '2026-01-01',

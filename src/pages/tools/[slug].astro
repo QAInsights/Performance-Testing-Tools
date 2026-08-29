@@ -10,6 +10,7 @@ import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
 import { getEnrichment } from '../../lib/enrichmentData';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
+import { curatorPerson } from '../../lib/methodology';
 import {
   alternativesForHub,
   alternativesHubForTool,
@@ -363,7 +364,9 @@ const sourceHost = (url: string) => {
                 LAST VERIFIED · {enrichmentDate}
                 {enrichment?.fetchedAt ? ' · GROUNDED VIA EXA' : ''}
                 {' · '}
-                <a href={siteUrl('about#methodology')}>CURATED BY QAINSIGHTS</a>
+                <a href={siteUrl('about#methodology')}>
+                  CURATED BY {curatorPerson.name.toUpperCase()}
+                </a>
               </p>
             </section>
           )
@@ -373,7 +376,9 @@ const sourceHost = (url: string) => {
             <p class="enrichment-stamp mono catalog-stamp">
               CATALOG LAST VERIFIED · {datasetLastVerified}
               {' · '}
-              <a href={siteUrl('about#methodology')}>CURATED BY QAINSIGHTS</a>
+              <a href={siteUrl('about#methodology')}>
+                CURATED BY {curatorPerson.name.toUpperCase()}
+              </a>
             </p>
           )
         }
