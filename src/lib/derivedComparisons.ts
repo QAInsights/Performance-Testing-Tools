@@ -116,6 +116,21 @@ const list = (values: readonly string[], limit = 3) =>
 
 const sentence = (text: string) => text.replace(/\.*$/, '.');
 
+/** Pricing prose reads as a parenthetical, so it drops its full stop. */
+const parenthetical = (text: string) => text.trim().replace(/\.*$/, '');
+
+/**
+ * Only one side actually runs on vendor infrastructure. Hybrid tools offer a
+ * hosted option, which is a weaker claim, so they are never described as the
+ * hosted side of a pair.
+ */
+const hostedSide = (left: Tool, right: Tool) => {
+  const cloud = [left, right].filter((tool) => tool.deployment === 'Cloud');
+  if (cloud.length !== 1) return undefined;
+  const hosted = cloud[0];
+  return { hosted, owned: hosted.slug === left.slug ? right : left };
+};
+
 const notableRank = (tool: Tool) => NOTABLE_TOOLS.indexOf(tool.slug);
 
 const isNotable = (tool: Tool) => notableRank(tool) >= 0;
@@ -164,10 +179,14 @@ function splitSentence(left: Tool, right: Tool): string {
   if (left.license !== right.license) {
     return `The practical split is the cost model: ${left.name} is ${LICENSE_ADJECTIVE[left.license]}, ${right.name} is ${LICENSE_ADJECTIVE[right.license]}.`;
   }
+  const sides = hostedSide(left, right);
+  if (sides) {
+    return `The practical split is who runs the load generators: ${sides.owned.name} on your own infrastructure, ${sides.hosted.name} on the vendor's.`;
+  }
   if (left.deployment !== right.deployment) {
-    const hosted = left.deployment === 'Cloud' ? left : right;
-    const owned = hosted.slug === left.slug ? right : left;
-    return `The practical split is who runs the load generators: ${owned.name} on your own infrastructure, ${hosted.name} on the vendor's.`;
+    const flexible = left.deployment === 'Hybrid' ? left : right;
+    const fixed = flexible.slug === left.slug ? right : left;
+    return `The practical split is deployment flexibility: ${flexible.name} can run self-hosted or vendor-hosted, ${fixed.name} is ${DEPLOYMENT_ADJECTIVE[fixed.deployment]} only.`;
   }
   if (
     left.scriptingLanguages.length &&
@@ -220,19 +239,24 @@ function decisionBullets(left: Tool, right: Tool): string[] {
     for (const tool of [left, right]) {
       bullets.push(
         tool.license === 'Open Source'
-          ? `Choose ${tool.name} if you need a free, self-supported stack (${sentence(tool.pricingModel)})`
+          ? `Choose ${tool.name} if you need a free, self-supported stack (${parenthetical(tool.pricingModel)}).`
           : tool.license === 'Freemium'
-            ? `Choose ${tool.name} if a free tier ahead of paid capacity suits you (${sentence(tool.pricingModel)})`
-            : `Choose ${tool.name} if you can fund a commercial license for vendor support (${sentence(tool.pricingModel)})`,
+            ? `Choose ${tool.name} if a free tier ahead of paid capacity suits you (${parenthetical(tool.pricingModel)}).`
+            : `Choose ${tool.name} if you can fund a commercial license for vendor support (${parenthetical(tool.pricingModel)}).`,
       );
     }
   }
 
-  if (left.deployment !== right.deployment) {
-    const hosted = left.deployment === 'Cloud' ? left : right;
-    const owned = hosted.slug === left.slug ? right : left;
+  const sides = hostedSide(left, right);
+  if (sides) {
     bullets.push(
-      `Pick ${hosted.name} to avoid operating injectors, ${owned.name} when residency or air-gapped runs rule a hosted service out.`,
+      `Pick ${sides.hosted.name} to avoid operating injectors, ${sides.owned.name} when residency or air-gapped runs rule a hosted service out.`,
+    );
+  } else if (left.deployment !== right.deployment) {
+    const flexible = left.deployment === 'Hybrid' ? left : right;
+    const fixed = flexible.slug === left.slug ? right : left;
+    bullets.push(
+      `${flexible.name} can be run either self-hosted or on vendor infrastructure; ${fixed.name} only runs ${DEPLOYMENT_ADJECTIVE[fixed.deployment]}.`,
     );
   }
 

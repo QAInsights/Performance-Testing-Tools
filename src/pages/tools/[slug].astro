@@ -11,9 +11,11 @@ import { getEnrichment } from '../../lib/enrichmentData';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
 import {
+  alternativesForHub,
   alternativesHubForTool,
   comparisonsForTool,
 } from '../../lib/comparisonContent';
+import { hubPeers } from '../../lib/derivedComparisons';
 import {
   architectureLine,
   bestFor,
@@ -36,7 +38,20 @@ const bestForItems = bestFor(tool);
 const notBestForItems = notBestFor(tool);
 const architecture = architectureLine(tool);
 const comparisonPages = comparisonsForTool(tool.slug, tools);
+const comparisonLinks = comparisonPages.map((spec) => ({
+  spec,
+  peer: tools.find(
+    (item) =>
+      item.slug ===
+      (spec.leftSlug === tool.slug ? spec.rightSlug : spec.leftSlug),
+  )!,
+}));
 const alternativesHub = alternativesHubForTool(tool.slug, tools);
+const alternativesCount = alternativesHub
+  ? alternativesHub.tier === 'B'
+    ? hubPeers(tool, tools).length
+    : alternativesForHub(alternativesHub, tools).length
+  : 0;
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
   : datasetLastVerified;
@@ -192,8 +207,8 @@ const sourceHost = (url: string) => {
           (comparisonPages.length > 0 || alternativesHub) && (
             <section class="editorial-section">
               <h2>Compare and alternatives</h2>
-              <div class="tool-list">
-                {comparisonPages.map((spec) => (
+              <div class="tool-list comparison-list">
+                {comparisonLinks.map(({ spec, peer }) => (
                   <a
                     class="panel focus-ring"
                     href={siteUrl(`vs/${spec.pairPath}`)}
@@ -201,7 +216,9 @@ const sourceHost = (url: string) => {
                     <strong>
                       {spec.leftLabel} vs {spec.rightLabel}
                     </strong>
-                    <small>Static comparison · Tier {spec.tier ?? 'A'}</small>
+                    <small>
+                      {peer.license} · {peer.deployment}
+                    </small>
                   </a>
                 ))}
                 {alternativesHub && (
@@ -210,9 +227,7 @@ const sourceHost = (url: string) => {
                     href={siteUrl(`alternatives/${tool.slug}`)}
                   >
                     <strong>{alternativesHub.headline}</strong>
-                    <small>
-                      Alternatives hub · Tier {alternativesHub.tier ?? 'A'}
-                    </small>
+                    <small>{alternativesCount} alternatives compared</small>
                   </a>
                 )}
               </div>
@@ -549,6 +564,9 @@ const sourceHost = (url: string) => {
     margin: 0;
     padding-left: 18px;
   }
+  .comparison-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .feature-list li {
     overflow-wrap: anywhere;
   }
@@ -726,6 +744,9 @@ const sourceHost = (url: string) => {
       grid-template-columns: 1fr;
     }
     .feature-list {
+      grid-template-columns: 1fr;
+    }
+    .comparison-list {
       grid-template-columns: 1fr;
     }
   }
