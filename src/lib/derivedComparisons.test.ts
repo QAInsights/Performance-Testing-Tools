@@ -81,10 +81,9 @@ describe('derived comparison content quality gates', () => {
   });
 
   it('keeps every static page description within budget and unique', () => {
-    const descriptions = [
-      ...TIER_A_COMPARISONS,
-      ...derivedPairs,
-    ].map((comparison) => clampMetaDescription(comparison.answerBox));
+    const descriptions = [...TIER_A_COMPARISONS, ...derivedPairs].map(
+      (comparison) => clampMetaDescription(comparison.answerBox),
+    );
     descriptions.push(
       ...[...ALTERNATIVES_HUBS, ...derivedHubs].map((hub) =>
         clampMetaDescription(hub.intro),
