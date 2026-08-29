@@ -31,7 +31,9 @@ const ecosystem = ecosystemLinksForTool(tool);
           {compares.map((item) => (
             <a class="similar-item panel focus-ring" href={item.href}>
               <span>{item.label}</span>
-              <small>Open Test Rig</small>
+              <small>
+                {item.staticPage ? 'Static comparison' : 'Open Test Rig'}
+              </small>
             </a>
           ))}
         </div>

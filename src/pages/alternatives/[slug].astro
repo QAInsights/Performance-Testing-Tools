@@ -2,18 +2,19 @@
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import Footer from '../../components/Footer.astro';
 import { tools } from '../../data/tools';
-import { ALTERNATIVES_HUBS } from '../../data/comparisons';
 import {
+  allAlternativesHubs,
   alternativesForHub,
   preferredCompareHref,
 } from '../../lib/comparisonContent';
+import { hubPeers } from '../../lib/derivedComparisons';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
 import { clampMetaDescription, seoYear } from '../../lib/pageMeta';
 import '../../styles/editorial.css';
 
 export function getStaticPaths() {
-  return ALTERNATIVES_HUBS.flatMap((hub) => {
+  return allAlternativesHubs(tools).flatMap((hub) => {
     const tool = tools.find((item) => item.slug === hub.toolSlug);
     if (!tool) return [];
     return [
@@ -22,7 +23,10 @@ export function getStaticPaths() {
         props: {
           hub,
           tool,
-          alternatives: alternativesForHub(hub, tools),
+          alternatives:
+            hub.tier === 'B'
+              ? hubPeers(tool, tools)
+              : alternativesForHub(hub, tools),
         },
       },
     ];
@@ -53,7 +57,7 @@ const description = clampMetaDescription(hub.intro);
       <a href={siteUrl(`tools/${tool.slug}`)}>{tool.name}</a><span>/</span>
       <strong>Alternatives</strong>
     </nav>
-    <p class="eyebrow">ALTERNATIVES HUB</p>
+    <p class="eyebrow">ALTERNATIVES HUB / TIER {hub.tier ?? 'A'}</p>
     <h1>{hub.headline}</h1>
     <div class="answer-box">
       <span class="answer-box-label">Answer</span>

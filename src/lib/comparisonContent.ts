@@ -7,6 +7,10 @@ import {
   type ComparisonSpec,
 } from '../data/comparisons';
 import type { Tool } from '../data/tools';
+import {
+  derivedAlternativesHubs,
+  derivedComparisons,
+} from './derivedComparisons';
 
 export interface SpecRow {
   field: string;
@@ -55,6 +59,51 @@ export function resolveComparison(
   const right = catalog.find((tool) => tool.slug === spec.rightSlug);
   if (!left || !right) return null;
   return { left, right, rows: buildSpecRows(left, right) };
+}
+
+export function allComparisonSpecs(catalog: readonly Tool[]): ComparisonSpec[] {
+  const specs = [...TIER_A_COMPARISONS, ...derivedComparisons(catalog)];
+  const seen = new Set<string>();
+  for (const spec of specs) {
+    if (seen.has(spec.pairPath)) {
+      throw new Error(`Duplicate comparison path: ${spec.pairPath}`);
+    }
+    seen.add(spec.pairPath);
+  }
+  return specs;
+}
+
+export function allAlternativesHubs(
+  catalog: readonly Tool[],
+): AlternativesHub[] {
+  const hubs = [
+    ...ALTERNATIVES_HUBS,
+    ...derivedAlternativesHubs(catalog, ALTERNATIVES_HUBS),
+  ];
+  const seen = new Set<string>();
+  for (const hub of hubs) {
+    if (seen.has(hub.toolSlug)) {
+      throw new Error(`Duplicate alternatives hub: ${hub.toolSlug}`);
+    }
+    seen.add(hub.toolSlug);
+  }
+  return hubs;
+}
+
+export function comparisonsForTool(
+  toolSlug: string,
+  catalog: readonly Tool[],
+): ComparisonSpec[] {
+  return allComparisonSpecs(catalog).filter(
+    (spec) => spec.leftSlug === toolSlug || spec.rightSlug === toolSlug,
+  );
+}
+
+export function alternativesHubForTool(
+  toolSlug: string,
+  catalog: readonly Tool[],
+): AlternativesHub | undefined {
+  return allAlternativesHubs(catalog).find((hub) => hub.toolSlug === toolSlug);
 }
 
 export function alternativesForHub(

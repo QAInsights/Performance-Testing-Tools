@@ -3,6 +3,7 @@
  * Paths are `/vs/{pairPath}`. Curator prose differentiates from thin tables.
  */
 export interface ComparisonSpec {
+  tier?: 'A' | 'B';
   /** URL segment, e.g. apache-jmeter-vs-grafana-k6 */
   pairPath: string;
   leftSlug: string;
@@ -163,6 +164,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
 
 /** Hub pages at /alternatives/{slug} */
 export interface AlternativesHub {
+  tier?: 'A' | 'B';
   toolSlug: string;
   headline: string;
   intro: string;
