@@ -62,6 +62,11 @@ export function datasetSchema(catalog = tools) {
       name: organizationProfile.name,
       url: organizationProfile.url,
     },
+    maintainer: {
+      '@type': 'Organization',
+      name: 'QAInsights',
+      url: 'https://qainsights.com/',
+    },
     dateModified: datasetLastVerified,
     keywords: [
       'performance testing',

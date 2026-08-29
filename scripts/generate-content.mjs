@@ -1,14 +1,11 @@
 /* global Buffer, URL */
+import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { brandMark } from './brand-mark.mjs';
-import {
-  buildLlmsFullTxt,
-  buildLlmsTxt,
-  buildWebManifest,
-} from './llms-content.mjs';
+import { buildWebManifest } from './llms-content.mjs';
 
 const { tools, datasetLastVerified } = await import('../src/data/tools.ts');
 const { canonicalBase, joinBase, siteBase, siteOrigin } = await import(
@@ -58,12 +55,9 @@ await Promise.all([
   ...ogPngs,
 ]);
 
-const llmsOptions = { datasetLastVerified, seoYear: 2026 };
-const llmsTxt = buildLlmsTxt(tools, siteOrigin, llmsOptions);
-const llmsFull = buildLlmsFullTxt(tools, siteOrigin, llmsOptions);
-await writeFile(resolve(publicDir, 'llms.txt'), llmsTxt);
-await writeFile(resolve(publicDir, 'llms-full.txt'), llmsFull);
-await writeFile(resolve(wellKnownDir, 'llms.txt'), llmsTxt);
+execFileSync(resolve(root, 'node_modules/.bin/vite-node'), [
+  resolve(root, 'scripts/generate-llms.mjs'),
+]);
 
 const manifest = buildWebManifest(siteBase);
 await writeFile(resolve(publicDir, 'manifest.webmanifest'), manifest);

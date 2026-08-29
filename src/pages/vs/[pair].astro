@@ -34,6 +34,7 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
   title={title}
   description={description}
   ogType="article"
+  markdownHref={siteUrl(`vs/${spec.pairPath}.md`)}
   canonical={absoluteUrl(`vs/${spec.pairPath}`)}
   structuredData={[
     toolItemList([left, right]),
@@ -134,6 +135,9 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
       </p>
       <a class="button button--amber" href={siteUrl()}>Browse directory</a>
     </section>
-    <Footer />
+    <p class="editorial-meta mono">
+      CURATED BY <a href={siteUrl('about#methodology')}>QAINSIGHTS</a>
+    </p>
+    <Footer markdownHref={siteUrl(`vs/${spec.pairPath}.md`)} />
   </main>
 </ConsoleLayout>

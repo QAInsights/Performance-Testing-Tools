@@ -42,6 +42,7 @@ const description = clampMetaDescription(hub.intro);
   title={title}
   description={description}
   ogType="article"
+  markdownHref={siteUrl(`alternatives/${hub.toolSlug}.md`)}
   canonical={absoluteUrl(`alternatives/${hub.toolSlug}`)}
   structuredData={[
     toolItemList([tool, ...alternatives]),
@@ -116,6 +117,9 @@ const description = clampMetaDescription(hub.intro);
         <a class="button button--ghost" href={siteUrl()}>Full directory</a>
       </div>
     </section>
-    <Footer />
+    <p class="editorial-meta mono">
+      CURATED BY <a href={siteUrl('about#methodology')}>QAINSIGHTS</a>
+    </p>
+    <Footer markdownHref={siteUrl(`alternatives/${hub.toolSlug}.md`)} />
   </main>
 </ConsoleLayout>

@@ -126,6 +126,15 @@
   color: var(--color-surface-300);
   font: 12px var(--font-mono);
 }
+.editorial-meta {
+  margin-top: 28px;
+  color: var(--color-surface-300);
+  font: 12px var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.editorial-meta a {
+  color: var(--color-teal-300);
+}
 .editorial-actions {
   display: flex;
   flex-wrap: wrap;

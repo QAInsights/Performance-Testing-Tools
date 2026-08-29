@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import { datasetLastVerified, tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 import { aboutDescription, aboutTitle } from '../lib/pageMeta';
+import { methodologyPoints } from '../lib/methodology';
 const archetypes = [
   ['Ramp', 'Gradual rise for protocol/API-oriented tools.', 'ghz'],
   [
@@ -90,6 +91,12 @@ const archetypes = [
         </p>
       </article>
     </div>
+    <section id="methodology" class="methodology panel">
+      <h2>How this directory is maintained</h2>
+      <ul>
+        {methodologyPoints.map((point) => <li>{point}</li>)}
+      </ul>
+    </section>
     <section class="submit panel">
       <div>
         <p class="eyebrow">SEE SOMETHING MISSING?</p><h2>

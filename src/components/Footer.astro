@@ -1,6 +1,8 @@
 ---
 import { ecosystemFooterLinks, llmsTxtHref } from '../lib/organization';
 import { siteUrl } from '../lib/urls';
+
+const { markdownHref } = Astro.props;
 ---
 
 <footer class="site-footer panel">
@@ -14,6 +16,13 @@ import { siteUrl } from '../lib/urls';
     }
     <a href={llmsTxtHref()} class="focus-ring">llms.txt</a>
     <a href={siteUrl('tools.json')} class="focus-ring">tools.json</a>
+    {
+      markdownHref && (
+        <a href={markdownHref} class="focus-ring">
+          View as Markdown
+        </a>
+      )
+    }
   </nav>
 </footer>
 

@@ -4,7 +4,6 @@ import {
   buildLlmsFullTxt,
   buildLlmsTxt,
   buildWebManifest,
-  CANONICAL_COMPARE_PAIRS,
 } from './llmsContent';
 
 describe('llms content builders', () => {
@@ -13,21 +12,18 @@ describe('llms content builders', () => {
     expect(text).toContain('How to choose a load testing tool');
     expect(text).toContain('Pick matrices');
     expect(text).toContain('Top picks');
-    expect(text).toContain('Canonical compare pairs');
+    expect(text).toContain('## Comparisons');
+    expect(text).toContain('## Methodology');
     expect(text).toContain('llms-full.txt');
     expect(text).toContain('sitemap-index.xml');
     expect(text).toContain('https://perf.jmeter.ai/tools/apache-jmeter/');
     expect(text).toContain(
-      'https://perf.jmeter.ai/compare/?tools=apache-jmeter,gatling',
+      'https://perf.jmeter.ai/vs/apache-jmeter-vs-gatling/',
     );
     expect(text).toContain('https://perf.jmeter.ai/llms-full.txt');
     expect(text).toContain('https://perf.jmeter.ai/sitemap-index.xml');
     for (const tool of tools) {
       expect(text).toContain(tool.name);
-    }
-    for (const [a, b] of CANONICAL_COMPARE_PAIRS) {
-      expect(text).toContain(a);
-      expect(text).toContain(b);
     }
   });
 
@@ -36,6 +32,10 @@ describe('llms content builders', () => {
     expect(text).toContain('When not:');
     expect(text).toContain('## Apache JMeter');
     expect(text).toContain('Who:');
+    expect(text).toContain('- Choose when:');
+    expect(text).toContain(
+      '- Markdown: https://perf.jmeter.ai/tools/apache-jmeter.md',
+    );
   });
 
   it('builds a root-relative web manifest by default', () => {
