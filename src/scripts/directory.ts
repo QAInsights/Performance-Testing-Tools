@@ -260,6 +260,7 @@ export function initDirectory(): void {
     'Self-hosted',
     'Active',
     'Discontinued',
+    'Unknown',
   ].map((value) => ({ label: `Filter: ${value}`, filter: value }));
   const openPalette = () => {
     if (!palette) return;

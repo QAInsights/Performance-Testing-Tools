@@ -609,6 +609,26 @@ export const tools: Tool[] = [
     tags: ['legacy', 'enterprise'],
   }),
   makeTool({
+    slug: 'quotium-qtest',
+    name: 'Quotium QTest',
+    vendor: 'Quotium Technologies',
+    url: 'https://www.quotium.com/qtest-performance-testing/',
+    description:
+      'Windows load testing suite for web, ERP, and Citrix-style client/server applications.',
+    longDescription:
+      'QTest is Quotium’s commercial load testing product. It records and replays business scenarios for web, J2EE, .NET, and web service applications, and extends through its Winload module to SAP, PeopleSoft, Oracle, Siebel, and Citrix client/server sessions. The vendor trial page lists version 5.6, released October 2015 and last updated December 2019.',
+    category: 'Enterprise Suite',
+    license: 'Commercial',
+    pricingModel:
+      'Paid license for a fixed period via vendor order form; prices not published.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Unknown'],
+    protocols: ['HTTP', 'HTTPS', 'SOAP', 'SAP', 'Citrix', 'Oracle', 'TCP'],
+    osSupport: ['Windows'],
+    status: 'Unknown',
+    tags: ['enterprise', 'windows', 'citrix'],
+  }),
+  makeTool({
     slug: 'loadstorm',
     name: 'LoadStorm',
     vendor: 'CustomerCentrix',
