@@ -1,4 +1,16 @@
 export const curator = 'QAInsights';
+export const curatorPerson = {
+  name: 'NaveenKumar Namachivayam',
+  url: 'https://qainsights.com/about-naveenkumar/',
+  jobTitle: 'Performance Test Engineer',
+  sameAs: [
+    'https://qainsights.com/about-naveenkumar/',
+    'https://www.linkedin.com/in/naveenkumarn',
+    'https://github.com/QAInsights',
+    'https://www.youtube.com/@QAInsights',
+    'https://x.com/QAInsights',
+  ],
+} as const;
 export const curatorUrl = 'https://qainsights.com/';
 export const correctionsUrl =
   'https://github.com/QAInsights/Performance-Testing-Tools/issues/new?title=Tool%20submission%3A%20&body=Tool%20name%3A%20%0AOfficial%20URL%3A%20%0AWhat%20should%20be%20added%20or%20corrected%3F%20%0A';

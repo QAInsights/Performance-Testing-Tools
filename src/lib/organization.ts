@@ -2,6 +2,7 @@ import { absoluteUrl, siteUrl } from './urls';
 import { siteOrigin } from '../config/site';
 import { datasetLastVerified, tools } from '../data/tools';
 import { homeDescription, homeTitle, siteName } from './pageMeta';
+import { curatorPerson } from './methodology';
 
 /** Public brand graph for Organization / WebSite JSON-LD. */
 export const organizationProfile = {
@@ -57,15 +58,25 @@ export function datasetSchema(catalog = tools) {
     description: homeDescription(catalog),
     url: absoluteUrl(''),
     license: 'https://opensource.org/licenses/MIT',
-    creator: {
-      '@type': 'Organization',
-      name: organizationProfile.name,
-      url: organizationProfile.url,
-    },
+    creator: [
+      {
+        '@type': 'Organization',
+        name: organizationProfile.name,
+        url: organizationProfile.url,
+      },
+      {
+        '@type': 'Person',
+        ...curatorPerson,
+      },
+    ],
     maintainer: {
       '@type': 'Organization',
       name: 'QAInsights',
       url: 'https://qainsights.com/',
+    },
+    author: {
+      '@type': 'Person',
+      ...curatorPerson,
     },
     dateModified: datasetLastVerified,
     keywords: [

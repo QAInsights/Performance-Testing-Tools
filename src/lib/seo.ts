@@ -1,6 +1,7 @@
 import { datasetLastVerified, type Tool } from '../data/tools';
 import type { EnrichmentEntry } from './enrichmentData';
 import { organizationProfile } from './organization';
+import { curatorPerson } from './methodology';
 import { siteName } from './pageMeta';
 import { buildToolFaq, type FaqItem } from './toolFaq';
 import { absoluteUrl } from './urls';
@@ -92,8 +93,8 @@ export function toolSoftwareApplication(
     softwareVersion: version || undefined,
     offers: softwareOffer(tool),
     author: {
-      '@type': 'Organization',
-      name: enrichment?.authorOrCompany || tool.vendor,
+      '@type': 'Person',
+      ...curatorPerson,
     },
     publisher: {
       '@type': 'Organization',

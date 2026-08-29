@@ -11,6 +11,7 @@ import { hubPeers } from '../../lib/derivedComparisons';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
 import { clampMetaDescription, seoYear } from '../../lib/pageMeta';
+import { curatorPerson } from '../../lib/methodology';
 import '../../styles/editorial.css';
 
 export function getStaticPaths() {
@@ -118,7 +119,9 @@ const description = clampMetaDescription(hub.intro);
       </div>
     </section>
     <p class="editorial-meta mono">
-      CURATED BY <a href={siteUrl('about#methodology')}>QAINSIGHTS</a>
+      CURATED BY <a href={siteUrl('about#methodology')}
+        >{curatorPerson.name.toUpperCase()}</a
+      >
     </p>
     <Footer markdownHref={siteUrl(`alternatives/${hub.toolSlug}.md`)} />
   </main>

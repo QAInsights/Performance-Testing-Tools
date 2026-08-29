@@ -13,6 +13,7 @@ import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
 import { datasetLastVerified, tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
 import { isSitemapPage, sitemapLastmod } from './sitemap';
+import { curatorPerson } from './methodology';
 
 describe('SEO structured data', () => {
   it('defaults to the production origin instead of a Vercel deployment URL', () => {
@@ -151,10 +152,15 @@ describe('SEO structured data', () => {
       name: 'QAInsights',
       url: 'https://qainsights.com/',
     });
+    expect(application.author).toEqual({
+      '@type': 'Person',
+      ...curatorPerson,
+    });
     expect(application).not.toHaveProperty('aggregateRating');
     expect(datasetSchema()).toMatchObject({
-      creator: application.creator,
+      creator: [application.creator, application.author],
       maintainer: application.creator,
+      author: application.author,
     });
     expect(toolFaq(tool, tools, undefined, enrichment).dateModified).toBe(
       '2026-01-01',
