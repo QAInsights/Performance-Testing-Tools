@@ -1643,6 +1643,28 @@ export const tools: Tool[] = [
     personalPick: true,
     tags: ['ai', 'llm', 'browser', 'web-ui', 'quick-start'],
   }),
+  makeTool({
+    slug: 'xlt',
+    name: 'XLT (Xceptance LoadTest)',
+    vendor: 'Xceptance',
+    url: 'https://www.xceptance.com/xlt/',
+    repoUrl: 'https://github.com/Xceptance/XLT',
+    description:
+      'Java load and performance testing tool with JUnit-style scripts, distributed agents, and detailed out-of-the-box HTML reports.',
+    longDescription:
+      'XLT is a Java load and performance testing tool from Xceptance, started as an internal prototype in 2005, offered as a product from 2007, free of charge from 2018, and open-sourced under Apache License 2.0 in February 2020. Test cases are ordinary JUnit classes written in an IDE and managed with Maven or Gradle, so scripts are debuggable Java with access to any library; load can be driven headlessly through HtmlUnit and HttpClient or through real browsers via WebDriver, which lets an existing automation suite double as a load test. A controller distributes agents across any number of machines and datacenters, transfers results back differentially, and tolerates offline runs without losing data. Load profiles cover both fixed user counts and arrival rates, the latter addressing coordinated omission. Reporting is the emphasis: self-contained HTML load-test, comparison, and trend reports with percentiles, Apdex, scorecards, and SLA-style success criteria, generated from raw data that is kept rather than aggregated away, plus a result browser that replays the last moments of a failed transaction for debugging. Xceptance also sells XTC (Xceptance Test Center), a hosted multi-project service running the same engine, and publishes an experimental xlt-jmeter-suite that executes existing .jmx test plans on the XLT engine for XLT reporting.',
+    category: 'Load Testing',
+    license: 'Open Source',
+    pricingModel:
+      'Free; Apache License 2.0. The hosted XTC service is priced separately by Xceptance.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Java'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2007,
+    status: 'Active',
+    tags: ['java', 'junit', 'distributed', 'reporting'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
