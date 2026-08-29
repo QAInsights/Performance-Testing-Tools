@@ -8,7 +8,7 @@ import {
   resolveComparison,
 } from './comparisonContent';
 import { seoYear } from './pageMeta';
-import { methodologyMarkdown } from './markdownMirror';
+import { answerBoxSplit, methodologyMarkdown } from './markdownMirror';
 import { absoluteUrl } from './urls';
 import { notBestFor, bestFor } from './toolEntity';
 
@@ -83,6 +83,20 @@ const matrixLines = (
     '',
   ].join('\n');
 
+const comparisonBlock = (
+  spec: ReturnType<typeof allComparisonSpecs>[number],
+  origin: string,
+) =>
+  [
+    `### ${spec.leftLabel} vs ${spec.rightLabel}`,
+    spec.answerBox,
+    `Verdict: ${spec.verdict}`,
+    'Decisions:',
+    ...spec.decisions.map((decision) => `- ${decision}`),
+    `Page: ${absoluteUrl(`vs/${spec.pairPath}`, origin)}`,
+    '',
+  ].join('\n');
+
 export function buildLlmsTxt(
   catalog: readonly Tool[] = tools,
   origin = siteOrigin,
@@ -98,15 +112,11 @@ export function buildLlmsTxt(
     .map((spec) => {
       const resolved = resolveComparison(spec, catalog);
       if (!resolved) return '';
-      return [
-        `### ${spec.leftLabel} vs ${spec.rightLabel}`,
-        spec.answerBox,
-        `Verdict: ${spec.verdict}`,
-        `Decisions:`,
-        ...spec.decisions.map((decision) => `- ${decision}`),
-        `Page: ${absoluteUrl(`vs/${spec.pairPath}`, origin)}`,
-        '',
-      ].join('\n');
+      const summary =
+        spec.tier === 'B'
+          ? answerBoxSplit(spec.answerBox) || spec.answerBox
+          : spec.answerBox;
+      return `- [${spec.leftLabel} vs ${spec.rightLabel}](${absoluteUrl(`vs/${spec.pairPath}`, origin)}) ${summary}`;
     })
     .filter(Boolean)
     .join('\n');
@@ -224,6 +234,10 @@ export function buildLlmsFullTxt(
   options: { datasetLastVerified?: string } = {},
 ): string {
   const verified = options.datasetLastVerified ?? datasetLastVerified;
+  const comparisons = allComparisonSpecs(catalog)
+    .filter((spec) => resolveComparison(spec, catalog))
+    .map((spec) => comparisonBlock(spec, origin))
+    .join('\n');
   const cards = catalog
     .map((tool) => {
       const hub = alternativesHubForTool(tool.slug, catalog);
@@ -258,6 +272,9 @@ export function buildLlmsFullTxt(
     `Answer cards for ${catalog.length} tools. Last verified ${verified}.`,
     `Concise decision pack: ${absoluteUrl('llms.txt', origin)}`,
     '',
+    '## Comparisons',
+    '',
+    comparisons,
     cards,
   ].join('\n');
 }

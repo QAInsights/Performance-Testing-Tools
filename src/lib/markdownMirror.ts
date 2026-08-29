@@ -18,6 +18,13 @@ const list = (values: readonly string[], empty = 'None (CLI-driven)') =>
   values.length ? values.join(', ') : empty;
 const firstSentence = (value: string) =>
   value.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || value.trim();
+export const answerBoxSplit = (value: string): string | undefined => {
+  const sentences = value.trim().match(/[^.!?]+[.!?](?=\s|$)/g) || [];
+  const finalSentence = sentences.at(-1)?.trim();
+  return finalSentence?.startsWith('The practical split is ')
+    ? finalSentence
+    : undefined;
+};
 const footer = (origin: string) =>
   `---\nCurated by ${curator} · methodology: ${absoluteUrl('about#methodology', origin)} · corrections: ${correctionsUrl}`;
 
@@ -32,7 +39,7 @@ export function toolMarkdown(
       const resolved = resolveComparison(spec, catalog);
       if (!resolved) return [];
       return [
-        `- [${spec.leftLabel} vs ${spec.rightLabel}](${absoluteUrl(`vs/${spec.pairPath}`, origin)}) — ${firstSentence(spec.decisions[0])}`,
+        `- [${spec.leftLabel} vs ${spec.rightLabel}](${absoluteUrl(`vs/${spec.pairPath}`, origin)}) — ${answerBoxSplit(spec.answerBox) || firstSentence(spec.decisions[0])}`,
       ];
     },
   );
@@ -43,6 +50,10 @@ export function toolMarkdown(
     latest?.version || latest?.date
       ? `- Latest release: ${latest.version || 'Not recorded'} (${latest.date || 'date not recorded'})`
       : '';
+  const verifiedDate = (enrichment?.fetchedAt || datasetLastVerified).slice(
+    0,
+    10,
+  );
   const pricing = enrichment?.pricing || tool.pricingModel;
   const lines = [
     `# ${tool.name}`,
@@ -62,7 +73,7 @@ export function toolMarkdown(
     `- OS support: ${list(tool.osSupport, 'None recorded')}`,
     `- First released: ${tool.firstReleased ?? 'Not recorded'}`,
     latestLine,
-    `- Last verified: ${enrichment?.fetchedAt || datasetLastVerified}`,
+    `- Last verified: ${verifiedDate}`,
     '',
     '## What it is',
     line(tool.longDescription),

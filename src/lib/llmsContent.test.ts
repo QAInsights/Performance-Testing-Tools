@@ -25,6 +25,9 @@ describe('llms content builders', () => {
     for (const tool of tools) {
       expect(text).toContain(tool.name);
     }
+    expect(text).toContain(
+      '- [Apache JMeter vs Locust](https://perf.jmeter.ai/vs/apache-jmeter-vs-locust/) The practical split is the authoring language: Java, Groovy for Apache JMeter, Python for Locust.',
+    );
   });
 
   it('builds per-tool answer cards in llms-full.txt', () => {
@@ -36,6 +39,9 @@ describe('llms content builders', () => {
     expect(text).toContain(
       '- Markdown: https://perf.jmeter.ai/tools/apache-jmeter.md',
     );
+    expect(text).toContain('## Comparisons');
+    expect(text).toContain('### JMeter vs k6');
+    expect(text).toContain('Verdict:');
   });
 
   it('builds a root-relative web manifest by default', () => {

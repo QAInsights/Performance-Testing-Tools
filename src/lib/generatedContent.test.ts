@@ -13,7 +13,7 @@ import {
   comparisonMarkdown,
   toolMarkdown,
 } from './markdownMirror';
-import { buildLlmsTxt } from './llmsContent';
+import { buildLlmsFullTxt, buildLlmsTxt } from './llmsContent';
 import { siteOrigin } from '../config/site';
 
 describe('generated public content', () => {
@@ -71,6 +71,8 @@ describe('generated public content', () => {
       expect(body).toContain(
         `Canonical: https://perf.jmeter.ai/tools/${tool.slug}/`,
       );
+      expect(body).toMatch(/^- Last verified: \d{4}-\d{2}-\d{2}$/m);
+      expect(body).not.toMatch(/^- Last verified: .*T.*$/m);
       expect(body.trim()).not.toBe('');
       invalid(body);
     }
@@ -114,9 +116,13 @@ describe('generated public content', () => {
   it('publishes every static comparison and methodology in llms.txt', () => {
     const text = buildLlmsTxt(tools, siteOrigin);
     for (const spec of allComparisonSpecs(tools)) {
-      expect(text).toContain(`### ${spec.leftLabel} vs ${spec.rightLabel}`);
+      expect(text).toContain(`- [${spec.leftLabel} vs ${spec.rightLabel}](`);
     }
     expect(text).toContain('## Methodology');
+    const full = buildLlmsFullTxt(tools, siteOrigin);
+    expect(full).toContain('## Comparisons');
+    expect(full).toContain('### JMeter vs k6');
+    expect(full).toContain('Verdict:');
   });
 
   it('renders methodology on the about page', () => {
