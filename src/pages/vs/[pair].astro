@@ -31,6 +31,7 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
 <ConsoleLayout
   title={title}
   description={description}
+  ogType="article"
   canonical={absoluteUrl(`vs/${spec.pairPath}`)}
   structuredData={[
     toolItemList([left, right]),

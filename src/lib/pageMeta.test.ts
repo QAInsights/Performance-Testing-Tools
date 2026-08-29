@@ -24,13 +24,19 @@ describe('page meta builders', () => {
 
   it('builds tool titles and richer descriptions', () => {
     const jmeter = tools.find((tool) => tool.slug === 'apache-jmeter')!;
+    const discontinued = tools.find((tool) => tool.status === 'Discontinued')!;
     expect(toolTitle(jmeter)).toBe(
-      'Apache JMeter Review, Pricing, License & Specs · Performance Testing Tools',
+      'Apache JMeter: pricing, license & alternatives (2026)',
     );
-    expect(toolDescription(jmeter)).toMatch(/License: Open Source/);
-    expect(toolDescription(jmeter).length).toBeGreaterThan(
-      jmeter.description.length,
+    expect(toolTitle(discontinued)).toBe(
+      `${discontinued.name}: discontinued, and what to use instead (${seoYear})`,
     );
+    expect(toolDescription(jmeter)).not.toContain('License:');
+    expect(toolDescription(jmeter).length).toBeLessThanOrEqual(158);
+    for (const tool of tools) {
+      expect(toolDescription(tool).length, tool.name).toBeLessThanOrEqual(158);
+      expect(toolDescription(tool).endsWith('.'), tool.name).toBe(true);
+    }
   });
 
   it('builds category and compare titles', () => {

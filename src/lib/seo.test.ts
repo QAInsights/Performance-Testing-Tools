@@ -10,9 +10,9 @@ import {
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
 import { canonicalBase, joinBase, siteBase, siteOrigin } from '../config/site';
-import { tools } from '../data/tools';
+import { datasetLastVerified, tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
-import { isSitemapPage } from './sitemap';
+import { isSitemapPage, sitemapLastmod } from './sitemap';
 
 describe('SEO structured data', () => {
   it('defaults to the production origin instead of a Vercel deployment URL', () => {
@@ -93,6 +93,18 @@ describe('SEO structured data', () => {
     expect(isSitemapPage('https://example.com/foo/about/', '/foo')).toBe(true);
   });
 
+  it('resolves sitemap lastmod dates from enrichment with dataset fallback', () => {
+    expect(sitemapLastmod('https://perf.jmeter.ai/tools/apache-jmeter/')).toBe(
+      '2026-08-11',
+    );
+    expect(sitemapLastmod('https://perf.jmeter.ai/about/')).toBe(
+      datasetLastVerified,
+    );
+    expect(
+      sitemapLastmod('https://example.com/foo/tools/apache-jmeter/', '/foo'),
+    ).toBe('2026-08-11');
+  });
+
   it('serializes valid JSON-LD for directory and tool records', () => {
     const tool = tools[0];
     for (const value of [
@@ -109,6 +121,33 @@ describe('SEO structured data', () => {
     ]) {
       expect(() => JSON.parse(JSON.stringify(value))).not.toThrow();
     }
+  });
+
+  it('adds entity signals without fabricated ratings', () => {
+    const tool = tools.find((item) => item.slug === 'apache-jmeter')!;
+    const enrichment = {
+      fetchedAt: '2026-01-01T00:00:00.000Z',
+      features: ['Distributed testing'],
+    };
+    const application = toolSoftwareApplication(tool, enrichment);
+    expect(application.image).toBe(
+      'https://perf.jmeter.ai/og/apache-jmeter.png',
+    );
+    expect(application.dateModified).toBe('2026-01-01');
+    expect(application.applicationSubCategory).toBe(tool.category);
+    expect(application.featureList).toEqual(['Distributed testing']);
+    expect(application.softwareRequirements).toBe(tool.protocols.join(', '));
+    expect(application.keywords).toContain(tool.name);
+    expect(application.isPartOf).toEqual({
+      '@type': 'WebSite',
+      name: 'Performance Testing Tools',
+      url: 'https://perf.jmeter.ai/',
+    });
+    expect(application).not.toHaveProperty('aggregateRating');
+    expect(toolFaq(tool, tools, undefined, enrichment).dateModified).toBe(
+      '2026-01-01',
+    );
+    expect(toolFaq(tool, tools).dateModified).toBe(datasetLastVerified);
   });
 
   it('includes SearchAction and Organization sameAs', () => {

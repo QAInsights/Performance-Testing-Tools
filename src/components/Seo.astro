@@ -7,6 +7,7 @@ const {
   description,
   canonical = Astro.url.pathname,
   ogImage = baseUrl('og/default.png'),
+  ogType = 'website',
   structuredData = [],
   noIndex = false,
 } = Astro.props;
@@ -26,7 +27,7 @@ const absoluteOgImage = ogImage.startsWith('http')
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={absoluteUrl(canonical)} />
 <meta property="og:image" content={absoluteOgImage} />
 <meta name="twitter:card" content="summary_large_image" />

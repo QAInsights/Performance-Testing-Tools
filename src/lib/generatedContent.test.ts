@@ -43,7 +43,7 @@ describe('generated public content', () => {
 
   it('uses indexable robots directives for the default build', () => {
     expect(readFileSync('public/robots.txt', 'utf8')).toBe(
-      'User-agent: *\nAllow: /\nSitemap: https://perf.jmeter.ai/sitemap-index.xml\n',
+      '# Performance Testing Tools — https://perf.jmeter.ai\n# Machine-readable catalog: https://perf.jmeter.ai/llms.txt\n# Full catalog: https://perf.jmeter.ai/llms-full.txt\n# Structured data: https://perf.jmeter.ai/tools.json\n\nUser-agent: *\nAllow: /\n\n# Answer engines and AI crawlers are explicitly welcome.\nUser-agent: GPTBot\nAllow: /\n\nUser-agent: OAI-SearchBot\nAllow: /\n\nUser-agent: ChatGPT-User\nAllow: /\n\nUser-agent: ClaudeBot\nAllow: /\n\nUser-agent: Claude-User\nAllow: /\n\nUser-agent: PerplexityBot\nAllow: /\n\nUser-agent: Google-Extended\nAllow: /\n\nUser-agent: Applebot-Extended\nAllow: /\n\nUser-agent: CCBot\nAllow: /\n\nSitemap: https://perf.jmeter.ai/sitemap-index.xml\n',
     );
   });
 });
