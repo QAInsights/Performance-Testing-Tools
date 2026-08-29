@@ -61,21 +61,31 @@ export function toolDescription(tool: Tool): string {
     tool.successor && !/^no verified/i.test(tool.successor)
       ? tool.successor
       : undefined;
-  const clauses = [
+  const base = [
     tool.status === 'Discontinued'
       ? successor
         ? ` Discontinued; successor: ${successor}.`
         : ' Discontinued.'
       : '',
     ` ${LICENSE_WORD[tool.license]}, ${DEPLOYMENT_PHRASE[tool.deployment]}.`,
-    ` Pricing, protocols and alternatives, verified ${datasetLastVerified}.`,
-  ].filter(Boolean);
+  ]
+    .filter(Boolean)
+    .reduce(
+      (out, clause) =>
+        out.length + clause.length <= META_DESCRIPTION_LIMIT
+          ? out + clause
+          : out,
+      `${head}.`,
+    );
 
-  return clauses.reduce(
-    (out, clause) =>
-      out.length + clause.length <= META_DESCRIPTION_LIMIT ? out + clause : out,
-    `${head}.`,
+  const tail = [
+    ` Pricing, protocols and alternatives, verified ${datasetLastVerified}.`,
+    ` Verified ${datasetLastVerified}.`,
+  ].find(
+    (candidate) => base.length + candidate.length <= META_DESCRIPTION_LIMIT,
   );
+
+  return tail ? base + tail : base;
 }
 
 export function categoryTitle(category: Category): string {
