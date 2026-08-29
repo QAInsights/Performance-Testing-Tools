@@ -67,10 +67,11 @@ const sourceHost = (url: string) => {
   title={toolTitle(tool)}
   description={toolDescription(tool)}
   ogImage={siteUrl(`og/${tool.slug}.png`)}
+  ogType="article"
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
     toolSoftwareApplication(tool, enrichment),
-    toolFaq(tool, tools, faqItems),
+    toolFaq(tool, tools, faqItems, enrichment),
     breadcrumbs([
       { name: 'Directory', path: '' },
       {

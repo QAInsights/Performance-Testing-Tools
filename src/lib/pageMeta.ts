@@ -2,6 +2,8 @@ import {
   datasetLastVerified,
   tools,
   type Category,
+  type Deployment,
+  type License,
   type Tool,
 } from '../data/tools';
 
@@ -9,6 +11,20 @@ import {
 export const seoYear = 2026;
 
 export const siteName = 'Performance Testing Tools';
+
+const LICENSE_WORD: Record<License, string> = {
+  'Open Source': 'Open source',
+  Commercial: 'Commercial',
+  Freemium: 'Freemium',
+};
+
+const DEPLOYMENT_PHRASE: Record<Deployment, string> = {
+  'Self-hosted': 'self-hosted',
+  Cloud: 'cloud-hosted',
+  Hybrid: 'self-hosted or cloud',
+};
+
+const META_DESCRIPTION_LIMIT = 158;
 
 export function toolCount(catalog: readonly Tool[] = tools): number {
   return catalog.length;
@@ -23,20 +39,38 @@ export function homeDescription(catalog: readonly Tool[] = tools): string {
 }
 
 export function toolTitle(tool: Tool): string {
-  return `${tool.name} Review, Pricing, License & Specs · ${siteName}`;
+  if (tool.status === 'Discontinued') {
+    return `${tool.name}: discontinued, and what to use instead (${seoYear})`;
+  }
+  return `${tool.name}: pricing, license & alternatives (${seoYear})`;
 }
 
 export function toolDescription(tool: Tool): string {
-  const parts = [
-    tool.description.replace(/\.$/, ''),
-    `License: ${tool.license}`,
-    `deployment: ${tool.deployment.toLowerCase()}`,
-    `status: ${tool.status.toLowerCase()}`,
-  ];
-  if (tool.scriptingLanguages.length) {
-    parts.push(`scripting: ${tool.scriptingLanguages.join(', ')}`);
+  const head = tool.description.trim().replace(/\.$/, '');
+  if (head.length + 1 > META_DESCRIPTION_LIMIT) {
+    const cut = head.slice(0, META_DESCRIPTION_LIMIT - 1);
+    return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:]$/, '')}…`;
   }
-  return `${parts.join('. ')}.`;
+
+  const successor =
+    tool.successor && !/^no verified/i.test(tool.successor)
+      ? tool.successor
+      : undefined;
+  const clauses = [
+    tool.status === 'Discontinued'
+      ? successor
+        ? ` Discontinued; successor: ${successor}.`
+        : ' Discontinued.'
+      : '',
+    ` ${LICENSE_WORD[tool.license]}, ${DEPLOYMENT_PHRASE[tool.deployment]}.`,
+    ` Pricing, protocols and alternatives, verified ${datasetLastVerified}.`,
+  ].filter(Boolean);
+
+  return clauses.reduce(
+    (out, clause) =>
+      out.length + clause.length <= META_DESCRIPTION_LIMIT ? out + clause : out,
+    `${head}.`,
+  );
 }
 
 export function categoryTitle(category: Category): string {

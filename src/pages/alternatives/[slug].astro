@@ -36,6 +36,7 @@ const title = `${hub.headline} (${seoYear}) · Curated Directory`;
 <ConsoleLayout
   title={title}
   description={hub.intro.slice(0, 160)}
+  ogType="article"
   canonical={absoluteUrl(`alternatives/${hub.toolSlug}`)}
   structuredData={[
     toolItemList([tool, ...alternatives]),

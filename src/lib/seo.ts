@@ -1,6 +1,7 @@
-import type { Tool } from '../data/tools';
+import { datasetLastVerified, type Tool } from '../data/tools';
 import type { EnrichmentEntry } from './enrichmentData';
 import { organizationProfile } from './organization';
+import { siteName } from './pageMeta';
 import { buildToolFaq, type FaqItem } from './toolFaq';
 import { absoluteUrl } from './urls';
 
@@ -55,6 +56,11 @@ export function toolSoftwareApplication(
     Boolean(url),
   );
   const version = enrichment?.latestRelease?.version;
+  const dateModified =
+    enrichment?.fetchedAt?.slice(0, 10) || datasetLastVerified;
+  const keywords = [
+    ...new Set([tool.name, tool.category, ...tool.tags, ...tool.protocols]),
+  ].join(', ');
 
   return {
     '@context': 'https://schema.org',
@@ -64,6 +70,19 @@ export function toolSoftwareApplication(
     operatingSystem: tool.osSupport.join(', ') || undefined,
     description: tool.description,
     url: absoluteUrl(`tools/${tool.slug}`),
+    image: absoluteUrl(`og/${tool.slug}.png`),
+    dateModified,
+    applicationSubCategory: tool.category,
+    featureList: enrichment?.features?.length ? enrichment.features : undefined,
+    softwareRequirements: tool.protocols.length
+      ? tool.protocols.join(', ')
+      : undefined,
+    keywords,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteName,
+      url: absoluteUrl(''),
+    },
     downloadUrl: tool.url,
     softwareVersion: version || undefined,
     offers: softwareOffer(tool),
@@ -84,12 +103,16 @@ export function toolFaq(
   tool: Tool,
   catalog: readonly Tool[] = [],
   items?: FaqItem[],
+  enrichment?: EnrichmentEntry,
 ) {
   const faqItems =
     items ?? buildToolFaq(tool, catalog.length ? catalog : [tool]);
+  const dateModified =
+    enrichment?.fetchedAt?.slice(0, 10) || datasetLastVerified;
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    dateModified,
     mainEntity: faqItems.map((item) => ({
       '@type': 'Question',
       name: item.question,
