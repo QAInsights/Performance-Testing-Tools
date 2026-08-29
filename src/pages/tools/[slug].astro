@@ -11,12 +11,16 @@ import { getEnrichment } from '../../lib/enrichmentData';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
 import {
+  alternativesHubForTool,
+  comparisonsForTool,
+} from '../../lib/comparisonContent';
+import {
   architectureLine,
   bestFor,
   notBestFor,
   toolAnswerBox,
 } from '../../lib/toolEntity';
-import { ALTERNATIVES_HUBS } from '../../data/comparisons';
+import '../../styles/editorial.css';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({
@@ -31,9 +35,8 @@ const answerBox = toolAnswerBox(tool, enrichment);
 const bestForItems = bestFor(tool);
 const notBestForItems = notBestFor(tool);
 const architecture = architectureLine(tool);
-const alternativesHub = ALTERNATIVES_HUBS.find(
-  (hub) => hub.toolSlug === tool.slug,
-);
+const comparisonPages = comparisonsForTool(tool.slug, tools);
+const alternativesHub = alternativesHubForTool(tool.slug, tools);
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
   : datasetLastVerified;
@@ -186,16 +189,33 @@ const sourceHost = (url: string) => {
           <p>{architecture}</p>
         </section>
         {
-          alternativesHub && (
-            <section class="detail-section">
-              <h2>Alternatives hub</h2>
-              <p>
-                Looking for replacements or peers? See the curated{' '}
-                <a href={siteUrl(`alternatives/${tool.slug}`)}>
-                  {tool.name} alternatives
-                </a>{' '}
-                page.
-              </p>
+          (comparisonPages.length > 0 || alternativesHub) && (
+            <section class="editorial-section">
+              <h2>Compare and alternatives</h2>
+              <div class="tool-list">
+                {comparisonPages.map((spec) => (
+                  <a
+                    class="panel focus-ring"
+                    href={siteUrl(`vs/${spec.pairPath}`)}
+                  >
+                    <strong>
+                      {spec.leftLabel} vs {spec.rightLabel}
+                    </strong>
+                    <small>Static comparison · Tier {spec.tier ?? 'A'}</small>
+                  </a>
+                ))}
+                {alternativesHub && (
+                  <a
+                    class="panel focus-ring"
+                    href={siteUrl(`alternatives/${tool.slug}`)}
+                  >
+                    <strong>{alternativesHub.headline}</strong>
+                    <small>
+                      Alternatives hub · Tier {alternativesHub.tier ?? 'A'}
+                    </small>
+                  </a>
+                )}
+              </div>
             </section>
           )
         }

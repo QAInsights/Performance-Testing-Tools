@@ -2,15 +2,17 @@
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import Footer from '../../components/Footer.astro';
 import { tools } from '../../data/tools';
-import { TIER_A_COMPARISONS } from '../../data/comparisons';
-import { resolveComparison } from '../../lib/comparisonContent';
+import {
+  allComparisonSpecs,
+  resolveComparison,
+} from '../../lib/comparisonContent';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
-import { seoYear } from '../../lib/pageMeta';
+import { clampMetaDescription, seoYear } from '../../lib/pageMeta';
 import '../../styles/editorial.css';
 
 export function getStaticPaths() {
-  return TIER_A_COMPARISONS.flatMap((spec) => {
+  return allComparisonSpecs(tools).flatMap((spec) => {
     const resolved = resolveComparison(spec, tools);
     if (!resolved) return [];
     return [
@@ -23,8 +25,8 @@ export function getStaticPaths() {
 }
 
 const { spec, left, right, rows } = Astro.props;
-const title = `${spec.leftLabel} vs ${spec.rightLabel} (${seoYear}) · Spec Comparison`;
-const description = `${spec.leftLabel} vs ${spec.rightLabel}: license, deployment, protocols, scripting, and curator guidance for performance engineers.`;
+const title = `${spec.leftLabel} vs ${spec.rightLabel} (${seoYear}): specs, pricing & verdict`;
+const description = clampMetaDescription(spec.answerBox);
 const compareQuery = [left.slug, right.slug].sort().join(',');
 ---
 
@@ -64,7 +66,7 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
       <a href={siteUrl('compare')}>Compare</a><span>/</span>
       <strong>{spec.leftLabel} vs {spec.rightLabel}</strong>
     </nav>
-    <p class="eyebrow">STATIC COMPARISON / TIER A</p>
+    <p class="eyebrow">STATIC COMPARISON / TIER {spec.tier ?? 'A'}</p>
     <h1>{spec.leftLabel} vs {spec.rightLabel}</h1>
     <div class="answer-box">
       <span class="answer-box-label">Answer</span>

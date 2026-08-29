@@ -5,6 +5,7 @@ import { tools } from '../data/tools';
 import { siteUrl } from '../lib/urls';
 import { loadProfilePath } from '../lib/loadProfile';
 import { compareDescription, compareTitle } from '../lib/pageMeta';
+import { allComparisonSpecs } from '../lib/comparisonContent';
 
 const serializedTools = tools.map(
   ({
@@ -44,6 +45,7 @@ const serializedTools = tools.map(
     ),
   }),
 );
+const comparisonSpecs = allComparisonSpecs(tools);
 
 // Static HTML ships empty; client hydrates from ?tools=. Empty rig is noindex.
 const emptyCompare = true;
@@ -71,26 +73,15 @@ const emptyCompare = true;
         or open a prebuilt comparison:
       </p>
       <ul class="empty-links">
-        <li>
-          <a href={siteUrl('compare?tools=apache-jmeter,grafana-k6')}
-            >Apache JMeter vs Grafana k6</a
-          >
-        </li>
-        <li>
-          <a href={siteUrl('compare?tools=gatling,grafana-k6')}
-            >Gatling vs Grafana k6</a
-          >
-        </li>
-        <li>
-          <a href={siteUrl('compare?tools=locust,grafana-k6')}
-            >Locust vs Grafana k6</a
-          >
-        </li>
-        <li>
-          <a href={siteUrl('compare?tools=blazemeter,grafana-cloud-k6')}
-            >BlazeMeter vs Grafana Cloud k6</a
-          >
-        </li>
+        {
+          comparisonSpecs.map((spec) => (
+            <li>
+              <a href={siteUrl(`vs/${spec.pairPath}`)}>
+                {spec.leftLabel} vs {spec.rightLabel} · Tier {spec.tier ?? 'A'}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </div>
     <Footer />
