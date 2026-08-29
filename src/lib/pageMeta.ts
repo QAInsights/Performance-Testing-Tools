@@ -26,6 +26,12 @@ const DEPLOYMENT_PHRASE: Record<Deployment, string> = {
 
 const META_DESCRIPTION_LIMIT = 158;
 
+export function clampMetaDescription(text: string): string {
+  if (text.length <= META_DESCRIPTION_LIMIT) return text;
+  const cut = text.slice(0, META_DESCRIPTION_LIMIT - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:]$/, '')}…`;
+}
+
 export function toolCount(catalog: readonly Tool[] = tools): number {
   return catalog.length;
 }
@@ -48,8 +54,7 @@ export function toolTitle(tool: Tool): string {
 export function toolDescription(tool: Tool): string {
   const head = tool.description.trim().replace(/\.$/, '');
   if (head.length + 1 > META_DESCRIPTION_LIMIT) {
-    const cut = head.slice(0, META_DESCRIPTION_LIMIT - 1);
-    return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:]$/, '')}…`;
+    return clampMetaDescription(head);
   }
 
   const successor =

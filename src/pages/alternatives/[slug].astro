@@ -9,7 +9,7 @@ import {
 } from '../../lib/comparisonContent';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
-import { seoYear } from '../../lib/pageMeta';
+import { clampMetaDescription, seoYear } from '../../lib/pageMeta';
 import '../../styles/editorial.css';
 
 export function getStaticPaths() {
@@ -31,11 +31,12 @@ export function getStaticPaths() {
 
 const { hub, tool, alternatives } = Astro.props;
 const title = `${hub.headline} (${seoYear}) · Curated Directory`;
+const description = clampMetaDescription(hub.intro);
 ---
 
 <ConsoleLayout
   title={title}
-  description={hub.intro.slice(0, 160)}
+  description={description}
   ogType="article"
   canonical={absoluteUrl(`alternatives/${hub.toolSlug}`)}
   structuredData={[

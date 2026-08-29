@@ -35,6 +35,7 @@ describe('page meta builders', () => {
     expect(toolDescription(jmeter).length).toBeLessThanOrEqual(158);
     for (const tool of tools) {
       expect(toolDescription(tool).length, tool.name).toBeLessThanOrEqual(158);
+      expect(toolDescription(tool).endsWith('.'), tool.name).toBe(true);
     }
   });
 
