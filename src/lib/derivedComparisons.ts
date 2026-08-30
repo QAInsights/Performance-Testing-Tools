@@ -86,6 +86,8 @@ const CATEGORY_NOUN: Record<Category, string> = {
   'Browser/RUM': 'browser and real-user monitoring tool',
   'Results Analysis': 'results analysis tool',
   'AI/LLM Inference': 'LLM inference benchmarking tool',
+  'Database Benchmarking': 'database benchmarking tool',
+  'Code Benchmarking': 'code benchmarking tool',
 };
 
 /** Categories whose tools are routinely shortlisted against each other. */

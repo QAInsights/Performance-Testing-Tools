@@ -60,7 +60,11 @@ function whoIsItFor(tool: Tool): FaqItem {
               ? 'engineers focused on API and protocol-level throughput and latency'
               : tool.category === 'AI/LLM Inference'
                 ? 'teams benchmarking LLM and generative AI endpoints on token latency and throughput'
-                : 'engineers designing load, stress, and performance tests for web and service systems';
+                : tool.category === 'Database Benchmarking'
+                  ? 'engineers measuring database throughput, transaction latency, and capacity'
+                  : tool.category === 'Code Benchmarking'
+                    ? 'developers measuring the runtime and regressions of application code'
+                    : 'engineers designing load, stress, and performance tests for web and service systems';
 
   const licenseNote =
     tool.license === 'Open Source'
@@ -149,6 +153,11 @@ function cloudOrEnterprisePath(tool: Tool): FaqItem {
     path = `${tool.name} supports a hybrid path that can combine self-hosted controllers or agents with cloud or distributed load as the product allows. Teams often keep sensitive assets private while bursting generators into the cloud.`;
   } else if (tool.category === 'Enterprise Suite') {
     path = `${tool.name} is positioned as an enterprise suite for on-premises or controlled environments; cloud options depend on the vendor product line and adjacent SaaS offerings in the same family.`;
+  } else if (
+    tool.category === 'Database Benchmarking' ||
+    tool.category === 'Code Benchmarking'
+  ) {
+    path = `${tool.name} is a focused benchmark harness rather than a browser or enterprise load controller. Use its measured workload and reporting model to isolate database or code performance before broader system testing.`;
   } else {
     path = `${tool.name} is primarily self-hosted; teams typically run generators on their own machines, CI runners, or private cloud. Plan for generator capacity, network access to targets, and result storage yourself.`;
   }
