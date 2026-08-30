@@ -1756,12 +1756,12 @@ export const tools: Tool[] = [
     slug: 'flood-element',
     name: 'Flood Element',
     vendor: 'Flood',
-    url: 'https://element.flood.io/',
-    repoUrl: 'https://github.com/flood-io/element',
+    url: 'https://flood-io.gitbook.io/flood-chrome',
+    repoUrl: 'https://www.npmjs.com/package/@flood/element',
     description:
-      'Browser-based load-generation tool for running real-user journeys with Playwright.',
+      'Browser-based load-generation tool for scripting real-user journeys in TypeScript.',
     longDescription:
-      'Flood Element lets teams author browser load tests with a JavaScript and TypeScript API built on Playwright. It launches Chromium, Firefox, or WebKit instances and runs scalable browser scenarios through the Flood platform.',
+      'Flood Element let teams author browser-level load tests with a JavaScript and TypeScript API driving real Chrome instances, executed at scale through the Flood platform. The original GitHub repository is no longer available and the project is not actively maintained.',
     category: 'Browser/RUM',
     license: 'Open Source',
     pricingModel:
@@ -2115,7 +2115,7 @@ export const tools: Tool[] = [
     slug: 'weighttp',
     name: 'weighttp',
     vendor: 'lighttpd project',
-    url: 'https://www.lighttpd.net/2025/3/17/weighttp-0.6.0/',
+    url: 'https://redmine.lighttpd.net/projects/weighttp/wiki',
     repoUrl: 'https://github.com/lighttpd/weighttp',
     description:
       'Multithreaded command-line HTTP benchmarking tool from the lighttpd project.',
@@ -2294,12 +2294,12 @@ export const tools: Tool[] = [
     slug: 'opensta',
     name: 'OpenSTA',
     vendor: 'OpenSTA community',
-    url: 'https://github.com/parallaxsw/OpenSTA',
-    repoUrl: 'https://github.com/parallaxsw/OpenSTA',
+    url: 'http://opensta.org/',
+    repoUrl: 'https://sourceforge.net/projects/opensta/',
     description:
       'Historic open-source Windows load-testing tool for HTTP and HTTPS scripts.',
     longDescription:
-      'OpenSTA is a Script Modeler and controller-style performance-testing tool from the classic OpenSTA project. Its community repository is historical and not a dependable basis for new programs, so status is discontinued.',
+      'OpenSTA (Open System Testing Architecture) provides a Script Modeler and Commander for recording and replaying distributed HTTP load tests on Windows. Development ceased in the mid-2000s and the project is no longer maintained.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; GNU LGPLv2.1.',
@@ -2656,7 +2656,7 @@ export const tools: Tool[] = [
     slug: 'cassandra-stress',
     name: 'cassandra-stress',
     vendor: 'Apache Cassandra',
-    url: 'https://cassandra.apache.org/doc/latest/tools/cassandra_stress.html',
+    url: 'https://cassandra.apache.org/doc/4.1/cassandra/tools/cassandra_stress.html',
     repoUrl: 'https://github.com/apache/cassandra',
     description:
       'Built-in Apache Cassandra workload generator for cluster stress and capacity tests.',
