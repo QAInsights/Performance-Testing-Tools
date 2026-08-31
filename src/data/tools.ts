@@ -2057,7 +2057,7 @@ export const tools: Tool[] = [
     description:
       'C command-line HTTP/1.1 API benchmarker modeled as a modern alternative to ApacheBench.',
     longDescription:
-      'apib generates HTTP/1.1 API workloads with non-blocking I/O, configurable keep-alive, CSV output, and optional Linux resource monitoring. The project is a historical benchmark implementation with no reliable current maintenance signal.',
+      'apib generates HTTP/1.1 API workloads with non-blocking I/O, configurable keep-alive, CSV output, and optional Linux resource monitoring. The GitHub repository has been archived by the owner and is read-only.',
     category: 'Micro-benchmark CLI',
     license: 'Open Source',
     pricingModel: 'Free; Apache License 2.0.',
@@ -2066,7 +2066,7 @@ export const tools: Tool[] = [
     protocols: ['HTTP', 'HTTPS'],
     osSupport: ['Linux', 'macOS'],
     firstReleased: 2012,
-    status: 'Unknown',
+    status: 'Discontinued',
     tags: ['c', 'cli', 'api', 'http'],
   }),
   makeTool({
