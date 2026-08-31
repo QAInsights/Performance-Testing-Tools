@@ -1775,6 +1775,25 @@ export const tools: Tool[] = [
     tags: ['browser', 'playwright', 'javascript', 'typescript'],
   }),
   makeTool({
+    slug: 'helpmetest',
+    name: 'HelpMeTest',
+    vendor: 'HelpMeTest',
+    url: 'https://helpmetest.com/',
+    description:
+      'Cloud browser-testing platform that runs Robot Framework tests in real Chrome with 24/7 monitoring.',
+    longDescription:
+      'HelpMeTest executes Robot Framework tests in real cloud Chrome browsers, recording video, capturing failure screenshots, and streaming results back through its CLI. It targets continuous browser, API, and mobile checks with CI/CD integration and usage-based per-run pricing rather than protocol-level load generation.',
+    category: 'Browser/RUM',
+    license: 'Commercial',
+    pricingModel: 'Usage-based per test run; 14-day free trial.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['Robot Framework'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    tags: ['browser', 'saas', 'monitoring', 'ai'],
+  }),
+  makeTool({
     slug: 'readyapi-performance',
     name: 'ReadyAPI Performance',
     vendor: 'SmartBear',
