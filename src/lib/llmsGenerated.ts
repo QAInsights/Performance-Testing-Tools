@@ -62,6 +62,12 @@ const whoFor = (tool: Tool) => {
   if (tool.category === 'Enterprise Suite') {
     return 'Enterprise performance engineering organizations';
   }
+  if (tool.category === 'Database Benchmarking') {
+    return 'Teams measuring database throughput and transaction capacity';
+  }
+  if (tool.category === 'Code Benchmarking') {
+    return 'Developers measuring code and command runtime regressions';
+  }
   return 'Engineers choosing load and performance testing tooling';
 };
 

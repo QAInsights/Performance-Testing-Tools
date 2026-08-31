@@ -43,6 +43,12 @@ export function bestFor(tool: Tool): string[] {
     items.push(
       'Token-level latency and throughput benchmarks against LLM inference endpoints',
     );
+  } else if (tool.category === 'Database Benchmarking') {
+    items.push(
+      'Database throughput, transaction latency, and capacity benchmarks',
+    );
+  } else if (tool.category === 'Code Benchmarking') {
+    items.push('Repeatable method, function, and command runtime benchmarks');
   } else {
     items.push(
       `${tool.category} scenarios across typical web and service stacks`,
@@ -108,6 +114,12 @@ export function architectureLine(tool: Tool): string {
     : 'languages not fully recorded';
   if (tool.category === 'Micro-benchmark CLI') {
     return `${tool.name} is typically driven as a CLI micro-benchmark with ${langs}. It favors single-host or simple distributed runs rather than enterprise controller grids.`;
+  }
+  if (tool.category === 'Database Benchmarking') {
+    return `${tool.name} is operated as a database benchmark with ${langs}. Workload definitions and database sessions determine concurrency, while results focus on throughput and latency rather than browser journeys.`;
+  }
+  if (tool.category === 'Code Benchmarking') {
+    return `${tool.name} is operated as a code benchmark harness with ${langs}. It isolates functions, methods, or commands and applies repeated measurements, warmups, and statistical comparison rather than generating protocol traffic.`;
   }
   if (tool.deployment === 'Cloud') {
     return `${tool.name} runs as a cloud service: scenarios use ${langs}, while generators and orchestration are vendor-managed.`;

@@ -13,6 +13,8 @@ function archetype(
     return 'burst';
   if (tool.category === 'Enterprise Suite') return 'step';
   if (tool.category === 'Protocol/API Load') return 'ramp';
+  if (tool.category === 'Database Benchmarking') return 'step';
+  if (tool.category === 'Code Benchmarking') return 'spike';
   if (tool.license === 'Open Source') return 'soak';
   return 'burst';
 }
