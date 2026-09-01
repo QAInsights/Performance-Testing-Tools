@@ -256,6 +256,17 @@
   margin: 8px 0 0;
   max-width: 650px;
 }
+.directory-wizard-link {
+  display: inline-block;
+  margin-top: 13px;
+  color: var(--color-teal-300);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+.directory-wizard-link:hover {
+  color: var(--color-amber-400);
+}
 .sponsor-slot {
   display: flex;
   flex-direction: column;

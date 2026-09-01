@@ -62,6 +62,7 @@ export function initDirectory(): void {
       values(key).forEach((value) => next.append(key, value));
     if ((sort as HTMLSelectElement).value !== 'name')
       next.set('sort', (sort as HTMLSelectElement).value);
+    if (selected.size > 0) next.set('rig', [...selected].join(','));
     history.replaceState(
       null,
       '',
@@ -149,6 +150,19 @@ export function initDirectory(): void {
       root.querySelector<HTMLDetailsElement>('.filter-disclosure');
     if (disclosure) disclosure.open = true;
   }
+  params
+    .get('rig')
+    ?.split(',')
+    .map((slug) => slug.trim())
+    .filter(Boolean)
+    .forEach((slug) => {
+      if (
+        selected.size < 3 &&
+        root.querySelector(`[data-tool="${CSS.escape(slug)}"]`)
+      ) {
+        selected.add(slug);
+      }
+    });
   const renderCompare = () => {
     root
       .querySelectorAll<HTMLInputElement>('[data-compare]')
@@ -193,6 +207,7 @@ export function initDirectory(): void {
         location.href = `${projectBase}/compare?tools=${[...selected].join(',')}`;
       };
     }
+    syncUrl();
   };
   const compareFeedback = root.querySelector<HTMLElement>(
     '[data-compare-feedback]',
