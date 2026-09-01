@@ -5,7 +5,7 @@ import {
   compareWithLinks,
   languageChips,
   protocolChips,
-  sameCategoryTools,
+  similarTools,
 } from '../lib/toolRelations';
 import { tools } from '../data/tools';
 
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { tool, catalog = tools } = Astro.props;
-const similar = sameCategoryTools(tool, catalog);
+const similar = similarTools(tool, catalog);
 const compares = compareWithLinks(tool, catalog);
 const languages = languageChips(tool);
 const protocols = protocolChips(tool);
@@ -43,12 +43,13 @@ const ecosystem = ecosystemLinksForTool(tool);
   {
     similar.length > 0 && (
       <section class="related-block">
-        <p class="eyebrow">SAME CATEGORY</p>
+        <p class="eyebrow">SIMILAR TOOLS</p>
         <div class="similar-list">
           {similar.map((item) => (
             <a class="similar-item panel focus-ring" href={item.href}>
               <span>{item.name}</span>
               <small>{item.vendor}</small>
+              <small class="similar-reasons">{item.reasons.join(' · ')}</small>
             </a>
           ))}
         </div>

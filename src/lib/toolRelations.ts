@@ -10,6 +10,10 @@ export interface RelatedToolLink {
   href: string;
 }
 
+export interface SimilarToolLink extends RelatedToolLink {
+  reasons: string[];
+}
+
 export interface ComparePairLink {
   label: string;
   href: string;
@@ -45,6 +49,79 @@ export function sameCategoryTools(
       name: item.name,
       vendor: item.vendor,
       href: siteUrl(`tools/${item.slug}`),
+    }));
+}
+
+export function similarTools(
+  tool: Tool,
+  catalog: readonly Tool[],
+  limit = 4,
+): SimilarToolLink[] {
+  return catalog
+    .filter((candidate) => candidate.slug !== tool.slug)
+    .map((candidate) => {
+      const sharedProtocols = candidate.protocols.filter((protocol) =>
+        tool.protocols.includes(protocol),
+      );
+      const sharedLanguages = candidate.scriptingLanguages.filter((language) =>
+        tool.scriptingLanguages.includes(language),
+      );
+      const sameCategory = candidate.category === tool.category;
+      const sameDeployment = candidate.deployment === tool.deployment;
+      const sameLicense = candidate.license === tool.license;
+      const score =
+        (sameCategory ? 4 : 0) +
+        Math.min(sharedProtocols.length, 3) +
+        Math.min(sharedLanguages.length * 2, 4) +
+        (sameDeployment ? 1 : 0) +
+        (sameLicense ? 1 : 0);
+      if (score === 0) return undefined;
+
+      const reasons: string[] = [];
+      if (sameCategory) reasons.push('same category');
+      if (sharedProtocols.length > 0) {
+        reasons.push(
+          `${Math.min(sharedProtocols.length, 3)} shared protocol${
+            Math.min(sharedProtocols.length, 3) === 1 ? '' : 's'
+          }`,
+        );
+      }
+      if (sharedLanguages.length > 0) {
+        reasons.push(
+          `${Math.min(sharedLanguages.length, 2)} shared language${
+            Math.min(sharedLanguages.length, 2) === 1 ? '' : 's'
+          }`,
+        );
+      }
+      if (sameDeployment) reasons.push('same deployment');
+      if (sameLicense) reasons.push('same license');
+
+      return {
+        slug: candidate.slug,
+        name: candidate.name,
+        vendor: candidate.vendor,
+        href: siteUrl(`tools/${candidate.slug}`),
+        reasons,
+        score,
+        active: candidate.status === 'Active',
+      };
+    })
+    .filter((candidate): candidate is NonNullable<typeof candidate> =>
+      Boolean(candidate),
+    )
+    .sort(
+      (left, right) =>
+        right.score - left.score ||
+        Number(right.active) - Number(left.active) ||
+        left.name.localeCompare(right.name),
+    )
+    .slice(0, limit)
+    .map((candidate) => ({
+      slug: candidate.slug,
+      name: candidate.name,
+      vendor: candidate.vendor,
+      href: candidate.href,
+      reasons: candidate.reasons,
     }));
 }
 

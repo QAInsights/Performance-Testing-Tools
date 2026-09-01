@@ -1,0 +1,335 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Footer from '../components/Footer.astro';
+import { tools } from '../data/tools';
+import { getGithubHealth, githubHealthGeneratedAt } from '../lib/githubHealth';
+import { absoluteUrl, siteUrl } from '../lib/urls';
+import { healthDescription, healthTitle } from '../lib/pageMeta';
+
+const staleCutoff = new Date();
+staleCutoff.setMonth(staleCutoff.getMonth() - 18);
+const healthRows = tools
+  .map((tool) => {
+    const health = getGithubHealth(tool.slug);
+    if (!health) return undefined;
+    const lastPushedDate = new Date(health.lastPushedAt);
+    return {
+      tool,
+      health,
+      stale: lastPushedDate < staleCutoff,
+    };
+  })
+  .filter((row): row is NonNullable<typeof row> => row !== undefined)
+  .sort(
+    (left, right) =>
+      right.health.stars - left.health.stars ||
+      left.tool.name.localeCompare(right.tool.name),
+  );
+---
+
+<ConsoleLayout
+  title={healthTitle()}
+  description={healthDescription()}
+  canonical={absoluteUrl('health')}
+>
+  <main class="health-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>← Directory</a><span>/</span><strong
+        >Repo health</strong
+      >
+    </nav>
+    <header class="health-header">
+      <p class="eyebrow">REPOSITORY SIGNAL / GITHUB</p>
+      <h1>Repo health</h1>
+      <p class="intro">
+        A snapshot of public repository activity for catalog tools with
+        discoverable GitHub sources.
+      </p>
+    </header>
+
+    <section
+      class="health-table-wrap panel"
+      aria-labelledby="health-table-title"
+    >
+      <div class="table-heading">
+        <div>
+          <p class="eyebrow">ACTIVITY MATRIX</p>
+          <h2 id="health-table-title">Tracked repositories</h2>
+        </div>
+        <span class="mono table-count">{healthRows.length} TRACKED</span>
+      </div>
+      {
+        healthRows.length > 0 ? (
+          <div class="table-scroll">
+            <table class="health-table">
+              <thead>
+                <tr>
+                  <th scope="col">Tool</th>
+                  <th scope="col">Category</th>
+                  <th scope="col" aria-sort="descending">
+                    <button type="button" data-health-sort="stars">
+                      Stars
+                    </button>
+                  </th>
+                  <th scope="col" aria-sort="none">
+                    <button type="button" data-health-sort="lastPushedAt">
+                      Last push
+                    </button>
+                  </th>
+                  <th scope="col">Signals</th>
+                </tr>
+              </thead>
+              <tbody>
+                {healthRows.map(({ tool, health, stale }) => (
+                  <tr
+                    data-stars={health.stars}
+                    data-last-pushed={health.lastPushedAt}
+                  >
+                    <th scope="row">
+                      <a href={siteUrl(`tools/${tool.slug}`)}>{tool.name}</a>
+                    </th>
+                    <td>{tool.category}</td>
+                    <td class="stars">{health.stars.toLocaleString()}</td>
+                    <td>{health.lastPushedAt.slice(0, 10)}</td>
+                    <td>
+                      <div class="signal-list mono">
+                        {stale && <span class="health-stale">STALE</span>}
+                        {health.archived && (
+                          <span class="repo-health-archived">ARCHIVED</span>
+                        )}
+                        {!stale && !health.archived && <span>—</span>}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p class="empty-state">
+            No repository health entries are available yet. Run
+            <code>npm run health</code> to collect them.
+          </p>
+        )
+      }
+    </section>
+    <p class="health-footnote mono">
+      DATASET GENERATED · {githubHealthGeneratedAt} ·
+      <span>run npm run health to refresh</span>
+    </p>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<script>
+  const table = document.querySelector('.health-table');
+  const body = table?.querySelector('tbody');
+  const sortButtons = [
+    ...document.querySelectorAll<HTMLButtonElement>('[data-health-sort]'),
+  ];
+  let activeSort = 'stars';
+  let direction = 'descending';
+
+  const renderSort = () => {
+    if (!body) return;
+    const rows = [...body.querySelectorAll('tr')].sort((left, right) => {
+      const leftValue =
+        activeSort === 'stars'
+          ? Number(left.dataset.stars)
+          : new Date(left.dataset.lastPushed || '').getTime();
+      const rightValue =
+        activeSort === 'stars'
+          ? Number(right.dataset.stars)
+          : new Date(right.dataset.lastPushed || '').getTime();
+      const difference =
+        direction === 'ascending'
+          ? leftValue - rightValue
+          : rightValue - leftValue;
+      if (difference !== 0) return difference;
+      return (left.querySelector('th')?.textContent || '').localeCompare(
+        right.querySelector('th')?.textContent || '',
+      );
+    });
+    body.append(...rows);
+    sortButtons.forEach((button) => {
+      const header = button.closest('th');
+      if (header) {
+        header.setAttribute(
+          'aria-sort',
+          button.dataset.healthSort === activeSort ? direction : 'none',
+        );
+      }
+    });
+  };
+
+  sortButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextSort = button.dataset.healthSort || 'stars';
+      if (nextSort === activeSort) {
+        direction = direction === 'ascending' ? 'descending' : 'ascending';
+      } else {
+        activeSort = nextSort;
+        direction = 'descending';
+      }
+      renderSort();
+    });
+  });
+</script>
+
+<style>
+  .health-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 44px 28px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .breadcrumbs a,
+  .health-table a {
+    color: var(--color-teal-300);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover,
+  .health-table a:hover {
+    color: var(--color-amber-400);
+  }
+  .health-header h1 {
+    color: var(--color-surface-100);
+    font-size: clamp(42px, 8vw, 88px);
+    letter-spacing: -0.08em;
+    margin: 12px 0 18px;
+  }
+  .intro {
+    color: var(--color-surface-300);
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 700px;
+    margin: 0;
+  }
+  .health-table-wrap {
+    margin-top: 48px;
+    overflow: hidden;
+    padding: 22px;
+  }
+  .table-heading {
+    align-items: end;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+  }
+  .table-heading h2 {
+    color: var(--color-teal-300);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .table-count {
+    color: var(--color-surface-300);
+    font-size: 12px;
+  }
+  .table-scroll {
+    overflow-x: auto;
+  }
+  .health-table {
+    border-collapse: collapse;
+    min-width: 760px;
+    width: 100%;
+  }
+  .health-table th,
+  .health-table td {
+    border-top: 1px solid var(--color-teal-700);
+    padding: 13px 12px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  .health-table thead th {
+    color: var(--color-surface-300);
+    font: 11px var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .health-table thead th:first-child,
+  .health-table tbody th {
+    padding-left: 0;
+  }
+  .health-table tbody th {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .health-table td {
+    color: var(--color-surface-300);
+    font-size: 13px;
+  }
+  .health-table .stars {
+    color: var(--color-surface-100);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+  .health-table button {
+    background: none;
+    border: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    letter-spacing: inherit;
+    padding: 0;
+    text-align: left;
+    text-transform: inherit;
+  }
+  .health-table button:hover {
+    color: var(--color-amber-400);
+  }
+  .signal-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    font-size: 11px;
+  }
+  .health-stale,
+  .repo-health-archived {
+    border: 1px solid var(--color-amber-400);
+    color: var(--color-amber-400);
+    padding: 4px 6px;
+  }
+  .repo-health-archived {
+    border-color: var(--color-teal-300);
+    color: var(--color-teal-300);
+  }
+  .empty-state {
+    border-top: 1px solid var(--color-teal-700);
+    color: var(--color-surface-300);
+    margin: 0;
+    padding: 22px 0 4px;
+  }
+  .empty-state code,
+  .health-footnote code {
+    color: var(--color-teal-300);
+    font-family: var(--font-mono);
+  }
+  .health-footnote {
+    color: var(--color-surface-300);
+    font-size: 11px;
+    line-height: 1.5;
+    margin: 15px 0 0;
+  }
+  @media (max-width: 700px) {
+    .health-page {
+      padding: 28px 14px 64px;
+    }
+    .health-table-wrap {
+      padding: 16px;
+    }
+    .table-heading {
+      align-items: start;
+      display: grid;
+      gap: 10px;
+    }
+  }
+</style>
