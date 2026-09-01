@@ -9,10 +9,7 @@
 }
 .rail {
   padding: 20px 16px;
-  position: sticky;
-  top: 24px;
-  height: calc(100vh - 48px);
-  overflow: auto;
+  align-self: start;
 }
 .brand {
   display: flex;
@@ -611,10 +608,6 @@
   .directory-shell {
     grid-template-columns: 1fr;
     padding: 14px;
-  }
-  .rail {
-    position: static;
-    height: auto;
   }
   .rail-nav {
     display: flex;
