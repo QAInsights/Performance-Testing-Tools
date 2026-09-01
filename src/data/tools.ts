@@ -327,7 +327,6 @@ export const tools: Tool[] = [
     name: 'RedLine13',
     vendor: 'RedLine13',
     url: 'https://www.redline13.com/',
-    repoUrl: 'https://github.com/RedLine13/Redline13',
     description:
       'Freemium cloud load testing platform that runs tests in a customer AWS account.',
     longDescription:
@@ -920,7 +919,7 @@ export const tools: Tool[] = [
     name: 'Taurus',
     vendor: 'BlazeMeter',
     url: 'https://gettaurus.org/',
-    repoUrl: 'https://github.com/bzt/taurus',
+    repoUrl: 'https://github.com/Blazemeter/taurus',
     description:
       'Open-source automation framework that configures and runs multiple performance testing engines.',
     longDescription:
@@ -1105,12 +1104,11 @@ export const tools: Tool[] = [
     slug: 'tcpkali',
     name: 'tcpkali',
     vendor: 'Machine Zone',
-    url: 'https://github.com/machinezone/tcpkali',
-    repoUrl: 'https://github.com/machinezone/tcpkali',
+    url: 'https://formulae.brew.sh/formula/tcpkali',
     description:
       'High-performance TCP and WebSocket load generator for connection-oriented services.',
     longDescription:
-      'tcpkali creates large numbers of TCP or WebSocket connections and messages. It is designed for protocol-level capacity and connection testing.',
+      'tcpkali creates large numbers of TCP or WebSocket connections and messages. It is designed for protocol-level capacity and connection testing. The original Machine Zone GitHub repository is no longer available and the project is not actively maintained.',
     category: 'Protocol/API Load',
     license: 'Open Source',
     pricingModel: 'Free; BSD 2-Clause License.',
