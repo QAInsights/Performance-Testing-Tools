@@ -33,6 +33,9 @@ const { category, toolsCount, categoriesCount, optionGroups } = Astro.props;
   </div>
   <nav class="rail-nav" aria-label="Primary">
     <a href={siteUrl()} class="active focus-ring">Directory</a>
+    <a href={siteUrl('wizard')} class="rail-nav-gradient focus-ring"
+      >Tool Finder</a
+    >
     <a href={siteUrl('about')} class="focus-ring">About</a>
   </nav>
   <details class="filter-disclosure" open>

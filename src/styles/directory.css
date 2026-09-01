@@ -83,6 +83,40 @@
 .rail-nav span {
   opacity: 0.55;
 }
+.rail-nav a.rail-nav-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--color-teal-300),
+    var(--color-amber-400),
+    #c084fc,
+    var(--color-teal-300)
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: rail-gradient-shift 6s linear infinite;
+}
+.rail-nav a.rail-nav-gradient:hover {
+  background: var(--color-teal-900);
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  color: white;
+  animation: none;
+}
+@keyframes rail-gradient-shift {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 300% 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rail-nav a.rail-nav-gradient {
+    animation: none;
+  }
+}
 .filter-disclosure {
   border-top: 1px solid var(--color-teal-700);
   padding-top: 18px;
