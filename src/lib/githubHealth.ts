@@ -14,5 +14,7 @@ export interface GithubHealthDataset {
 
 const dataset = githubHealthData as GithubHealthDataset;
 
+export const githubHealthGeneratedAt = dataset.generatedAt;
+
 export const getGithubHealth = (slug: string): GithubHealthEntry | undefined =>
   dataset.entries[slug];

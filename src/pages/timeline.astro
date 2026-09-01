@@ -1,0 +1,248 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Footer from '../components/Footer.astro';
+import { tools, type Tool } from '../data/tools';
+import { absoluteUrl, siteUrl } from '../lib/urls';
+import { timelineDescription, timelineTitle } from '../lib/pageMeta';
+
+type DatedTool = Tool & { firstReleased: number };
+
+const datedTools = tools
+  .filter((tool): tool is DatedTool => tool.firstReleased !== undefined)
+  .sort(
+    (left, right) =>
+      left.firstReleased - right.firstReleased ||
+      left.name.localeCompare(right.name),
+  );
+const withoutYearCount = tools.length - datedTools.length;
+const timelineEntries = datedTools.map((tool) => ({
+  tool,
+  decade: Math.floor(tool.firstReleased / 10) * 10,
+  successorTool:
+    tool.successor && tool.successor !== 'No verified successor'
+      ? tools.find((candidate) => candidate.name === tool.successor)
+      : undefined,
+}));
+const decades = [...new Set(timelineEntries.map((entry) => entry.decade))];
+---
+
+<ConsoleLayout
+  title={timelineTitle()}
+  description={timelineDescription()}
+  canonical={absoluteUrl('timeline')}
+>
+  <main class="timeline-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>← Directory</a><span>/</span><strong
+        >Tool timeline</strong
+      >
+    </nav>
+    <header class="timeline-header">
+      <p class="eyebrow">CATALOG HISTORY / FIRST RELEASES</p>
+      <h1>Tool timeline</h1>
+      <p class="intro">
+        A historical view of the catalog, ordered by each tool's earliest
+        verified release year.
+      </p>
+      <p class="timeline-note mono">
+        {withoutYearCount} tools without a verified first release are omitted
+      </p>
+    </header>
+
+    <div class="timeline">
+      {
+        decades.map((decade) => (
+          <section class="timeline-decade" aria-labelledby={`decade-${decade}`}>
+            <h2 id={`decade-${decade}`} class="mono">
+              {decade}s
+            </h2>
+            <div class="timeline-items">
+              {timelineEntries
+                .filter((entry) => entry.decade === decade)
+                .map(({ tool, successorTool }) => (
+                  <article class="timeline-item">
+                    <div class="timeline-marker" aria-hidden="true" />
+                    <p class="timeline-year mono">{tool.firstReleased}</p>
+                    <div class="timeline-card panel">
+                      <div class="timeline-card-head">
+                        <div>
+                          <h3>
+                            <a href={siteUrl(`tools/${tool.slug}`)}>
+                              {tool.name}
+                            </a>
+                          </h3>
+                          <p class="timeline-vendor mono">{tool.vendor}</p>
+                        </div>
+                        <span class="category-chip mono">{tool.category}</span>
+                      </div>
+                      {tool.status === 'Discontinued' && (
+                        <span class="discontinued mono">DISCONTINUED</span>
+                      )}
+                      {tool.successor &&
+                        tool.successor !== 'No verified successor' && (
+                          <p class="successor mono">
+                            → successor:{' '}
+                            {successorTool ? (
+                              <a href={siteUrl(`tools/${successorTool.slug}`)}>
+                                {tool.successor}
+                              </a>
+                            ) : (
+                              tool.successor
+                            )}
+                          </p>
+                        )}
+                    </div>
+                  </article>
+                ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .timeline-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 44px 28px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .breadcrumbs a {
+    color: var(--color-teal-300);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover,
+  .timeline-card h3 a:hover,
+  .successor a:hover {
+    color: var(--color-amber-400);
+  }
+  .timeline-header h1 {
+    color: var(--color-surface-100);
+    font-size: clamp(42px, 8vw, 88px);
+    letter-spacing: -0.08em;
+    margin: 12px 0 18px;
+  }
+  .intro {
+    color: var(--color-surface-300);
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 700px;
+    margin: 0;
+  }
+  .timeline-note {
+    color: var(--color-teal-300);
+    font-size: 12px;
+    margin: 18px 0 0;
+  }
+  .timeline {
+    margin-top: 54px;
+  }
+  .timeline-decade {
+    display: grid;
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 24px;
+    margin-bottom: 42px;
+  }
+  .timeline-decade > h2 {
+    color: var(--color-amber-400);
+    font-size: 18px;
+    margin: 4px 0 0;
+  }
+  .timeline-items {
+    border-left: 1px solid var(--color-teal-700);
+    display: grid;
+    gap: 16px;
+    padding-left: 28px;
+  }
+  .timeline-item {
+    position: relative;
+  }
+  .timeline-marker {
+    position: absolute;
+    top: 20px;
+    left: -33px;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--color-teal-300);
+    background: var(--color-surface-950);
+    transform: rotate(45deg);
+  }
+  .timeline-year {
+    color: var(--color-teal-300);
+    font-size: 12px;
+    margin: 0 0 6px;
+  }
+  .timeline-card {
+    padding: 17px 20px;
+  }
+  .timeline-card-head {
+    align-items: start;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+  }
+  .timeline-card h3 {
+    font-size: 21px;
+    margin: 0;
+  }
+  .timeline-card h3 a {
+    color: var(--color-surface-100);
+    text-decoration: none;
+  }
+  .timeline-vendor {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    margin: 5px 0 0;
+  }
+  .category-chip,
+  .discontinued {
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .discontinued {
+    border-color: var(--color-amber-400);
+    color: var(--color-amber-400);
+    display: inline-block;
+    margin-top: 14px;
+  }
+  .successor {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 13px 0 0;
+  }
+  .successor a {
+    color: var(--color-teal-300);
+  }
+  @media (max-width: 700px) {
+    .timeline-page {
+      padding: 28px 14px 64px;
+    }
+    .timeline-decade {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .timeline-decade > h2 {
+      margin-left: 2px;
+    }
+    .timeline-card-head {
+      display: grid;
+      gap: 12px;
+    }
+    .category-chip {
+      justify-self: start;
+    }
+  }
+</style>

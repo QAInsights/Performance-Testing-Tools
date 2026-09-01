@@ -126,6 +126,22 @@ export function wizardDescription(): string {
   return `Find performance testing tools by workload, budget, deployment, language, and maintenance status. Compare the best matches in the Test Rig.`;
 }
 
+export function timelineTitle(): string {
+  return `Tool timeline · ${siteName}`;
+}
+
+export function timelineDescription(): string {
+  return `Explore performance testing tools by first release year, from early load-testing tools to current benchmarking platforms.`;
+}
+
+export function healthTitle(): string {
+  return `Repo health · ${siteName}`;
+}
+
+export function healthDescription(): string {
+  return `Review GitHub stars, recent activity, and archived status for performance testing tools with public repositories.`;
+}
+
 export function aboutTitle(): string {
   return `About · ${siteName}`;
 }
