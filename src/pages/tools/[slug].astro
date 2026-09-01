@@ -8,6 +8,7 @@ import { datasetLastVerified, tools } from '../../data/tools';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
 import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
 import { getEnrichment } from '../../lib/enrichmentData';
+import { getGithubHealth } from '../../lib/githubHealth';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
 import { curatorPerson } from '../../lib/methodology';
@@ -73,6 +74,8 @@ const hasSpecs =
   tool.protocols.length > 0 ||
   tool.osSupport.length > 0 ||
   tool.tags.length > 0;
+const repoHealth = getGithubHealth(tool.slug);
+const hasRepoHealth = Boolean(repoHealth);
 const sourceHost = (url: string) => {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -279,7 +282,7 @@ const sourceHost = (url: string) => {
           )
         }
         {
-          hasSpecs && (
+          (hasSpecs || hasRepoHealth) && (
             <section class="detail-section">
               <h2>Specs</h2>
               <dl class="metadata-grid">
@@ -328,6 +331,20 @@ const sourceHost = (url: string) => {
                           <span class="spec-chip">{item}</span>
                         ))}
                       </span>
+                    </dd>
+                  </div>
+                )}
+                {repoHealth && (
+                  <div>
+                    <dt>Repo health</dt>
+                    <dd class="repo-health-value">
+                      <span>
+                        ★ {repoHealth.stars} · last push{' '}
+                        {repoHealth.lastPushedAt.slice(0, 10)}
+                      </span>
+                      {repoHealth.archived && (
+                        <span class="repo-health-archived">ARCHIVED REPO</span>
+                      )}
                     </dd>
                   </div>
                 )}
@@ -659,6 +676,19 @@ const sourceHost = (url: string) => {
     line-height: 1.2;
     max-width: 100%;
     overflow-wrap: anywhere;
+    padding: 4px 6px;
+  }
+  .repo-health-value {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .repo-health-archived {
+    border: 1px solid var(--color-amber-400);
+    color: var(--color-amber-400);
+    font: 11px var(--font-mono);
+    letter-spacing: 0.06em;
     padding: 4px 6px;
   }
   .detail-actions {

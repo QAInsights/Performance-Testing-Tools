@@ -67,10 +67,16 @@ const emptyCompare = true;
       </p>
     </header>
     <div data-compare-matrix class="matrix panel"></div>
+    <div data-compare-actions class="compare-actions" hidden>
+      <button class="button button--ghost mono" type="button" data-copy-share>
+        COPY SHARE LINK
+      </button>
+    </div>
     <div data-compare-empty class="empty panel">
       <p>
         Select tools from the <a href={siteUrl()}>directory</a> to populate the rig,
-        or open a prebuilt comparison:
+        or open a prebuilt comparison. A populated rig URL can be shared with your
+        team:
       </p>
       <ul class="empty-links">
         {
@@ -89,6 +95,8 @@ const emptyCompare = true;
 </ConsoleLayout>
 <script define:vars={{ serializedTools }}>
   const matrix = document.querySelector('[data-compare-matrix]');
+  const actions = document.querySelector('[data-compare-actions]');
+  const copyShare = document.querySelector('[data-copy-share]');
   const empty = document.querySelector('[data-compare-empty]');
   const selected =
     new URLSearchParams(location.search)
@@ -119,6 +127,7 @@ const emptyCompare = true;
     setNoIndex(true);
   } else if (matrix) {
     if (empty) empty.hidden = true;
+    if (actions) actions.hidden = false;
     setNoIndex(false);
     const names = data.map((tool) => tool.name);
     document.title = `${names.join(' vs ')} Spec Comparison · Performance Testing Tools`;
@@ -210,6 +219,14 @@ const emptyCompare = true;
     });
     table.append(tbody);
     matrix.replaceChildren(table);
+    copyShare?.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(location.href);
+      if (!(copyShare instanceof HTMLButtonElement)) return;
+      copyShare.textContent = 'COPIED';
+      window.setTimeout(() => {
+        copyShare.textContent = 'COPY SHARE LINK';
+      }, 1500);
+    });
   }
 </script>
 <style>
@@ -239,6 +256,11 @@ const emptyCompare = true;
   .matrix {
     margin-top: 38px;
     overflow: auto;
+  }
+  .compare-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
   }
   .matrix-head,
   .matrix-row {

@@ -1,0 +1,449 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Footer from '../components/Footer.astro';
+import { tools } from '../data/tools';
+import { siteUrl } from '../lib/urls';
+import { wizardDescription, wizardTitle } from '../lib/pageMeta';
+
+const serializedTools = tools.map(
+  ({
+    slug,
+    name,
+    vendor,
+    description,
+    category,
+    license,
+    deployment,
+    scriptingLanguages,
+    status,
+    generalPick,
+    personalPick,
+    pricingModel,
+  }) => ({
+    slug,
+    name,
+    vendor,
+    description,
+    category,
+    license,
+    deployment,
+    scriptingLanguages,
+    status,
+    generalPick,
+    personalPick,
+    pricingModel,
+  }),
+);
+---
+
+<ConsoleLayout title={wizardTitle()} description={wizardDescription()}>
+  <main class="wizard-page" data-wizard data-base={siteUrl()}>
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>← Directory</a><span>/</span><strong
+        >Tool Finder</strong
+      >
+    </nav>
+    <header class="wizard-header">
+      <p class="eyebrow">DECISION SUPPORT / LIVE MATCHING</p>
+      <h1>Tool Finder</h1>
+      <p class="intro">
+        Answer what matters. Leave anything open when you want the catalog to
+        keep searching.
+      </p>
+    </header>
+
+    <form class="wizard-form panel" aria-label="Performance tool finder">
+      <fieldset>
+        <legend>01 / What are you testing?</legend>
+        <label
+          ><input type="radio" name="category" value="" checked /> No preference</label
+        >
+        <label
+          ><input type="radio" name="category" value="web" /> Websites &amp; APIs
+          (protocol-level)</label
+        >
+        <label
+          ><input type="radio" name="category" value="cli" /> Quick CLI benchmark</label
+        >
+        <label
+          ><input type="radio" name="category" value="browser" /> Real browser /
+          user experience</label
+        >
+        <label
+          ><input type="radio" name="category" value="managed" /> Managed cloud load
+          platform</label
+        >
+        <label
+          ><input type="radio" name="category" value="ai" /> AI / LLM inference</label
+        >
+        <label
+          ><input type="radio" name="category" value="database" /> Databases</label
+        >
+        <label
+          ><input type="radio" name="category" value="code" /> Code functions / micro-benchmarks</label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>02 / License / budget</legend>
+        <label
+          ><input type="radio" name="license" value="" checked /> No preference</label
+        >
+        <label
+          ><input type="radio" name="license" value="open" /> Open source only</label
+        >
+        <label
+          ><input type="radio" name="license" value="free" /> Free tier is fine</label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>03 / Deployment</legend>
+        <label
+          ><input type="radio" name="deployment" value="" checked /> No preference</label
+        >
+        <label
+          ><input type="radio" name="deployment" value="self-hosted" />
+          Self-hosted</label
+        >
+        <label
+          ><input type="radio" name="deployment" value="cloud" /> Cloud or SaaS</label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>04 / Preferred scripting language</legend>
+        <select id="language" name="language">
+          <option value="">No preference</option>
+          <option>JavaScript</option>
+          <option>TypeScript</option>
+          <option>Python</option>
+          <option>Java</option>
+          <option>Go</option>
+          <option>Scala</option>
+          <option>C#</option>
+          <option>YAML</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <legend>05 / Only actively maintained?</legend>
+        <label
+          ><input type="radio" name="status" value="active" checked /> Yes</label
+        >
+        <label
+          ><input type="radio" name="status" value="all" /> Include everything</label
+        >
+      </fieldset>
+    </form>
+
+    <section class="wizard-results-section" aria-labelledby="results-heading">
+      <div class="results-head">
+        <div>
+          <p class="eyebrow">MATCH OUTPUT</p>
+          <h2 id="results-heading">Best matches</h2>
+        </div>
+        <span class="mono results-count" data-result-count></span>
+      </div>
+      <div class="wizard-results" data-wizard-results></div>
+      <div class="empty panel" data-wizard-empty hidden>
+        No tools match those hard filters. Try opening one of the first
+        questions.
+      </div>
+      <a
+        class="compare-link mono"
+        data-compare-rig
+        href={siteUrl('compare')}
+        hidden>COMPARE TOP 3 IN TEST RIG →</a
+      >
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<script define:vars={{ serializedTools }}>
+  const root = document.querySelector('[data-wizard]');
+  const form = root?.querySelector('form');
+  const results = root?.querySelector('[data-wizard-results]');
+  const empty = root?.querySelector('[data-wizard-empty]');
+  const resultCount = root?.querySelector('[data-result-count]');
+  const compareRig = root?.querySelector('[data-compare-rig]');
+  const projectBase = (
+    (root instanceof HTMLElement && root.dataset.base) ||
+    '/'
+  ).replace(/\/+$/, '');
+  const categoryGroups = {
+    web: ['Load Testing', 'Protocol/API Load'],
+    cli: ['Micro-benchmark CLI'],
+    browser: ['Browser/RUM'],
+    managed: ['Cloud Load Testing', 'Enterprise Suite'],
+    ai: ['AI/LLM Inference'],
+    database: ['Database Benchmarking'],
+    code: ['Code Benchmarking'],
+  };
+
+  const selected = (name) =>
+    form?.querySelector(`input[name="${name}"]:checked`)?.value || '';
+
+  const badge = (text, modifier = '') => {
+    const item = document.createElement('span');
+    item.className = `wizard-badge ${modifier}`.trim();
+    item.textContent = text;
+    return item;
+  };
+
+  const render = () => {
+    if (!form || !results) return;
+    const category = selected('category');
+    const license = selected('license');
+    const deployment = selected('deployment');
+    const language = form.querySelector('select[name="language"]')?.value || '';
+    const status = selected('status');
+    const matches = serializedTools
+      .filter((tool) => {
+        if (category && !categoryGroups[category].includes(tool.category))
+          return false;
+        if (license === 'open' && tool.license !== 'Open Source') return false;
+        if (
+          license === 'free' &&
+          !['Open Source', 'Freemium'].includes(tool.license)
+        )
+          return false;
+        if (status === 'active' && tool.status !== 'Active') return false;
+        return true;
+      })
+      .map((tool) => {
+        let score = 0;
+        if (deployment) {
+          const matchesDeployment =
+            deployment === 'self-hosted'
+              ? tool.deployment === 'Self-hosted'
+              : tool.deployment !== 'Self-hosted';
+          if (matchesDeployment) score += 2;
+        }
+        if (language && tool.scriptingLanguages.includes(language)) score += 3;
+        if (tool.generalPick) score += 1;
+        if (tool.personalPick) score += 1;
+        return { tool, score };
+      })
+      .sort(
+        (left, right) =>
+          right.score - left.score ||
+          Number(right.tool.generalPick) - Number(left.tool.generalPick) ||
+          left.tool.name.localeCompare(right.tool.name),
+      );
+    const top = matches.slice(0, 5);
+    results.replaceChildren(
+      ...top.map(({ tool, score }, index) => {
+        const card = document.createElement('article');
+        card.className = 'wizard-result panel';
+        const rank = document.createElement('span');
+        rank.className = 'wizard-rank mono';
+        rank.textContent = `0${index + 1}`;
+        const body = document.createElement('div');
+        const title = document.createElement('h3');
+        const link = document.createElement('a');
+        link.href = `${projectBase}/tools/${tool.slug}`;
+        link.textContent = tool.name;
+        title.append(link);
+        const vendor = document.createElement('p');
+        vendor.className = 'wizard-vendor mono';
+        vendor.textContent = `${tool.vendor} · MATCH ${score}`;
+        const description = document.createElement('p');
+        description.className = 'wizard-description';
+        description.textContent = tool.description;
+        const badges = document.createElement('div');
+        badges.className = 'wizard-badges mono';
+        badges.append(
+          badge(tool.license),
+          badge(tool.deployment),
+          badge(tool.status, tool.status === 'Active' ? 'is-active' : ''),
+        );
+        body.append(title, vendor, description, badges);
+        card.append(rank, body);
+        return card;
+      }),
+    );
+    if (resultCount) resultCount.textContent = `${matches.length} FOUND`;
+    if (empty) empty.hidden = top.length !== 0;
+    if (compareRig) {
+      compareRig.hidden = top.length < 2;
+      compareRig.href = `${projectBase}/compare?tools=${top
+        .slice(0, 3)
+        .map(({ tool }) => tool.slug)
+        .join(',')}`;
+    }
+  };
+
+  form?.addEventListener('change', render);
+  render();
+</script>
+
+<style>
+  .wizard-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 38px 24px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 13px;
+    margin-bottom: 35px;
+  }
+  .breadcrumbs a,
+  .compare-link {
+    color: var(--color-teal-300);
+  }
+  .wizard-header h1 {
+    font-size: clamp(42px, 8vw, 90px);
+    letter-spacing: -0.08em;
+    margin: 0;
+  }
+  .intro {
+    color: var(--color-surface-300);
+    max-width: 650px;
+  }
+  .wizard-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 38px;
+    padding: 24px;
+  }
+  fieldset {
+    border: 0;
+    border-top: 1px solid var(--color-teal-700);
+    display: grid;
+    gap: 9px;
+    margin: 0;
+    min-width: 0;
+    padding: 16px 0 0;
+  }
+  legend {
+    color: var(--color-teal-300);
+    font: 12px var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    padding: 0;
+    text-transform: uppercase;
+  }
+  label {
+    align-items: baseline;
+    color: var(--color-surface-300);
+    cursor: pointer;
+    display: flex;
+    gap: 9px;
+    line-height: 1.4;
+  }
+  label:hover {
+    color: var(--color-surface-100);
+  }
+  input[type='radio'] {
+    accent-color: var(--color-teal-300);
+  }
+  select {
+    background: var(--color-surface-900);
+    border: 1px solid var(--color-teal-700);
+    border-radius: 2px;
+    color: var(--color-surface-100);
+    font: 14px var(--font-mono);
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+  .wizard-results-section {
+    margin-top: 54px;
+  }
+  .results-head {
+    align-items: end;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .results-head h2 {
+    color: var(--color-teal-300);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .results-count {
+    color: var(--color-surface-300);
+    font-size: 12px;
+  }
+  .wizard-results {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .wizard-result {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    padding: 18px 20px;
+  }
+  .wizard-rank {
+    color: var(--color-amber-400);
+    font-size: 20px;
+    padding-top: 2px;
+  }
+  .wizard-result h3 {
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .wizard-result h3 a {
+    color: var(--color-surface-100);
+    text-decoration: none;
+  }
+  .wizard-result h3 a:hover {
+    color: var(--color-teal-300);
+  }
+  .wizard-vendor,
+  .wizard-description {
+    color: var(--color-surface-300);
+  }
+  .wizard-vendor {
+    font-size: 12px;
+    margin: 5px 0 0;
+  }
+  .wizard-description {
+    line-height: 1.5;
+    margin: 10px 0 0;
+  }
+  .wizard-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 13px;
+  }
+  .wizard-badge {
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    font-size: 11px;
+    padding: 4px 6px;
+  }
+  .wizard-badge.is-active {
+    border-color: var(--color-cyan-500);
+    color: var(--color-cyan-500);
+  }
+  .empty {
+    color: var(--color-surface-300);
+    margin-top: 18px;
+    padding: 24px;
+  }
+  .compare-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+  }
+  .compare-link:hover {
+    color: var(--color-amber-400);
+  }
+  @media (max-width: 700px) {
+    .wizard-page {
+      padding: 24px 14px;
+    }
+    .wizard-form {
+      grid-template-columns: 1fr;
+      padding: 18px;
+    }
+  }
+</style>

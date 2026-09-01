@@ -1,0 +1,395 @@
+{
+  "generatedAt": "2026-09-01T06:09:47.101Z",
+  "entries": {
+    "apache-jmeter": {
+      "stars": 9523,
+      "lastPushedAt": "2026-08-27T11:30:17Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:36.549Z"
+    },
+    "locust": {
+      "stars": 28116,
+      "lastPushedAt": "2026-08-26T17:46:29Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:36.951Z"
+    },
+    "gatling": {
+      "stars": 6956,
+      "lastPushedAt": "2026-08-31T16:45:11Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:37.356Z"
+    },
+    "grafana-k6": {
+      "stars": 31362,
+      "lastPushedAt": "2026-08-31T03:20:20Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:37.902Z"
+    },
+    "artillery": {
+      "stars": 9066,
+      "lastPushedAt": "2026-08-26T14:24:46Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:38.332Z"
+    },
+    "vegeta": {
+      "stars": 25173,
+      "lastPushedAt": "2026-02-16T14:07:07Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:38.748Z"
+    },
+    "wrk": {
+      "stars": 40405,
+      "lastPushedAt": "2023-12-30T10:33:51Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:39.135Z"
+    },
+    "hey": {
+      "stars": 20250,
+      "lastPushedAt": "2026-01-10T20:54:51Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:39.546Z"
+    },
+    "bombardier": {
+      "stars": 6831,
+      "lastPushedAt": "2026-08-25T22:40:58Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:39.920Z"
+    },
+    "tsung": {
+      "stars": 2629,
+      "lastPushedAt": "2026-03-02T15:37:11Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:40.459Z"
+    },
+    "siege": {
+      "stars": 6214,
+      "lastPushedAt": "2026-08-18T19:18:13Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:40.860Z"
+    },
+    "fortio": {
+      "stars": 3722,
+      "lastPushedAt": "2026-08-29T17:51:37Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:41.283Z"
+    },
+    "drill": {
+      "stars": 2308,
+      "lastPushedAt": "2026-07-29T05:59:50Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:41.693Z"
+    },
+    "goose": {
+      "stars": 994,
+      "lastPushedAt": "2026-06-28T16:19:46Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:42.114Z"
+    },
+    "jmeter-plugins": {
+      "stars": 587,
+      "lastPushedAt": "2026-08-31T07:41:39Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:42.503Z"
+    },
+    "wrk2": {
+      "stars": 4627,
+      "lastPushedAt": "2024-03-03T13:40:01Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:42.871Z"
+    },
+    "ghz": {
+      "stars": 3350,
+      "lastPushedAt": "2026-09-01T04:55:55Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:43.414Z"
+    },
+    "autocannon": {
+      "stars": 8506,
+      "lastPushedAt": "2026-05-16T07:48:53Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:43.818Z"
+    },
+    "oha": {
+      "stars": 10521,
+      "lastPushedAt": "2026-08-23T09:11:21Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:44.210Z"
+    },
+    "cassowary": {
+      "stars": 812,
+      "lastPushedAt": "2025-09-11T18:56:45Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:44.587Z"
+    },
+    "jmeter-java-dsl": {
+      "stars": 538,
+      "lastPushedAt": "2026-08-07T16:57:18Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:44.973Z"
+    },
+    "the-grinder": {
+      "stars": 39,
+      "lastPushedAt": "2023-08-17T22:34:52Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:45.383Z"
+    },
+    "ngrinder": {
+      "stars": 2103,
+      "lastPushedAt": "2024-10-10T02:17:58Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:04:45.782Z"
+    },
+    "molotov": {
+      "stars": 480,
+      "lastPushedAt": "2024-03-18T18:17:01Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:46.221Z"
+    },
+    "yandex-tank": {
+      "stars": 2596,
+      "lastPushedAt": "2026-08-29T13:09:39Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:46.636Z"
+    },
+    "grafana-k6-browser": {
+      "stars": 31362,
+      "lastPushedAt": "2026-08-31T03:20:20Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:46.848Z"
+    },
+    "goreplay": {
+      "stars": 19319,
+      "lastPushedAt": "2026-01-27T15:26:22Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:47.229Z"
+    },
+    "lps-tool": {
+      "stars": 29,
+      "lastPushedAt": "2026-08-19T01:12:00Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:47.667Z"
+    },
+    "bees-with-machine-guns": {
+      "stars": 6628,
+      "lastPushedAt": "2024-03-28T21:15:07Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:48.060Z"
+    },
+    "inference-perf": {
+      "stars": 237,
+      "lastPushedAt": "2026-08-30T04:56:07Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:48.474Z"
+    },
+    "aiperf": {
+      "stars": 622,
+      "lastPushedAt": "2026-09-01T06:03:31Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:48.874Z"
+    },
+    "iamspeed": {
+      "stars": 1,
+      "lastPushedAt": "2026-07-29T02:08:29Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:49.291Z"
+    },
+    "xlt": {
+      "stars": 74,
+      "lastPushedAt": "2026-08-20T07:54:53Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:49.688Z"
+    },
+    "anteon": {
+      "stars": 8521,
+      "lastPushedAt": "2026-03-04T10:47:26Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:50.103Z"
+    },
+    "nbomber": {
+      "stars": 2236,
+      "lastPushedAt": "2026-08-17T13:22:46Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:50.496Z"
+    },
+    "hyperfoil": {
+      "stars": 161,
+      "lastPushedAt": "2026-08-20T13:56:09Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:50.917Z"
+    },
+    "grafana-k6-operator": {
+      "stars": 798,
+      "lastPushedAt": "2026-09-01T00:03:19Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:51.312Z"
+    },
+    "kangal": {
+      "stars": 173,
+      "lastPushedAt": "2026-07-31T13:21:26Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:51.728Z"
+    },
+    "dotnet-crank": {
+      "stars": 1080,
+      "lastPushedAt": "2026-08-31T15:36:41Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:52.143Z"
+    },
+    "llmperf": {
+      "stars": 1126,
+      "lastPushedAt": "2024-12-09T01:52:28Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:04:52.747Z"
+    },
+    "guidellm": {
+      "stars": 1563,
+      "lastPushedAt": "2026-09-01T04:20:17Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:53.152Z"
+    },
+    "httperf": {
+      "stars": 1018,
+      "lastPushedAt": "2022-04-20T11:35:50Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:53.544Z"
+    },
+    "h2load": {
+      "stars": 5046,
+      "lastPushedAt": "2026-08-24T12:41:32Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:53.970Z"
+    },
+    "ali": {
+      "stars": 3939,
+      "lastPushedAt": "2026-01-19T06:28:58Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:54.362Z"
+    },
+    "plow": {
+      "stars": 4518,
+      "lastPushedAt": "2026-04-28T15:48:39Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:54.772Z"
+    },
+    "rewrk": {
+      "stars": 586,
+      "lastPushedAt": "2024-03-25T12:30:23Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:55.355Z"
+    },
+    "pewpew": {
+      "stars": 457,
+      "lastPushedAt": "2026-03-28T19:49:52Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:55.754Z"
+    },
+    "go-wrk": {
+      "stars": 1062,
+      "lastPushedAt": "2026-07-04T02:21:05Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:56.160Z"
+    },
+    "apib": {
+      "stars": 319,
+      "lastPushedAt": "2024-01-18T22:38:10Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:04:56.604Z"
+    },
+    "slapper": {
+      "stars": 332,
+      "lastPushedAt": "2021-09-20T14:55:21Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:04:56.976Z"
+    },
+    "taurus": {
+      "stars": 2113,
+      "lastPushedAt": "2026-08-31T15:03:18Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:42.007Z"
+    },
+    "baton": {
+      "stars": 291,
+      "lastPushedAt": "2021-03-31T22:32:19Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:09:42.351Z"
+    },
+    "weighttp": {
+      "stars": 365,
+      "lastPushedAt": "2025-04-06T02:20:14Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:42.700Z"
+    },
+    "gobench": {
+      "stars": 443,
+      "lastPushedAt": "2023-01-24T13:48:40Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:43.035Z"
+    },
+    "htstress": {
+      "stars": 90,
+      "lastPushedAt": "2017-10-14T14:41:05Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:43.368Z"
+    },
+    "funkload": {
+      "stars": 379,
+      "lastPushedAt": "2018-08-13T16:10:33Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:09:43.710Z"
+    },
+    "multi-mechanize": {
+      "stars": 456,
+      "lastPushedAt": "2019-05-02T15:40:40Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:09:44.069Z"
+    },
+    "netling": {
+      "stars": 1347,
+      "lastPushedAt": "2022-12-05T15:17:31Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:44.404Z"
+    },
+    "mzbench": {
+      "stars": 50,
+      "lastPushedAt": "2024-06-15T09:59:29Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:44.811Z"
+    },
+    "goad": {
+      "stars": 1869,
+      "lastPushedAt": "2020-04-23T18:16:47Z",
+      "archived": true,
+      "fetchedAt": "2026-09-01T06:09:45.156Z"
+    },
+    "slow-cooker": {
+      "stars": 347,
+      "lastPushedAt": "2023-12-05T09:22:13Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:45.491Z"
+    },
+    "loadtest-alexfernandez": {
+      "stars": 2630,
+      "lastPushedAt": "2026-01-13T23:29:47Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:45.820Z"
+    },
+    "sysbench": {
+      "stars": 6783,
+      "lastPushedAt": "2025-03-09T16:27:25Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:46.185Z"
+    },
+    "hammerdb": {
+      "stars": 780,
+      "lastPushedAt": "2026-08-25T17:23:54Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:46.532Z"
+    },
+    "pgbench": {
+      "stars": 21970,
+      "lastPushedAt": "2026-09-01T05:32:50Z",
+      "archived": false,
+      "fetchedAt": "2026-09-01T06:09:46.882Z"
+    }
+  }
+}

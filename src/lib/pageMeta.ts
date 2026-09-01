@@ -118,6 +118,14 @@ export function compareDescription(toolNames: string[] = []): string {
   return `Compare up to three performance testing tools side by side. Select tools from the directory to populate the Test Rig.`;
 }
 
+export function wizardTitle(): string {
+  return `Tool Finder · ${siteName}`;
+}
+
+export function wizardDescription(): string {
+  return `Find performance testing tools by workload, budget, deployment, language, and maintenance status. Compare the best matches in the Test Rig.`;
+}
+
 export function aboutTitle(): string {
   return `About · ${siteName}`;
 }

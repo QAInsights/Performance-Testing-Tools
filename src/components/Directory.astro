@@ -65,6 +65,13 @@ const optionGroups = [
         </p>
         <h1>{title}</h1>
         <p class="intro">{intro}</p>
+        {
+          !category && (
+            <a class="directory-wizard-link mono" href={siteUrl('wizard')}>
+              TOOL FINDER →
+            </a>
+          )
+        }
       </div>
       {
         showSponsorSlot && (
