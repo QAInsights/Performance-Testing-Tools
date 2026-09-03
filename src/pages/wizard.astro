@@ -237,14 +237,21 @@ const serializedTools = tools.map(
         rank.className = 'wizard-rank mono';
         rank.textContent = `0${index + 1}`;
         const body = document.createElement('div');
+        body.className = 'wizard-body';
+        const head = document.createElement('div');
+        head.className = 'wizard-result-head';
         const title = document.createElement('h3');
         const link = document.createElement('a');
         link.href = `${projectBase}/tools/${tool.slug}`;
         link.textContent = tool.name;
         title.append(link);
+        const scoreChip = document.createElement('span');
+        scoreChip.className = 'wizard-score mono';
+        scoreChip.textContent = `MATCH ${score}`;
+        head.append(title, scoreChip);
         const vendor = document.createElement('p');
         vendor.className = 'wizard-vendor mono';
-        vendor.textContent = `${tool.vendor} · MATCH ${score}`;
+        vendor.textContent = tool.vendor;
         const description = document.createElement('p');
         description.className = 'wizard-description';
         description.textContent = tool.description;
@@ -255,7 +262,7 @@ const serializedTools = tools.map(
           badge(tool.deployment),
           badge(tool.status, tool.status === 'Active' ? 'is-active' : ''),
         );
-        body.append(title, vendor, description, badges);
+        body.append(head, vendor, description, badges);
         card.append(rank, body);
         return card;
       }),
@@ -373,57 +380,6 @@ const serializedTools = tools.map(
     gap: 12px;
     margin-top: 18px;
   }
-  .wizard-result {
-    display: grid;
-    grid-template-columns: 46px minmax(0, 1fr);
-    gap: 14px;
-    padding: 18px 20px;
-  }
-  .wizard-rank {
-    color: var(--color-amber-400);
-    font-size: 20px;
-    padding-top: 2px;
-  }
-  .wizard-result h3 {
-    font-size: 22px;
-    letter-spacing: -0.03em;
-    margin: 0;
-  }
-  .wizard-result h3 a {
-    color: var(--color-surface-100);
-    text-decoration: none;
-  }
-  .wizard-result h3 a:hover {
-    color: var(--color-teal-300);
-  }
-  .wizard-vendor,
-  .wizard-description {
-    color: var(--color-surface-300);
-  }
-  .wizard-vendor {
-    font-size: 12px;
-    margin: 5px 0 0;
-  }
-  .wizard-description {
-    line-height: 1.5;
-    margin: 10px 0 0;
-  }
-  .wizard-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 13px;
-  }
-  .wizard-badge {
-    border: 1px solid var(--color-teal-700);
-    color: var(--color-teal-300);
-    font-size: 11px;
-    padding: 4px 6px;
-  }
-  .wizard-badge.is-active {
-    border-color: var(--color-cyan-500);
-    color: var(--color-cyan-500);
-  }
   .empty {
     color: var(--color-surface-300);
     margin-top: 18px;
@@ -445,5 +401,88 @@ const serializedTools = tools.map(
       grid-template-columns: 1fr;
       padding: 18px;
     }
+  }
+</style>
+
+{
+  /* Result cards are created by the client script, so their styles must be global. */
+}
+<style is:global>
+  .wizard-page .wizard-result {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 14px;
+    padding: 18px 20px;
+    transition: border-color 0.15s ease;
+  }
+  .wizard-page .wizard-result:hover {
+    border-color: var(--color-teal-500);
+  }
+  .wizard-page .wizard-rank {
+    color: var(--color-amber-400);
+    font-size: 20px;
+    padding-top: 2px;
+  }
+  .wizard-page .wizard-body {
+    min-width: 0;
+  }
+  .wizard-page .wizard-result-head {
+    align-items: baseline;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .wizard-page .wizard-result h3 {
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+  .wizard-page .wizard-result h3 a {
+    color: var(--color-surface-100);
+    text-decoration: none;
+  }
+  .wizard-page .wizard-result h3 a:hover {
+    color: var(--color-teal-300);
+  }
+  .wizard-page .wizard-score {
+    border: 1px solid var(--color-amber-400);
+    color: var(--color-amber-400);
+    flex-shrink: 0;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 4px 8px;
+    white-space: nowrap;
+  }
+  .wizard-page .wizard-vendor,
+  .wizard-page .wizard-description {
+    color: var(--color-surface-300);
+  }
+  .wizard-page .wizard-vendor {
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    margin: 5px 0 0;
+    text-transform: uppercase;
+  }
+  .wizard-page .wizard-description {
+    line-height: 1.5;
+    margin: 10px 0 0;
+  }
+  .wizard-page .wizard-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 13px;
+  }
+  .wizard-page .wizard-badge {
+    border: 1px solid var(--color-teal-700);
+    border-radius: 2px;
+    color: var(--color-teal-300);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 4px 8px;
+  }
+  .wizard-page .wizard-badge.is-active {
+    border-color: var(--color-cyan-500);
+    color: var(--color-cyan-500);
   }
 </style>
