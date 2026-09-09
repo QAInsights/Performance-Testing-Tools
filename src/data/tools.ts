@@ -1578,6 +1578,27 @@ export const tools: Tool[] = [
     tags: ['jmeter', 'reporting', 'analysis', 'beta'],
   }),
   makeTool({
+    slug: 'perfgenie',
+    name: 'perfGenie',
+    vendor: 'Salesforce',
+    url: 'https://github.com/salesforce-misc/perfGenie',
+    repoUrl: 'https://github.com/salesforce-misc/perfGenie',
+    description:
+      'Continuous low-overhead contextual profiler that parses and visualizes Java Flight Recorder profiles and jstacks.',
+    longDescription:
+      'perfGenie is a Salesforce open-source solution for continuous, low-overhead contextual profiling of Java services. It parses Java Flight Recorder (JFR) profiles — produced by JMC, async-profiler, or jcmd — and thread dumps, and renders them as calling context trees, a samples explorer, flame graphs, thread state, river, and experimental 3D hotspot surface views. Two profiles can be diffed via context-tree or flame-graph compare views, and profiles can be filtered by custom event context, thread id, or thread name, with request and metric timeline views built on custom events. Deployed as a server it watches a directory for incoming JFR files and stores parsed data through Cantor in H2, MySQL, or S3, and an aggregation feature combines profiles over longer periods. It analyzes profiles rather than generating load, so it complements load generators during performance test runs.',
+    category: 'Results Analysis',
+    license: 'Open Source',
+    pricingModel: 'Free; BSD-3-Clause license.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['Java'],
+    protocols: ['None'],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2022,
+    status: 'Active',
+    tags: ['java', 'profiling', 'jfr', 'flamegraph'],
+  }),
+  makeTool({
     slug: 'bees-with-machine-guns',
     name: 'Bees with Machine Guns',
     vendor: 'Chicago Tribune News Applications team',
