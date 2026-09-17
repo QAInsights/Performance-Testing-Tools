@@ -1,4 +1,5 @@
 import { datasetLastVerified, type Tool } from '../data/tools';
+import type { ToolReview } from '../data/reviews';
 import type { EnrichmentEntry } from './enrichmentData';
 import {
   alternativesHubForTool,
@@ -38,6 +39,7 @@ export function toolMarkdown(
   catalog: readonly Tool[],
   origin: string,
   enrichment?: EnrichmentEntry,
+  review?: ToolReview,
 ): string {
   const compareLines = comparisonsForTool(tool.slug, catalog).flatMap(
     (spec) => {
@@ -65,6 +67,40 @@ export function toolMarkdown(
     '',
     `> ${toolSentence(tool)}`,
     '',
+    ...(review
+      ? [
+          '## Verdict',
+          review.verdict,
+          '',
+          '## Ratings',
+          '| Dimension | Level | Note |',
+          '| --- | --- | --- |',
+          ...review.ratings.map(
+            (rating) =>
+              `| ${rating.dimension} | ${rating.level} | ${rating.note} |`,
+          ),
+          '',
+          '## Pros',
+          ...review.pros.map((item) => `- ${item}`),
+          '',
+          '## Cons',
+          ...review.cons.map((item) => `- ${item}`),
+          ...(review.gettingStarted
+            ? [
+                '',
+                '## Getting started',
+                ...(review.gettingStarted.install
+                  ? [`- Install: \`${review.gettingStarted.install}\``]
+                  : []),
+                ...(review.gettingStarted.firstRun
+                  ? [`- First run: \`${review.gettingStarted.firstRun}\``]
+                  : []),
+                `- Learning curve: ${review.gettingStarted.learningCurve}`,
+              ]
+            : []),
+          '',
+        ]
+      : []),
     `- Canonical: ${absoluteUrl(`tools/${tool.slug}`, origin)}`,
     `- Official: ${tool.url}`,
     tool.repoUrl ? `- Source: ${tool.repoUrl}` : '',

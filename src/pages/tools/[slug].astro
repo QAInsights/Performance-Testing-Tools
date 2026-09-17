@@ -5,13 +5,19 @@ import ToolBadges from '../../components/ToolBadges.astro';
 import Footer from '../../components/Footer.astro';
 import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
 import { datasetLastVerified, tools } from '../../data/tools';
+import { getReview } from '../../data/reviews';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
-import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
+import {
+  breadcrumbs,
+  toolFaq,
+  toolReview,
+  toolSoftwareApplication,
+} from '../../lib/seo';
 import { getEnrichment } from '../../lib/enrichmentData';
 import { getGithubHealth } from '../../lib/githubHealth';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
-import { curatorPerson } from '../../lib/methodology';
+import { correctionsUrl, curatorPerson } from '../../lib/methodology';
 import {
   alternativesForHub,
   alternativesHubForTool,
@@ -33,21 +39,18 @@ export function getStaticPaths() {
   }));
 }
 const { tool } = Astro.props;
+const review = getReview(tool.slug);
 const enrichment = getEnrichment(tool.slug, tool);
-const faqItems = buildToolFaq(tool, tools);
+const faqItems = buildToolFaq(tool, tools).filter(
+  (item) =>
+    !review ||
+    !item.answer.includes('Confirm details against the official site'),
+);
 const answerBox = toolAnswerBox(tool, enrichment);
 const bestForItems = bestFor(tool);
 const notBestForItems = notBestFor(tool);
 const architecture = architectureLine(tool);
 const comparisonPages = comparisonsForTool(tool.slug, tools);
-const comparisonLinks = comparisonPages.map((spec) => ({
-  spec,
-  peer: tools.find(
-    (item) =>
-      item.slug ===
-      (spec.leftSlug === tool.slug ? spec.rightSlug : spec.leftSlug),
-  )!,
-}));
 const alternativesHub = alternativesHubForTool(tool.slug, tools);
 const alternativesCount = alternativesHub
   ? alternativesHub.tier === 'B'
@@ -60,6 +63,8 @@ const enrichmentDate = enrichment
 const about = enrichment?.about || tool.longDescription;
 const normalized = (value: string) =>
   value.trim().toLowerCase().replace(/\s+/g, ' ');
+const answerText = review?.verdict || answerBox;
+const hasAbout = normalized(about) !== normalized(answerText);
 const maintainedBy =
   enrichment?.authorOrCompany &&
   normalized(enrichment.authorOrCompany) !== normalized(tool.vendor)
@@ -76,6 +81,8 @@ const hasSpecs =
   tool.tags.length > 0;
 const repoHealth = getGithubHealth(tool.slug);
 const hasRepoHealth = Boolean(repoHealth);
+const hasFactSheet =
+  hasSpecs || hasRepoHealth || hasLatestRelease || Boolean(enrichment?.pricing);
 const sourceHost = (url: string) => {
   try {
     return new URL(url).hostname.replace(/^www\./, '');
@@ -94,6 +101,7 @@ const sourceHost = (url: string) => {
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
     toolSoftwareApplication(tool, enrichment),
+    ...(review ? [toolReview(tool, review)] : []),
     toolFaq(tool, tools, faqItems, enrichment),
     breadcrumbs([
       { name: 'Directory', path: '' },
@@ -115,13 +123,27 @@ const sourceHost = (url: string) => {
     </nav>
     <header class="detail-hero panel">
       <div class="hero-content">
-        <p class="eyebrow">TOOL SIGNAL / {tool.status.toUpperCase()}</p><h1>
+        <p class="eyebrow">
+          {
+            review
+              ? `TOOL REVIEW / ${tool.status.toUpperCase()}`
+              : `TOOL SIGNAL / ${tool.status.toUpperCase()}`
+          }
+        </p><h1>
           {tool.name}
         </h1><p class="detail-vendor">{tool.vendor}</p><div
           class="detail-badges"
         >
           <ToolBadges tool={tool} />
         </div>{
+          (
+            <p class="review-stamp mono">
+              {review
+                ? `REVIEWED · ${review.reviewedAt} · ${review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'}`
+                : 'NOT YET REVIEWED · CATALOG DATA'}
+            </p>
+          )
+        }{
           maintainedBy && (
             <p class="maintained-by mono">MAINTAINED BY · {maintainedBy}</p>
           )
@@ -168,6 +190,20 @@ const sourceHost = (url: string) => {
         </dd>
       </div>
     </dl>
+    <nav class="jump-list mono" aria-label="On this page">
+      <span>JUMP TO</span>
+      <a href="#verdict">Verdict</a>
+      {review && <a href="#ratings">Ratings</a>}
+      <a href="#pros-cons">Pros &amp; cons</a>
+      {review?.gettingStarted && <a href="#getting-started">Getting started</a>}
+      {hasFactSheet && <a href="#specs">Specs</a>}
+      {
+        (comparisonPages.length > 0 || alternativesHub) && (
+          <a href="#alternatives">Alternatives</a>
+        )
+      }
+      <a href="#faq">FAQ</a>
+    </nav>
     {
       tool.status !== 'Active' && (
         <aside class="status-callout panel">
@@ -182,173 +218,252 @@ const sourceHost = (url: string) => {
         </aside>
       )
     }
-    <div class="answer-box panel">
-      <span class="answer-box-label mono">Answer</span>
-      <p>{answerBox}</p>
+    <div class="answer-box panel" id="verdict">
+      <span class="answer-box-label mono">{review ? 'Verdict' : 'Answer'}</span>
+      <p>{answerText}</p>
+      {
+        review && (
+          <div class="verdict-columns">
+            <div>
+              <span class="answer-box-sub-label mono">Pick it when</span>
+              <ul>
+                {review.pickWhen.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <span class="answer-box-sub-label mono">Skip it when</span>
+              <ul>
+                {review.skipWhen.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )
+      }
     </div>
+    {
+      review && (
+        <section class="ratings-section panel" id="ratings">
+          <div class="section-heading">
+            <h2>Ratings</h2>
+            <span class="disclosure-hint mono">QUALITATIVE</span>
+          </div>
+          <div class="ratings-grid">
+            {review.ratings.map((rating) => (
+              <div class="rating-row">
+                <span class="rating-dimension mono">{rating.dimension}</span>
+                <span
+                  class:list={[
+                    'rating-level',
+                    `rating-level--${rating.level.toLowerCase()}`,
+                  ]}
+                >
+                  {rating.level}
+                </span>
+                <span class="rating-note">{rating.note}</span>
+              </div>
+            ))}
+          </div>
+          <p class="ratings-legend mono">
+            Qualitative labels, not scores —{' '}
+            <a href={siteUrl('about#methodology')}>see methodology</a>
+          </p>
+        </section>
+      )
+    }
     <div class="detail-grid">
       <article class="detail-copy">
         <section class="detail-section">
-          <h2>About</h2>
-          <p class="lead">{about}</p>
+          <h2>What it is</h2>
+          {hasAbout && <p class="lead">{about}</p>}
+          {
+            enrichment?.features && enrichment.features.length > 0 && (
+              <div class="what-it-is-block">
+                <h3>Features</h3>
+                <ul class="feature-list">
+                  {enrichment.features.map((feature) => (
+                    <li>{feature}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+          {
+            enrichment?.aiFeatures && enrichment.aiFeatures.length > 0 && (
+              <div class="what-it-is-block">
+                <span class="subsection-label mono">AI</span>
+                <ul class="feature-list">
+                  {enrichment.aiFeatures.map((feature) => (
+                    <li>{feature}</li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
         </section>
-        <section class="detail-section">
-          <h2>Best for</h2>
-          <ul class="feature-list">
-            {bestForItems.map((item) => <li>{item}</li>)}
-          </ul>
-        </section>
-        <section class="detail-section">
-          <h2>Not the best fit when</h2>
-          <ul class="feature-list">
-            {notBestForItems.map((item) => <li>{item}</li>)}
-          </ul>
-        </section>
+        {
+          review ? (
+            <section class="detail-section" id="pros-cons">
+              <h2>Pros and cons</h2>
+              <div class="pros-cons-grid">
+                <div>
+                  <h3>Pros</h3>
+                  <ul class="feature-list">
+                    {review.pros.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3>Cons</h3>
+                  <ul class="feature-list">
+                    {review.cons.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </section>
+          ) : (
+            <>
+              <section class="detail-section" id="pros-cons">
+                <h2>Best for</h2>
+                <ul class="feature-list">
+                  {bestForItems.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+              <section class="detail-section">
+                <h2>Not the best fit when</h2>
+                <ul class="feature-list">
+                  {notBestForItems.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            </>
+          )
+        }
+        {
+          review?.gettingStarted && (
+            <section class="detail-section" id="getting-started">
+              <h2>Getting started</h2>
+              <div class="getting-started-blocks">
+                {review.gettingStarted.install && (
+                  <pre>
+                    <code>{review.gettingStarted.install}</code>
+                  </pre>
+                )}
+                {review.gettingStarted.firstRun && (
+                  <pre>
+                    <code>{review.gettingStarted.firstRun}</code>
+                  </pre>
+                )}
+              </div>
+              <p>{review.gettingStarted.learningCurve}</p>
+            </section>
+          )
+        }
         <section class="detail-section">
           <h2>Architecture and concurrency</h2>
           <p>{architecture}</p>
         </section>
         {
-          (comparisonPages.length > 0 || alternativesHub) && (
-            <section class="editorial-section">
-              <h2>Compare and alternatives</h2>
-              <div class="tool-list comparison-list">
-                {comparisonLinks.map(({ spec, peer }) => (
-                  <a
-                    class="panel focus-ring"
-                    href={siteUrl(`vs/${spec.pairPath}`)}
-                  >
-                    <strong>
-                      {spec.leftLabel} vs {spec.rightLabel}
-                    </strong>
-                    <small>
-                      {peer.license} · {peer.deployment}
-                    </small>
-                  </a>
-                ))}
-                {alternativesHub && (
-                  <a
-                    class="panel focus-ring"
-                    href={siteUrl(`alternatives/${tool.slug}`)}
-                  >
-                    <strong>{alternativesHub.headline}</strong>
-                    <small>{alternativesCount} alternatives compared</small>
-                  </a>
-                )}
-              </div>
-            </section>
-          )
-        }
-        {
-          enrichment?.features && enrichment.features.length > 0 && (
-            <section class="detail-section">
-              <h2>Features</h2>
-              <ul class="feature-list">
-                {enrichment.features.map((feature) => (
-                  <li>{feature}</li>
-                ))}
-              </ul>
-            </section>
-          )
-        }{
-          enrichment?.aiFeatures && enrichment.aiFeatures.length > 0 && (
-            <section class="detail-section">
-              <h2>AI features</h2>
-              <ul class="feature-list">
-                {enrichment.aiFeatures.map((feature) => (
-                  <li>{feature}</li>
-                ))}
-              </ul>
-            </section>
-          )
-        }{
-          hasLatestRelease && (
-            <section class="detail-section">
-              <h2>Latest release</h2>
-              <p class="release-line">
-                {[latestRelease.version, latestRelease.date]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </p>
-              {latestRelease.notes && <p>{latestRelease.notes}</p>}
-            </section>
-          )
-        }{
-          enrichment?.pricing && (
-            <section class="detail-section">
-              <h2>Pricing</h2>
-              <p>{enrichment.pricing}</p>
-            </section>
-          )
-        }
-        {
-          (hasSpecs || hasRepoHealth) && (
-            <section class="detail-section">
-              <h2>Specs</h2>
-              <dl class="metadata-grid">
-                {tool.scriptingLanguages.length > 0 && (
-                  <div>
-                    <dt>Scripting</dt>
-                    <dd>
-                      <span class="spec-chips">
-                        {tool.scriptingLanguages.map((item) => (
-                          <span class="spec-chip">{item}</span>
-                        ))}
-                      </span>
-                    </dd>
-                  </div>
-                )}
-                {tool.protocols.length > 0 && (
-                  <div>
-                    <dt>Protocols</dt>
-                    <dd>
-                      <span class="spec-chips">
-                        {tool.protocols.map((item) => (
-                          <span class="spec-chip">{item}</span>
-                        ))}
-                      </span>
-                    </dd>
-                  </div>
-                )}
-                {tool.osSupport.length > 0 && (
-                  <div>
-                    <dt>Operating systems</dt>
-                    <dd>
-                      <span class="spec-chips">
-                        {tool.osSupport.map((item) => (
-                          <span class="spec-chip">{item}</span>
-                        ))}
-                      </span>
-                    </dd>
-                  </div>
-                )}
-                {tool.tags.length > 0 && (
-                  <div>
-                    <dt>Tags</dt>
-                    <dd>
-                      <span class="spec-chips">
-                        {tool.tags.map((item) => (
-                          <span class="spec-chip">{item}</span>
-                        ))}
-                      </span>
-                    </dd>
-                  </div>
-                )}
-                {repoHealth && (
-                  <div>
-                    <dt>Repo health</dt>
-                    <dd class="repo-health-value">
-                      <span>
-                        ★ {repoHealth.stars} · last push{' '}
-                        {repoHealth.lastPushedAt.slice(0, 10)}
-                      </span>
-                      {repoHealth.archived && (
-                        <span class="repo-health-archived">ARCHIVED REPO</span>
-                      )}
-                    </dd>
-                  </div>
-                )}
-              </dl>
+          hasFactSheet && (
+            <section class="detail-section fact-sheet" id="specs">
+              <h2>Fact sheet</h2>
+              {(hasSpecs || hasRepoHealth) && (
+                <>
+                  <h3>Specs</h3>
+                  <dl class="metadata-grid">
+                    {tool.scriptingLanguages.length > 0 && (
+                      <div>
+                        <dt>Scripting</dt>
+                        <dd>
+                          <span class="spec-chips">
+                            {tool.scriptingLanguages.map((item) => (
+                              <span class="spec-chip">{item}</span>
+                            ))}
+                          </span>
+                        </dd>
+                      </div>
+                    )}
+                    {tool.protocols.length > 0 && (
+                      <div>
+                        <dt>Protocols</dt>
+                        <dd>
+                          <span class="spec-chips">
+                            {tool.protocols.map((item) => (
+                              <span class="spec-chip">{item}</span>
+                            ))}
+                          </span>
+                        </dd>
+                      </div>
+                    )}
+                    {tool.osSupport.length > 0 && (
+                      <div>
+                        <dt>Operating systems</dt>
+                        <dd>
+                          <span class="spec-chips">
+                            {tool.osSupport.map((item) => (
+                              <span class="spec-chip">{item}</span>
+                            ))}
+                          </span>
+                        </dd>
+                      </div>
+                    )}
+                    {tool.tags.length > 0 && (
+                      <div>
+                        <dt>Tags</dt>
+                        <dd>
+                          <span class="spec-chips">
+                            {tool.tags.map((item) => (
+                              <span class="spec-chip">{item}</span>
+                            ))}
+                          </span>
+                        </dd>
+                      </div>
+                    )}
+                    {repoHealth && (
+                      <div>
+                        <dt>Repo health</dt>
+                        <dd class="repo-health-value">
+                          <span>
+                            ★ {repoHealth.stars} · last push{' '}
+                            {repoHealth.lastPushedAt.slice(0, 10)}
+                          </span>
+                          {repoHealth.archived && (
+                            <span class="repo-health-archived">
+                              ARCHIVED REPO
+                            </span>
+                          )}
+                        </dd>
+                      </div>
+                    )}
+                  </dl>
+                </>
+              )}
+              {hasLatestRelease && (
+                <div class="fact-sheet-block">
+                  <h3>Latest release</h3>
+                  <p class="release-line">
+                    {[latestRelease.version, latestRelease.date]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                  {latestRelease.notes && <p>{latestRelease.notes}</p>}
+                </div>
+              )}
+              {enrichment?.pricing && (
+                <div class="fact-sheet-block">
+                  <h3>Pricing</h3>
+                  <p>{enrichment.pricing}</p>
+                </div>
+              )}
             </section>
           )
         }
@@ -378,12 +493,19 @@ const sourceHost = (url: string) => {
                 </ul>
               </details>
               <p class="enrichment-stamp mono">
+                {review && `REVIEWED ${review.reviewedAt} · `}
                 LAST VERIFIED · {enrichmentDate}
                 {enrichment?.fetchedAt ? ' · GROUNDED VIA EXA' : ''}
                 {' · '}
                 <a href={siteUrl('about#methodology')}>
                   CURATED BY {curatorPerson.name.toUpperCase()}
                 </a>
+                {review && (
+                  <>
+                    {' · '}
+                    <a href={correctionsUrl}>SUGGEST A CORRECTION</a>
+                  </>
+                )}
               </p>
             </section>
           )
@@ -391,19 +513,34 @@ const sourceHost = (url: string) => {
         {
           !enrichment?.sources?.length && (
             <p class="enrichment-stamp mono catalog-stamp">
+              {review && `REVIEWED ${review.reviewedAt} · `}
               CATALOG LAST VERIFIED · {datasetLastVerified}
               {' · '}
               <a href={siteUrl('about#methodology')}>
                 CURATED BY {curatorPerson.name.toUpperCase()}
               </a>
+              {review && (
+                <>
+                  {' · '}
+                  <a href={correctionsUrl}>SUGGEST A CORRECTION</a>
+                </>
+              )}
             </p>
           )
         }
-      </article><aside>
-        <ToolRelatedLinks tool={tool} catalog={tools} />
+      </article><aside id="alternatives">
+        <ToolRelatedLinks
+          tool={tool}
+          catalog={tools}
+          alternativesHref={alternativesHub
+            ? siteUrl(`alternatives/${tool.slug}`)
+            : undefined}
+          alternativesLabel={alternativesHub?.headline}
+          alternativesCount={alternativesHub ? alternativesCount : undefined}
+        />
       </aside>
     </div>
-    <section class="faq-block panel" aria-labelledby="faq-heading">
+    <section class="faq-block panel" id="faq" aria-labelledby="faq-heading">
       <div class="faq-head">
         <h2 id="faq-heading">Frequently asked</h2>
         <span class="disclosure-hint mono">ANSWER-SHAPED</span>
@@ -489,6 +626,12 @@ const sourceHost = (url: string) => {
   .detail-badges {
     margin-top: 24px;
   }
+  .review-stamp {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin: 12px 0 0;
+  }
   .maintained-by {
     color: var(--color-surface-300);
     font-size: 12px;
@@ -522,6 +665,22 @@ const sourceHost = (url: string) => {
     margin: 5px 0 0;
     overflow-wrap: anywhere;
   }
+  .jump-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin: 16px 0 0;
+    color: var(--color-surface-300);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .jump-list span {
+    color: var(--color-surface-400);
+  }
+  .jump-list a {
+    color: var(--color-teal-300);
+  }
   .answer-box {
     margin-top: 14px;
     padding: 16px 18px;
@@ -540,6 +699,98 @@ const sourceHost = (url: string) => {
     color: var(--color-surface-100);
     font-size: 16px;
     line-height: 1.55;
+  }
+  .verdict-columns {
+    border-top: 1px solid var(--color-teal-700);
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 16px;
+    padding-top: 14px;
+  }
+  .answer-box-sub-label,
+  .subsection-label {
+    color: var(--color-amber-400);
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .verdict-columns ul {
+    margin: 8px 0 0;
+    padding-left: 17px;
+  }
+  .verdict-columns li {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.45;
+    margin-top: 5px;
+  }
+  .ratings-section {
+    margin-top: 14px;
+    padding: 18px;
+  }
+  .section-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .section-heading h2 {
+    color: var(--color-teal-300);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0;
+  }
+  .ratings-grid {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .rating-row {
+    align-items: start;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(150px, 0.8fr) auto minmax(0, 1.8fr);
+    padding-top: 10px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 15%, transparent);
+  }
+  .rating-dimension {
+    color: var(--color-surface-100);
+    font-size: 12px;
+  }
+  .rating-level {
+    border: 1px solid;
+    font: 11px var(--font-mono);
+    letter-spacing: 0.06em;
+    padding: 4px 6px;
+    white-space: nowrap;
+  }
+  .rating-level--strong {
+    border-color: var(--color-teal-300);
+    color: var(--color-teal-300);
+  }
+  .rating-level--adequate {
+    border-color: var(--color-amber-400);
+    color: var(--color-amber-400);
+  }
+  .rating-level--limited {
+    border-color: var(--color-surface-300);
+    color: var(--color-surface-300);
+  }
+  .rating-note {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .ratings-legend {
+    color: var(--color-surface-400);
+    font-size: 11px;
+    margin: 16px 0 0;
+  }
+  .ratings-legend a {
+    color: var(--color-teal-300);
   }
   .detail-copy a {
     color: var(--color-teal-300);
@@ -596,6 +847,46 @@ const sourceHost = (url: string) => {
   }
   .feature-list li {
     overflow-wrap: anywhere;
+  }
+  .what-it-is-block,
+  .fact-sheet-block {
+    margin-top: 24px;
+  }
+  .what-it-is-block h3,
+  .pros-cons-grid h3,
+  .fact-sheet h3 {
+    color: var(--color-surface-100);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.06em;
+    margin: 0 0 12px;
+  }
+  .subsection-label {
+    margin-bottom: 12px;
+  }
+  .pros-cons-grid {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .getting-started-blocks {
+    display: grid;
+    gap: 10px;
+  }
+  .getting-started-blocks pre {
+    background: var(--color-surface-900);
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    margin: 0;
+    overflow-x: auto;
+    padding: 12px;
+  }
+  .getting-started-blocks code {
+    font: 13px/1.5 var(--font-mono);
+  }
+  .fact-sheet-block + .fact-sheet-block {
+    border-top: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 15%, transparent);
+    padding-top: 18px;
   }
   .release-line {
     color: var(--color-surface-100) !important;
@@ -785,6 +1076,16 @@ const sourceHost = (url: string) => {
     }
     .feature-list {
       grid-template-columns: 1fr;
+    }
+    .verdict-columns,
+    .pros-cons-grid {
+      grid-template-columns: 1fr;
+    }
+    .rating-row {
+      grid-template-columns: 1fr auto;
+    }
+    .rating-note {
+      grid-column: 1 / -1;
     }
     .comparison-list {
       grid-template-columns: 1fr;

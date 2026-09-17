@@ -1,4 +1,5 @@
 import { datasetLastVerified, type Tool } from '../data/tools';
+import type { ToolReview } from '../data/reviews';
 import type { EnrichmentEntry } from './enrichmentData';
 import { organizationProfile } from './organization';
 import { curatorPerson } from './methodology';
@@ -96,6 +97,35 @@ export function toolSoftwareApplication(
       name: enrichment?.authorOrCompany || tool.vendor,
     },
     sameAs: sameAs.length ? sameAs : undefined,
+  };
+}
+
+export function toolReview(tool: Tool, review: ToolReview) {
+  const notes = (items: readonly string[]) => ({
+    '@type': 'ItemList',
+    itemListElement: items.map((name, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name,
+    })),
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': 'SoftwareApplication',
+      name: tool.name,
+      url: absoluteUrl(`tools/${tool.slug}`),
+    },
+    author: {
+      '@type': 'Person',
+      ...curatorPerson,
+    },
+    datePublished: review.reviewedAt,
+    reviewBody: review.verdict,
+    positiveNotes: notes(review.pros),
+    negativeNotes: notes(review.cons),
   };
 }
 

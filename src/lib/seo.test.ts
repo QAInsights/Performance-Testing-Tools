@@ -5,6 +5,7 @@ import {
   organizationSchema,
   toolFaq,
   toolItemList,
+  toolReview,
   toolSoftwareApplication,
   websiteSchema,
 } from './seo';
@@ -14,6 +15,7 @@ import { datasetLastVerified, tools } from '../data/tools';
 import { buildToolFaq } from './toolFaq';
 import { isSitemapPage, sitemapLastmod } from './sitemap';
 import { curatorPerson } from './methodology';
+import { getReview } from '../data/reviews';
 
 describe('SEO structured data', () => {
   it('defaults to the production origin instead of a Vercel deployment URL', () => {
@@ -187,6 +189,32 @@ describe('SEO structured data', () => {
       '2026-01-01',
     );
     expect(toolFaq(tool, tools).dateModified).toBe(datasetLastVerified);
+  });
+
+  it('serializes curator reviews without numeric ratings', () => {
+    const tool = tools.find((item) => item.slug === 'grafana-k6')!;
+    const review = getReview(tool.slug)!;
+    const schema = toolReview(tool, review);
+
+    expect(schema).toMatchObject({
+      '@type': 'Review',
+      itemReviewed: {
+        '@type': 'SoftwareApplication',
+        name: tool.name,
+        url: 'https://perf.jmeter.ai/tools/grafana-k6/',
+      },
+      author: { '@type': 'Person', ...curatorPerson },
+      datePublished: review.reviewedAt,
+      reviewBody: review.verdict,
+    });
+    expect(schema.positiveNotes.itemListElement).toHaveLength(
+      review.pros.length,
+    );
+    expect(schema.negativeNotes.itemListElement).toHaveLength(
+      review.cons.length,
+    );
+    expect(schema).not.toHaveProperty('reviewRating');
+    expect(() => JSON.parse(JSON.stringify(schema))).not.toThrow();
   });
 
   it('includes SearchAction and Organization sameAs', () => {
