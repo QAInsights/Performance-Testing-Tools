@@ -6,6 +6,8 @@ import {
   type License,
   type Tool,
 } from '../data/tools';
+import type { ToolReview } from '../data/reviews';
+import { reviews } from '../data/reviews';
 
 /** Calendar year used in SEO titles (refresh when the strategy year rolls). */
 export const seoYear = 2026;
@@ -86,6 +88,38 @@ export function toolDescription(tool: Tool): string {
   );
 
   return tail ? base + tail : base;
+}
+
+const firstSentence = (value: string) =>
+  value.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || value.trim();
+
+export function reviewTitle(tool: Tool): string {
+  return `${tool.name} review (${seoYear}): verdict, ratings, pros & cons`;
+}
+
+export function reviewDescription(tool: Tool, review: ToolReview): string {
+  void tool;
+  const mode = review.handsOn ? 'Hands-on' : 'Desk';
+  return clampMetaDescription(
+    `${firstSentence(review.verdict)} ${mode} review by NaveenKumar Namachivayam, updated ${review.reviewedAt}.`,
+  );
+}
+
+export function reviewsIndexTitle(): string {
+  return `Performance testing tool reviews (${seoYear}): verdicts, ratings, pros & cons`;
+}
+
+export function reviewsIndexDescription(
+  reviewList: readonly ToolReview[] = reviews,
+): string {
+  const handsOn = reviewList.filter((review) => review.handsOn).length;
+  const updated = reviewList
+    .map((review) => review.reviewedAt)
+    .sort()
+    .at(-1);
+  return clampMetaDescription(
+    `Read ${reviewList.length} curator-authored performance testing tool reviews: ${handsOn} hands-on and ${reviewList.length - handsOn} desk reviews by NaveenKumar Namachivayam. Updated ${updated}.`,
+  );
 }
 
 export function categoryTitle(category: Category): string {

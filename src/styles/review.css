@@ -1,0 +1,154 @@
+.review-stamp {
+  color: var(--color-surface-300);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin: 12px 0 0;
+}
+
+.verdict-columns {
+  border-top: 1px solid var(--color-teal-700);
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 16px;
+  padding-top: 14px;
+}
+
+.answer-box-sub-label,
+.subsection-label {
+  color: var(--color-amber-400);
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.verdict-columns ul {
+  margin: 8px 0 0;
+  padding-left: 17px;
+}
+
+.verdict-columns li {
+  color: var(--color-surface-300);
+  font-size: 14px;
+  line-height: 1.45;
+  margin-top: 5px;
+}
+
+.ratings-section {
+  margin-top: 14px;
+  padding: 18px;
+}
+
+.section-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-heading h2 {
+  color: var(--color-teal-300);
+  font: 13px var(--font-mono);
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.ratings-grid {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.rating-row {
+  align-items: start;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(150px, 0.8fr) auto minmax(0, 1.8fr);
+  padding-top: 10px;
+  border-top: 1px solid
+    color-mix(in srgb, var(--color-teal-300) 15%, transparent);
+}
+
+.rating-dimension {
+  color: var(--color-surface-100);
+  font-size: 12px;
+}
+
+.rating-level {
+  border: 1px solid;
+  font: 11px var(--font-mono);
+  letter-spacing: 0.06em;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.rating-level--strong {
+  border-color: var(--color-teal-300);
+  color: var(--color-teal-300);
+}
+
+.rating-level--adequate {
+  border-color: var(--color-amber-400);
+  color: var(--color-amber-400);
+}
+
+.rating-level--limited {
+  border-color: var(--color-surface-300);
+  color: var(--color-surface-300);
+}
+
+.rating-note {
+  color: var(--color-surface-300);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.ratings-legend {
+  color: var(--color-surface-400);
+  font-size: 11px;
+  margin: 16px 0 0;
+}
+
+.ratings-legend a {
+  color: var(--color-teal-300);
+}
+
+.pros-cons-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.getting-started-blocks {
+  display: grid;
+  gap: 10px;
+}
+
+.getting-started-blocks pre {
+  background: var(--color-surface-900);
+  border: 1px solid var(--color-teal-700);
+  color: var(--color-teal-300);
+  margin: 0;
+  overflow-x: auto;
+  padding: 12px;
+}
+
+.getting-started-blocks code {
+  font: 13px/1.5 var(--font-mono);
+}
+
+@media (max-width: 700px) {
+  .verdict-columns,
+  .pros-cons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rating-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .rating-note {
+    grid-column: 1 / -1;
+  }
+}

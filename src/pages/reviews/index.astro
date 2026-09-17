@@ -1,0 +1,163 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { reviews } from '../../data/reviews';
+import { tools } from '../../data/tools';
+import { siteUrl } from '../../lib/urls';
+import { breadcrumbs, reviewsItemList } from '../../lib/seo';
+import { reviewsIndexDescription, reviewsIndexTitle } from '../../lib/pageMeta';
+import { curatorPerson } from '../../lib/methodology';
+import '../../styles/editorial.css';
+
+const handsOnCount = reviews.filter((review) => review.handsOn).length;
+const updated = reviews
+  .map((review) => review.reviewedAt)
+  .sort()
+  .at(-1);
+---
+
+<ConsoleLayout
+  title={reviewsIndexTitle()}
+  description={reviewsIndexDescription()}
+  canonical={siteUrl('reviews')}
+  structuredData={[
+    reviewsItemList(reviews),
+    breadcrumbs([
+      { name: 'Home', path: '' },
+      { name: 'Reviews', path: 'reviews' },
+    ]),
+  ]}
+>
+  <main class="reviews-index">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Home</a><span>/</span><strong>Reviews</strong>
+    </nav>
+    <header class="reviews-index-header">
+      <p class="eyebrow">CURATOR REVIEWS · {reviews.length} TOOLS</p>
+      <h1>Performance testing tool reviews</h1>
+      <p class="reviews-intro">
+        Curator-authored verdicts with Strong, Adequate, and Limited ratings
+        instead of numeric scores. {handsOnCount} reviews are hands-on and
+        {reviews.length - handsOnCount} are desk reviews.{' '}
+        <a href={siteUrl('about#methodology')}>Read the methodology →</a>
+      </p>
+      <p class="reviews-meta mono">
+        BY {curatorPerson.name.toUpperCase()} · UPDATED {updated}
+      </p>
+    </header>
+    <section class="review-cards" aria-label="Tool reviews">
+      {
+        reviews.map((review) => {
+          const tool = tools.find((item) => item.slug === review.slug);
+          if (!tool) return null;
+          const summary =
+            review.verdict.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() ||
+            review.verdict;
+          return (
+            <a class="review-card panel" href={siteUrl(`reviews/${tool.slug}`)}>
+              <span class="review-card-kicker mono">
+                {review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'} ·{' '}
+                {review.reviewedAt}
+              </span>
+              <h2>{tool.name} review</h2>
+              <p>{summary}</p>
+              <span class="review-card-link mono">READ REVIEW →</span>
+            </a>
+          );
+        })
+      }
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .reviews-index {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 38px 24px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 13px;
+    margin-bottom: 38px;
+  }
+  .breadcrumbs a,
+  .reviews-index a {
+    color: var(--color-teal-300);
+  }
+  .reviews-index-header {
+    max-width: 800px;
+  }
+  .reviews-index h1 {
+    color: var(--color-surface-100);
+    font-size: clamp(42px, 8vw, 88px);
+    letter-spacing: -0.07em;
+    line-height: 0.95;
+    margin: 0;
+  }
+  .reviews-intro {
+    color: var(--color-surface-300);
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 24px 0 0;
+  }
+  .reviews-meta {
+    color: var(--color-surface-400);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-top: 22px;
+  }
+  .review-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 52px;
+  }
+  .review-card {
+    color: inherit;
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    transition:
+      border-color 0.15s ease,
+      transform 0.15s ease;
+  }
+  .review-card:hover {
+    border-color: var(--color-teal-300);
+    transform: translateY(-2px);
+  }
+  .review-card-kicker,
+  .review-card-link {
+    color: var(--color-amber-400);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .review-card h2 {
+    color: var(--color-surface-100);
+    font-size: 24px;
+    letter-spacing: -0.04em;
+    margin: 18px 0 0;
+  }
+  .review-card p {
+    color: var(--color-surface-300);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 14px 0 26px;
+  }
+  @media (max-width: 800px) {
+    .review-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 560px) {
+    .reviews-index {
+      padding: 24px 14px;
+    }
+    .review-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

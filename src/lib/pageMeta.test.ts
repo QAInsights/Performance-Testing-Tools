@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { tools } from '../data/tools';
+import { getReview } from '../data/reviews';
 import {
   aboutTitle,
   categoryTitle,
@@ -7,6 +8,10 @@ import {
   homeDescription,
   homeTitle,
   seoYear,
+  reviewDescription,
+  reviewTitle,
+  reviewsIndexDescription,
+  reviewsIndexTitle,
   toolDescription,
   toolTitle,
 } from './pageMeta';
@@ -48,5 +53,21 @@ describe('page meta builders', () => {
     );
     expect(compareTitle()).toMatch(/Test Rig/);
     expect(aboutTitle()).toMatch(/^About ·/);
+  });
+
+  it('builds review titles and descriptions', () => {
+    const tool = tools.find((item) => item.slug === 'grafana-k6')!;
+    const review = getReview(tool.slug)!;
+    expect(reviewTitle(tool)).toBe(
+      'Grafana k6 review (2026): verdict, ratings, pros & cons',
+    );
+    expect(reviewDescription(tool, review)).toContain('Hands-on review by');
+    expect(reviewDescription(tool, review).length).toBeLessThanOrEqual(158);
+    expect(reviewsIndexTitle()).toBe(
+      'Performance testing tool reviews (2026): verdicts, ratings, pros & cons',
+    );
+    expect(reviewsIndexDescription()).toContain(
+      `${getReview('grafana-k6')!.reviewedAt}`,
+    );
   });
 });

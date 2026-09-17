@@ -1,0 +1,472 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import LoadProfile from '../../components/LoadProfile.astro';
+import ToolBadges from '../../components/ToolBadges.astro';
+import Footer from '../../components/Footer.astro';
+import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
+import { reviews } from '../../data/reviews';
+import { tools } from '../../data/tools';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import {
+  breadcrumbs,
+  toolFaq,
+  toolReview,
+  toolSoftwareApplication,
+} from '../../lib/seo';
+import { buildReviewFaq } from '../../lib/reviewFaq';
+import { reviewDescription, reviewTitle } from '../../lib/pageMeta';
+import { correctionsUrl, curatorPerson } from '../../lib/methodology';
+import {
+  alternativesForHub,
+  alternativesHubForTool,
+} from '../../lib/comparisonContent';
+import { hubPeers } from '../../lib/derivedComparisons';
+import '../../styles/editorial.css';
+import '../../styles/review.css';
+
+export function getStaticPaths() {
+  return reviews.map((review) => {
+    const tool = tools.find((item) => item.slug === review.slug);
+    if (!tool) throw new Error(`Review has no catalog tool: ${review.slug}`);
+    return {
+      params: { slug: review.slug },
+      props: { tool, review },
+    };
+  });
+}
+
+const { tool, review } = Astro.props;
+const faqItems = buildReviewFaq(tool, review, tools);
+const alternativesHub = alternativesHubForTool(tool.slug, tools);
+const alternativesCount = alternativesHub
+  ? alternativesHub.tier === 'B'
+    ? hubPeers(tool, tools).length
+    : alternativesForHub(alternativesHub, tools).length
+  : 0;
+const reviewUrl = absoluteUrl(`reviews/${tool.slug}`);
+const facts = [
+  ['License', tool.license],
+  ['Pricing', tool.pricingModel],
+  ['Deployment', tool.deployment],
+  ['Protocols', tool.protocols.join(', ') || 'Not recorded'],
+  ['Languages', tool.scriptingLanguages.join(', ') || 'Not recorded'],
+  ['Operating systems', tool.osSupport.join(', ') || 'Not recorded'],
+  ['First released', tool.firstReleased?.toString() || 'Not verified'],
+  ['Status', tool.status],
+] as const;
+---
+
+<ConsoleLayout
+  title={reviewTitle(tool)}
+  description={reviewDescription(tool, review)}
+  ogType="article"
+  markdownHref={siteUrl(`reviews/${tool.slug}.md`)}
+  canonical={reviewUrl}
+  structuredData={[
+    toolSoftwareApplication(tool),
+    toolReview(tool, review, reviewUrl),
+    toolFaq(tool, tools, faqItems),
+    breadcrumbs([
+      { name: 'Home', path: '' },
+      { name: 'Reviews', path: 'reviews' },
+      { name: `${tool.name} review`, path: `reviews/${tool.slug}` },
+    ]),
+  ]}
+>
+  <main class="review-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Home</a><span>/</span><a href={siteUrl('reviews')}
+        >Reviews</a
+      ><span>/</span><strong>{tool.name} review</strong>
+    </nav>
+    <header class="review-hero panel">
+      <div class="review-hero-content">
+        <p class="eyebrow">TOOL REVIEW · ACTIVE</p>
+        <h1>{tool.name} <span>review</span></h1>
+        <p class="detail-vendor">{tool.vendor}</p>
+        <div class="detail-badges"><ToolBadges tool={tool} /></div>
+        <p class="review-stamp mono">
+          REVIEWED · {review.reviewedAt} · {
+            review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'
+          }
+        </p>
+        <p class="review-byline">
+          By <a href={curatorPerson.url}>{curatorPerson.name}</a>
+        </p>
+      </div>
+      <div class="hero-profile"><LoadProfile tool={tool} large /></div>
+    </header>
+    <nav class="jump-list mono" aria-label="On this page">
+      <span>JUMP TO</span>
+      <a href="#verdict">Verdict</a>
+      <a href="#ratings">Ratings</a>
+      <a href="#pros-cons">Pros &amp; cons</a>
+      {review.gettingStarted && <a href="#getting-started">Getting started</a>}
+      <a href="#specs">Fact sheet</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <section class="review-section review-verdict panel" id="verdict">
+      <p class="eyebrow">CURATOR VERDICT</p>
+      <h2>{tool.name} review: verdict</h2>
+      <p class="review-lead">{review.verdict}</p>
+      <div class="verdict-columns">
+        <div>
+          <span class="answer-box-sub-label mono">Pick it when</span>
+          <ul>
+            {review.pickWhen.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+        <div>
+          <span class="answer-box-sub-label mono">Skip it when</span>
+          <ul>
+            {review.skipWhen.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="review-section ratings-section panel" id="ratings">
+      <div class="section-heading">
+        <h2>Ratings</h2>
+        <span class="disclosure-hint mono">QUALITATIVE</span>
+      </div>
+      <div class="ratings-grid">
+        {
+          review.ratings.map((rating) => (
+            <div class="rating-row">
+              <span class="rating-dimension mono">{rating.dimension}</span>
+              <span
+                class:list={[
+                  'rating-level',
+                  `rating-level--${rating.level.toLowerCase()}`,
+                ]}
+              >
+                {rating.level}
+              </span>
+              <span class="rating-note">{rating.note}</span>
+            </div>
+          ))
+        }
+      </div>
+      <p class="ratings-legend mono">
+        Qualitative labels, not scores —{' '}
+        <a href={siteUrl('about#methodology')}>see methodology</a>
+      </p>
+    </section>
+    <div class="review-grid">
+      <div class="review-copy">
+        <section class="review-section" id="pros-cons">
+          <h2>Pros and cons</h2>
+          <div class="pros-cons-grid">
+            <div>
+              <h3>Pros</h3>
+              <ul class="feature-list">
+                {review.pros.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3>Cons</h3>
+              <ul class="feature-list">
+                {review.cons.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+        {
+          review.gettingStarted && (
+            <section class="review-section" id="getting-started">
+              <h2>Getting started</h2>
+              <div class="getting-started-blocks">
+                {review.gettingStarted.install && (
+                  <pre>
+                    <code>{review.gettingStarted.install}</code>
+                  </pre>
+                )}
+                {review.gettingStarted.firstRun && (
+                  <pre>
+                    <code>{review.gettingStarted.firstRun}</code>
+                  </pre>
+                )}
+              </div>
+              <p>{review.gettingStarted.learningCurve}</p>
+            </section>
+          )
+        }
+        <section class="review-section" id="specs">
+          <div class="section-heading">
+            <h2>Fact sheet</h2>
+            <a class="mono specs-link" href={siteUrl(`tools/${tool.slug}`)}
+              >Full specs &amp; alternatives →</a
+            >
+          </div>
+          <dl class="metadata-grid">
+            {
+              facts.map(([label, value]) => (
+                <div>
+                  <>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </>
+                </div>
+              ))
+            }
+          </dl>
+        </section>
+        <p class="review-provenance mono">
+          REVIEWED {review.reviewedAt} · {
+            review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'
+          } · CURATED BY {curatorPerson.name.toUpperCase()} ·
+          <a href={correctionsUrl}>SUGGEST A CORRECTION</a>
+        </p>
+      </div>
+      <aside id="alternatives">
+        <ToolRelatedLinks
+          tool={tool}
+          catalog={tools}
+          alternativesHref={alternativesHub
+            ? siteUrl(`alternatives/${tool.slug}`)
+            : undefined}
+          alternativesLabel={alternativesHub?.headline}
+          alternativesCount={alternativesHub ? alternativesCount : undefined}
+        />
+      </aside>
+    </div>
+    <section class="faq-block panel" id="faq" aria-labelledby="faq-heading">
+      <div class="faq-head">
+        <h2 id="faq-heading">Review FAQ</h2>
+        <span class="disclosure-hint mono">ANSWER-SHAPED</span>
+      </div>
+      <div class="faq-list">
+        {
+          faqItems.map((item, index) => (
+            <details class="faq-item" open={index < 2}>
+              <summary>
+                <strong>{item.question}</strong>
+              </summary>
+              <p>{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+    <Footer markdownHref={siteUrl(`reviews/${tool.slug}.md`)} />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .review-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 38px 24px 80px;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 10px;
+    color: var(--color-surface-300);
+    font-size: 13px;
+    margin-bottom: 26px;
+  }
+  .breadcrumbs a,
+  .review-page a {
+    color: var(--color-teal-300);
+  }
+  .review-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 32px;
+  }
+  .review-hero h1 {
+    color: var(--color-surface-100);
+    font-size: clamp(38px, 7vw, 82px);
+    letter-spacing: -0.07em;
+    line-height: 0.98;
+    margin: 0;
+  }
+  .review-hero h1 span {
+    color: var(--color-teal-300);
+    font-size: 0.62em;
+  }
+  .detail-vendor {
+    color: var(--color-surface-300);
+    font: 15px var(--font-mono);
+  }
+  .detail-badges {
+    margin-top: 24px;
+  }
+  .review-byline {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    margin: 18px 0 0;
+  }
+  .hero-profile {
+    align-self: center;
+    min-width: 0;
+  }
+  .jump-list {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    margin: 16px 0 0;
+    color: var(--color-surface-300);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .jump-list span {
+    color: var(--color-surface-400);
+  }
+  .review-section {
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 22px;
+  }
+  .review-section h2,
+  .faq-block h2 {
+    color: var(--color-teal-300);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.1em;
+    margin: 0 0 14px;
+  }
+  .review-verdict {
+    margin-top: 32px;
+    padding: 24px;
+  }
+  .review-verdict .eyebrow {
+    margin-top: 0;
+  }
+  .review-lead {
+    color: var(--color-surface-100);
+    font-size: 19px;
+    line-height: 1.65;
+    margin: 0;
+  }
+  .review-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.7fr);
+    gap: 55px;
+    margin-top: 52px;
+  }
+  .review-copy {
+    min-width: 0;
+  }
+  .review-section + .review-section {
+    margin-top: 34px;
+  }
+  .review-section > p,
+  .review-section li {
+    color: var(--color-surface-300);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
+    margin: 0;
+    padding-left: 18px;
+  }
+  .feature-list li {
+    overflow-wrap: anywhere;
+  }
+  .pros-cons-grid h3 {
+    color: var(--color-surface-100);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.06em;
+    margin: 0 0 12px;
+  }
+  .metadata-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 0;
+  }
+  .metadata-grid div {
+    min-width: 0;
+    padding: 11px 0;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-teal-300) 15%, transparent);
+  }
+  .metadata-grid dt {
+    color: var(--color-surface-300);
+    font: 12px var(--font-mono);
+    text-transform: uppercase;
+  }
+  .metadata-grid dd {
+    margin: 6px 14px 0 0;
+    color: var(--color-surface-100);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+  .specs-link {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .review-provenance {
+    color: var(--color-surface-400) !important;
+    font-size: 12px !important;
+    letter-spacing: 0.08em;
+    line-height: 1.7 !important;
+    margin: 28px 0 0;
+  }
+  .faq-block {
+    margin-top: 28px;
+    padding: 20px;
+  }
+  .faq-head {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .faq-head h2 {
+    margin: 0;
+  }
+  .disclosure-hint {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .faq-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 22px;
+  }
+  .faq-item {
+    border-top: 1px solid var(--color-teal-700);
+    padding-top: 10px;
+  }
+  .faq-item summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item strong {
+    font: 13px var(--font-mono);
+    color: var(--color-surface-100);
+  }
+  .faq-item p {
+    color: var(--color-surface-300);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 10px 0 0;
+  }
+  @media (max-width: 700px) {
+    .review-page {
+      padding: 24px 14px;
+    }
+    .review-hero {
+      grid-template-columns: 1fr;
+      padding: 22px;
+    }
+    .review-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .metadata-grid,
+    .faq-list,
+    .feature-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

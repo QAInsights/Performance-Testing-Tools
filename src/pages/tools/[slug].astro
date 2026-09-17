@@ -7,17 +7,12 @@ import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
 import { datasetLastVerified, tools } from '../../data/tools';
 import { getReview } from '../../data/reviews';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
-import {
-  breadcrumbs,
-  toolFaq,
-  toolReview,
-  toolSoftwareApplication,
-} from '../../lib/seo';
+import { breadcrumbs, toolFaq, toolSoftwareApplication } from '../../lib/seo';
 import { getEnrichment } from '../../lib/enrichmentData';
 import { getGithubHealth } from '../../lib/githubHealth';
 import { buildToolFaq } from '../../lib/toolFaq';
 import { toolDescription, toolTitle } from '../../lib/pageMeta';
-import { correctionsUrl, curatorPerson } from '../../lib/methodology';
+import { curatorPerson } from '../../lib/methodology';
 import {
   alternativesForHub,
   alternativesHubForTool,
@@ -31,6 +26,7 @@ import {
   toolAnswerBox,
 } from '../../lib/toolEntity';
 import '../../styles/editorial.css';
+import '../../styles/review.css';
 
 export function getStaticPaths() {
   return tools.map((tool) => ({
@@ -41,11 +37,7 @@ export function getStaticPaths() {
 const { tool } = Astro.props;
 const review = getReview(tool.slug);
 const enrichment = getEnrichment(tool.slug, tool);
-const faqItems = buildToolFaq(tool, tools).filter(
-  (item) =>
-    !review ||
-    !item.answer.includes('Confirm details against the official site'),
-);
+const faqItems = buildToolFaq(tool, tools);
 const answerBox = toolAnswerBox(tool, enrichment);
 const bestForItems = bestFor(tool);
 const notBestForItems = notBestFor(tool);
@@ -64,8 +56,7 @@ const about = enrichment?.about || tool.longDescription;
 const normalized = (value: string) =>
   value.trim().toLowerCase().replace(/\s+/g, ' ');
 const wordCount = (value: string) => value.trim().split(/\s+/).length;
-const answerText =
-  review?.verdict || (wordCount(about) <= 120 ? about : answerBox);
+const answerText = wordCount(about) <= 120 ? about : answerBox;
 const normalizedAnswer = normalized(answerText)
   .replace(/\s+status:.*$/i, '')
   .replace(/\.+$/, '');
@@ -99,6 +90,8 @@ const sourceHost = (url: string) => {
     return url;
   }
 };
+const reviewSummary =
+  review?.verdict.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || review?.verdict;
 ---
 
 <ConsoleLayout
@@ -110,7 +103,6 @@ const sourceHost = (url: string) => {
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
     toolSoftwareApplication(tool, enrichment),
-    ...(review ? [toolReview(tool, review)] : []),
     toolFaq(tool, tools, faqItems, enrichment),
     breadcrumbs([
       { name: 'Directory', path: '' },
@@ -199,12 +191,23 @@ const sourceHost = (url: string) => {
         </dd>
       </div>
     </dl>
+    {
+      review && (
+        <a class="review-cta panel" href={siteUrl(`reviews/${tool.slug}`)}>
+          <span class="review-cta-label mono">
+            READ THE {tool.name} REVIEW →
+          </span>
+          <strong>{reviewSummary}</strong>
+          <span class="review-cta-meta mono">
+            {review.reviewedAt} · {review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'}
+          </span>
+        </a>
+      )
+    }
     <nav class="jump-list mono" aria-label="On this page">
       <span>JUMP TO</span>
-      <a href="#verdict">{review ? 'Verdict' : 'Answer'}</a>
-      {review && <a href="#ratings">Ratings</a>}
-      <a href="#pros-cons">Pros &amp; cons</a>
-      {review?.gettingStarted && <a href="#getting-started">Getting started</a>}
+      <a href="#verdict">Answer</a>
+      <a href="#pros-cons">Best for</a>
       {hasFactSheet && <a href="#specs">Specs</a>}
       {
         (comparisonPages.length > 0 || alternativesHub) && (
@@ -228,61 +231,9 @@ const sourceHost = (url: string) => {
       )
     }
     <div class="answer-box panel" id="verdict">
-      <span class="answer-box-label mono">{review ? 'Verdict' : 'Answer'}</span>
+      <span class="answer-box-label mono">Answer</span>
       <p>{answerText}</p>
-      {
-        review && (
-          <div class="verdict-columns">
-            <div>
-              <span class="answer-box-sub-label mono">Pick it when</span>
-              <ul>
-                {review.pickWhen.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <span class="answer-box-sub-label mono">Skip it when</span>
-              <ul>
-                {review.skipWhen.map((item) => (
-                  <li>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )
-      }
     </div>
-    {
-      review && (
-        <section class="ratings-section panel" id="ratings">
-          <div class="section-heading">
-            <h2>Ratings</h2>
-            <span class="disclosure-hint mono">QUALITATIVE</span>
-          </div>
-          <div class="ratings-grid">
-            {review.ratings.map((rating) => (
-              <div class="rating-row">
-                <span class="rating-dimension mono">{rating.dimension}</span>
-                <span
-                  class:list={[
-                    'rating-level',
-                    `rating-level--${rating.level.toLowerCase()}`,
-                  ]}
-                >
-                  {rating.level}
-                </span>
-                <span class="rating-note">{rating.note}</span>
-              </div>
-            ))}
-          </div>
-          <p class="ratings-legend mono">
-            Qualitative labels, not scores —{' '}
-            <a href={siteUrl('about#methodology')}>see methodology</a>
-          </p>
-        </section>
-      )
-    }
     <div class="detail-grid">
       <article class="detail-copy">
         {
@@ -315,70 +266,18 @@ const sourceHost = (url: string) => {
             </section>
           )
         }
-        {
-          review ? (
-            <section class="detail-section" id="pros-cons">
-              <h2>Pros and cons</h2>
-              <div class="pros-cons-grid">
-                <div>
-                  <h3>Pros</h3>
-                  <ul class="feature-list">
-                    {review.pros.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3>Cons</h3>
-                  <ul class="feature-list">
-                    {review.cons.map((item) => (
-                      <li>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </section>
-          ) : (
-            <>
-              <section class="detail-section" id="pros-cons">
-                <h2>Best for</h2>
-                <ul class="feature-list">
-                  {bestForItems.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </section>
-              <section class="detail-section">
-                <h2>Not the best fit when</h2>
-                <ul class="feature-list">
-                  {notBestForItems.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            </>
-          )
-        }
-        {
-          review?.gettingStarted && (
-            <section class="detail-section" id="getting-started">
-              <h2>Getting started</h2>
-              <div class="getting-started-blocks">
-                {review.gettingStarted.install && (
-                  <pre>
-                    <code>{review.gettingStarted.install}</code>
-                  </pre>
-                )}
-                {review.gettingStarted.firstRun && (
-                  <pre>
-                    <code>{review.gettingStarted.firstRun}</code>
-                  </pre>
-                )}
-              </div>
-              <p>{review.gettingStarted.learningCurve}</p>
-            </section>
-          )
-        }
+        <section class="detail-section" id="pros-cons">
+          <h2>Best for</h2>
+          <ul class="feature-list">
+            {bestForItems.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+        <section class="detail-section">
+          <h2>Not the best fit when</h2>
+          <ul class="feature-list">
+            {notBestForItems.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
         <section class="detail-section">
           <h2>Architecture and concurrency</h2>
           <p>{architecture}</p>
@@ -504,19 +403,12 @@ const sourceHost = (url: string) => {
                 </ul>
               </details>
               <p class="enrichment-stamp mono">
-                {review && `REVIEWED ${review.reviewedAt} · `}
                 LAST VERIFIED · {enrichmentDate}
                 {enrichment?.fetchedAt ? ' · GROUNDED VIA EXA' : ''}
                 {' · '}
                 <a href={siteUrl('about#methodology')}>
                   CURATED BY {curatorPerson.name.toUpperCase()}
                 </a>
-                {review && (
-                  <>
-                    {' · '}
-                    <a href={correctionsUrl}>SUGGEST A CORRECTION</a>
-                  </>
-                )}
               </p>
             </section>
           )
@@ -524,18 +416,11 @@ const sourceHost = (url: string) => {
         {
           !enrichment?.sources?.length && (
             <p class="enrichment-stamp mono catalog-stamp">
-              {review && `REVIEWED ${review.reviewedAt} · `}
               CATALOG LAST VERIFIED · {datasetLastVerified}
               {' · '}
               <a href={siteUrl('about#methodology')}>
                 CURATED BY {curatorPerson.name.toUpperCase()}
               </a>
-              {review && (
-                <>
-                  {' · '}
-                  <a href={correctionsUrl}>SUGGEST A CORRECTION</a>
-                </>
-              )}
             </p>
           )
         }
@@ -637,12 +522,6 @@ const sourceHost = (url: string) => {
   .detail-badges {
     margin-top: 24px;
   }
-  .review-stamp {
-    color: var(--color-surface-300);
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    margin: 12px 0 0;
-  }
   .maintained-by {
     color: var(--color-surface-300);
     font-size: 12px;
@@ -675,6 +554,30 @@ const sourceHost = (url: string) => {
     line-height: 1.35;
     margin: 5px 0 0;
     overflow-wrap: anywhere;
+  }
+  .review-cta {
+    border-color: var(--color-amber-400);
+    color: inherit;
+    display: grid;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 16px 18px;
+    text-decoration: none;
+  }
+  .review-cta:hover {
+    border-color: var(--color-teal-300);
+  }
+  .review-cta-label,
+  .review-cta-meta {
+    color: var(--color-amber-400);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .review-cta strong {
+    color: var(--color-surface-100);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.45;
   }
   .jump-list {
     align-items: center;
@@ -710,98 +613,6 @@ const sourceHost = (url: string) => {
     color: var(--color-surface-100);
     font-size: 16px;
     line-height: 1.55;
-  }
-  .verdict-columns {
-    border-top: 1px solid var(--color-teal-700);
-    display: grid;
-    gap: 18px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 16px;
-    padding-top: 14px;
-  }
-  .answer-box-sub-label,
-  .subsection-label {
-    color: var(--color-amber-400);
-    display: block;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .verdict-columns ul {
-    margin: 8px 0 0;
-    padding-left: 17px;
-  }
-  .verdict-columns li {
-    color: var(--color-surface-300);
-    font-size: 14px;
-    line-height: 1.45;
-    margin-top: 5px;
-  }
-  .ratings-section {
-    margin-top: 14px;
-    padding: 18px;
-  }
-  .section-heading {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .section-heading h2 {
-    color: var(--color-teal-300);
-    font: 13px var(--font-mono);
-    letter-spacing: 0.1em;
-    margin: 0;
-  }
-  .ratings-grid {
-    display: grid;
-    gap: 10px;
-    margin-top: 18px;
-  }
-  .rating-row {
-    align-items: start;
-    display: grid;
-    gap: 10px;
-    grid-template-columns: minmax(150px, 0.8fr) auto minmax(0, 1.8fr);
-    padding-top: 10px;
-    border-top: 1px solid
-      color-mix(in srgb, var(--color-teal-300) 15%, transparent);
-  }
-  .rating-dimension {
-    color: var(--color-surface-100);
-    font-size: 12px;
-  }
-  .rating-level {
-    border: 1px solid;
-    font: 11px var(--font-mono);
-    letter-spacing: 0.06em;
-    padding: 4px 6px;
-    white-space: nowrap;
-  }
-  .rating-level--strong {
-    border-color: var(--color-teal-300);
-    color: var(--color-teal-300);
-  }
-  .rating-level--adequate {
-    border-color: var(--color-amber-400);
-    color: var(--color-amber-400);
-  }
-  .rating-level--limited {
-    border-color: var(--color-surface-300);
-    color: var(--color-surface-300);
-  }
-  .rating-note {
-    color: var(--color-surface-300);
-    font-size: 14px;
-    line-height: 1.45;
-  }
-  .ratings-legend {
-    color: var(--color-surface-400);
-    font-size: 11px;
-    margin: 16px 0 0;
-  }
-  .ratings-legend a {
-    color: var(--color-teal-300);
   }
   .detail-copy a {
     color: var(--color-teal-300);
@@ -873,26 +684,6 @@ const sourceHost = (url: string) => {
   }
   .subsection-label {
     margin-bottom: 12px;
-  }
-  .pros-cons-grid {
-    display: grid;
-    gap: 24px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .getting-started-blocks {
-    display: grid;
-    gap: 10px;
-  }
-  .getting-started-blocks pre {
-    background: var(--color-surface-900);
-    border: 1px solid var(--color-teal-700);
-    color: var(--color-teal-300);
-    margin: 0;
-    overflow-x: auto;
-    padding: 12px;
-  }
-  .getting-started-blocks code {
-    font: 13px/1.5 var(--font-mono);
   }
   .fact-sheet-block + .fact-sheet-block {
     border-top: 1px solid
@@ -1087,16 +878,6 @@ const sourceHost = (url: string) => {
     }
     .feature-list {
       grid-template-columns: 1fr;
-    }
-    .verdict-columns,
-    .pros-cons-grid {
-      grid-template-columns: 1fr;
-    }
-    .rating-row {
-      grid-template-columns: 1fr auto;
-    }
-    .rating-note {
-      grid-column: 1 / -1;
     }
     .comparison-list {
       grid-template-columns: 1fr;
