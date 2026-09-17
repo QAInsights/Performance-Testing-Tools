@@ -48,7 +48,7 @@ describe('tool FAQ content', () => {
 
   it('builds dedicated review FAQs in the target word band', () => {
     const tool = tools.find((item) => item.slug === 'grafana-k6')!;
-    const faq = buildReviewFaq(tool, getReview(tool.slug)!, tools);
+    const faq = buildReviewFaq(tool, getReview(tool.slug)!);
     expect(faq.length).toBe(4);
     expect(faq.every((item) => item.answer.split(/\s+/).length >= 40)).toBe(
       true,

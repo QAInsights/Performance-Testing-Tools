@@ -8,6 +8,7 @@ import {
 } from '../data/tools';
 import type { ToolReview } from '../data/reviews';
 import { reviews } from '../data/reviews';
+import { curatorPerson } from './methodology';
 
 /** Calendar year used in SEO titles (refresh when the strategy year rolls). */
 export const seoYear = 2026;
@@ -97,11 +98,10 @@ export function reviewTitle(tool: Tool): string {
   return `${tool.name} review (${seoYear}): verdict, ratings, pros & cons`;
 }
 
-export function reviewDescription(tool: Tool, review: ToolReview): string {
-  void tool;
+export function reviewDescription(review: ToolReview): string {
   const mode = review.handsOn ? 'Hands-on' : 'Desk';
   return clampMetaDescription(
-    `${firstSentence(review.verdict)} ${mode} review by NaveenKumar Namachivayam, updated ${review.reviewedAt}.`,
+    `${firstSentence(review.verdict)} ${mode} review by ${curatorPerson.name}, updated ${review.reviewedAt}.`,
   );
 }
 
@@ -118,7 +118,7 @@ export function reviewsIndexDescription(
     .sort()
     .at(-1);
   return clampMetaDescription(
-    `Read ${reviewList.length} curator-authored performance testing tool reviews: ${handsOn} hands-on and ${reviewList.length - handsOn} desk reviews by NaveenKumar Namachivayam. Updated ${updated}.`,
+    `Read ${reviewList.length} curator-authored performance testing tool reviews: ${handsOn} hands-on and ${reviewList.length - handsOn} desk reviews by ${curatorPerson.name}. Updated ${updated}.`,
   );
 }
 

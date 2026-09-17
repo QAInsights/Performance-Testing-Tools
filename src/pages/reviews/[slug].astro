@@ -36,7 +36,7 @@ export function getStaticPaths() {
 }
 
 const { tool, review } = Astro.props;
-const faqItems = buildReviewFaq(tool, review, tools);
+const faqItems = buildReviewFaq(tool, review);
 const alternativesHub = alternativesHubForTool(tool.slug, tools);
 const alternativesCount = alternativesHub
   ? alternativesHub.tier === 'B'
@@ -58,7 +58,7 @@ const facts = [
 
 <ConsoleLayout
   title={reviewTitle(tool)}
-  description={reviewDescription(tool, review)}
+  description={reviewDescription(review)}
   ogType="article"
   markdownHref={siteUrl(`reviews/${tool.slug}.md`)}
   canonical={reviewUrl}

@@ -61,8 +61,8 @@ describe('page meta builders', () => {
     expect(reviewTitle(tool)).toBe(
       'Grafana k6 review (2026): verdict, ratings, pros & cons',
     );
-    expect(reviewDescription(tool, review)).toContain('Hands-on review by');
-    expect(reviewDescription(tool, review).length).toBeLessThanOrEqual(158);
+    expect(reviewDescription(review)).toContain('Hands-on review by');
+    expect(reviewDescription(review).length).toBeLessThanOrEqual(158);
     expect(reviewsIndexTitle()).toBe(
       'Performance testing tool reviews (2026): verdicts, ratings, pros & cons',
     );

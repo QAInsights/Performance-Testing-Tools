@@ -2,6 +2,7 @@ import type { Tool } from '../data/tools';
 import type { ToolReview } from '../data/reviews';
 import type { FaqItem } from './toolFaq';
 import { clampAnswer } from './toolFaq';
+import { seoYear } from './pageMeta';
 
 const firstSentences = (value: string, count: number) => {
   const sentences = value.match(/[^.!?]+[.!?](?=\s|$)/g) || [];
@@ -21,15 +22,10 @@ const reviewAnswer = (text: string, suffix: string) => {
   return clampAnswer(expanded, 40, 80);
 };
 
-export function buildReviewFaq(
-  tool: Tool,
-  review: ToolReview,
-  _catalog: readonly Tool[] = [],
-): FaqItem[] {
-  void _catalog;
+export function buildReviewFaq(tool: Tool, review: ToolReview): FaqItem[] {
   const items: FaqItem[] = [
     {
-      question: `Is ${tool.name} worth it in 2026?`,
+      question: `Is ${tool.name} worth it in ${seoYear}?`,
       answer: reviewAnswer(
         `${firstSentences(review.verdict, 2)} ${review.pickWhen[0]}`,
         `That makes it worth considering when the team's workload and authoring model match these strengths.`,
