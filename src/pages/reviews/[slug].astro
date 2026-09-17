@@ -85,8 +85,8 @@ const facts = [
         <p class="eyebrow">TOOL REVIEW · ACTIVE</p>
         <h1>
           {tool.name}
-          <VerifiedBadge tool={tool} size="md" />
           <span>review</span>
+          <VerifiedBadge tool={tool} size="lg" />
         </h1>
         <p class="detail-vendor">{tool.vendor}</p>
         <div class="detail-badges"><ToolBadges tool={tool} /></div>
@@ -287,6 +287,11 @@ const facts = [
     line-height: 0.98;
     margin: 0;
   }
+  @media (min-width: 701px) {
+    .review-hero h1 {
+      white-space: nowrap;
+    }
+  }
   .review-hero h1 span {
     color: var(--color-teal-300);
     font-size: 0.62em;
@@ -364,7 +369,7 @@ const facts = [
   }
   .feature-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
     gap: 10px 24px;
     margin: 0;
     padding-left: 18px;

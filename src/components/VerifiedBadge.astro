@@ -5,10 +5,10 @@ import { siteUrl } from '../lib/urls';
 
 const { tool, size = 'sm' } = Astro.props as {
   tool: Tool;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 };
 const review = getReview(tool.slug);
-const iconSize = size === 'md' ? 22 : 16;
+const iconSize = size === 'lg' ? 36 : size === 'md' ? 22 : 16;
 ---
 
 {
@@ -44,6 +44,10 @@ const iconSize = size === 'md' ? 22 : 16;
     display: inline-flex;
     line-height: 0;
     vertical-align: -0.15em;
+  }
+  .verified-badge--lg {
+    margin-left: 0.15em;
+    vertical-align: middle;
   }
   .verified-badge svg {
     flex: 0 0 auto;

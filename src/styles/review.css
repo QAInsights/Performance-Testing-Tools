@@ -132,10 +132,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.pros-cons-grid .feature-list {
-  grid-template-columns: 1fr;
-}
-
 .getting-started-blocks {
   display: grid;
   gap: 10px;
