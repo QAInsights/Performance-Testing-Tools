@@ -7,6 +7,7 @@ export type ReviewDimension =
   | 'Reporting & analysis'
   | 'CI/CD & automation'
   | 'Cost & licensing'
+  | 'AI features'
   | 'Input formats'
   | 'Learning curve';
 
@@ -57,8 +58,8 @@ export function validateReview(review: ToolReview): string[] {
     problems.push('pickWhen needs 2-3 items');
   if (review.skipWhen.length < 2 || review.skipWhen.length > 3)
     problems.push('skipWhen needs 2-3 items');
-  if (review.ratings.length < 4 || review.ratings.length > 6)
-    problems.push('ratings needs 4-6 dimensions');
+  if (review.ratings.length < 4 || review.ratings.length > 7)
+    problems.push('ratings needs 4-7 dimensions');
   const dims = new Set(review.ratings.map((r) => r.dimension));
   if (dims.size !== review.ratings.length)
     problems.push('ratings dimensions must be unique');
@@ -120,6 +121,11 @@ export const reviews: ToolReview[] = [
         dimension: 'Cost & licensing',
         level: 'Strong',
         note: 'Apache 2.0, no usage caps, no vendor lock-in.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'No native AI; the JMeter AI plugin and jmeter.ai assistant add script generation and analysis.',
       },
     ],
     pros: [
@@ -188,6 +194,11 @@ export const reviews: ToolReview[] = [
         level: 'Strong',
         note: 'AGPL-3.0 open source; cloud is optional and priced per VUH.',
       },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'No AI in the CLI; Grafana Cloud k6 adds AI-assisted test creation and result summaries.',
+      },
     ],
     pros: [
       'Developer-friendly JavaScript with checks and thresholds built in',
@@ -254,6 +265,11 @@ export const reviews: ToolReview[] = [
         dimension: 'Cost & licensing',
         level: 'Adequate',
         note: 'Apache 2.0 core; distribution and dashboards require a paid tier.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No AI-assisted authoring or analysis in either edition today.',
       },
     ],
     pros: [
@@ -322,6 +338,11 @@ export const reviews: ToolReview[] = [
         level: 'Strong',
         note: 'MIT license with no paid tier to worry about.',
       },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No built-in AI features; community LLM helpers only.',
+      },
     ],
     pros: [
       'Anything with a Python client can be load tested',
@@ -388,6 +409,11 @@ export const reviews: ToolReview[] = [
         dimension: 'Cost & licensing',
         level: 'Limited',
         note: 'Quote-based commercial licensing priced per virtual user.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'OpenText Aviator assistant is being added for script generation and analysis.',
       },
     ],
     pros: [
@@ -457,6 +483,11 @@ export const reviews: ToolReview[] = [
         level: 'Limited',
         note: 'Free tier is small; paid plans scale with virtual user hours.',
       },
+      {
+        dimension: 'AI features',
+        level: 'Strong',
+        note: 'AI-driven test generation, failure summaries, and anomaly detection in the platform.',
+      },
     ],
     pros: [
       'Runs existing open-source scripts unchanged',
@@ -525,6 +556,11 @@ export const reviews: ToolReview[] = [
         level: 'Strong',
         note: 'MPL-2.0 open source; cloud is optional.',
       },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No native AI features; Artillery Cloud focuses on reporting.',
+      },
     ],
     pros: [
       'Declarative scenarios are easy to read and review',
@@ -591,6 +627,11 @@ export const reviews: ToolReview[] = [
         dimension: 'Cost & licensing',
         level: 'Limited',
         note: 'Commercial, quote-based, with concurrent virtual user tiers.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'Tricentis is adding AI-assisted correlation and analysis across the suite.',
       },
     ],
     pros: [
@@ -659,6 +700,11 @@ export const reviews: ToolReview[] = [
         level: 'Strong',
         note: 'Apache 2.0 open source.',
       },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No AI features; the project is a thin orchestration layer.',
+      },
     ],
     pros: [
       'Turns JMeter into a CI-native tool with a few lines of YAML',
@@ -725,6 +771,11 @@ export const reviews: ToolReview[] = [
         dimension: 'Cost & licensing',
         level: 'Strong',
         note: 'Modified Apache 2.0, free.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'None by design; a single-purpose C benchmark.',
       },
     ],
     pros: [
