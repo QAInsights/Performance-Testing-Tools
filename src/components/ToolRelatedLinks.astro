@@ -12,9 +12,18 @@ import { tools } from '../data/tools';
 interface Props {
   tool: Tool;
   catalog?: Tool[];
+  alternativesHref?: string;
+  alternativesLabel?: string;
+  alternativesCount?: number;
 }
 
-const { tool, catalog = tools } = Astro.props;
+const {
+  tool,
+  catalog = tools,
+  alternativesHref,
+  alternativesLabel,
+  alternativesCount,
+} = Astro.props;
 const similar = similarTools(tool, catalog);
 const compares = compareWithLinks(tool, catalog);
 const languages = languageChips(tool);
@@ -24,10 +33,16 @@ const ecosystem = ecosystemLinksForTool(tool);
 
 <div class="related-sidebar">
   {
-    compares.length > 0 && (
+    (compares.length > 0 || alternativesHref) && (
       <section class="related-block">
         <p class="eyebrow">COMPARE WITH</p>
         <div class="similar-list">
+          {alternativesHref && (
+            <a class="similar-item panel focus-ring" href={alternativesHref}>
+              <span>{alternativesLabel || 'Alternatives hub'}</span>
+              <small>{alternativesCount ?? 0} alternatives compared</small>
+            </a>
+          )}
           {compares.map((item) => (
             <a class="similar-item panel focus-ring" href={item.href}>
               <span>{item.label}</span>

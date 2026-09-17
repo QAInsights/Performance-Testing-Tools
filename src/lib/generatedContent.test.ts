@@ -16,6 +16,7 @@ import {
 import { buildLlmsFullTxt, buildLlmsTxt } from './llmsContent';
 import { siteOrigin } from '../config/site';
 import { curatorPerson } from './methodology';
+import { getReview } from '../data/reviews';
 
 describe('generated public content', () => {
   it('contains every tool in both LLM catalogs', () => {
@@ -115,6 +116,23 @@ describe('generated public content', () => {
     expect(tools).toHaveLength(133);
     expect(allComparisonSpecs(tools)).toHaveLength(56);
     expect(allAlternativesHubs(tools)).toHaveLength(46);
+  });
+
+  it('includes reviewed tool sections in markdown mirrors', () => {
+    const tool = tools.find((item) => item.slug === 'grafana-k6')!;
+    const body = toolMarkdown(
+      tool,
+      tools,
+      siteOrigin,
+      undefined,
+      getReview(tool.slug),
+    );
+    expect(body).toContain('## Verdict');
+    expect(body).toContain('## Ratings');
+    expect(body).toContain('| Dimension | Level | Note |');
+    expect(body).toContain('## Pros');
+    expect(body).toContain('## Cons');
+    expect(body).toContain('## Getting started');
   });
 
   it('publishes every static comparison and methodology in llms.txt', () => {
