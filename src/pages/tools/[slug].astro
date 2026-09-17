@@ -63,8 +63,17 @@ const enrichmentDate = enrichment
 const about = enrichment?.about || tool.longDescription;
 const normalized = (value: string) =>
   value.trim().toLowerCase().replace(/\s+/g, ' ');
-const answerText = review?.verdict || answerBox;
-const hasAbout = normalized(about) !== normalized(answerText);
+const wordCount = (value: string) => value.trim().split(/\s+/).length;
+const answerText =
+  review?.verdict || (wordCount(about) <= 120 ? about : answerBox);
+const normalizedAnswer = normalized(answerText)
+  .replace(/\s+status:.*$/i, '')
+  .replace(/\.+$/, '');
+const normalizedAbout = normalized(about);
+const answerMatchesAbout =
+  normalizedAbout === normalizedAnswer ||
+  normalizedAbout.startsWith(`${normalizedAnswer} `);
+const hasAbout = !answerMatchesAbout;
 const maintainedBy =
   enrichment?.authorOrCompany &&
   normalized(enrichment.authorOrCompany) !== normalized(tool.vendor)
@@ -192,7 +201,7 @@ const sourceHost = (url: string) => {
     </dl>
     <nav class="jump-list mono" aria-label="On this page">
       <span>JUMP TO</span>
-      <a href="#verdict">Verdict</a>
+      <a href="#verdict">{review ? 'Verdict' : 'Answer'}</a>
       {review && <a href="#ratings">Ratings</a>}
       <a href="#pros-cons">Pros &amp; cons</a>
       {review?.gettingStarted && <a href="#getting-started">Getting started</a>}
@@ -276,34 +285,36 @@ const sourceHost = (url: string) => {
     }
     <div class="detail-grid">
       <article class="detail-copy">
-        <section class="detail-section">
-          <h2>What it is</h2>
-          {hasAbout && <p class="lead">{about}</p>}
-          {
-            enrichment?.features && enrichment.features.length > 0 && (
-              <div class="what-it-is-block">
-                <h3>Features</h3>
-                <ul class="feature-list">
-                  {enrichment.features.map((feature) => (
-                    <li>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            )
-          }
-          {
-            enrichment?.aiFeatures && enrichment.aiFeatures.length > 0 && (
-              <div class="what-it-is-block">
-                <span class="subsection-label mono">AI</span>
-                <ul class="feature-list">
-                  {enrichment.aiFeatures.map((feature) => (
-                    <li>{feature}</li>
-                  ))}
-                </ul>
-              </div>
-            )
-          }
-        </section>
+        {
+          (hasAbout ||
+            Boolean(enrichment?.features?.length) ||
+            Boolean(enrichment?.aiFeatures?.length)) && (
+            <section class="detail-section">
+              <h2>What it is</h2>
+              {hasAbout && <p class="lead">{about}</p>}
+              {enrichment?.features && enrichment.features.length > 0 && (
+                <div class="what-it-is-block">
+                  <h3>Features</h3>
+                  <ul class="feature-list">
+                    {enrichment.features.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {enrichment?.aiFeatures && enrichment.aiFeatures.length > 0 && (
+                <div class="what-it-is-block">
+                  <span class="subsection-label mono">AI</span>
+                  <ul class="feature-list">
+                    {enrichment.aiFeatures.map((feature) => (
+                      <li>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          )
+        }
         {
           review ? (
             <section class="detail-section" id="pros-cons">

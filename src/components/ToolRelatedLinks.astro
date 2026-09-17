@@ -33,7 +33,7 @@ const ecosystem = ecosystemLinksForTool(tool);
 
 <div class="related-sidebar">
   {
-    compares.length > 0 && (
+    (compares.length > 0 || alternativesHref) && (
       <section class="related-block">
         <p class="eyebrow">COMPARE WITH</p>
         <div class="similar-list">
@@ -51,19 +51,6 @@ const ecosystem = ecosystemLinksForTool(tool);
               </small>
             </a>
           ))}
-        </div>
-      </section>
-    )
-  }
-  {
-    compares.length === 0 && alternativesHref && (
-      <section class="related-block">
-        <p class="eyebrow">COMPARE WITH</p>
-        <div class="similar-list">
-          <a class="similar-item panel focus-ring" href={alternativesHref}>
-            <span>{alternativesLabel || 'Alternatives hub'}</span>
-            <small>{alternativesCount ?? 0} alternatives compared</small>
-          </a>
         </div>
       </section>
     )
