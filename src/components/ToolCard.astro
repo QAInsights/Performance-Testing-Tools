@@ -39,7 +39,9 @@ const { tool } = Astro.props as { tool: Tool };
       /><span>+</span></label
     >
   </div>
-  <p>{tool.description}</p><ToolBadges tool={tool} /><LoadProfile tool={tool} />
+  <p>{tool.description}</p><div class="tool-badges">
+    <ToolBadges tool={tool} />
+  </div><LoadProfile tool={tool} />
 </article>
 <style>
   .tool-card {
@@ -57,6 +59,11 @@ const { tool } = Astro.props as { tool: Tool };
   }
   .tool-card .load-profile {
     margin-top: 12px;
+  }
+  .tool-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
   .tool-name {
     display: inline-block;

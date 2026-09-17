@@ -32,7 +32,11 @@ const { tool } = Astro.props as { tool: Tool };
     }</td
   >
   <td class="description-cell">{tool.description}</td>
-  <td><ToolBadges tool={tool} /></td>
+  <td>
+    <div class="tool-badges">
+      <ToolBadges tool={tool} />
+    </div>
+  </td>
   <td><LoadProfile tool={tool} /></td>
   <td
     ><label class="compare-check"
@@ -77,6 +81,11 @@ const { tool } = Astro.props as { tool: Tool };
     font-size: 15px;
     line-height: 1.5;
     max-width: 380px;
+  }
+  .tool-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
   .status-dot {
     display: inline-block;
