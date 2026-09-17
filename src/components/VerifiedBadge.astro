@@ -1,0 +1,51 @@
+---
+import type { Tool } from '../data/tools';
+import { getReview } from '../data/reviews';
+import { siteUrl } from '../lib/urls';
+
+const { tool, size = 'sm' } = Astro.props as {
+  tool: Tool;
+  size?: 'sm' | 'md';
+};
+const review = getReview(tool.slug);
+const iconSize = size === 'md' ? 22 : 16;
+---
+
+{
+  review && (
+    <a
+      href={siteUrl(`reviews/${tool.slug}`)}
+      class:list={['verified-badge', `verified-badge--${size}`]}
+      title={`Curator reviewed · ${review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'} · ${review.reviewedAt}`}
+      aria-label="Curator reviewed"
+    >
+      <svg
+        width={iconSize}
+        height={iconSize}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" fill="var(--color-teal-300)" />
+        <path
+          d="m7.5 12.2 3 3 6-6"
+          fill="none"
+          stroke="var(--color-surface-950)"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.5"
+        />
+      </svg>
+    </a>
+  )
+}
+
+<style>
+  .verified-badge {
+    display: inline-flex;
+    line-height: 0;
+    vertical-align: -0.15em;
+  }
+  .verified-badge svg {
+    flex: 0 0 auto;
+  }
+</style>

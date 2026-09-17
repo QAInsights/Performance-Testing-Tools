@@ -1,6 +1,7 @@
 ---
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import Footer from '../../components/Footer.astro';
+import VerifiedBadge from '../../components/VerifiedBadge.astro';
 import { reviews } from '../../data/reviews';
 import { tools } from '../../data/tools';
 import { siteUrl } from '../../lib/urls';
@@ -54,15 +55,22 @@ const updated = reviews
             review.verdict.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() ||
             review.verdict;
           return (
-            <a class="review-card panel" href={siteUrl(`reviews/${tool.slug}`)}>
+            <article class="review-card panel">
               <span class="review-card-kicker mono">
                 {review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'} ·{' '}
                 {review.reviewedAt}
               </span>
-              <h2>{tool.name} review</h2>
+              <h2>
+                {tool.name} review <VerifiedBadge tool={tool} size="sm" />
+              </h2>
               <p>{summary}</p>
-              <span class="review-card-link mono">READ REVIEW →</span>
-            </a>
+              <a
+                class="review-card-link mono"
+                href={siteUrl(`reviews/${tool.slug}`)}
+              >
+                READ REVIEW →
+              </a>
+            </article>
           );
         })
       }

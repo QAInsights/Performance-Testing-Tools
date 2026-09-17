@@ -2,6 +2,7 @@
 import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
 import LoadProfile from '../../components/LoadProfile.astro';
 import ToolBadges from '../../components/ToolBadges.astro';
+import VerifiedBadge from '../../components/VerifiedBadge.astro';
 import Footer from '../../components/Footer.astro';
 import ToolRelatedLinks from '../../components/ToolRelatedLinks.astro';
 import { datasetLastVerified, tools } from '../../data/tools';
@@ -132,6 +133,7 @@ const reviewSummary =
           }
         </p><h1>
           {tool.name}
+          <VerifiedBadge tool={tool} size="md" />
         </h1><p class="detail-vendor">{tool.vendor}</p><div
           class="detail-badges"
         >

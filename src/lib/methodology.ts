@@ -17,7 +17,7 @@ export const correctionsUrl =
 
 export const methodologyPoints = [
   'Every record starts from the vendor’s own documentation, pricing page and source repository, then keeps the links so any claim can be re-checked.',
-  'Volatile fields — pricing, latest release, feature lists — are refreshed from an evidence-gathering pass and stamped with the date they were verified; the date is printed on every tool page.',
+  'Volatile fields (pricing, latest release, feature lists) are refreshed from an evidence-gathering pass and stamped with the date they were verified; the date is printed on every tool page.',
   'Comparisons and alternatives are generated from the recorded fields, so they say what the catalog can support and nothing more.',
   'Nothing here is a benchmark. There are no numeric scores and no measured throughput numbers; reviewed tools carry qualitative Strong / Adequate / Limited labels with a stated reason, and the load-profile sketches are deterministic drawings from a tool’s attributes, not results.',
   'Reviews are written by the curator, dated, and marked hands-on or desk review; the automated enrichment pass never overwrites review text.',

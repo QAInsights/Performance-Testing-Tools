@@ -1,6 +1,7 @@
 ---
 import type { Tool } from '../data/tools';
 import { getReview } from '../data/reviews';
+import VerifiedBadge from './VerifiedBadge.astro';
 const { tool } = Astro.props as { tool: Tool };
 const reviewed = Boolean(getReview(tool.slug));
 ---
@@ -11,7 +12,8 @@ const reviewed = Boolean(getReview(tool.slug));
 {
   reviewed && (
     <span class="badge badge--reviewed" title="Curator review available">
-      REVIEWED
+      <VerifiedBadge tool={tool} size="sm" />
+      <span>REVIEWED</span>
     </span>
   )
 }
@@ -45,8 +47,11 @@ const reviewed = Boolean(getReview(tool.slug));
     border-color: var(--color-amber-400);
   }
   .badge--reviewed {
-    color: var(--color-amber-400);
-    border-color: var(--color-amber-400);
+    align-items: center;
+    color: var(--color-teal-300);
+    border-color: var(--color-teal-300);
+    display: inline-flex;
+    gap: 4px;
   }
 </style>
 {
