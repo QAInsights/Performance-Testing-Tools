@@ -33,25 +33,32 @@ const rosettePath =
       >
         <defs>
           <linearGradient id={gradientId} x1="9" y1="5" x2="38" y2="44">
-            <stop offset="0" stop-color="#8fe3db" />
-            <stop offset="0.55" stop-color="#18a09b" />
-            <stop offset="1" stop-color="#007f7c" />
+            <stop offset="0" stop-color="#c6f5ef" />
+            <stop offset="0.35" stop-color="#4fd2c7" />
+            <stop offset="0.7" stop-color="#10928d" />
+            <stop offset="1" stop-color="#005e5c" />
           </linearGradient>
+          <radialGradient id={`${gradientId}-sheen`} cx="0.5" cy="0.22" r="0.6">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.55" />
+            <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.12" />
+            <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
         </defs>
         <path d={rosettePath} fill={`url(#${gradientId})`} />
+        <path d={rosettePath} fill={`url(#${gradientId}-sheen)`} />
         <path
           d={rosettePath}
           fill="none"
-          stroke="rgba(255,255,255,.28)"
-          stroke-width="1"
+          stroke="rgba(255,255,255,.45)"
+          stroke-width="0.75"
         />
         <path
           d="M15.5 24.5 21 30l11.5-12"
           fill="none"
-          stroke="#0a1413"
+          stroke="#04302e"
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-width="4"
+          stroke-width="4.5"
         />
       </svg>
     </a>
@@ -69,7 +76,12 @@ const rosettePath =
     vertical-align: middle;
   }
   .verified-seal {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45))
+      drop-shadow(0 0 6px rgba(24, 160, 155, 0.35));
     flex: 0 0 auto;
+    transition: transform 0.18s ease;
+  }
+  .verified-badge:hover .verified-seal {
+    transform: scale(1.12);
   }
 </style>
