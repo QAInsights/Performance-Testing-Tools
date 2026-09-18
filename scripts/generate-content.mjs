@@ -55,7 +55,8 @@ await Promise.all([
   ...ogPngs,
 ]);
 
-execFileSync(resolve(root, 'node_modules/.bin/vite-node'), [
+execFileSync(process.execPath, [
+  resolve(root, 'node_modules/vite-node/vite-node.mjs'),
   resolve(root, 'scripts/generate-llms.mjs'),
 ]);
 
