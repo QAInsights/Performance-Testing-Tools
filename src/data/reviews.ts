@@ -1139,6 +1139,523 @@ export const reviews: ToolReview[] = [
       learningCurve: 'Ten minutes. The whole interface is a handful of flags.',
     },
   },
+  {
+    slug: 'grafana-cloud-k6',
+    reviewedAt: '2026-09-18',
+    handsOn: true,
+    verdict:
+      'Grafana Cloud k6 is what you buy when the open source k6 CLI is already the right tool and the missing piece is scale, history, and dashboards. The same script runs unchanged from many regions, results land next to your application metrics in Grafana, and run comparison and trending are built in. The price is metered on virtual user hours, so long soak tests add up quickly, and you are still limited to the protocols the k6 engine supports.',
+    evidence:
+      'Hands-on review: I ran an existing k6 script through k6 cloud run on the free tier, pushed local results with k6 run -o cloud, and compared runs and thresholds in the Grafana Cloud k6 dashboards.',
+    analysis: [
+      {
+        heading: 'What Grafana Cloud k6 is',
+        paragraphs: [
+          'If you already use k6, you know the story: the CLI is superb for writing and running tests, and thin on everything after the run finishes. Grafana Cloud k6 is the hosted half of that story. It takes the exact same JavaScript or TypeScript script, runs it from Grafana managed load zones or from your own private load generators, and stores every metric in Grafana Cloud where you can chart it, compare it, and alert on it.',
+          'It replaced the older k6 Cloud product after the Grafana acquisition, so if you have bookmarks or CI jobs pointing at app.k6.io, this is where they should point now.',
+        ],
+      },
+      {
+        heading: 'In practice',
+        paragraphs: [
+          'The workflow is the part I like most. Develop locally with k6 run, and when the script is ready switch to k6 cloud run to execute it from the cloud, or keep running locally and add -o cloud to stream the results up. No re-scripting, no import wizard. Thresholds you declared in the script show up as pass or fail in the cloud run, and you can trigger runs from GitHub Actions or GitLab with a token.',
+          'Because the results live in Grafana, the killer feature is correlation: put the load test time series next to your Prometheus, Loki, or Tempo data and you see the database saturating at the same second the p95 climbs. Run comparison, performance insights that flag common anti patterns, and scheduled tests round it out. On the free tier I could run a meaningful smoke test from one region within minutes of creating the stack.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'Pricing is by virtual user hours and by the number of concurrent tests and regions your plan allows. A 100 user, 8 hour soak test is 800 VUH in one go, so budget before you schedule nightly endurance runs. Protocol coverage is whatever k6 supports; xk6 extensions work only with private load generators, not the managed zones. Private load zones themselves need Kubernetes, which is one more thing to operate. And if your organization is not on Grafana already, you are buying into the wider Grafana Cloud stack to get the dashboards.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'This is where the cloud edition differs from the CLI. Grafana Cloud k6 can generate a script from a recording or an OpenAPI spec with AI assistance, and it summarises runs in plain language. Useful for onboarding a team; I still write my thresholds by hand and I suggest you do the same.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: if k6 is your tool and Grafana is your observability stack, Grafana Cloud k6 is the natural upgrade and the correlation story is the reason to pay. If you only need a few local runs in CI, the free CLI is enough; if you are on Datadog or New Relic instead, weigh BlazeMeter or your own Prometheus backend first.',
+    pickWhen: [
+      'Your k6 scripts need multi-region scale without running injectors',
+      'Grafana is already your observability stack and you want load results next to it',
+      'You need run history, comparison, and scheduled tests',
+    ],
+    skipWhen: [
+      'Local k6 runs in CI already answer your questions',
+      'Long soak tests are frequent and virtual user hours will dominate the bill',
+      'You need protocols outside the k6 engine on managed load zones',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Strong',
+        note: 'Same k6 JavaScript and TypeScript scripts; extensions only on private load generators.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Adequate',
+        note: 'HTTP, WebSocket, gRPC, and browser; nothing beyond what k6 supports.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Managed load zones worldwide plus private load generators on Kubernetes.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Strong',
+        note: 'Grafana dashboards, run comparison, insights, and correlation with app metrics.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Strong',
+        note: 'k6 cloud run from any pipeline with a token; thresholds gate the run.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Adequate',
+        note: 'Free tier for small tests; paid plans metered on virtual user hours and concurrency.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'AI-assisted script generation and result summaries in the cloud UI.',
+      },
+    ],
+    pros: [
+      'Zero re-scripting from local k6 to cloud execution',
+      'Results correlate with Prometheus, Loki, and Tempo data in Grafana',
+      'Run comparison, insights, and scheduling built in',
+      'Private load zones keep traffic inside your network',
+    ],
+    cons: [
+      'Virtual user hour pricing punishes long soak tests',
+      'Managed zones cannot use xk6 extensions',
+      'Private load zones require a Kubernetes cluster',
+      'Tied to the wider Grafana Cloud stack',
+    ],
+    gettingStarted: {
+      install: 'brew install k6',
+      firstRun: 'k6 cloud login --token <token> && k6 cloud run script.js',
+      learningCurve:
+        'Minutes if you already know k6; the cloud UI adds a few concepts such as load zones and projects.',
+    },
+  },
+  {
+    slug: 'azure-load-testing',
+    reviewedAt: '2026-09-18',
+    handsOn: true,
+    verdict:
+      'Azure Load Testing is the easiest way to run JMeter or Locust at scale if your workloads already live in Azure. You upload a JMX or a locustfile, pick engine instances and regions, and the service correlates client metrics with Azure Monitor data from the app under test. It is billed on consumption with a free monthly quota, and it plugs into Azure DevOps and GitHub Actions natively. Outside Azure it loses most of its appeal.',
+    evidence:
+      'Hands-on review: I created a load testing resource in a personal Azure subscription, uploaded an existing JMeter plan and a Locust script, ran both across two engine instances, and wired a test into a GitHub Actions workflow with failure criteria.',
+    analysis: [
+      {
+        heading: 'What Azure Load Testing is',
+        paragraphs: [
+          'Azure Load Testing is a managed service inside the Azure portal. It does not invent a new scripting language; it runs Apache JMeter and Locust for you. You create a load testing resource, upload your JMX or locustfile along with CSV data and plugins, choose how many engine instances to run and from which regions, and press start. Azure handles the injectors, collects the results, and keeps the history.',
+          'For JMeter people this is important: the plan you built and tuned locally is the plan that runs in the cloud, plugins included. There is also a URL based quick test that generates a simple JMeter plan when you just want to hit a couple of endpoints.',
+        ],
+      },
+      {
+        heading: 'In practice',
+        paragraphs: [
+          'The setup took me under fifteen minutes from resource creation to first run. Each engine instance is sized for roughly 250 JMeter threads, and you multiply instances to scale. What sets the service apart is the server side view: you add your App Service, Azure SQL, or AKS resources as monitored components and the run report shows their CPU, connections, and request metrics on the same timeline as your response times. That is the correlation I usually have to build by hand with Grafana.',
+          'CI integration is native. The Azure DevOps task and the GitHub Action take a YAML config with pass or fail criteria such as p95 response time greater than 500 ms fails the build, and the run link lands in the pipeline summary. Secrets come from Key Vault and the tests can run against private endpoints through a VNet injected engine.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'It is an Azure product for Azure workloads. You can point it at any public endpoint, but the monitoring correlation only works for Azure resources, and the identity and networking model assumes you live there. Only JMeter and Locust are supported; no k6, Gatling, or Playwright browser tests. The results UI is functional rather than deep, and for heavy analysis you export the JTL or CSV and use JMeter or Grafana. Cost is per virtual user hour after the free 50 VUH a month, and engine instances are billed while they run, so keep an eye on long tests. Some regions are still missing.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'Microsoft is adding Copilot into the Azure portal broadly, but Azure Load Testing itself has no AI-assisted scripting or analysis today. Treat this as a solid but conventional managed runner.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: if your application runs on Azure and your team already has JMeter or Locust scripts, Azure Load Testing is the shortest path to scaled, correlated, pipeline gated load tests. If you are multi-cloud or need k6 and Gatling, pick a vendor neutral runner instead.',
+    pickWhen: [
+      'Your application and pipelines already run on Azure',
+      'You have JMeter or Locust scripts and need distributed runs without injectors',
+      'Correlating client metrics with Azure Monitor data matters to you',
+    ],
+    skipWhen: [
+      'Your workloads are outside Azure or spread across clouds',
+      'You need k6, Gatling, or browser based load tests',
+      'Deep results analysis in the UI is a requirement',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Adequate',
+        note: 'Runs your JMeter plans and Locust scripts with plugins; no other engines.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Adequate',
+        note: 'Whatever JMeter and Locust cover, including JDBC and JMS with plugins.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Engine instances multiply out across Azure regions and VNets.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Adequate',
+        note: 'Client and server metrics on one timeline; export for deeper analysis.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Strong',
+        note: 'Native Azure DevOps task and GitHub Action with pass or fail criteria.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Adequate',
+        note: 'Consumption based with 50 free VUH a month; engine time adds up on long runs.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No AI-assisted scripting or analysis in the service itself.',
+      },
+    ],
+    pros: [
+      'Runs existing JMeter and Locust scripts unchanged, plugins included',
+      'Server metrics from Azure resources on the same timeline as client results',
+      'Native Azure DevOps and GitHub Actions integration',
+      'VNet injection reaches private endpoints',
+    ],
+    cons: [
+      'Monitoring correlation only works for Azure resources',
+      'JMeter and Locust only; no k6 or Gatling',
+      'Results UI is shallow for deep analysis',
+      'Not available in every Azure region',
+    ],
+    gettingStarted: {
+      firstRun:
+        'Create an Azure Load Testing resource, upload a JMX, choose engine instances, run.',
+      learningCurve:
+        'Under an hour if you already have a JMeter plan; the Azure identity and networking model takes longer.',
+    },
+  },
+  {
+    slug: 'octoperf',
+    reviewedAt: '2026-09-18',
+    handsOn: false,
+    verdict:
+      'OctoPerf is the JMeter platform for teams that like JMeter but not its GUI. You import an existing JMX or design the test in the browser, run it from cloud regions or your own on-premises agents, and analyse results in dashboards that are far better than the stock JMeter report. Because the engine is plain JMeter you keep the plugins and protocol coverage. It is a commercial product with quote based pricing, and the design UI has its own learning curve.',
+    evidence:
+      'Desk review: based on current OctoPerf documentation and pricing pages plus my earlier coverage of the platform and its Kraken IDE on QAInsights. I did not run a fresh test on the platform for this review.',
+    analysis: [
+      {
+        heading: 'What OctoPerf is',
+        paragraphs: [
+          'I first wrote about OctoPerf years ago and the pitch has stayed consistent: keep Apache JMeter as the engine, replace everything around it. OctoPerf is a SaaS and on-premises platform where you design tests visually in the browser, import and export JMX files, run them from cloud load generators or agents inside your own network, and read the results in proper dashboards. The team also maintains a lot of open source JMeter plugins, which tells you where their heart is.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          'The designer is the most complete JMeter compatible UI I have seen outside JMeter itself. Record with the browser extension or import a JMX, then correlate, parameterise, and shape user journeys as virtual users with distinct arrival profiles. Because everything maps back to JMeter elements, the plan you export still opens in JMeter, and JDBC, JMS, and plugin samplers keep working.',
+          'Execution is where the platform earns its subscription: pick regions, set virtual users per region, and OctoPerf provisions and tears down the injectors. On-premises agents handle intranet targets. Reporting includes live dashboards, per-transaction breakdowns, comparison between runs, and shareable reports; a JMeter user will feel the difference immediately. A Maven plugin and a REST API cover CI, and the Kraken project brought Gatling into the same idea.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'The free tier is small and paid plans are quote based per virtual user and concurrency, so budgeting needs a conversation. The visual designer is powerful, but if your team lives in code it is another abstraction to learn on top of JMeter concepts. You are still bound by JMeter behaviour such as memory per thread, so very high concurrency means more injectors than a k6 based service would need. Community size is modest next to BlazeMeter, and documentation, while good, is mostly first party.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'OctoPerf has not made AI a headline feature; there is no AI-assisted script generation or analysis I could find in the current documentation. If that matters, BlazeMeter is ahead here.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: OctoPerf is a strong pick for JMeter shops that want visual design, hybrid execution, and reporting without leaving the JMeter ecosystem. If your team prefers code first tools or wants AI assistance, look at Grafana Cloud k6 or BlazeMeter instead.',
+    pickWhen: [
+      'Your team is invested in JMeter but wants a better design and reporting experience',
+      'You need cloud and on-premises execution from the same platform',
+      'Stakeholders need comparison reports and dashboards, not JTL files',
+    ],
+    skipWhen: [
+      'Your tests are code first in k6, Gatling, or Locust',
+      'You need AI-assisted test creation or analysis',
+      'Free or self-hosted open source is a hard requirement',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Adequate',
+        note: 'Visual designer plus full JMX import and export; Groovy and JMeter plugins work.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Strong',
+        note: 'Everything JMeter and its plugins cover, including JDBC and JMS.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Cloud regions and on-premises agents provisioned by the platform.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Strong',
+        note: 'Live dashboards, run comparison, and shareable reports.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'Maven plugin, Jenkins plugin, and REST API.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Adequate',
+        note: 'Small free tier; paid plans are quote based on virtual users.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No AI-assisted authoring or analysis advertised.',
+      },
+    ],
+    pros: [
+      'Full JMeter compatibility with JMX import and export',
+      'Visual designer with recording and correlation',
+      'Cloud and on-premises load generators from one console',
+      'Reporting far ahead of the stock JMeter dashboard',
+    ],
+    cons: [
+      'Quote based pricing with a small free tier',
+      'Designer adds a learning curve on top of JMeter concepts',
+      'Inherits JMeter resource usage per virtual user',
+      'No AI features',
+    ],
+    gettingStarted: {
+      firstRun:
+        'Sign up, import a JMX or record with the browser extension, pick a region, run.',
+      learningCurve:
+        'A day to be productive if you know JMeter; longer to master the virtual user designer.',
+    },
+  },
+  {
+    slug: 'vegeta',
+    reviewedAt: '2026-09-18',
+    handsOn: true,
+    verdict:
+      'Vegeta is the constant rate HTTP load tool I reach for when the question is how does this service behave at exactly N requests per second. It is a single Go binary, reads targets from a file or stdin, holds the rate regardless of how slow the server gets, and pipes results into text, JSON, or histogram reports. Use it as a Go library when you need more. It is not for user journeys, and HTTP is the only protocol.',
+    evidence:
+      'Hands-on review: I installed the current Vegeta release, attacked local and public HTTP endpoints at fixed rates from a targets file, and compared its open-loop behaviour and reports with wrk and hey.',
+    analysis: [
+      {
+        heading: 'What Vegeta is',
+        paragraphs: [
+          'Most micro-benchmark tools hold N connections open and hammer as fast as the server answers, which means a slow server gets less load. Vegeta does the opposite. You tell it a rate, say 500 requests per second for 60 seconds, and it sends exactly that whether the server responds in 5 ms or 5 seconds. That open-loop model is how real traffic arrives, and it is what you want when you are measuring capacity rather than raw throughput.',
+          'It is written in Go, ships as one binary, and is also importable as a library, so you can embed the attack and reporting logic into your own tooling.',
+        ],
+      },
+      {
+        heading: 'In practice',
+        paragraphs: [
+          'Everything is a pipe. echo GET https://example.com/ | vegeta attack -rate=100 -duration=30s | vegeta report gives you latency percentiles, success ratio, and bytes in and out. Swap report for encode to get JSON, plot to get an HTML latency chart, or report -type=hist to bucket latencies. Targets files support headers and bodies per request, so authenticated APIs and POST payloads are fine. I like running two attacks against two builds and diffing the JSON in CI.',
+          'Because it does not wait for responses before sending the next request, Vegeta surfaces queueing and tail latency problems that closed-loop tools hide. When a service falls over at 800 requests per second, you see the exact rate where the p99 goes vertical.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'Vegeta has no scenarios. Every request in the targets file is independent; there is no correlation, no extracting a token from one response to use in the next, no think time, no ramp profile beyond running several attacks in sequence. It speaks HTTP and HTTP/2 only. There is a distributed mode using multiple machines and merging results, but you orchestrate it yourself with pdsh or similar. Reports are for engineers, not stakeholders. And the maintainer community is small, so releases are infrequent.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'None, and nothing is planned as far as I can see. It is a focused CLI and a library, and that is fine.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: when you need to know how a single HTTP service behaves at a precise request rate, Vegeta is the most honest tool in this catalog. For user flows, ramps, and shareable reports, use k6 or JMeter and keep Vegeta for capacity checks.',
+    pickWhen: [
+      'You need a fixed request rate regardless of server response time',
+      'Capacity planning for a single HTTP or HTTP/2 service',
+      'You want to embed load generation in your own Go tooling',
+    ],
+    skipWhen: [
+      'Tests need correlation, think time, or multi-step journeys',
+      'Non-HTTP protocols are involved',
+      'Stakeholders need dashboards and trend reports',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Adequate',
+        note: 'Targets files plus a Go library API; no scenario scripting.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Limited',
+        note: 'HTTP/1.1 and HTTP/2 only.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Adequate',
+        note: 'Very efficient per box; multi-machine runs are manual with result merging.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Adequate',
+        note: 'Text, JSON, histogram, and HTML plot outputs; no dashboards.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Strong',
+        note: 'Pipe friendly, JSON output, and exit codes make it trivial to gate.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Strong',
+        note: 'MIT licensed, free.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'None by design.',
+      },
+    ],
+    pros: [
+      'Constant rate, open-loop load that mirrors real traffic',
+      'One static Go binary and a library API',
+      'JSON and histogram reports pipe into any tooling',
+      'Reveals tail latency that closed-loop tools hide',
+    ],
+    cons: [
+      'No correlation, think time, or user journeys',
+      'HTTP only',
+      'Distribution is do it yourself',
+      'Infrequent releases',
+    ],
+    gettingStarted: {
+      install: 'brew install vegeta',
+      firstRun:
+        "echo 'GET https://example.com/' | vegeta attack -rate=50 -duration=30s | vegeta report",
+      learningCurve: 'Minutes; the man page is the whole manual.',
+    },
+  },
+  {
+    slug: 'loadrunner-enterprise',
+    reviewedAt: '2026-09-18',
+    handsOn: false,
+    verdict:
+      'LoadRunner Enterprise is the centre of excellence edition of LoadRunner: a shared, web based platform where many teams schedule tests, reserve load generators, and keep results and trends in one place. You get the full VuGen protocol list, project and role management, and integrations for Jenkins, Azure DevOps, and Git. It is priced for large enterprises and needs real infrastructure to run, so it makes sense only when several teams share the performance function.',
+    evidence:
+      'Desk review: based on current OpenText documentation, release notes, and years of working with Performance Center and LoadRunner Enterprise deployments in enterprise programmes. I did not operate a current installation for this review.',
+    analysis: [
+      {
+        heading: 'What LoadRunner Enterprise is',
+        paragraphs: [
+          'Many of us knew this product as Performance Center. LoadRunner Enterprise is the multi-user, server based sibling of LoadRunner Professional. Scripts are still written in VuGen with the same protocol coverage, but scenarios, load generators, timeslots, and results live on a central server accessed through a browser. Teams reserve capacity, run tests in parallel, and managers see utilisation and trends across every project.',
+          'That model exists for one reason: when an organisation has dozens of applications and a shared performance team, you need governance as much as you need load.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          'The protocol list is the LoadRunner list, which is still unmatched: web and TruClient, SAP GUI and SAP Web, Citrix, Oracle NCA, RDP, .NET, Java, and more. Load generators can be on-premises, in the cloud, or provisioned on demand from Docker images. Timeslot reservation prevents two teams fighting over the same injectors, and the licence pool of virtual users is shared rather than locked to a desk.',
+          'Trend reports across runs, SLA definitions, and online monitoring of servers are built in, and the REST API plus Jenkins and Azure DevOps plugins let a pipeline trigger a scheduled test. Git integration for scripts and support for JMeter and Gatling scripts alongside VuGen mean the platform can host the tests your teams already have.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'Everything about it is heavyweight. You need servers for the LoadRunner Enterprise server, hosts, and database, plus Windows in most of the stack, and a team to administer it. Licensing is quote based and expensive, and upgrades are projects rather than package updates. Scripting is still C for most protocols, and developers used to k6 or Gatling will find the workflow slow. If you are a single team, LoadRunner Professional or LoadRunner Cloud delivers the same protocols with far less overhead.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'OpenText is bringing its Aviator assistant to the LoadRunner family for script generation, correlation help, and results analysis. It is arriving incrementally and depends on your version and licensing, so I rate it Adequate for now.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: choose LoadRunner Enterprise when a central performance team serves many applications, needs SAP or Citrix protocols, and must govern licences and load generators across projects. For a single team or a modern web stack, it is more platform than you need.',
+    pickWhen: [
+      'A shared performance team serves many applications and needs scheduling and governance',
+      'Enterprise protocols such as SAP GUI, Citrix, or Oracle NCA are in scope',
+      'You need trend reporting and SLA tracking across projects',
+    ],
+    skipWhen: [
+      'A single team owns the tests; Professional or Cloud is lighter',
+      'Your targets are plain HTTP or gRPC APIs owned by developers',
+      'You cannot dedicate infrastructure and an administrator to the platform',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Adequate',
+        note: 'VuGen in C and JavaScript, TruClient, plus hosting JMeter and Gatling scripts.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Strong',
+        note: 'The full LoadRunner protocol list including SAP, Citrix, and Oracle.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Shared load generator pools on-premises, cloud, or Docker with reservations.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Strong',
+        note: 'Cross-project trends, SLAs, and the Analysis module.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'REST API and Jenkins and Azure DevOps plugins wrap a GUI first platform.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Limited',
+        note: 'Quote based enterprise licensing plus servers to run it.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'Aviator assistant arriving across the LoadRunner family.',
+      },
+    ],
+    pros: [
+      'Unmatched enterprise protocol coverage',
+      'Central scheduling, reservations, and shared licence pools',
+      'Trend and SLA reporting across projects',
+      'Hosts JMeter and Gatling scripts next to VuGen',
+    ],
+    cons: [
+      'Expensive, quote based licensing',
+      'Significant infrastructure and administration',
+      'C based scripting feels dated for web APIs',
+      'Overkill for a single team',
+    ],
+    gettingStarted: {
+      learningCurve:
+        'Weeks for administrators; scripters productive in days if they know VuGen.',
+    },
+  },
 ];
 
 export const reviewBySlug = new Map(reviews.map((r) => [r.slug, r]));
