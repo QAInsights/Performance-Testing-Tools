@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import process from 'node:process';
 import sharp from 'sharp';
 import { brandMark } from './brand-mark.mjs';
 import { buildWebManifest } from './llms-content.mjs';
@@ -55,7 +56,8 @@ await Promise.all([
   ...ogPngs,
 ]);
 
-execFileSync(resolve(root, 'node_modules/.bin/vite-node'), [
+execFileSync(process.execPath, [
+  resolve(root, 'node_modules/vite-node/vite-node.mjs'),
   resolve(root, 'scripts/generate-llms.mjs'),
 ]);
 
