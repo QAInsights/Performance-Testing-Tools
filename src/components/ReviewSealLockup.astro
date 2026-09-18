@@ -1,0 +1,80 @@
+---
+import type { Tool } from '../data/tools';
+import { getReview } from '../data/reviews';
+import { siteUrl } from '../lib/urls';
+
+const { tool } = Astro.props as { tool: Tool };
+const review = getReview(tool.slug);
+const gradientId = `lockup-seal-${tool.slug}`;
+const rosettePath =
+  'M24 2.5l4.2 3.1 5.1-1.2 2.6 4.6 5 1.6.4 5.2 3.9 3.5-2.1 4.8 2.1 4.8-3.9 3.5-.4 5.2-5 1.6-2.6 4.6-5.1-1.2L24 45.5l-4.2-3.1-5.1 1.2-2.6-4.6-5-1.6-.4-5.2-3.9-3.5 2.1-4.8-2.1-4.8 3.9-3.5.4-5.2 5-1.6 2.6-4.6 5.1 1.2z';
+---
+
+{
+  review && (
+    <a
+      class="seal-lockup"
+      href={siteUrl('about#methodology')}
+      aria-label="Read the review methodology"
+    >
+      <span class="seal-lockup-icon">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+          <defs>
+            <linearGradient id={gradientId} x1="9" y1="5" x2="38" y2="44">
+              <stop offset="0" stop-color="#8fe3db" />
+              <stop offset="0.55" stop-color="#18a09b" />
+              <stop offset="1" stop-color="#007f7c" />
+            </linearGradient>
+          </defs>
+          <path d={rosettePath} fill={`url(#${gradientId})`} />
+          <path
+            d={rosettePath}
+            fill="none"
+            stroke="rgba(255,255,255,.28)"
+            stroke-width="1"
+          />
+          <path
+            d="M15.5 24.5 21 30l11.5-12"
+            fill="none"
+            stroke="#0a1413"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="4"
+          />
+        </svg>
+      </span>
+      Curator verified · {review.handsOn ? 'Hands-on' : 'Desk review'}
+    </a>
+  )
+}
+
+<style>
+  .seal-lockup {
+    align-items: center;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-teal-950) 55%, transparent),
+      color-mix(in srgb, var(--color-surface-900) 60%, transparent)
+    );
+    border: 1px solid color-mix(in srgb, var(--color-teal-300) 45%, transparent);
+    color: var(--color-teal-300);
+    display: inline-flex;
+    font: 500 12px var(--font-mono);
+    gap: 8px;
+    letter-spacing: 0.06em;
+    padding: 5px 10px 5px 6px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .seal-lockup:hover {
+    border-color: var(--color-teal-300);
+  }
+  .seal-lockup-icon {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+  }
+  .seal-lockup-icon svg {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  }
+</style>

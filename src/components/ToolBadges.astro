@@ -20,14 +20,20 @@ const reviewed = Boolean(getReview(tool.slug));
 {
   tool.personalPick && (
     <span class="badge badge--amber" title="Personal pick">
-      ♥ personal pick
+      <svg class="pick-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 20.5S4.5 15.9 4.5 10.5A4.3 4.3 0 0 1 12 8a4.3 4.3 0 0 1 7.5 2.5c0 5.4-7.5 10-7.5 10Z" />
+      </svg>
+      personal pick
     </span>
   )
 }
 {
   tool.generalPick && (
     <span class="badge badge--cyan" title="General pick">
-      ✓ general pick
+      <svg class="pick-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m5 12 4.5 4.5L19 7" />
+      </svg>
+      general pick
     </span>
   )
 }
@@ -64,5 +70,14 @@ const reviewed = Boolean(getReview(tool.slug));
   .badge--reviewed :global(svg) {
     width: 12px;
     height: 12px;
+  }
+  .pick-icon {
+    fill: none;
+    height: 12px;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 12px;
   }
 </style>

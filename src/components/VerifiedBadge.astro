@@ -3,12 +3,17 @@ import type { Tool } from '../data/tools';
 import { getReview } from '../data/reviews';
 import { siteUrl } from '../lib/urls';
 
+let badgeInstance = 0;
+
 const { tool, size = 'sm' } = Astro.props as {
   tool: Tool;
   size?: 'sm' | 'md' | 'lg';
 };
 const review = getReview(tool.slug);
-const iconSize = size === 'lg' ? 36 : size === 'md' ? 22 : 16;
+const iconSize = size === 'lg' ? 40 : size === 'md' ? 22 : 16;
+const gradientId = `verified-seal-${tool.slug}-${size}-${badgeInstance++}`;
+const rosettePath =
+  'M24 2.5l4.2 3.1 5.1-1.2 2.6 4.6 5 1.6.4 5.2 3.9 3.5-2.1 4.8 2.1 4.8-3.9 3.5-.4 5.2-5 1.6-2.6 4.6-5.1-1.2L24 45.5l-4.2-3.1-5.1 1.2-2.6-4.6-5-1.6-.4-5.2-3.9-3.5 2.1-4.8-2.1-4.8 3.9-3.5.4-5.2 5-1.6 2.6-4.6 5.1 1.2z';
 ---
 
 {
@@ -20,19 +25,33 @@ const iconSize = size === 'lg' ? 36 : size === 'md' ? 22 : 16;
       aria-label="Curator reviewed"
     >
       <svg
+        class="verified-seal"
         width={iconSize}
         height={iconSize}
-        viewBox="0 0 24 24"
+        viewBox="0 0 48 48"
         aria-hidden="true"
       >
-        <circle cx="12" cy="12" r="10" fill="var(--color-teal-300)" />
+        <defs>
+          <linearGradient id={gradientId} x1="9" y1="5" x2="38" y2="44">
+            <stop offset="0" stop-color="#8fe3db" />
+            <stop offset="0.55" stop-color="#18a09b" />
+            <stop offset="1" stop-color="#007f7c" />
+          </linearGradient>
+        </defs>
+        <path d={rosettePath} fill={`url(#${gradientId})`} />
         <path
-          d="m7.5 12.2 3 3 6-6"
+          d={rosettePath}
           fill="none"
-          stroke="var(--color-surface-950)"
+          stroke="rgba(255,255,255,.28)"
+          stroke-width="1"
+        />
+        <path
+          d="M15.5 24.5 21 30l11.5-12"
+          fill="none"
+          stroke="#0a1413"
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-width="2.5"
+          stroke-width="4"
         />
       </svg>
     </a>
@@ -49,7 +68,8 @@ const iconSize = size === 'lg' ? 36 : size === 'md' ? 22 : 16;
     margin-left: 0.15em;
     vertical-align: middle;
   }
-  .verified-badge svg {
+  .verified-seal {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
     flex: 0 0 auto;
   }
 </style>
