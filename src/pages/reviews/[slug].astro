@@ -1,0 +1,900 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import ToolBadges from '../../components/ToolBadges.astro';
+import VerifiedBadge from '../../components/VerifiedBadge.astro';
+import ReviewSealLockup from '../../components/ReviewSealLockup.astro';
+import Footer from '../../components/Footer.astro';
+import { reviews } from '../../data/reviews';
+import { tools } from '../../data/tools';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import {
+  breadcrumbs,
+  toolFaq,
+  toolReview,
+  toolSoftwareApplication,
+} from '../../lib/seo';
+import { buildReviewFaq } from '../../lib/reviewFaq';
+import { reviewDescription, reviewTitle } from '../../lib/pageMeta';
+import { correctionsUrl, curatorPerson } from '../../lib/methodology';
+import {
+  alternativesForHub,
+  alternativesHubForTool,
+} from '../../lib/comparisonContent';
+import { hubPeers } from '../../lib/derivedComparisons';
+import { compareWithLinks } from '../../lib/toolRelations';
+import '../../styles/editorial.css';
+import '../../styles/review.css';
+
+export function getStaticPaths() {
+  return reviews.map((review) => {
+    const tool = tools.find((item) => item.slug === review.slug);
+    if (!tool) throw new Error(`Review has no catalog tool: ${review.slug}`);
+    return {
+      params: { slug: review.slug },
+      props: { tool, review },
+    };
+  });
+}
+
+const { tool, review } = Astro.props;
+const faqItems = buildReviewFaq(tool, review);
+const reviewUrl = absoluteUrl(`reviews/${tool.slug}`);
+const compareLinks = compareWithLinks(tool, tools);
+const alternativesHub = alternativesHubForTool(tool.slug, tools);
+const alternativesCount = alternativesHub
+  ? alternativesHub.tier === 'B'
+    ? hubPeers(tool, tools).length
+    : alternativesForHub(alternativesHub, tools).length
+  : 0;
+const firstSentence = (value: string) =>
+  value.match(/^.*?[.!?](?:\s|$)/)?.[0].trim() || value.trim();
+const shortVersion = firstSentence(review.verdict);
+const shortVersionDetails = review.verdict.slice(shortVersion.length).trim();
+const dimensionsByLevel = {
+  Strong: review.ratings
+    .filter((rating) => rating.level === 'Strong')
+    .map((rating) => rating.dimension),
+  Adequate: review.ratings
+    .filter((rating) => rating.level === 'Adequate')
+    .map((rating) => rating.dimension),
+  Limited: review.ratings
+    .filter((rating) => rating.level === 'Limited')
+    .map((rating) => rating.dimension),
+};
+const initials = curatorPerson.name
+  .split(/\s+/)
+  .filter(Boolean)
+  .map((part) => part[0])
+  .slice(0, 2)
+  .join('')
+  .toUpperCase();
+const monthNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+const reviewedDateValue = new Date(`${review.reviewedAt}T00:00:00Z`);
+const reviewedDate = `${reviewedDateValue.getUTCDate()} ${
+  monthNames[reviewedDateValue.getUTCMonth()]
+} ${reviewedDateValue.getUTCFullYear()}`;
+const tickerFacts = [
+  ['License', tool.license],
+  ['Pricing', tool.pricingModel],
+  ['Deployment', tool.deployment],
+  ['Scripting / languages', tool.scriptingLanguages.join(', ')],
+  ['First release', tool.firstReleased?.toString() || ''],
+] as const;
+const factSheet = [
+  ['License', tool.license],
+  ['Pricing', tool.pricingModel],
+  ['Deployment', tool.deployment],
+  ['Protocols', tool.protocols.join(', ')],
+  ['Languages', tool.scriptingLanguages.join(', ')],
+  ['Operating systems', tool.osSupport.join(', ')],
+  ['First released', tool.firstReleased?.toString() || ''],
+  ['Status', tool.status],
+].filter(([, value]) => value) as [string, string][];
+const moreReviews = reviews
+  .filter((item) => item.slug !== review.slug)
+  .flatMap((item) => {
+    const reviewedTool = tools.find(
+      (candidate) => candidate.slug === item.slug,
+    );
+    return reviewedTool ? [{ review: item, tool: reviewedTool }] : [];
+  })
+  .slice(0, 3);
+---
+
+<ConsoleLayout
+  title={reviewTitle(tool)}
+  description={reviewDescription(review)}
+  ogType="article"
+  markdownHref={siteUrl(`reviews/${tool.slug}.md`)}
+  canonical={reviewUrl}
+  structuredData={[
+    toolSoftwareApplication(tool),
+    toolReview(tool, review, reviewUrl),
+    toolFaq(tool, tools, faqItems),
+    breadcrumbs([
+      { name: 'Home', path: '' },
+      { name: 'Reviews', path: 'reviews' },
+      { name: `${tool.name} review`, path: `reviews/${tool.slug}` },
+    ]),
+  ]}
+>
+  <main class="review-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Home</a><span>/</span><a href={siteUrl('reviews')}
+        >Reviews</a
+      ><span>/</span><strong>{tool.name} review</strong>
+    </nav>
+
+    <section class="review-hero panel">
+      <div class="review-hero-columns">
+        <div class="review-hero-id">
+          <h1>
+            {tool.name}
+            <span class="review-title-word">review</span>
+            <VerifiedBadge tool={tool} size="lg" />
+          </h1>
+          <ReviewSealLockup tool={tool} />
+          <div class="review-byline">
+            <span class="review-avatar">{initials}</span>
+            <div>
+              <div class="review-byline-name">
+                Reviewed by <a href={curatorPerson.url}>{curatorPerson.name}</a>
+              </div>
+              <div class="review-byline-meta mono">
+                QAInsights · Updated {reviewedDate}
+              </div>
+            </div>
+          </div>
+          <div class="detail-badges"><ToolBadges tool={tool} /></div>
+        </div>
+
+        <div class="review-short">
+          <h2>The short version</h2>
+          <p class="review-short-lede">{shortVersion}</p>
+          <p>{shortVersionDetails}</p>
+          <dl class="review-short-facts">
+            {
+              (['Strong', 'Adequate', 'Limited'] as const).map((level) => {
+                const dimensions = dimensionsByLevel[level];
+                return dimensions.length > 0 ? (
+                  <div>
+                    <dt>{level}</dt>
+                    <dd>{dimensions.join(', ')}</dd>
+                  </div>
+                ) : null;
+              })
+            }
+            <div>
+              <dt>Best for</dt>
+              <dd>{review.pickWhen[0]}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+      <dl class="review-ticker">
+        {
+          tickerFacts
+            .filter(([, value]) => value)
+            .map(([label, value]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))
+        }
+      </dl>
+    </section>
+
+    <nav class="review-jump mono" aria-label="On this page">
+      <span>JUMP TO</span>
+      <a href="#full-verdict">Full verdict</a>
+      <a href="#scorecard">Scorecard</a>
+      <a href="#pros-cons">Pros &amp; cons</a>
+      <a href="#who-its-for">Who it's for</a>
+      {review.gettingStarted && <a href="#getting-started">Getting started</a>}
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="review-columns">
+      <div class="review-main">
+        <section class="review-card panel" id="full-verdict">
+          <div class="review-section-heading">
+            <h2>{tool.name} review: the full verdict</h2>
+            <span class="review-tag mono">
+              {review.handsOn ? 'Hands-on' : 'Desk review'}
+            </span>
+          </div>
+          <div class="review-prose">
+            {
+              review.analysis.map((section) => (
+                <>
+                  <h3>{section.heading}</h3>
+                  {section.paragraphs.map((paragraph) => (
+                    <p>{paragraph}</p>
+                  ))}
+                </>
+              ))
+            }
+            <p class="review-bottom-line">{review.bottomLine}</p>
+          </div>
+        </section>
+
+        <section class="review-card panel" id="scorecard">
+          <div class="review-section-heading">
+            <h2>Scorecard</h2>
+            <span class="review-tag mono">
+              Qualitative, {review.ratings.length} dimensions
+            </span>
+          </div>
+          <p class="review-section-lead">
+            Strong, Adequate, or Limited on each dimension. No numeric scores
+            and no averaging, because a Limited rating on the one dimension you
+            depend on outweighs any total.
+          </p>
+          <div class="review-score-list">
+            {
+              review.ratings.map((rating) => (
+                <div class="review-score-row">
+                  <span class="review-score-dimension">{rating.dimension}</span>
+                  <span
+                    class:list={[
+                      'review-meter',
+                      `review-meter--${rating.level.toLowerCase()}`,
+                    ]}
+                    aria-label={rating.level}
+                  >
+                    <i class="review-meter-segment" />
+                    <i class="review-meter-segment" />
+                    <i class="review-meter-segment" />
+                    <b class="review-meter-label">
+                      {rating.level.toUpperCase()}
+                    </b>
+                  </span>
+                  <span class="review-score-note">{rating.note}</span>
+                </div>
+              ))
+            }
+          </div>
+          <p class="review-score-legend mono">
+            How we rate:
+            <a href={siteUrl('about#methodology')}>methodology</a>. Ratings are
+            refreshed with each hands-on pass, not on a fixed schedule.
+          </p>
+        </section>
+
+        <section class="review-card panel" id="pros-cons">
+          <h2>Pros &amp; cons</h2>
+          <p class="review-section-lead">
+            What stood out during testing, and what got in the way.
+          </p>
+          <div class="review-pros-cons">
+            <div class="review-pros">
+              <h3>
+                <svg
+                  class="review-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 5v14M5 12h14"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"></path>
+                </svg>
+                Pros
+              </h3>
+              <ul>
+                {
+                  review.pros.map((item) => (
+                    <li>
+                      <svg
+                        class="review-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M12 5v14M5 12h14"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        />
+                      </svg>
+                      <span>{item}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            <div class="review-cons">
+              <h3>
+                <svg
+                  class="review-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M5 12h14"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"></path>
+                </svg>
+                Cons
+              </h3>
+              <ul>
+                {
+                  review.cons.map((item) => (
+                    <li>
+                      <svg
+                        class="review-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 12h14"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                        />
+                      </svg>
+                      <span>{item}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="review-card panel" id="who-its-for">
+          <h2>Who it's for</h2>
+          <p class="review-section-lead">
+            A ten-second answer for teams shortlisting tools.
+          </p>
+          <div class="review-who-grid">
+            <div class="review-pick">
+              <h3>
+                <svg
+                  class="review-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m5 12 4.5 4.5L19 7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"></path>
+                </svg>
+                Pick {tool.name} when
+              </h3>
+              <ul>
+                {review.pickWhen.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+            <div class="review-skip">
+              <h3>
+                <svg
+                  class="review-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m6 6 12 12M18 6 6 18"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"></path>
+                </svg>
+                Skip {tool.name} when
+              </h3>
+              <ul>
+                {review.skipWhen.map((item) => <li>{item}</li>)}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {
+          review.gettingStarted && (
+            <section class="review-card panel" id="getting-started">
+              <div class="review-section-heading">
+                <h2>Getting started</h2>
+                <span class="review-tag mono">Minutes to first script</span>
+              </div>
+              <div class="review-terminal">
+                {review.gettingStarted.install && (
+                  <div>
+                    <span>$ </span>
+                    {review.gettingStarted.install}
+                  </div>
+                )}
+                {review.gettingStarted.firstRun && (
+                  <div>
+                    <span>$ </span>
+                    {review.gettingStarted.firstRun}
+                  </div>
+                )}
+              </div>
+              <p class="review-section-lead review-getting-started-copy">
+                {review.gettingStarted.learningCurve}
+              </p>
+            </section>
+          )
+        }
+
+        <section class="review-card panel" id="faq">
+          <div class="review-section-heading">
+            <h2>Review FAQ</h2>
+            <span class="review-tag mono">Answer-shaped</span>
+          </div>
+          <div class="review-faq-list">
+            {
+              faqItems.map((item, index) => (
+                <details open={index < 2}>
+                  <summary>
+                    <strong>{item.question}</strong>
+                  </summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))
+            }
+          </div>
+        </section>
+      </div>
+
+      <aside class="review-aside">
+        <section class="review-side-card panel">
+          <h2>About this review</h2>
+          <div class="review-side-byline">
+            <span class="review-avatar">{initials}</span>
+            <div>
+              <strong>{curatorPerson.name}</strong>
+              <span class="mono">Curator, QAInsights</span>
+            </div>
+          </div>
+          <p>{review.evidence}</p>
+          <div class="review-side-links">
+            <a href={siteUrl('about#methodology')}>Methodology</a>
+            <a href={correctionsUrl}>Suggest a correction</a>
+          </div>
+        </section>
+
+        <section class="review-side-card panel">
+          <h2>Fact sheet</h2>
+          <dl class="review-fact-sheet">
+            {
+              factSheet.map(([label, value]) => (
+                <div>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+          <a class="review-side-cta mono" href={siteUrl(`tools/${tool.slug}`)}>
+            Full specs on the tool page
+          </a>
+        </section>
+
+        <section class="review-side-card panel">
+          <h2>Compare with</h2>
+          {
+            compareLinks.map((item) => (
+              <a class="review-related-link" href={item.href}>
+                <span>{item.label}</span>
+                <small>
+                  {item.staticPage
+                    ? 'Head-to-head comparison'
+                    : 'Open Test Rig'}
+                </small>
+              </a>
+            ))
+          }
+          {
+            alternativesHub && (
+              <a
+                class="review-related-link"
+                href={siteUrl(`alternatives/${tool.slug}`)}
+              >
+                <span>{alternativesHub.headline}</span>
+                <small>{alternativesCount} alternatives compared</small>
+              </a>
+            )
+          }
+        </section>
+
+        <section class="review-side-card panel">
+          <h2>More reviews</h2>
+          {
+            moreReviews.map(({ review: otherReview, tool: otherTool }) => (
+              <a
+                class="review-related-link"
+                href={siteUrl(`reviews/${otherTool.slug}`)}
+              >
+                <span>{otherTool.name} review</span>
+                <small>
+                  {otherReview.handsOn ? 'Hands-on' : 'Desk review'}
+                </small>
+              </a>
+            ))
+          }
+        </section>
+      </aside>
+    </div>
+
+    <Footer markdownHref={siteUrl(`reviews/${tool.slug}.md`)} />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .review-page {
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 28px 24px 80px;
+  }
+  .breadcrumbs {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .breadcrumbs a,
+  .review-page a {
+    color: var(--color-teal-300);
+  }
+  .review-hero {
+    overflow: hidden;
+  }
+  .review-hero-columns {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+  .review-hero-id,
+  .review-short {
+    padding: 34px 36px 30px;
+  }
+  .review-hero-id {
+    border-right: 1px solid var(--color-surface-800);
+  }
+  .review-hero h1 {
+    color: var(--color-surface-100);
+    font-size: clamp(42px, 6vw, 64px);
+    letter-spacing: -0.05em;
+    line-height: 1.02;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+  .review-title-word {
+    color: var(--color-surface-300);
+    font-weight: 400;
+  }
+  .review-hero h1 .verified-badge {
+    margin-left: 8px;
+  }
+  .review-byline {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .review-avatar {
+    align-items: center;
+    background: var(--color-teal-900);
+    border: 1px solid var(--color-teal-700);
+    border-radius: 50%;
+    color: var(--color-teal-300);
+    display: inline-grid;
+    flex: none;
+    font: 600 13px var(--font-mono);
+    height: 40px;
+    place-items: center;
+    width: 40px;
+  }
+  .review-byline-name {
+    color: var(--color-surface-100);
+    font-size: 15px;
+  }
+  .review-byline-name a {
+    color: var(--color-surface-100);
+  }
+  .review-byline-meta {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  .detail-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 22px;
+  }
+  .review-short {
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-teal-950) 38%, transparent),
+      transparent 70%
+    );
+  }
+  .review-short h2 {
+    color: var(--color-teal-300);
+    font-size: 15px;
+    margin: 0 0 12px;
+  }
+  .review-short p {
+    color: var(--color-surface-300);
+    font-size: 17px;
+    line-height: 1.55;
+    margin: 0 0 14px;
+  }
+  .review-short p.review-short-lede {
+    color: var(--color-surface-100);
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .review-short-facts {
+    display: grid;
+    font-size: 14px;
+    gap: 6px 14px;
+    grid-template-columns: auto minmax(0, 1fr);
+    margin: 18px 0 0;
+  }
+  .review-short-facts div {
+    display: contents;
+  }
+  .review-short-facts dt {
+    color: var(--color-surface-300);
+    font: 12px/1.7 var(--font-mono);
+  }
+  .review-short-facts dd {
+    color: var(--color-surface-100);
+    margin: 0;
+  }
+  .review-ticker {
+    border-top: 1px solid var(--color-surface-800);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    margin: 0;
+  }
+  .review-ticker div {
+    border-right: 1px solid var(--color-surface-800);
+    min-width: 0;
+    padding: 12px 20px;
+  }
+  .review-ticker div:last-child {
+    border-right: 0;
+  }
+  .review-ticker dt {
+    color: var(--color-surface-300);
+    font: 11px var(--font-mono);
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+  .review-ticker dd {
+    color: var(--color-surface-100);
+    font-size: 14px;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+  .review-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 22px;
+    margin: 22px 0 26px;
+  }
+  .review-jump a {
+    text-decoration: none;
+  }
+  .review-jump span {
+    color: var(--color-surface-300);
+  }
+  .review-columns {
+    align-items: start;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+  .review-main,
+  .review-aside {
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+  }
+  .review-card,
+  .review-side-card {
+    padding: 28px 32px;
+  }
+  .review-side-card {
+    padding: 22px;
+  }
+  .review-section-heading {
+    align-items: baseline;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+  }
+  .review-card h2,
+  .review-side-card h2 {
+    color: var(--color-surface-100);
+    font-size: 24px;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+    margin: 0 0 6px;
+  }
+  .review-side-card h2 {
+    color: var(--color-teal-300);
+    font: 13px var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .review-tag {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .review-section-lead {
+    color: var(--color-surface-300);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 18px;
+  }
+  .review-score-list {
+    margin-top: 10px;
+  }
+  .review-score-legend {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    line-height: 1.55;
+    margin: 18px 0 0;
+  }
+  .review-score-legend a {
+    color: var(--color-teal-300);
+  }
+  .review-terminal {
+    background: var(--color-surface-950);
+    border: 1px solid var(--color-teal-700);
+    color: var(--color-teal-300);
+    font: 13px/1.7 var(--font-mono);
+    margin-top: 14px;
+    overflow-x: auto;
+    padding: 12px;
+  }
+  .review-terminal div + div {
+    margin-top: 4px;
+  }
+  .review-terminal span {
+    color: var(--color-amber-400);
+  }
+  .review-getting-started-copy {
+    margin: 14px 0 0;
+  }
+  .review-faq-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 18px;
+  }
+  .review-faq-list details {
+    border-top: 1px solid var(--color-surface-800);
+    padding-top: 10px;
+  }
+  .review-faq-list summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  .review-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .review-faq-list strong {
+    color: var(--color-surface-100);
+    font: 13px var(--font-mono);
+  }
+  .review-faq-list p {
+    color: var(--color-surface-300);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 10px 0 0;
+  }
+  .review-side-byline {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+  }
+  .review-side-byline strong,
+  .review-side-byline > div > span {
+    display: block;
+  }
+  .review-side-byline strong {
+    color: var(--color-surface-100);
+    font-size: 14px;
+  }
+  .review-side-byline > div > span {
+    color: var(--color-surface-300);
+    font-size: 12px;
+    margin-top: 3px;
+  }
+  .review-side-card > p {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 16px 0 0;
+  }
+  .review-side-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .review-side-links a,
+  .review-side-cta {
+    font-size: 12px;
+  }
+  .review-side-cta {
+    display: inline-block;
+    margin-top: 14px;
+    text-decoration: none;
+  }
+  @media (max-width: 900px) {
+    .review-hero-columns,
+    .review-columns {
+      grid-template-columns: 1fr;
+    }
+    .review-hero-id {
+      border-bottom: 1px solid var(--color-surface-800);
+      border-right: 0;
+    }
+    .review-aside {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .review-page {
+      padding: 24px 14px 60px;
+    }
+    .review-hero-id,
+    .review-short {
+      padding: 24px 20px;
+    }
+    .review-hero h1 {
+      font-size: clamp(38px, 12vw, 56px);
+    }
+    .review-ticker {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .review-ticker div:nth-child(2n) {
+      border-right: 0;
+    }
+    .review-ticker div:nth-child(n + 3) {
+      border-top: 1px solid var(--color-surface-800);
+    }
+    .review-card {
+      padding: 24px 20px;
+    }
+    .review-aside {
+      grid-template-columns: 1fr;
+    }
+    .review-section-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+</style>

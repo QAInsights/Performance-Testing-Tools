@@ -1,4 +1,5 @@
 import { datasetLastVerified, tools, type Tool } from '../data/tools';
+import { reviews } from '../data/reviews';
 import { siteOrigin } from '../config/site';
 import {
   allAlternativesHubs,
@@ -212,6 +213,15 @@ export function buildLlmsTxt(
     '',
     hubs,
     '',
+    '## Reviews',
+    '',
+    ...reviews.map((review) => {
+      const tool = catalog.find((item) => item.slug === review.slug);
+      return tool
+        ? `- [${tool.name} review](${absoluteUrl(`reviews/${review.slug}`, origin)}) ${review.verdict}`
+        : '';
+    }),
+    '',
     methodologyMarkdown().replace(
       `- Dataset last verified: ${datasetLastVerified}`,
       `- Dataset last verified: ${verified}`,
@@ -269,6 +279,9 @@ export function buildLlmsFullTxt(
         `- Compare: ${comparisons.map((spec) => absoluteUrl(`vs/${spec.pairPath}`, origin)).join(', ') || 'None recorded'}`,
         `- Alternatives: ${hub ? absoluteUrl(`alternatives/${hub.toolSlug}`, origin) : 'None recorded'}`,
         `- Markdown: ${markdownUrl(tool.slug, origin)}`,
+        ...(reviews.some((review) => review.slug === tool.slug)
+          ? [`- Review: ${absoluteUrl(`reviews/${tool.slug}`, origin)}`]
+          : []),
         '',
       ].join('\n');
     })

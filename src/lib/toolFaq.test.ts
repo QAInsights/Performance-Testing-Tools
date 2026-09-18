@@ -6,6 +6,8 @@ import {
   clampAnswer,
   nearestRivals,
 } from './toolFaq';
+import { buildReviewFaq } from './reviewFaq';
+import { getReview } from '../data/reviews';
 
 describe('tool FAQ content', () => {
   it('clamps long answers without inventing content', () => {
@@ -42,5 +44,17 @@ describe('tool FAQ content', () => {
       true,
     );
     expect(rivals.every((item) => item.slug !== jmeter.slug)).toBe(true);
+  });
+
+  it('builds dedicated review FAQs in the target word band', () => {
+    const tool = tools.find((item) => item.slug === 'grafana-k6')!;
+    const faq = buildReviewFaq(tool, getReview(tool.slug)!);
+    expect(faq.length).toBe(4);
+    expect(faq.every((item) => item.answer.split(/\s+/).length >= 40)).toBe(
+      true,
+    );
+    expect(faq.every((item) => item.answer.split(/\s+/).length <= 80)).toBe(
+      true,
+    );
   });
 });

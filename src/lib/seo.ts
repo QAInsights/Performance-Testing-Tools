@@ -1,4 +1,4 @@
-import { datasetLastVerified, type Tool } from '../data/tools';
+import { datasetLastVerified, tools, type Tool } from '../data/tools';
 import type { ToolReview } from '../data/reviews';
 import type { EnrichmentEntry } from './enrichmentData';
 import { organizationProfile } from './organization';
@@ -100,7 +100,11 @@ export function toolSoftwareApplication(
   };
 }
 
-export function toolReview(tool: Tool, review: ToolReview) {
+export function toolReview(
+  tool: Tool,
+  review: ToolReview,
+  reviewUrl = absoluteUrl(`reviews/${tool.slug}`),
+) {
   const notes = (items: readonly string[]) => ({
     '@type': 'ItemList',
     itemListElement: items.map((name, index) => ({
@@ -118,6 +122,7 @@ export function toolReview(tool: Tool, review: ToolReview) {
       name: tool.name,
       url: absoluteUrl(`tools/${tool.slug}`),
     },
+    url: reviewUrl,
     author: {
       '@type': 'Person',
       ...curatorPerson,
@@ -126,6 +131,20 @@ export function toolReview(tool: Tool, review: ToolReview) {
     reviewBody: review.verdict,
     positiveNotes: notes(review.pros),
     negativeNotes: notes(review.cons),
+  };
+}
+
+export function reviewsItemList(reviews: readonly ToolReview[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: reviews.map((review, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name:
+        tools.find((tool) => tool.slug === review.slug)?.name || review.slug,
+      url: absoluteUrl(`reviews/${review.slug}`),
+    })),
   };
 }
 

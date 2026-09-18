@@ -1,0 +1,234 @@
+.review-stamp {
+  color: var(--color-surface-300);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin: 12px 0 0;
+}
+
+.subsection-label {
+  color: var(--color-amber-400);
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.review-prose {
+  color: var(--color-surface-300);
+  font-size: 16.5px;
+  line-height: 1.65;
+  max-width: 72ch;
+}
+
+.review-prose p {
+  margin: 0 0 16px;
+}
+
+.review-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.review-prose h3 {
+  color: var(--color-teal-300);
+  font-size: 17px;
+  margin: 26px 0 8px;
+}
+
+.review-prose .review-bottom-line {
+  border-top: 1px solid var(--color-surface-800);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin-top: 22px;
+  padding-top: 18px;
+}
+
+.review-score-row {
+  align-items: center;
+  border-bottom: 1px solid var(--color-surface-800);
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 200px 88px minmax(0, 1fr);
+  padding: 13px 0;
+}
+
+.review-score-row:last-of-type {
+  border-bottom: 0;
+}
+
+.review-score-dimension {
+  color: var(--color-surface-100);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.review-score-note {
+  color: var(--color-surface-300);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.review-meter {
+  display: grid;
+  gap: 3px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.review-meter-segment {
+  background: var(--color-surface-800);
+  height: 7px;
+}
+
+.review-meter--strong .review-meter-segment {
+  background: var(--color-teal-500);
+}
+
+.review-meter--adequate .review-meter-segment:nth-child(-n + 2) {
+  background: var(--color-amber-400);
+}
+
+.review-meter--limited .review-meter-segment:first-child {
+  background: var(--color-surface-300);
+}
+
+.review-meter-label {
+  color: var(--color-surface-300);
+  display: block;
+  font: 500 11px var(--font-mono);
+  grid-column: 1 / -1;
+  margin-top: 3px;
+}
+
+.review-pros-cons,
+.review-who-grid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.review-pros-cons h3,
+.review-who-grid h3 {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+.review-pros-cons ul,
+.review-who-grid ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.review-pros-cons li,
+.review-who-grid li {
+  align-items: flex-start;
+  color: var(--color-surface-300);
+  display: flex;
+  gap: 9px;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+.review-pros-cons .review-icon,
+.review-who-grid .review-icon {
+  flex: none;
+  height: 16px;
+  margin-top: 3px;
+  stroke: currentColor;
+  width: 16px;
+}
+
+.review-pros h3,
+.review-pros .review-icon {
+  color: var(--color-teal-300);
+}
+
+.review-cons h3,
+.review-cons .review-icon {
+  color: var(--color-amber-400);
+}
+
+.review-pick h3,
+.review-pick .review-icon {
+  color: var(--color-teal-300);
+}
+
+.review-skip h3,
+.review-skip .review-icon {
+  color: var(--color-amber-400);
+}
+
+.review-fact-sheet {
+  display: grid;
+  margin: 0;
+}
+
+.review-fact-sheet > div {
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-surface-800);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  padding: 9px 0;
+}
+
+.review-fact-sheet > div:last-child {
+  border-bottom: 0;
+}
+
+.review-fact-sheet dt {
+  color: var(--color-surface-300);
+  font: 11px var(--font-mono);
+  text-transform: uppercase;
+}
+
+.review-fact-sheet dd {
+  color: var(--color-surface-100);
+  font-size: 14px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.review-related-link {
+  border-top: 1px solid var(--color-surface-800);
+  display: block;
+  padding: 11px 0;
+  text-decoration: none;
+}
+
+.review-related-link:first-of-type {
+  border-top: 0;
+}
+
+.review-related-link span,
+.review-related-link small {
+  display: block;
+}
+
+.review-related-link span {
+  color: var(--color-surface-100);
+}
+
+.review-related-link small {
+  color: var(--color-surface-300);
+  font: 12px var(--font-mono);
+  margin-top: 4px;
+}
+
+@media (max-width: 720px) {
+  .review-pros-cons,
+  .review-who-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-score-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .review-score-note {
+    grid-column: 1 / -1;
+  }
+}

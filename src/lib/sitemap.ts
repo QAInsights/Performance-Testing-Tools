@@ -1,4 +1,5 @@
 import { datasetLastVerified } from '../data/tools';
+import { reviews } from '../data/reviews';
 import { siteBase } from '../config/site';
 import { getRawEnrichment } from './enrichmentData';
 
@@ -17,6 +18,21 @@ export function sitemapLastmod(page: string, base = siteBase): string {
       ? pathname.slice(basePath.length + 1)
       : pathname;
   const match = path.match(/^\/tools\/([^/]+)$/);
+  if (path === '/reviews' || path === '/reviews/') {
+    return (
+      reviews
+        .map((review) => review.reviewedAt)
+        .sort()
+        .at(-1) || datasetLastVerified
+    );
+  }
+  const reviewMatch = path.match(/^\/reviews\/([^/]+)$/);
+  if (reviewMatch) {
+    return (
+      reviews.find((review) => review.slug === reviewMatch[1])?.reviewedAt ||
+      datasetLastVerified
+    );
+  }
   if (!match) return datasetLastVerified;
 
   return (

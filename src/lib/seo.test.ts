@@ -7,6 +7,7 @@ import {
   toolItemList,
   toolReview,
   toolSoftwareApplication,
+  reviewsItemList,
   websiteSchema,
 } from './seo';
 import { absoluteUrl, baseUrl } from './urls';
@@ -16,6 +17,7 @@ import { buildToolFaq } from './toolFaq';
 import { isSitemapPage, sitemapLastmod } from './sitemap';
 import { curatorPerson } from './methodology';
 import { getReview } from '../data/reviews';
+import { reviews } from '../data/reviews';
 
 describe('SEO structured data', () => {
   it('defaults to the production origin instead of a Vercel deployment URL', () => {
@@ -109,6 +111,15 @@ describe('SEO structured data', () => {
     expect(
       sitemapLastmod('https://example.com/foo/tools/apache-jmeter/', '/foo'),
     ).toBe('2026-08-11');
+    expect(sitemapLastmod('https://perf.jmeter.ai/reviews/grafana-k6/')).toBe(
+      getReview('grafana-k6')!.reviewedAt,
+    );
+    expect(sitemapLastmod('https://perf.jmeter.ai/reviews/')).toBe(
+      reviews
+        .map((review) => review.reviewedAt)
+        .sort()
+        .at(-1),
+    );
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {
@@ -198,6 +209,7 @@ describe('SEO structured data', () => {
 
     expect(schema).toMatchObject({
       '@type': 'Review',
+      url: 'https://perf.jmeter.ai/reviews/grafana-k6/',
       itemReviewed: {
         '@type': 'SoftwareApplication',
         name: tool.name,
@@ -215,6 +227,13 @@ describe('SEO structured data', () => {
     );
     expect(schema).not.toHaveProperty('reviewRating');
     expect(() => JSON.parse(JSON.stringify(schema))).not.toThrow();
+  });
+
+  it('lists dedicated review URLs', () => {
+    const list = reviewsItemList(reviews);
+    expect(list.itemListElement).toHaveLength(reviews.length);
+    expect(list.itemListElement[0].url).toContain('/reviews/');
+    expect(list.itemListElement[0].name).not.toBe(reviews[0].slug);
   });
 
   it('includes SearchAction and Organization sameAs', () => {

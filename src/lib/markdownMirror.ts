@@ -1,5 +1,5 @@
 import { datasetLastVerified, type Tool } from '../data/tools';
-import type { ToolReview } from '../data/reviews';
+import { getReview, type ToolReview } from '../data/reviews';
 import type { EnrichmentEntry } from './enrichmentData';
 import {
   alternativesHubForTool,
@@ -9,6 +9,7 @@ import {
 } from './comparisonContent';
 import { toolSentence } from './derivedComparisons';
 import { buildToolFaq } from './toolFaq';
+import { buildReviewFaq } from './reviewFaq';
 import { architectureLine, bestFor, notBestFor } from './toolEntity';
 import { absoluteUrl } from './urls';
 import {
@@ -39,7 +40,6 @@ export function toolMarkdown(
   catalog: readonly Tool[],
   origin: string,
   enrichment?: EnrichmentEntry,
-  review?: ToolReview,
 ): string {
   const compareLines = comparisonsForTool(tool.slug, catalog).flatMap(
     (spec) => {
@@ -67,41 +67,10 @@ export function toolMarkdown(
     '',
     `> ${toolSentence(tool)}`,
     '',
-    ...(review
-      ? [
-          '## Verdict',
-          review.verdict,
-          '',
-          '## Ratings',
-          '| Dimension | Level | Note |',
-          '| --- | --- | --- |',
-          ...review.ratings.map(
-            (rating) =>
-              `| ${rating.dimension} | ${rating.level} | ${rating.note} |`,
-          ),
-          '',
-          '## Pros',
-          ...review.pros.map((item) => `- ${item}`),
-          '',
-          '## Cons',
-          ...review.cons.map((item) => `- ${item}`),
-          ...(review.gettingStarted
-            ? [
-                '',
-                '## Getting started',
-                ...(review.gettingStarted.install
-                  ? [`- Install: \`${review.gettingStarted.install}\``]
-                  : []),
-                ...(review.gettingStarted.firstRun
-                  ? [`- First run: \`${review.gettingStarted.firstRun}\``]
-                  : []),
-                `- Learning curve: ${review.gettingStarted.learningCurve}`,
-              ]
-            : []),
-          '',
-        ]
-      : []),
     `- Canonical: ${absoluteUrl(`tools/${tool.slug}`, origin)}`,
+    ...(getReview(tool.slug)
+      ? [`- Review: ${absoluteUrl(`reviews/${tool.slug}`, origin)}`]
+      : []),
     `- Official: ${tool.url}`,
     tool.repoUrl ? `- Source: ${tool.repoUrl}` : '',
     `- Vendor: ${tool.vendor}`,
@@ -145,6 +114,75 @@ export function toolMarkdown(
   ];
   return lines
     .filter((item, index) => item !== '' || lines[index - 1] !== '')
+    .join('\n');
+}
+
+export function reviewMarkdown(
+  tool: Tool,
+  review: ToolReview,
+  origin: string,
+): string {
+  const faq = buildReviewFaq(tool, review);
+  return [
+    `# ${tool.name} review`,
+    '',
+    `> ${review.verdict}`,
+    '',
+    `- Canonical: ${absoluteUrl(`reviews/${tool.slug}`, origin)}`,
+    `- Tool page: ${absoluteUrl(`tools/${tool.slug}`, origin)}`,
+    `- Reviewed: ${review.reviewedAt} · ${review.handsOn ? 'Hands-on' : 'Desk review'}`,
+    '',
+    '## Verdict',
+    review.verdict,
+    '',
+    '### Pick it when',
+    ...review.pickWhen.map((item) => `- ${item}`),
+    '',
+    '### Skip it when',
+    ...review.skipWhen.map((item) => `- ${item}`),
+    '',
+    ...review.analysis.flatMap((section) => [
+      `## ${section.heading}`,
+      ...section.paragraphs,
+      '',
+    ]),
+    '## Bottom line',
+    review.bottomLine,
+    '',
+    '## About this review',
+    review.evidence,
+    '',
+    '## Ratings',
+    '| Dimension | Level | Note |',
+    '| --- | --- | --- |',
+    ...review.ratings.map(
+      (rating) => `| ${rating.dimension} | ${rating.level} | ${rating.note} |`,
+    ),
+    '',
+    '## Pros',
+    ...review.pros.map((item) => `- ${item}`),
+    '',
+    '## Cons',
+    ...review.cons.map((item) => `- ${item}`),
+    ...(review.gettingStarted
+      ? [
+          '',
+          '## Getting started',
+          ...(review.gettingStarted.install
+            ? [`- Install: \`${review.gettingStarted.install}\``]
+            : []),
+          ...(review.gettingStarted.firstRun
+            ? [`- First run: \`${review.gettingStarted.firstRun}\``]
+            : []),
+          `- Learning curve: ${review.gettingStarted.learningCurve}`,
+        ]
+      : []),
+    '',
+    '## FAQ',
+    ...faq.flatMap((item) => [`### ${item.question}`, item.answer, '']),
+    footer(origin),
+  ]
+    .filter((item, index, lines) => item !== '' || lines[index - 1] !== '')
     .join('\n');
 }
 

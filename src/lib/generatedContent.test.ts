@@ -11,6 +11,7 @@ import { hubPeers } from './derivedComparisons';
 import {
   alternativesMarkdown,
   comparisonMarkdown,
+  reviewMarkdown,
   toolMarkdown,
 } from './markdownMirror';
 import { buildLlmsFullTxt, buildLlmsTxt } from './llmsContent';
@@ -118,21 +119,19 @@ describe('generated public content', () => {
     expect(allAlternativesHubs(tools)).toHaveLength(46);
   });
 
-  it('includes reviewed tool sections in markdown mirrors', () => {
+  it('links reviewed tools to dedicated markdown review mirrors', () => {
     const tool = tools.find((item) => item.slug === 'grafana-k6')!;
-    const body = toolMarkdown(
-      tool,
-      tools,
-      siteOrigin,
-      undefined,
-      getReview(tool.slug),
+    const body = toolMarkdown(tool, tools, siteOrigin);
+    expect(body).toContain(
+      '- Review: https://perf.jmeter.ai/reviews/grafana-k6/',
     );
-    expect(body).toContain('## Verdict');
-    expect(body).toContain('## Ratings');
-    expect(body).toContain('| Dimension | Level | Note |');
-    expect(body).toContain('## Pros');
-    expect(body).toContain('## Cons');
-    expect(body).toContain('## Getting started');
+    const reviewBody = reviewMarkdown(tool, getReview(tool.slug)!, siteOrigin);
+    expect(reviewBody).toContain('## Verdict');
+    expect(reviewBody).toContain('## Ratings');
+    expect(reviewBody).toContain('| Dimension | Level | Note |');
+    expect(reviewBody).toContain('## Pros');
+    expect(reviewBody).toContain('## Cons');
+    expect(reviewBody).toContain('## Getting started');
   });
 
   it('publishes every static comparison and methodology in llms.txt', () => {
@@ -141,6 +140,8 @@ describe('generated public content', () => {
       expect(text).toContain(`- [${spec.leftLabel} vs ${spec.rightLabel}](`);
     }
     expect(text).toContain('## Methodology');
+    expect(text).toContain('## Reviews');
+    expect(text).toContain(`https://perf.jmeter.ai/reviews/grafana-k6/`);
     expect(text).toContain(`curated by ${curatorPerson.name}.`);
     const full = buildLlmsFullTxt(tools, siteOrigin);
     expect(full).toContain('## Comparisons');

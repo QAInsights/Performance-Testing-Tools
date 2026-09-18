@@ -20,4 +20,27 @@ describe('curated tool reviews dataset', () => {
       reviews.length,
     );
   });
+
+  it('keeps review copy free of em and en dashes', () => {
+    for (const review of reviews) {
+      const copy = [
+        review.verdict,
+        ...review.pickWhen,
+        ...review.skipWhen,
+        ...review.ratings.map((rating) => rating.note),
+        ...review.pros,
+        ...review.cons,
+        ...(review.gettingStarted
+          ? [
+              review.gettingStarted.install ?? '',
+              review.gettingStarted.firstRun ?? '',
+              review.gettingStarted.learningCurve,
+            ]
+          : []),
+      ];
+      for (const text of copy) {
+        expect(text, review.slug).not.toMatch(/[—–]/);
+      }
+    }
+  });
 });
