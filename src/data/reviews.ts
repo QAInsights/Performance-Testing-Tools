@@ -1656,6 +1656,514 @@ export const reviews: ToolReview[] = [
         'Weeks for administrators; scripters productive in days if they know VuGen.',
     },
   },
+  {
+    slug: 'loadrunner-cloud',
+    reviewedAt: '2026-09-17',
+    handsOn: false,
+    verdict:
+      'LoadRunner Cloud is a practical choice when an enterprise already trusts LoadRunner scripts but needs managed load generators, scheduling, and results without operating its own controller estate. It handles a much wider range of protocols than cloud first API runners, including imported JMeter and Gatling tests, but the platform is expensive, the workflow is still shaped by the LoadRunner family, and pricing requires a sales conversation. I would choose it for governed, mixed technology estates, not a small API team.',
+    evidence:
+      'Desk review: based on current docs, release notes and prior experience. I did not run the current release for this review.',
+    analysis: [
+      {
+        heading: 'What LoadRunner Cloud is',
+        paragraphs: [
+          "LoadRunner Cloud is OpenText's managed execution and analysis platform for performance tests. It removes the controller and public load generator administration that normally comes with LoadRunner Professional or Enterprise. You create or import a test, choose cloud or private load generators, schedule it, and use the web dashboard to compare the result with a baseline or an SLA. It is a cloud product, but it can drive generators inside your network when the target cannot be exposed to the internet.",
+          'The protocol range is its differentiator. The current catalog supports HTTP, WebSocket, JMeter, Gatling, Kafka, MQTT, SAP, Citrix, and Selenium alongside the LoadRunner scripting families. That breadth matters when one program has browser APIs, a message queue, and a packaged application. A lightweight HTTP runner cannot replace that mix.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          'The platform centralizes test assets, schedules, trend views, and shared results. DevWeb scripts keep JavaScript close to the web stack, while existing C based VuGen scripts and imported JMeter or Gatling tests preserve prior work. I like that migration path because teams do not have to rewrite a dependable test just to obtain cloud capacity. Private load generators also make it possible to test protected systems without opening a production adjacent network.',
+          'For automation, use the REST API or the CI integrations to start a test and collect a result. This works best when the quality gate is agreed in advance: response time, error rate, and throughput should be explicit instead of waiting for someone to interpret a dashboard after every run.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'The product is a poor fit for a team that only owns HTTP APIs and wants test code next to a service. Account setup, test administration, and quote based procurement add friction before the first run. The large protocol catalog is also not a shortcut around correlation and data design. A legacy script still needs the same maintenance it needed on premises.',
+          'Cost needs a real capacity discussion because pricing is commercial subscription based. I would also validate public region availability, private generator requirements, and concurrent test limits during evaluation. Those details affect whether a planned peak test fits the program rather than just whether a demo works.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'OpenText positions Aviator capabilities across its testing portfolio, but I would not make an AI claim the basis for selecting LoadRunner Cloud. The core value is managed execution, protocol coverage, and governed results. Use any assistant to explain a script or summarize an outlier, then verify the workload and the raw evidence yourself.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: pick LoadRunner Cloud when you need cloud scale for an established LoadRunner estate or a program with several enterprise protocols. Choose Gatling Enterprise, Grafana Cloud k6, or a simpler runner when the work is HTTP focused and the team wants a lighter code first workflow.',
+    pickWhen: [
+      'Existing LoadRunner, JMeter, or Gatling assets need managed execution',
+      'The program tests a mix of web, messaging, packaged, and legacy systems',
+      'Private load generators are required for protected targets',
+    ],
+    skipWhen: [
+      'A small team only needs repeatable HTTP API checks',
+      'Quote based commercial procurement is out of scope',
+      'Tests must be completely self managed and source available',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Strong',
+        note: 'Supports LoadRunner scripts plus imported JMeter and Gatling assets.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Strong',
+        note: 'Covers web, messaging, SAP, Citrix, browser, and LoadRunner protocols.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Managed public and private load generators support distributed runs.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Strong',
+        note: 'Central dashboards, trends, and SLA comparisons serve program reporting.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'APIs and CI integrations work, but setup is heavier than a local CLI.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Limited',
+        note: 'Commercial subscription pricing requires a vendor conversation.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'AI positioning exists, but its practical scope should be validated in a trial.',
+      },
+    ],
+    pros: [
+      'Broad support for enterprise protocols and imported test assets',
+      'Managed public and private load generation',
+      'Central scheduling, results, trends, and collaboration',
+      'A credible migration path for established LoadRunner programs',
+    ],
+    cons: [
+      'Commercial pricing is not published as a simple self serve rate',
+      'Administration is disproportionate for a small API team',
+      'Legacy script maintenance remains necessary',
+      'AI capability details need validation during evaluation',
+    ],
+  },
+  {
+    slug: 'gatling-enterprise',
+    reviewedAt: '2026-09-17',
+    handsOn: false,
+    verdict:
+      "Gatling Enterprise is the right paid step for teams that already like Gatling's code based simulations but need distributed load, team controls, and live reporting without inventing their own platform. The current plans start at EUR 89 per month when billed annually, which is more transparent than many enterprise tools, but the cost grows with load generators and test minutes. Choose it for serious Gatling programs; use open source Gatling for local, single injector work.",
+    evidence:
+      'Desk review: based on current docs, release notes and prior experience. I did not run the current release for this review.',
+    analysis: [
+      {
+        heading: 'What Gatling Enterprise is',
+        paragraphs: [
+          'Gatling Enterprise is the commercial platform around the Gatling engine. Simulations remain source code, written in Java, JavaScript, Kotlin, Scala, or TypeScript, while the platform manages packages, users, load generators, execution, and results. It can run from managed public locations, inside a customer cloud account, or on premises. That separation is sensible: engineers keep tests in Git and operators get one place to control capacity and access.',
+          'The protocol catalog now includes HTTP, WebSocket, SSE, JMS, MQTT, and gRPC. HTTP is still the mature path. Do not mistake protocol support for a browser renderer: an HTTP simulation models requests, cookies, caching, and redirects, but it does not execute page JavaScript like a real browser.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          'The useful additions over community Gatling are distributed load generation, live dashboards, scheduled runs, permissions, and central retention of results. A public API can launch a run or fetch metrics with an API token, which is enough to make a pipeline wait on a test and apply a clear threshold. Private locations are especially valuable when an API is behind a firewall or when data must stay in a chosen network.',
+          'Pricing is published. The Basic plan is EUR 89 per month billed annually and includes a limited starter allocation, while Team adds more generators and capacity. That is easier to budget than a pure quote model, but test minutes are credits, so a long high scale run consumes more than a short smoke check. Estimate the load model before committing a recurring gate.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'Enterprise does not make Gatling a no code tool. The DSL is a benefit for engineers, but a test analyst who needs a visual recorder first may reach productivity sooner in JMeter, NeoLoad, or LoadRunner. Community Gatling already has a strong local report, so a team should buy Enterprise for coordination and distributed capacity, not just to get a prettier chart.',
+          'The usage model deserves attention. Generator count, run duration, seats, data retention, and private location needs all affect the final cost. I would run a representative test in the trial and check the reported credits before copying a daily performance gate across every service.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'Gatling now lists AI coding assistants, JMeter conversion, an MCP server, and AI insights on reports in its commercial offering. Those can reduce the first draft and help an engineer navigate a report. They do not know your business transactions or acceptable degradation, so I would still write the checks, injection profile, and success criteria by hand.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: Gatling Enterprise is a strong fit when code based Gatling tests need reliable distributed execution, access controls, and a shared result history. Pick open source Gatling for local work, or choose a GUI led suite when your authors are not comfortable owning simulations as code.',
+    pickWhen: [
+      'Gatling simulations already live in the delivery workflow',
+      'Distributed public, private cloud, or on premises injection is required',
+      'Teams need central permissions and live results',
+    ],
+    skipWhen: [
+      'One local injector and the open source report are enough',
+      'The test authors need a visual, recorder led workflow',
+      'Usage credits cannot be estimated or governed',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Strong',
+        note: 'Typed SDKs support Java, JavaScript, Kotlin, Scala, and TypeScript.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Strong',
+        note: 'HTTP, WebSocket, SSE, JMS, MQTT, and gRPC cover modern service tests.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Strong',
+        note: 'Managed and private generators support distributed execution.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Strong',
+        note: "Live dashboards and retained results add to Gatling's local report.",
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Strong',
+        note: 'The public API and CI scripts make runs automatable.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Adequate',
+        note: 'Published entry pricing helps, but capacity is consumed as test credits.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Adequate',
+        note: 'Assistants, converters, MCP, and report insights are listed commercially.',
+      },
+    ],
+    pros: [
+      'Keeps Gatling simulations in source control',
+      'Adds managed and private distributed load generation',
+      'Live dashboards, permissions, and shared result history',
+      'Published starting price and a trial path',
+    ],
+    cons: [
+      'Still expects authors to work comfortably in code',
+      'Usage credits make recurring high scale testing a budgeting task',
+      'Browser level behavior needs a different tool',
+      'Community edition already covers many local use cases',
+    ],
+  },
+  {
+    slug: 'loaderio',
+    reviewedAt: '2026-09-17',
+    handsOn: false,
+    verdict:
+      'Loader.io is a good first cloud load test for an HTTP endpoint you can verify and expose, not a replacement for a performance engineering platform. Its free plan gives a useful short check, while Pro is USD 99.95 per month for higher limits and richer analysis. The simple browser workflow gets a team moving quickly, but there is no real scripting language, no private execution, and no protocol breadth beyond HTTP and HTTPS.',
+    evidence:
+      'Desk review: based on current docs, release notes and prior experience. I did not run the current release for this review.',
+    analysis: [
+      {
+        heading: 'What Loader.io is',
+        paragraphs: [
+          'Loader.io is a hosted HTTP and HTTPS load testing service. You register a target host, prove that you control it, select a test type in the browser, and run traffic from the service. The three models are clients per test, clients per second, and maintained client load. This is intentionally a small surface area. It is designed for a quick endpoint or web application check, not a detailed multi protocol performance program.',
+          'The target verification step is important. It prevents an account from pointing traffic at an arbitrary public site, but it also means the tool is most convenient when you can add a verification file, DNS record, or another approved signal to the target environment.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          "The free plan is concrete: one target host, up to 10,000 clients per test, one minute tests, and two URLs per test. That is enough to reveal an obvious capacity issue on a simple endpoint. Pro is USD 99.95 per month and raises the limits to 100,000 clients per test, ten minute tests, ten URLs per test, and advanced analytics. Tests run from Amazon's US East data center, so location is part of the interpretation.",
+          'The API can create and run tests after a target has been verified. That gives a small CI integration path, although the service is more comfortable as a manual pre release check than as a deeply versioned test suite. The charts are easy to read for a first result and response code failures are visible without extra infrastructure.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'There is no general purpose scripting layer for correlation, test data, custom clients, or a business workflow with complex branching. HTTP and HTTPS are the only catalog protocols. If the service needs WebSocket, gRPC, database, messaging, or browser behavior, this is the wrong starting point. Public US East execution can also be misleading when users or systems are elsewhere.',
+          'The free tier is deliberately short. I would use it to validate an idea, then decide whether the paid limits are enough before making it a release gate. A test that only hits two URLs for one minute can confirm basic headroom, but it cannot establish durable capacity for an application with authentication, cache warmup, and realistic data.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'I did not find a documented AI authoring or analysis feature in the current product material. That is not a problem for a focused utility. The missing piece is not an assistant, it is a more expressive workload model when the target moves beyond a few HTTP endpoints.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: use Loader.io for a fast, verified HTTP smoke test when a browser interface and a free starting point matter more than test code. Choose k6, Artillery, Gatling, or JMeter when the test must model a real workflow, run privately, or live in source control.',
+    pickWhen: [
+      'You need a quick public HTTP check with little setup',
+      'The target can be verified and is appropriate for US East traffic',
+      'A short free tier test answers the immediate question',
+    ],
+    skipWhen: [
+      'Tests require code, complex correlation, or realistic data flows',
+      'Traffic must originate from a private network or another region',
+      'Protocols beyond HTTP and HTTPS are in scope',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Limited',
+        note: 'The browser workflow has no general purpose test scripting language.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Limited',
+        note: 'The catalog is limited to HTTP and HTTPS.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Adequate',
+        note: 'Cloud capacity reaches 100,000 clients per Pro test from one region.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Adequate',
+        note: 'Charts are clear, while advanced analytics require a paid plan.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'A documented API can create and run verified target tests.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Adequate',
+        note: 'The free plan is useful; Pro is USD 99.95 per month.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No documented AI authoring or analysis capability was found.',
+      },
+    ],
+    pros: [
+      'Fast browser based setup for verified HTTP targets',
+      'Free plan is useful for an initial capacity check',
+      'Three clear load models and an API',
+      'Paid plan and limits are published',
+    ],
+    cons: [
+      'No test scripting language or private load generation',
+      'Only HTTP and HTTPS are supported',
+      'Free tests are short and limited to two URLs',
+      'Execution location is US East only',
+    ],
+  },
+  {
+    slug: 'apachebench',
+    reviewedAt: '2026-09-17',
+    handsOn: true,
+    verdict:
+      'ApacheBench, usually called ab, remains useful for one very narrow job: quickly checking how an HTTP server responds to a fixed request count and concurrency level. It is free, tiny, and often already installed with Apache HTTP Server, but it is not a modern load testing framework. The request model is sparse, reporting is terminal text, and the Apache documentation itself warns about limited HTTP implementation details. Use it for a fast sanity check, not a production capacity decision.',
+    evidence:
+      'I installed ApacheBench through the official Apache httpd:2.4-alpine Docker image, ran ab -n 100 -c 5 against a temporary local HTTP endpoint, and compared the terminal latency and throughput output with the current Apache documentation.',
+    analysis: [
+      {
+        heading: 'What ApacheBench (ab) is',
+        paragraphs: [
+          'ApacheBench is the small HTTP benchmarking command bundled with Apache HTTP Server. The familiar command is ab -n 1000 -c 50 https://example.test/, where -n is the number of requests and -c is concurrency. It prints requests per second, transfer rate, connection timings, and a latency percentile table. For a static endpoint or a quick regression check, that directness is useful.',
+          'It first appeared with Apache HTTP Server in 1995, and the age shows in both the interface and the assumptions. The tool sends HTTP or HTTPS requests. It is not a journey modeler, a browser, a distributed runner, or a rich API client. Treat it as a measurement probe, not a simulation platform.',
+        ],
+      },
+      {
+        heading: 'What you get',
+        paragraphs: [
+          'There are enough flags for a basic controlled request. -k enables keep alive, -H adds a header, -p supplies a file for a POST body with -T for content type, -t sets a time limit, and -e can write percentile data as CSV. That covers the kind of short command I use while checking a reverse proxy, a static server setting, or a single unauthenticated endpoint.',
+          'The output is immediate and has no dependency on a dashboard or account. That is a genuine benefit in a constrained environment. If two builds are tested from the same machine, with the same command, target, and warmup conditions, ab can show whether there is an obvious change worth investigating with a fuller test.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'The Apache documentation is unusually candid: ab does not implement HTTP/1.x fully and its own limitations can become part of what you measure. It also expects a constant response length unless -l is used. Dynamic responses, authentication flows, token correlation, cookies across several business steps, and realistic data require far more care than the command suggests.',
+          'There is no scripting language, distributed coordination, durable report, CI specific result format, or AI assistance. A large number printed in a terminal is not a capacity result unless you know the client was not saturated and the scenario represents users. For a serious API test I would move to k6, Gatling, JMeter, or a purpose built CLI such as Vegeta.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'ApacheBench has no AI features, and that is expected for a small native command. If you use an assistant to form an ab command, inspect the headers, concurrency, and target before running it. The tool will faithfully send the request you specify, even if that request is a poor model of the system you meant to test.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: keep ApacheBench for a fast, repeatable single endpoint benchmark when it is already on the machine. Skip it for authentication, modern protocol behavior, business journeys, or any result that will make a production capacity commitment.',
+    pickWhen: [
+      'You need a quick fixed request HTTP sanity check',
+      'Apache HTTP Server tools are already installed',
+      'A short terminal comparison is enough to spot an obvious regression',
+    ],
+    skipWhen: [
+      'The workload includes multiple steps, tokens, or realistic user data',
+      'You need distributed execution or shareable reports',
+      'HTTP behavior beyond a simple request must be modeled accurately',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Limited',
+        note: 'Flags cover one request shape; there is no scripting model.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Limited',
+        note: 'Supports simple HTTP and HTTPS requests only.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Limited',
+        note: 'Runs from one machine with no distributed coordination.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Limited',
+        note: 'Terminal output and optional CSV need external interpretation.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'A simple exit code and command line fit basic scripts.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Strong',
+        note: 'Apache License 2.0 and bundled distribution make it free to use.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No AI capabilities are part of the command.',
+      },
+    ],
+    pros: [
+      'Available with Apache HTTP Server and simple to invoke',
+      'Useful flags for fixed request and concurrency checks',
+      'Immediate terminal output with no service dependency',
+      'Optional CSV export for a small comparison',
+    ],
+    cons: [
+      'Limited HTTP implementation can affect the measurement',
+      'Cannot model an application journey or dynamic data',
+      'No distributed execution or durable reporting',
+      'Easy to mistake a synthetic request for realistic capacity evidence',
+    ],
+    gettingStarted: {
+      install: 'docker pull httpd:2.4-alpine',
+      firstRun:
+        'docker run --rm httpd:2.4-alpine ab -n 100 -c 5 http://host.docker.internal:4310/',
+      learningCurve:
+        'Minutes for a fixed endpoint check; much longer to know whether the request represents real traffic.',
+    },
+  },
+  {
+    slug: 'autocannon',
+    reviewedAt: '2026-09-17',
+    handsOn: true,
+    verdict:
+      'Autocannon is the most convenient quick HTTP benchmark for a Node.js team that wants a command and optional JavaScript API in the same ecosystem. I installed it with npm and ran one hundred requests through five connections against a local endpoint. It gives useful latency and throughput output immediately, including HTTP pipelining and worker support, but it is CPU bound, HTTP focused, and too small for a realistic end to end workload. Use it for focused service checks, not a full performance program.',
+    evidence:
+      'I installed Autocannon with npm exec, ran autocannon -c 5 -a 100 against a temporary local HTTP endpoint, and compared its terminal latency and throughput output with the command options in the current project documentation.',
+    analysis: [
+      {
+        heading: 'What Autocannon is',
+        paragraphs: [
+          'Autocannon is an MIT licensed HTTP and HTTPS benchmarking tool for Node.js. It works as a CLI and as a JavaScript API, which makes it a natural fit for a Fastify or Node service repository. The CLI defaults to ten connections, one pipelined request, and a ten second duration. You can install it with npm i autocannon -g, or use npm exec when you do not want a global package.',
+          'It is inspired by wrk and wrk2 but adds a Node friendly interface. The important distinction is that it generates protocol traffic, not browser behavior. It can issue requests quickly and report the resulting latency distribution, but it does not execute page JavaScript, discover resources, or represent a user moving through a full product flow.',
+        ],
+      },
+      {
+        heading: 'In practice',
+        paragraphs: [
+          'For this review I used npm exec --yes --package autocannon -- autocannon -c 5 -a 100 http://127.0.0.1:4310/ against a temporary local HTTP server. The run completed one hundred requests and printed latency, requests per second, bytes per second, and request counts. That is exactly the feedback loop I want while changing a Node handler or checking a local reverse proxy: one command, no report service, and a result before I lose context.',
+          'The useful controls are -c for connections, -d for duration, -a for a fixed request amount, and -p for pipelining. For multi core client generation, the workers option starts Node worker threads. Be deliberate with that setting. Connections and request amounts are divided across workers, while some overall rate controls apply per worker, so an assumed global limit can become more traffic than intended.',
+        ],
+      },
+      {
+        heading: 'Where it falls short',
+        paragraphs: [
+          'Autocannon is CPU bound because it runs in Node.js. The project documentation notes that it can saturate a process sooner than compiled tools such as wrk. A fast local result can therefore be limited by the generator rather than the target. Watch client CPU, network, sockets, and errors before treating requests per second as a server limit.',
+          'It is also deliberately narrow. There is no scenario language, distributed orchestration, hosted history, service level gate, or built in trend comparison. You can write requests programmatically and send headers or bodies, but token correlation and business workflows become application code quickly. For repeatable API load tests in CI, k6 or Artillery is usually a better long term home.',
+        ],
+      },
+      {
+        heading: 'AI features',
+        paragraphs: [
+          'Autocannon has no native AI features. I would not add an AI layer to a tiny benchmark just to generate a command. The useful discipline is still to name the target, make the request shape explicit, keep the run short at first, and verify whether the client or server is the bottleneck.',
+        ],
+      },
+    ],
+    bottomLine:
+      'Bottom line: choose Autocannon for a fast Node.js friendly HTTP benchmark, especially while developing a service or comparing a focused endpoint. Choose k6, Artillery, Gatling, or JMeter when you need user journeys, distributed execution, pipeline gates, or a report that survives the terminal session.',
+    pickWhen: [
+      'A Node.js team needs a fast HTTP endpoint benchmark',
+      'You want CLI and JavaScript API options in one package',
+      'A local or focused service check is the immediate goal',
+    ],
+    skipWhen: [
+      'The workload requires browser rendering or several user journeys',
+      'The generator must scale across machines with central reporting',
+      'Client CPU saturation would compromise the result',
+    ],
+    ratings: [
+      {
+        dimension: 'Scripting & extensibility',
+        level: 'Adequate',
+        note: 'CLI flags and a JavaScript API cover focused custom requests.',
+      },
+      {
+        dimension: 'Protocol coverage',
+        level: 'Limited',
+        note: 'Designed for HTTP and HTTPS, with HTTP/1.1 pipelining.',
+      },
+      {
+        dimension: 'Scale & distribution',
+        level: 'Adequate',
+        note: 'Worker threads help locally, but there is no native distributed controller.',
+      },
+      {
+        dimension: 'Reporting & analysis',
+        level: 'Limited',
+        note: 'Useful terminal summaries lack durable history and comparison views.',
+      },
+      {
+        dimension: 'CI/CD & automation',
+        level: 'Adequate',
+        note: 'The command and JavaScript API are simple to place in a build script.',
+      },
+      {
+        dimension: 'Cost & licensing',
+        level: 'Strong',
+        note: 'MIT licensed and available through npm without a service account.',
+      },
+      {
+        dimension: 'AI features',
+        level: 'Limited',
+        note: 'No native AI authoring or analysis features are included.',
+      },
+    ],
+    pros: [
+      'Fast installation and immediate terminal feedback',
+      'CLI and JavaScript API suit Node.js repositories',
+      'Supports pipelining and local worker threads',
+      'MIT licensed with no hosted account required',
+    ],
+    cons: [
+      'CPU bound Node.js client can become the bottleneck',
+      'HTTP focused and not a browser test tool',
+      'No native distributed execution or result history',
+      'Business workflows become custom application code',
+    ],
+    gettingStarted: {
+      install: 'npm exec --yes --package autocannon -- autocannon --help',
+      firstRun: 'autocannon -c 5 -a 100 http://127.0.0.1:4310/',
+      learningCurve:
+        'Minutes for a fixed endpoint run; longer when custom request setup and client saturation matter.',
+    },
+  },
 ];
 
 export const reviewBySlug = new Map(reviews.map((r) => [r.slug, r]));
