@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { tools } from '../data/tools';
-import { getReview } from '../data/reviews';
+import { getReview, reviews } from '../data/reviews';
 import {
   aboutTitle,
   categoryTitle,
@@ -67,7 +67,10 @@ describe('page meta builders', () => {
       'Performance testing tool reviews (2026): verdicts, ratings, pros & cons',
     );
     expect(reviewsIndexDescription()).toContain(
-      `${getReview('grafana-k6')!.reviewedAt}`,
+      `${reviews
+        .map((item) => item.reviewedAt)
+        .sort()
+        .at(-1)}`,
     );
   });
 });

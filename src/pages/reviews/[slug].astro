@@ -418,20 +418,23 @@ const moreReviews = reviews
                 <h2>Getting started</h2>
                 <span class="review-tag mono">Minutes to first script</span>
               </div>
-              <div class="review-terminal">
-                {review.gettingStarted.install && (
-                  <div>
-                    <span>$ </span>
-                    {review.gettingStarted.install}
-                  </div>
-                )}
-                {review.gettingStarted.firstRun && (
-                  <div>
-                    <span>$ </span>
-                    {review.gettingStarted.firstRun}
-                  </div>
-                )}
-              </div>
+              {(review.gettingStarted.install ||
+                review.gettingStarted.firstRun) && (
+                <div class="review-terminal">
+                  {review.gettingStarted.install && (
+                    <div>
+                      <span>$ </span>
+                      {review.gettingStarted.install}
+                    </div>
+                  )}
+                  {review.gettingStarted.firstRun && (
+                    <div>
+                      <span>$ </span>
+                      {review.gettingStarted.firstRun}
+                    </div>
+                  )}
+                </div>
+              )}
               <p class="review-section-lead review-getting-started-copy">
                 {review.gettingStarted.learningCurve}
               </p>
