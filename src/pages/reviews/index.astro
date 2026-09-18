@@ -56,23 +56,24 @@ const updated = reviews
             review.verdict;
           return (
             <article class="review-card panel">
-              <span class="review-card-kicker mono">
-                <span
-                  class:list={[
-                    'review-kind',
-                    review.handsOn
-                      ? 'review-kind--hands-on'
-                      : 'review-kind--desk',
-                  ]}
-                >
-                  <i aria-hidden="true" />
-                  {review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'}
+              <div class="review-card-head">
+                <span class="review-card-kicker mono">
+                  <span
+                    class:list={[
+                      'review-kind',
+                      review.handsOn
+                        ? 'review-kind--hands-on'
+                        : 'review-kind--desk',
+                    ]}
+                  >
+                    <i aria-hidden="true" />
+                    {review.handsOn ? 'HANDS-ON' : 'DESK REVIEW'}
+                  </span>
+                  <time datetime={review.reviewedAt}>{review.reviewedAt}</time>
                 </span>
-                <time datetime={review.reviewedAt}>{review.reviewedAt}</time>
-              </span>
-              <h2>
-                {tool.name} review <VerifiedBadge tool={tool} size="sm" />
-              </h2>
+                <VerifiedBadge tool={tool} size="md" />
+              </div>
+              <h2>{tool.name} review</h2>
               <p>{summary}</p>
               <a
                 class="review-card-link mono"
@@ -147,9 +148,20 @@ const updated = reviews
     border-color: var(--color-teal-300);
     transform: translateY(-2px);
   }
+  .review-card-head {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .review-card-head :global(.verified-badge) {
+    flex: none;
+    margin-top: -4px;
+  }
   .review-card-kicker {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
   }
   .review-kind {
@@ -211,7 +223,8 @@ const updated = reviews
     color: var(--color-surface-100);
     font-size: 24px;
     letter-spacing: -0.04em;
-    margin: 18px 0 0;
+    margin: 16px 0 0;
+    text-wrap: balance;
   }
   .review-card p {
     color: var(--color-surface-300);
