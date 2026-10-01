@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Seo from '../components/Seo.astro';
+import EthicalAd from '../components/EthicalAd.astro';
+import { resolveEthicalAdsPublisher } from '../lib/ethicalAds';
 import { baseUrl } from '../lib/urls';
 import { homeDescription, homeTitle } from '../lib/pageMeta';
 
@@ -13,7 +15,13 @@ const {
   ogType = 'website',
   markdownHref,
   noIndex = false,
+  adKeywords = [],
+  showAd = true,
 } = Astro.props;
+
+const adPublisher = showAd
+  ? resolveEthicalAdsPublisher(import.meta.env.PUBLIC_ETHICALADS_PUBLISHER)
+  : null;
 ---
 
 <!doctype html>
@@ -51,5 +59,6 @@ const {
   </head>
   <body class="console-grid">
     <slot />
+    {adPublisher && <EthicalAd publisher={adPublisher} keywords={adKeywords} />}
   </body>
 </html>

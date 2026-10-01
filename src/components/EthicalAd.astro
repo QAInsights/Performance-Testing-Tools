@@ -1,0 +1,70 @@
+---
+/**
+ * EthicalAd - the site's single floating EthicalAds placement plus the client script.
+ *
+ * Rendered once by ConsoleLayout (EthicalAds allows one ad per page). The
+ * inline script picks the placement for the viewport (FLOATING_AD_PLACEMENTS),
+ * then loads the client. While the footer ad is filled its height is exposed
+ * as --ea-float-h so the page and the compare tray can clear it. The site is
+ * dark-only, so the slot always uses the EthicalAds dark theme.
+ */
+import {
+  ETHICAL_ADS_CAMPAIGN_TYPES,
+  ETHICAL_ADS_CLIENT_SRC,
+  FLOATING_AD_PLACEMENTS,
+  FLOATING_AD_WIDE_QUERY,
+  SITE_AD_KEYWORDS,
+  adKeywords,
+} from '../lib/ethicalAds';
+
+interface Props {
+  publisher: string;
+  keywords?: ReadonlyArray<string | undefined | null>;
+}
+
+const { publisher, keywords = [] } = Astro.props;
+const keywordList = adKeywords([...SITE_AD_KEYWORDS, ...keywords]);
+---
+
+<div
+  class="ea-slot dark flat"
+  data-ea-publisher={publisher}
+  data-ea-keywords={keywordList}
+  data-ea-campaign-types={ETHICAL_ADS_CAMPAIGN_TYPES}
+  data-ea-placements={JSON.stringify(FLOATING_AD_PLACEMENTS)}
+  data-ea-wide-query={FLOATING_AD_WIDE_QUERY}
+  data-ea-client={ETHICAL_ADS_CLIENT_SRC}
+>
+</div>
+<script is:inline>
+  (() => {
+    const slot = document.currentScript.previousElementSibling;
+    const placements = JSON.parse(slot.dataset.eaPlacements);
+    const placement = window.matchMedia(slot.dataset.eaWideQuery).matches
+      ? placements.wide
+      : placements.narrow;
+    slot.id = placement.id;
+    slot.setAttribute('data-ea-type', placement.type);
+    slot.setAttribute('data-ea-style', placement.style);
+
+    const root = document.documentElement;
+    const sync = () => {
+      const footer =
+        slot.classList.contains('loaded') && placement.style === 'fixedfooter';
+      root.style.setProperty(
+        '--ea-float-h',
+        footer ? `${slot.offsetHeight}px` : '0px',
+      );
+    };
+    new ResizeObserver(sync).observe(slot);
+    new MutationObserver(sync).observe(slot, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    const client = document.createElement('script');
+    client.async = true;
+    client.src = slot.dataset.eaClient;
+    document.head.appendChild(client);
+  })();
+</script>
