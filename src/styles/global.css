@@ -362,6 +362,13 @@ input[type='checkbox'].signal-check:active,
   stroke-width: 2;
   vector-effect: non-scaling-stroke;
 }
+/* EthicalAds clearance (see EthicalAd.astro) */
+body:has([data-ea-style='fixedfooter'].loaded) {
+  padding-bottom: var(--ea-float-h, 0px);
+}
+body:has([data-ea-style='fixedfooter'].loaded) .compare-tray {
+  bottom: calc(16px + var(--ea-float-h, 0px));
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

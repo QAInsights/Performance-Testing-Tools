@@ -101,6 +101,7 @@ const reviewSummary =
   ogImage={siteUrl(`og/${tool.slug}.png`)}
   ogType="article"
   markdownHref={siteUrl(`tools/${tool.slug}.md`)}
+  adKeywords={[tool.category, tool.name, ...tool.protocols]}
   canonical={absoluteUrl(`tools/${tool.slug}`)}
   structuredData={[
     toolSoftwareApplication(tool, enrichment),
