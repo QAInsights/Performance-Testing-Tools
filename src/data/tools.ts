@@ -2848,6 +2848,26 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['messaging', 'kafka', 'pulsar', 'java'],
   }),
+  makeTool({
+    slug: 'baseline11',
+    name: 'Baseline11',
+    vendor: 'Baseline11',
+    url: 'https://baseline11.com/',
+    description:
+      'Cloud load testing platform that runs uploaded JMeter JMX plans across distributed AWS regions with real-time metrics.',
+    longDescription:
+      'Baseline11 is a cloud platform for running JMeter load tests. Users upload a JMX file, pick the AWS regions to generate traffic from, and watch live response times, error rates, and throughput on a centralized dashboard, followed by detailed post-test reports. It also bundles free utilities such as virtual user and pacing calculators and a JSON-to-JMX converter.',
+    category: 'Cloud Load Testing',
+    license: 'Freemium',
+    pricingModel: 'Free tier (1 test); paid plans from $65/mo.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['XML'],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    cloudBased: true,
+    tags: ['saas', 'jmeter', 'aws', 'distributed-load'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
