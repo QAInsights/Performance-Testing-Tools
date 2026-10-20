@@ -2868,6 +2868,43 @@ export const tools: Tool[] = [
     cloudBased: true,
     tags: ['saas', 'jmeter', 'aws', 'distributed-load'],
   }),
+  makeTool({
+    slug: 'vegaload',
+    name: 'VegaLoad',
+    vendor: 'VegaLoad',
+    url: 'https://github.com/vegaload/vegaload',
+    repoUrl: 'https://github.com/vegaload/vegaload',
+    description:
+      'Single-binary load testing CLI with JavaScript or Python scenarios, broad protocol drivers, and a built-in MCP server for agent hosts.',
+    longDescription:
+      'VegaLoad is an open-source load testing tool distributed as one static binary. Scenarios are written in JavaScript (.vl.js) or Python, and drivers cover HTTP/1.1 and HTTP/2, gRPC, WebSocket, MQTT, Kafka, PostgreSQL, MySQL, Redis, RabbitMQ, FTP, SFTP, and raw TCP and UDP; a protocol-direct mode runs straight from CLI flags with no script at all. Runs emit a self-contained HTML report plus JSON, and support thresholds, checks, baseline gates, JUnit output, and data files for CI. A built-in MCP server registers VegaLoad with agent hosts such as Claude Code or Cursor so an agent can run tests and read results through the same commands a human would type, though every feature also works from a plain terminal.',
+    category: 'Load Testing',
+    license: 'Open Source',
+    pricingModel: 'Free; Apache License 2.0.',
+    deployment: 'Self-hosted',
+    scriptingLanguages: ['JavaScript', 'Python'],
+    protocols: [
+      'HTTP',
+      'HTTPS',
+      'HTTP/2',
+      'gRPC',
+      'WebSocket',
+      'MQTT',
+      'Kafka',
+      'PostgreSQL',
+      'MySQL',
+      'Redis',
+      'RabbitMQ',
+      'FTP',
+      'SFTP',
+      'TCP',
+      'UDP',
+    ],
+    osSupport: ['Windows', 'macOS', 'Linux'],
+    firstReleased: 2026,
+    status: 'Active',
+    tags: ['go', 'cli', 'mcp', 'multi-protocol'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
