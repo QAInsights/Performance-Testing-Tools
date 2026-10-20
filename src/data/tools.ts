@@ -2905,6 +2905,26 @@ export const tools: Tool[] = [
     status: 'Active',
     tags: ['go', 'cli', 'mcp', 'multi-protocol'],
   }),
+  makeTool({
+    slug: 'browserstack-load-testing',
+    name: 'BrowserStack Load Testing',
+    vendor: 'BrowserStack',
+    url: 'https://www.browserstack.com/load-testing',
+    description:
+      'Managed cloud platform for API and real-browser load tests that reuses JMeter, k6, Selenium, and Playwright scripts.',
+    longDescription:
+      'BrowserStack Load Testing is a fully managed cloud platform that runs protocol-level API tests at up to a million virtual users and real-browser UI load at up to a thousand concurrent browser instances on the Pro tier. Existing JMeter, k6, Gatling, and Locust scripts run for API load, and Selenium, Playwright, Nightwatch, and WebdriverIO suites drive browser load without rewrites; a low-code recorder and natural-language prompts author tests without scripting. Frontend and backend metrics are correlated in a single dashboard with APM overlays, and AI agents assist with script generation, anomaly triage, and migration from legacy tools. The Essentials plan covers 100 browser and 10,000 API virtual users with two-hour runs.',
+    category: 'Cloud Load Testing',
+    license: 'Commercial',
+    pricingModel: 'Essentials and Pro cloud plans; contact vendor for pricing.',
+    deployment: 'Cloud',
+    scriptingLanguages: ['JavaScript', 'TypeScript', 'Python', 'Java', 'XML'],
+    protocols: ['HTTP', 'HTTPS', 'Selenium'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    cloudBased: true,
+    tags: ['saas', 'real-browser', 'api', 'ai-assisted'],
+  }),
 ];
 
 const values = ['Open Source', 'Commercial', 'Freemium'];
