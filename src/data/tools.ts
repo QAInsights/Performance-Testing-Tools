@@ -2906,6 +2906,26 @@ export const tools: Tool[] = [
     tags: ['go', 'cli', 'mcp', 'multi-protocol'],
   }),
   makeTool({
+    slug: 'grafana-cloud-k6-calculator',
+    name: 'Grafana Cloud k6 Pricing Calculator',
+    vendor: 'Grafana Labs',
+    url: 'https://gck6-calculator.grafana.com/?product=gck6',
+    description:
+      'Official estimator for Grafana Cloud k6 costs based on Virtual User hours and the Fractional (v2) pricing model.',
+    longDescription:
+      'The Grafana Cloud k6 Pricing Calculator estimates monthly and yearly spend for Grafana Cloud k6 test runs. Usage is metered in Virtual User hours (VUh) under the Fractional (v2) pricing model at $0.15 per VUh, and the calculator rolls up one-time, monthly, and 12-month projections from the tests you add.',
+    category: 'Cloud Load Testing',
+    license: 'Freemium',
+    pricingModel: 'Free to use; estimates k6 usage at $0.15 per VUh.',
+    deployment: 'Cloud',
+    scriptingLanguages: [],
+    protocols: ['HTTP', 'HTTPS'],
+    osSupport: ['Browser'],
+    status: 'Active',
+    cloudBased: true,
+    tags: ['k6', 'pricing', 'calculator'],
+  }),
+  makeTool({
     slug: 'browserstack-load-testing',
     name: 'BrowserStack Load Testing',
     vendor: 'BrowserStack',
