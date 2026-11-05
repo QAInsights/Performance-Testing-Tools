@@ -168,6 +168,17 @@ const reviewSummary =
                 Source repo ↗
               </a>
             )
+          }{
+            tool.resources?.map((resource) => (
+              <a
+                class="button button--ghost"
+                href={resource.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {resource.label} ↗
+              </a>
+            ))
           }
         </div>
       </div><div class="hero-profile"><LoadProfile tool={tool} large /></div>

@@ -73,6 +73,9 @@ export function toolMarkdown(
       : []),
     `- Official: ${tool.url}`,
     tool.repoUrl ? `- Source: ${tool.repoUrl}` : '',
+    ...(tool.resources ?? []).map(
+      (resource) => `- ${resource.label}: ${resource.url}`,
+    ),
     `- Vendor: ${tool.vendor}`,
     `- Category: ${tool.category}`,
     `- License: ${tool.license} — ${tool.pricingModel}`,
