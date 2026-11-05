@@ -1,4 +1,4 @@
-export const datasetLastVerified = '2026-08-12';
+export const datasetLastVerified = '2026-11-05';
 
 export type Category =
   | 'Load Testing'
@@ -21,6 +21,8 @@ export interface Tool {
   vendor: string;
   url: string;
   repoUrl?: string;
+  /** Extra vendor resources linked from the tool page (calculators, pricing pages, docs). */
+  resources?: { label: string; url: string }[];
   description: string;
   longDescription: string;
   category: Category;
@@ -478,6 +480,12 @@ export const tools: Tool[] = [
     firstReleased: 2020,
     status: 'Active',
     cloudBased: true,
+    resources: [
+      {
+        label: 'Pricing calculator',
+        url: 'https://gck6-calculator.grafana.com/?product=gck6',
+      },
+    ],
     tags: ['k6', 'saas', 'observability'],
   }),
   makeTool({
