@@ -335,6 +335,70 @@ export const ALTERNATIVES_HUBS: AlternativesHub[] = [
       'Teams prefer code-first tools (k6, Gatling, Locust) over VU scripting C/JS packs.',
     ],
   },
+  {
+    toolSlug: 'grafana-k6',
+    headline: 'Grafana k6 alternatives',
+    intro:
+      'Teams look for k6 alternatives when they need GUI authoring, broader non-HTTP protocols, or a different cloud and reporting model. k6 remains strong for JavaScript code-first API load tests with thresholds in Git. This hub maps credible substitutes and when to stay with k6 versus switch.',
+    whenToStay: [
+      'Your team writes performance scenarios in JavaScript or TypeScript and reviews them in Git.',
+      'You want checks, thresholds, and CI gates as first-class parts of the test.',
+      'Grafana Cloud or Prometheus/Grafana observability is already your reporting home.',
+    ],
+    whenToSwitch: [
+      'You need a GUI recorder, non-developers authoring tests, or heavy plugin/protocol coverage (JDBC, JMS, FTP).',
+      'Your team prefers Python or JVM DSLs over JavaScript scenarios.',
+      'You want a SaaS that orchestrates mixed engines rather than a k6-centric cloud.',
+    ],
+  },
+  {
+    toolSlug: 'gatling',
+    headline: 'Gatling alternatives',
+    intro:
+      'Gatling alternatives come up when teams want a different language, a GUI recorder, or a cloud model outside Gatling Enterprise. Gatling remains a strong JVM code-first engine with efficient async HTTP execution and readable reports. Use this hub to compare alternatives on scripting, protocols, and operations.',
+    whenToStay: [
+      'Your performance engineers are comfortable with Scala, Java, or Kotlin simulations in Git.',
+      'You need efficient high-concurrency HTTP load with strong built-in HTML reports.',
+      'Gatling Enterprise or your own orchestration already covers distributed runs.',
+    ],
+    whenToSwitch: [
+      'The team wants JavaScript/Python authoring instead of a JVM DSL.',
+      'You need GUI recording, broad plugin protocols, or no-code authoring for mixed roles.',
+      'You prefer a fully managed cloud without Gatling Enterprise licensing.',
+    ],
+  },
+  {
+    toolSlug: 'locust',
+    headline: 'Locust alternatives',
+    intro:
+      'Locust alternatives are worth evaluating when you need a GUI, stronger enterprise reporting, or languages beyond Python. Locust stays compelling for Python teams that want user behavior as plain code and simple distributed workers. This hub compares alternatives by scripting model, deployment, and protocol reach.',
+    whenToStay: [
+      'Your team writes and maintains Python and wants load scenarios as normal code.',
+      'HTTP/WebSocket user behavior is easy to express as Locust tasks and users.',
+      'You prefer self-hosted distributed workers you can scale with simple commands.',
+    ],
+    whenToSwitch: [
+      'You need a GUI recorder, packaged enterprise protocols, or vendor support contracts.',
+      'JavaScript/TypeScript or JVM tooling is the team standard instead of Python.',
+      'You want managed cloud execution without operating your own worker fleet.',
+    ],
+  },
+  {
+    toolSlug: 'artillery',
+    headline: 'Artillery alternatives',
+    intro:
+      'Artillery alternatives matter when teams outgrow YAML-first API tests, need GUI workflows, or want different cloud economics. Artillery is strong for Node/TypeScript teams running HTTP, WebSocket, Socket.IO, and gRPC scenarios from CI. This hub helps you compare it against k6, JMeter, Gatling, Locust, and cloud platforms.',
+    whenToStay: [
+      'Your team is comfortable with YAML scenarios plus JavaScript/TypeScript processors.',
+      'You need HTTP, WebSocket, Socket.IO, or gRPC coverage in a developer-first workflow.',
+      'Serverless distribution or Artillery Cloud fits your CI and reporting model.',
+    ],
+    whenToSwitch: [
+      'You need GUI recording, JDBC/JMS/FTP coverage, or a large plugin marketplace.',
+      'Your team prefers Python or JVM code-first tools over Node.js scenarios.',
+      'You want vendor-neutral cloud execution of existing JMeter or k6 assets.',
+    ],
+  },
 ];
 
 export function comparisonByPath(path: string): ComparisonSpec | undefined {

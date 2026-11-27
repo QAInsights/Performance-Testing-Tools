@@ -173,6 +173,21 @@ export const GUIDE_LANDINGS: LandingPage[] = [
     ].join('\n\n'),
     match: { discontinued: true },
   },
+  {
+    slug: 'how-to-choose-cloud-load-testing-tool',
+    publishedAt: '2026-11-27',
+    kind: 'guide',
+    title: 'How to choose a cloud load testing tool',
+    description:
+      'Decision guide for picking managed cloud load testing platforms by script compatibility, pricing unit, regions, and observability.',
+    intro: [
+      'Cloud load testing tools remove the generator-ops burden: you bring scripts, they bring elastic capacity, regions, and reporting. The hard part is choosing one that matches the scripts you already own, the pricing unit you can forecast, and the observability your team trusts during an incident.',
+      'Start with script compatibility. BlazeMeter, OctoPerf, Azure Load Testing, and other platforms can run JMeter assets; Grafana Cloud k6 runs k6; Gatling Enterprise runs Gatling simulations. Reusing proven scripts is usually cheaper than rewriting them for a new engine, even if the new engine looks nicer.',
+      'Next compare pricing units and ceilings. Virtual user hours, test credits, concurrent-user caps, and region availability change the real cost of a weekly regression suite. Ask for a quote against your peak concurrency and test duration, not just the entry price on the marketing page.',
+      'Finally check where results live. A cloud platform that correlates load with your APM, logs, and traces shortens debugging; a siloed dashboard adds swivel-chair time. Validate private-location support, data residency, SSO, and CI integration before you standardize. Use the tool pages below to compare deployment, license, and status, then run the same scenario through two finalists.',
+    ].join('\n\n'),
+    match: { deployment: 'Cloud' },
+  },
 ];
 
 export function allLandings(): LandingPage[] {

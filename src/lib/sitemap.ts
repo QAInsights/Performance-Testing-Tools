@@ -1,5 +1,6 @@
 import { datasetLastVerified } from '../data/tools';
 import { comparisonByPath } from '../data/comparisons';
+import { allLandings } from '../data/landings';
 import { reviews } from '../data/reviews';
 import { siteBase } from '../config/site';
 import { getRawEnrichment } from './enrichmentData';
@@ -43,6 +44,14 @@ export function sitemapLastmod(page: string, base = siteBase): string {
   const vsMatch = path.match(/^\/vs\/([^/]+)$/);
   if (vsMatch) {
     return comparisonByPath(vsMatch[1])?.publishedAt ?? datasetLastVerified;
+  }
+  const guideMatch = path.match(/^\/guides\/([^/]+)$/);
+  if (guideMatch) {
+    return (
+      allLandings().find(
+        (landing) => landing.kind === 'guide' && landing.slug === guideMatch[1],
+      )?.publishedAt ?? datasetLastVerified
+    );
   }
   if (!match) return datasetLastVerified;
 
