@@ -120,6 +120,9 @@ describe('SEO structured data', () => {
         .sort()
         .at(-1),
     );
+    expect(
+      sitemapLastmod('https://perf.jmeter.ai/vs/apache-jmeter-vs-locust/'),
+    ).toBe('2026-11-27');
   });
 
   it('serializes valid JSON-LD for directory and tool records', () => {

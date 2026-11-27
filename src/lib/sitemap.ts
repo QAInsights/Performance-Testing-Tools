@@ -1,4 +1,5 @@
 import { datasetLastVerified } from '../data/tools';
+import { comparisonByPath } from '../data/comparisons';
 import { reviews } from '../data/reviews';
 import { siteBase } from '../config/site';
 import { getRawEnrichment } from './enrichmentData';
@@ -38,6 +39,10 @@ export function sitemapLastmod(page: string, base = siteBase): string {
       reviews.find((review) => review.slug === reviewMatch[1])?.reviewedAt ||
       datasetLastVerified
     );
+  }
+  const vsMatch = path.match(/^\/vs\/([^/]+)$/);
+  if (vsMatch) {
+    return comparisonByPath(vsMatch[1])?.publishedAt ?? datasetLastVerified;
   }
   if (!match) return datasetLastVerified;
 

@@ -13,7 +13,11 @@ import { bestFor, notBestFor } from './toolEntity';
  */
 const MIN_DECISIONS = 4;
 const MIN_SWITCH_TRIGGERS = 3;
-const MAX_DERIVED_PAIRS = 48;
+/**
+ * High enough that Tier-A promotions never evict an already-published Tier-B
+ * path: evicted pairs 404 for anyone holding a Test Rig share link.
+ */
+const MAX_DERIVED_PAIRS = 64;
 /** Keeps one popular tool from pairing with the whole catalog. */
 const MAX_PAIRS_PER_TOOL = 8;
 const MIN_HUB_PEERS = 5;
