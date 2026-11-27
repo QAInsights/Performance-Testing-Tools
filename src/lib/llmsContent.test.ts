@@ -26,7 +26,7 @@ describe('llms content builders', () => {
       expect(text).toContain(tool.name);
     }
     expect(text).toContain(
-      '- [Apache JMeter vs Locust](https://perf.jmeter.ai/vs/apache-jmeter-vs-locust/) The practical split is the authoring language: Java, Groovy for Apache JMeter, Python for Locust.',
+      '- [JMeter vs Locust](https://perf.jmeter.ai/vs/apache-jmeter-vs-locust/) Apache JMeter is a Java GUI and plugin ecosystem for multi-protocol load tests',
     );
   });
 

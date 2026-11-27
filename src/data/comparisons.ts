@@ -169,6 +169,126 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
       'POC both with the same SLA thresholds before standardizing.',
     ],
   },
+  {
+    pairPath: 'apache-jmeter-vs-locust',
+    publishedAt: '2026-11-27',
+    leftSlug: 'apache-jmeter',
+    rightSlug: 'locust',
+    leftLabel: 'JMeter',
+    rightLabel: 'Locust',
+    answerBox:
+      'Apache JMeter is a Java GUI and plugin ecosystem for multi-protocol load tests with JDBC, JMS, and FTP reach. Locust is a Python code-first framework where user behavior is plain code with a simple distributed model. Choose JMeter for GUI authoring and protocol breadth; choose Locust when the team writes Python and tests belong in Git.',
+    verdict:
+      'This pair splits on who authors the test. JMeter serves mixed teams where testers record and correlate in a GUI, then scale with plugins or cloud runners. Locust serves Python engineering teams that version scenarios like application code and distribute workers with almost no ceremony. Many shops run both: JMeter for enterprise protocol coverage, Locust for service-level developer-driven tests.',
+    decisions: [
+      'Pick JMeter when testers author in a GUI or protocols beyond HTTP/WebSocket matter.',
+      'Pick Locust when Python is the team language and scenarios live in pull requests.',
+      'Prefer JMeter for JDBC, JMS, FTP, and its large plugin catalog.',
+      'Prefer Locust for pure HTTP/WebSocket services with elastic worker scaling.',
+      'Consider cloud: BlazeMeter, OctoPerf, or Azure Load Testing run JMeter; Locust scales on your own workers or Azure Load Testing.',
+      'Run the same endpoint mix on both and compare correlation effort before standardizing.',
+    ],
+  },
+  {
+    pairPath: 'apache-jmeter-vs-artillery',
+    publishedAt: '2026-11-27',
+    leftSlug: 'apache-jmeter',
+    rightSlug: 'artillery',
+    leftLabel: 'JMeter',
+    rightLabel: 'Artillery',
+    answerBox:
+      'Apache JMeter is a Java GUI and plugin ecosystem for multi-protocol load tests across teams of any skill mix. Artillery is a developer-first Node toolkit with YAML scenarios, JavaScript processors, and serverless distribution. Choose JMeter for recorder workflows and plugin depth; choose Artillery for code-first Node teams testing modern APIs.',
+    verdict:
+      'Artillery is the lighter authoring experience for API-heavy JavaScript shops: declarative YAML, full npm access in processors, and Lambda-based distribution from your own cloud account. JMeter answers with decades of protocol coverage, a recorder non-developers can use, and a plugin market that covers JDBC, JMS, and legacy systems. The overlap is HTTP load; everything outside it favors JMeter.',
+    decisions: [
+      'Choose JMeter when GUI recording or non-HTTP protocols are non-negotiable.',
+      'Choose Artillery when scenarios should read as YAML and custom logic lives in Node.js.',
+      'Prefer Artillery for serverless distribution without managing injector fleets.',
+      'Prefer JMeter for distributed controller grids and enterprise analysis workflows.',
+      'Compare reporting: JMeter HTML dashboards vs Artillery Cloud history.',
+      'Validate WebSocket and messaging needs on both before committing.',
+    ],
+  },
+  {
+    pairPath: 'apache-jmeter-vs-neoload',
+    publishedAt: '2026-11-27',
+    leftSlug: 'apache-jmeter',
+    rightSlug: 'neoload',
+    leftLabel: 'JMeter',
+    rightLabel: 'NeoLoad',
+    answerBox:
+      'Apache JMeter is free open-source multi-protocol load testing with a GUI and a vast plugin ecosystem. NeoLoad is a commercial Tricentis platform with automatic correlation, as-code YAML projects, and enterprise governance. Choose JMeter for zero license cost and community depth; choose NeoLoad for faster enterprise authoring with vendor support.',
+    verdict:
+      'NeoLoad earns its price with automatic correlation, packaged-app protocol support, and Dockerized load generators that fit modern pipelines — work that costs real scripting hours in JMeter. JMeter counters with no license cost, a larger community, and cloud runners like BlazeMeter, OctoPerf, and Azure Load Testing. Enterprise buyers pick NeoLoad to modernize workflow; cost-first teams stay with JMeter.',
+    decisions: [
+      'Stay with JMeter when license budget is zero and plugins cover your protocols.',
+      'Pick NeoLoad when correlation and SAP/Citrix coverage save more than the license costs.',
+      'Compare total cost: free JMeter plus cloud runners vs NeoLoad concurrent-user tiers.',
+      'Prefer NeoLoad for GUI-assisted as-code workflows across large QA teams.',
+      'Hybrid setups work: open source engines for APIs, NeoLoad for packaged apps.',
+      'Run a representative business journey on both before signing anything.',
+    ],
+  },
+  {
+    pairPath: 'gatling-vs-artillery',
+    publishedAt: '2026-11-27',
+    leftSlug: 'gatling',
+    rightSlug: 'artillery',
+    leftLabel: 'Gatling',
+    rightLabel: 'Artillery',
+    answerBox:
+      'Gatling is a JVM code-first load engine with typed simulations, a high-throughput asynchronous core, and the best built-in HTML report. Artillery is a Node-first toolkit with declarative YAML scenarios and serverless distribution. Polyglot or JVM teams lean Gatling; Node-centric teams lean Artillery.',
+    verdict:
+      'Gatling brings engineering rigor: scenarios compile, the asynchronous engine sustains high concurrency per node, and reports are excellent out of the box, with Gatling Enterprise adding distribution and team controls. Artillery brings velocity: YAML anyone can read, processors with full npm access, and Lambda or Fargate runs from your own account. Pick on language home and reporting needs, not marketing.',
+    decisions: [
+      'Prefer Gatling when the team owns JVM code and wants typed, reviewable scenarios.',
+      'Prefer Artillery when the stack is Node and YAML readability matters.',
+      'Compare per-node efficiency: Gatling’s engine usually needs fewer injectors.',
+      'Compare distribution: Gatling Enterprise vs Artillery’s own-cloud Lambda model.',
+      'Check protocol specifics: Gatling on SSE/JMS, Artillery on Socket.IO/MQTT flavor.',
+      'POC the hardest scenario on both, not the hello-world endpoint.',
+    ],
+  },
+  {
+    pairPath: 'grafana-k6-vs-azure-load-testing',
+    publishedAt: '2026-11-27',
+    leftSlug: 'grafana-k6',
+    rightSlug: 'azure-load-testing',
+    leftLabel: 'k6',
+    rightLabel: 'Azure Load Testing',
+    answerBox:
+      'Grafana k6 is an open-source JavaScript load tool with thresholds, Grafana observability, and a cloud upsell. Azure Load Testing is a managed Azure service that runs JMeter or Locust plans with server-side correlation. Choose k6 for developer-owned JS tests anywhere; choose Azure Load Testing when workloads and pipelines already live in Azure.',
+    verdict:
+      'Azure Load Testing is the shortest path for Azure shops: upload a JMX or locustfile, pick engine instances and regions, and correlate client metrics with Azure Monitor data on one timeline. k6 is the better default for teams that want version-controlled JavaScript, thresholds as quality gates, and freedom from any single cloud. Mixing is common: k6 for service pipelines everywhere, Azure Load Testing where Azure correlation justifies the managed cost.',
+    decisions: [
+      'Pick k6 when tests must run in any cloud or CI without a vendor account.',
+      'Pick Azure Load Testing when your app, data, and pipelines already live in Azure.',
+      'Compare engines: k6 scripts vs JMeter/Locust assets you already own.',
+      'Price against reality: VUH metering vs Azure consumption plus free monthly quota.',
+      'Confirm identity and networking: Azure VNet injection vs k6 private load zones.',
+      'Pilot both against the same staging target before committing a gate.',
+    ],
+  },
+  {
+    pairPath: 'gatling-vs-azure-load-testing',
+    publishedAt: '2026-11-27',
+    leftSlug: 'gatling',
+    rightSlug: 'azure-load-testing',
+    leftLabel: 'Gatling',
+    rightLabel: 'Azure Load Testing',
+    answerBox:
+      'Gatling is a JVM code-first load engine for engineer-owned HTTP performance with strong reporting. Azure Load Testing is a managed Azure service that runs JMeter or Locust at scale with server-side correlation. Choose Gatling for typed simulations in Git; choose Azure Load Testing for managed Azure execution of existing JMX or Locust assets.',
+    verdict:
+      'Gatling suits teams that treat load tests as code and want an efficient engine with excellent local reports, plus Gatling Enterprise when distribution and governance arrive. Azure Load Testing suits Azure-centric organizations that need managed injectors and Monitor correlation without building a grid. If your team writes Gatling simulations today, neither is a drop-in replacement for the other — weigh engine fit against platform convenience.',
+    decisions: [
+      'Stay with Gatling when JVM simulations and local reports carry the program.',
+      'Adopt Azure Load Testing when Azure hosts the app and Monitor correlation matters.',
+      'Reuse matters: existing Gatling suites argue for Gatling; JMeter assets argue for Azure.',
+      'Compare distribution cost: Gatling Enterprise credits vs Azure consumption pricing.',
+      'Confirm protocol lists: SSE/JMS needs favor Gatling; JDBC plus Azure services favor Azure.',
+      'Validate CI integration: k6-style thresholds in code vs Azure pipeline tasks.',
+    ],
+  },
 ];
 
 /** Hub pages at /alternatives/{slug} */
