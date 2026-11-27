@@ -1,0 +1,175 @@
+---
+import ConsoleLayout from '../layouts/ConsoleLayout.astro';
+import Footer from '../components/Footer.astro';
+import { datasetLastVerified } from '../data/tools';
+import {
+  FEATURED_SLOT_COUNT,
+  SPONSOR_TIERS,
+  sponsorInquiryUrl,
+} from '../data/sponsors';
+import { breadcrumbs } from '../lib/seo';
+import { absoluteUrl, siteUrl } from '../lib/urls';
+import '../styles/editorial.css';
+---
+
+<ConsoleLayout
+  title="Sponsor Performance Testing Tools · Featured slots"
+  description="Clearly labeled featured slots and sponsorship options for the Performance Testing Tools directory."
+  ogType="article"
+  canonical={absoluteUrl('sponsors')}
+  showAd={false}
+  structuredData={[
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      { name: 'Sponsors', path: 'sponsors' },
+    ]),
+  ]}
+>
+  <main class="editorial-page sponsor-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Directory</a><span>/</span>
+      <strong>Sponsors</strong>
+    </nav>
+    <p class="eyebrow">SPONSORSHIP / SOFT LAUNCH</p>
+    <h1>Sponsor the performance tooling map</h1>
+    <div class="answer-box">
+      <span class="answer-box-label">Answer</span>
+      {FEATURED_SLOT_COUNT} featured placements are available on the homepage. Every
+      placement is labeled sponsored, links to the existing tool page, and is kept
+      separate from filters, ranking, comparison verdicts, and curator picks.
+    </div>
+
+    <section class="editorial-section">
+      <h2>Why sponsor this directory</h2>
+      <div class="editorial-prose">
+        <p>
+          Engineers land on tool entity pages, static vs pages, and alternatives
+          hubs while shortlisting. A featured slot puts a vendor in that
+          buyer-intent path without pretending to be an editorial
+          recommendation.
+        </p>
+        <p>
+          The directory is maintained by QAInsights and the jmeter.ai ecosystem.
+          Last shared verification: {datasetLastVerified}. The machine-readable
+          catalog exports a featured boolean so agents can distinguish paid
+          placement from editorial picks.
+        </p>
+      </div>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Sponsorship options</h2>
+      <div class="sponsor-tier-grid">
+        {
+          SPONSOR_TIERS.map((tier) => (
+            <article class="panel sponsor-tier" data-sponsor-tier={tier.name}>
+              <p class="eyebrow">{tier.label}</p>
+              <h3>{tier.name}</h3>
+              <p>{tier.summary}</p>
+              <ul>
+                {tier.includes.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Editorial rules</h2>
+      <ul class="decision-list trust-list">
+        <li>Always labeled sponsored.</li>
+        <li>Personal and general picks remain editorially independent.</li>
+        <li>Never hide discontinued status.</li>
+        <li>
+          Sponsorship does not change filters, ranking, comparison verdicts, or
+          lifecycle metadata.
+        </li>
+        <li>
+          The featured flag is exported to tools.json as a boolean so agents can
+          distinguish paid placement from editorial picks.
+        </li>
+      </ul>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Pricing and availability</h2>
+      <p class="sponsor-note">
+        We are soft-launching {FEATURED_SLOT_COUNT} featured slots and keeping rates
+        out of the public catalog until availability is confirmed. Request the current
+        rate card, slot availability, and reporting options through the sponsor inquiry.
+      </p>
+      <div class="editorial-actions">
+        <a
+          class="button button--amber"
+          href={sponsorInquiryUrl}
+          target="_blank"
+          rel="noreferrer"
+          data-sponsor-cta="inquiry">Request availability ↗</a
+        >
+        <a class="button button--ghost" href={siteUrl('tools.json')}
+          >Inspect tools.json</a
+        >
+      </div>
+    </section>
+
+    <section class="cta-band panel">
+      <p>
+        Want a listing claim, a featured placement, or a compare partner pilot?
+        Open an inquiry and include the tool URL and campaign goals.
+      </p>
+      <a class="button button--amber" href={siteUrl()}>Back to directory</a>
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .sponsor-page h1 {
+    max-width: 820px;
+  }
+  .sponsor-tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .sponsor-tier {
+    padding: 18px 20px;
+  }
+  .sponsor-tier h3 {
+    color: var(--color-surface-100);
+    font-size: 19px;
+    margin: 0 0 10px;
+  }
+  .sponsor-tier p {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 12px;
+  }
+  .sponsor-tier ul {
+    color: var(--color-surface-300);
+    line-height: 1.55;
+    margin: 0;
+    padding-left: 18px;
+  }
+  .sponsor-tier li + li {
+    margin-top: 6px;
+  }
+  .trust-list {
+    max-width: 78ch;
+  }
+  .sponsor-note {
+    color: var(--color-surface-300);
+    line-height: 1.6;
+    max-width: 74ch;
+  }
+  @media (max-width: 850px) {
+    .sponsor-tier-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 import { tools, type Category } from '../data/tools';
+import { FEATURED_SLOT_COUNT } from '../data/sponsors';
 import { siteUrl } from '../lib/urls';
-import { sponsorInquiryUrl } from '../data/sponsors';
 import ToolRow from './ToolRow.astro';
 import ToolCard from './ToolCard.astro';
 import DirectorySidebar from './DirectorySidebar.astro';
@@ -27,6 +27,15 @@ const visibleTools = category
   ? tools.filter((tool) => tool.category === category)
   : tools;
 const showSponsorSlot = !category;
+const featuredTools = showSponsorSlot
+  ? tools
+      .filter((tool) => tool.featured && tool.status === 'Active')
+      .slice(0, FEATURED_SLOT_COUNT)
+  : [];
+const featuredSlots = Array.from(
+  { length: FEATURED_SLOT_COUNT },
+  (_, index) => featuredTools[index],
+);
 const categories = [...new Set(tools.map((tool) => tool.category))];
 const licenses = [...new Set(tools.map((tool) => tool.license))];
 const deployments = [...new Set(tools.map((tool) => tool.deployment))];
@@ -77,12 +86,11 @@ const optionGroups = [
         showSponsorSlot && (
           <a
             class="sponsor-slot focus-ring"
-            href={sponsorInquiryUrl}
-            target="_blank"
-            rel="noreferrer"
+            href={siteUrl('sponsors')}
+            data-sponsor-cta="topbar"
           >
             <span class="sponsor-slot-label mono">Sponsored</span>
-            <span class="sponsor-slot-title">Book this slot</span>
+            <span class="sponsor-slot-title">Featured partner slots</span>
           </a>
         )
       }
@@ -93,6 +101,54 @@ const optionGroups = [
         aria-label="Open command palette">⌘K</button
       >
     </header>
+    {
+      showSponsorSlot && (
+        <section class="featured-slots" aria-labelledby="featured-slots-title">
+          <div class="featured-slots-header">
+            <p class="eyebrow">SPONSORED / FEATURED PARTNERS</p>
+            <h2 id="featured-slots-title">
+              {FEATURED_SLOT_COUNT} clearly labeled featured placements
+            </h2>
+            <p>
+              Sponsored listings are separate from directory filters, ranking,
+              and curator picks. Open slots are available for vendors who want
+              buyer-intent visibility without changing editorial signals.
+            </p>
+          </div>
+          <div class="featured-slot-grid">
+            {featuredSlots.map((tool, index) =>
+              tool ? (
+                <a
+                  class="featured-slot panel focus-ring"
+                  href={siteUrl(`tools/${tool.slug}`)}
+                  rel="sponsored"
+                  data-sponsor-slot={index + 1}
+                >
+                  <span class="featured-slot-label mono">Sponsored</span>
+                  <strong>{tool.name}</strong>
+                  <small>
+                    {tool.vendor} · {tool.status} · {tool.category}
+                  </small>
+                </a>
+              ) : (
+                <a
+                  class="featured-slot panel focus-ring featured-slot--open"
+                  href={siteUrl('sponsors')}
+                  data-sponsor-slot={index + 1}
+                  data-sponsor-cta="open-slot"
+                >
+                  <span class="featured-slot-label mono">
+                    Sponsored placement
+                  </span>
+                  <strong>Featured slot {index + 1}</strong>
+                  <small>Available · labeled · no ranking changes</small>
+                </a>
+              ),
+            )}
+          </div>
+        </section>
+      )
+    }
     <DirectoryControlBar />
     <div class="results-line mono">
       <span data-results-count>{visibleTools.length}</span> signals found <span
@@ -127,9 +183,6 @@ const optionGroups = [
         >Reset filters</button
       >
     </div>
-    {
-      /* Keep footer in the main column so the sticky rail never overlays links. */
-    }
     <Footer />
   </div>
   <CompareTray />

@@ -18,6 +18,13 @@ const reviewed = Boolean(getReview(tool.slug));
   )
 }
 {
+  tool.featured && (
+    <span class="badge badge--amber" title="Paid featured placement">
+      sponsored
+    </span>
+  )
+}
+{
   tool.personalPick && (
     <span class="badge badge--amber" title="Personal pick">
       <svg class="pick-icon" viewBox="0 0 24 24" aria-hidden="true">
