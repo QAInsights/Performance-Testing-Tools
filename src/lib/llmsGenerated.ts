@@ -235,6 +235,7 @@ export function buildLlmsTxt(
     '',
     `- Full catalog with answer cards: ${absoluteUrl('llms-full.txt', origin)}`,
     `- Sitemap: ${absoluteUrl('sitemap-index.xml', origin)}`,
+    `- RSS feed (reviews, guides, comparisons): ${absoluteUrl('feed.xml', origin)}`,
     `- Directory home: ${origin.replace(/\/$/, '')}/`,
     ...categories.map(
       (category) =>

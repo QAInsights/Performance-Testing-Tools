@@ -19,9 +19,23 @@ const schemas = Array.isArray(structuredData)
 const absoluteOgImage = ogImage.startsWith('http')
   ? ogImage
   : absoluteUrl(ogImage);
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
 ---
 
 <link rel="canonical" href={absoluteUrl(canonical)} />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={siteName}
+  href={absoluteUrl('feed.xml')}
+/>
+{
+  googleVerification && (
+    <meta name="google-site-verification" content={googleVerification} />
+  )
+}
+{bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
 {
   markdownHref && (
     <link
