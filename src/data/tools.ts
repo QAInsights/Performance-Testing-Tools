@@ -37,6 +37,7 @@ export interface Tool {
   successor?: string;
   personalPick: boolean;
   generalPick: boolean;
+  featured?: boolean;
   cloudBased: boolean;
   openSource: boolean;
   commercial: boolean;

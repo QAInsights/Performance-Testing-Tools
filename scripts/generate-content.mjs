@@ -90,6 +90,7 @@ const catalogJson = {
     successor: tool.successor ?? null,
     personalPick: tool.personalPick,
     generalPick: tool.generalPick,
+    featured: tool.featured ?? false,
     tags: tool.tags,
     directoryUrl: `${siteOrigin}${joinBase(`tools/${tool.slug}`, canonicalBase)}/`,
   })),

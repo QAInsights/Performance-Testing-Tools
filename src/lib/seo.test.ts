@@ -96,6 +96,7 @@ describe('SEO structured data', () => {
       false,
     );
     expect(isSitemapPage('https://example.com/foo/about/', '/foo')).toBe(true);
+    expect(isSitemapPage('https://perf.jmeter.ai/sponsors/')).toBe(true);
     expect(isSitemapPage('https://perf.jmeter.ai/tools/apache-jmeter.md')).toBe(
       false,
     );
@@ -106,6 +107,9 @@ describe('SEO structured data', () => {
       '2026-08-11',
     );
     expect(sitemapLastmod('https://perf.jmeter.ai/about/')).toBe(
+      datasetLastVerified,
+    );
+    expect(sitemapLastmod('https://perf.jmeter.ai/sponsors/')).toBe(
       datasetLastVerified,
     );
     expect(

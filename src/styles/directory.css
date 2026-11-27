@@ -334,6 +334,72 @@
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
+.featured-slots {
+  margin: 6px 0 24px;
+}
+.featured-slots-header {
+  margin-bottom: 12px;
+}
+.featured-slots-header h2 {
+  color: var(--color-surface-100);
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+.featured-slots-header > p:last-child {
+  color: var(--color-surface-300);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 76ch;
+}
+.featured-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.featured-slot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  min-height: 96px;
+  padding: 16px 18px;
+  color: var(--color-surface-100);
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.featured-slot--open {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--color-amber-400) 55%, transparent);
+  background: color-mix(in srgb, var(--color-amber-400) 8%, transparent);
+}
+.featured-slot:hover {
+  border-color: var(--color-amber-400);
+  background: color-mix(in srgb, var(--color-amber-400) 12%, transparent);
+}
+.featured-slot-label {
+  color: var(--color-amber-400);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.featured-slot strong {
+  font-size: 17px;
+  line-height: 1.2;
+}
+.featured-slot small {
+  color: var(--color-surface-300);
+  font: 12px var(--font-mono);
+  line-height: 1.4;
+}
+@media (max-width: 760px) {
+  .featured-slot-grid {
+    grid-template-columns: 1fr;
+  }
+}
 .icon-button {
   background: transparent;
   color: var(--color-surface-100);

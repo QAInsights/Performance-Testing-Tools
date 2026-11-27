@@ -56,6 +56,11 @@ describe('generated public content', () => {
     const catalog = JSON.parse(readFileSync('public/tools.json', 'utf8'));
     expect(catalog.count).toBe(tools.length);
     expect(catalog.tools).toHaveLength(tools.length);
+    expect(
+      catalog.tools.every(
+        (tool: { featured?: unknown }) => typeof tool.featured === 'boolean',
+      ),
+    ).toBe(true);
     expect(existsSync('public/tools/apache-jmeter.json')).toBe(true);
   });
 
@@ -156,5 +161,15 @@ describe('generated public content', () => {
     expect(readFileSync('src/pages/about.astro', 'utf8')).toContain(
       'methodologyPoints.map',
     );
+  });
+
+  it('renders sponsor trust rules on the sponsors page', () => {
+    const page = readFileSync('src/pages/sponsors.astro', 'utf8');
+    expect(page).toContain('Always labeled sponsored.');
+    expect(page).toContain(
+      'Personal and general picks remain editorially independent.',
+    );
+    expect(page).toContain('Never hide discontinued status.');
+    expect(page).toContain('featured flag is exported to tools.json');
   });
 });
