@@ -98,6 +98,11 @@ export function datasetSchema(catalog = tools) {
         encodingFormat: 'text/plain',
         contentUrl: absoluteUrl('llms-full.txt'),
       },
+      {
+        '@type': 'DataDownload',
+        encodingFormat: 'text/csv',
+        contentUrl: absoluteUrl('state-of-performance-tools.csv'),
+      },
     ],
   };
 }

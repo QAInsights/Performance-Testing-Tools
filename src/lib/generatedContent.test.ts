@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { tools } from '../data/tools';
+import { datasetLastVerified, tools } from '../data/tools';
 import {
   allAlternativesHubs,
   allComparisonSpecs,
@@ -62,6 +62,19 @@ describe('generated public content', () => {
       ),
     ).toBe(true);
     expect(existsSync('public/tools/apache-jmeter.json')).toBe(true);
+  });
+
+  it('publishes the state of performance tools dataset CSV', () => {
+    expect(existsSync('public/state-of-performance-tools.csv')).toBe(true);
+    const csv = readFileSync('public/state-of-performance-tools.csv', 'utf8');
+    expect(
+      csv.startsWith('"datasetLastVerified","slug","name","vendor","category"'),
+    ).toBe(true);
+    expect(csv).toContain(`"${datasetLastVerified}"`);
+    for (const tool of tools) {
+      expect(csv).toContain(`"${tool.slug}"`);
+    }
+    expect(csv.trim().split(/\n(?=")/)).toHaveLength(tools.length + 1);
   });
 
   it('uses indexable robots directives for the default build', () => {
@@ -171,5 +184,16 @@ describe('generated public content', () => {
     );
     expect(page).toContain('Never hide discontinued status.');
     expect(page).toContain('featured flag is exported to tools.json');
+  });
+
+  it('renders the state of performance tools report', () => {
+    const page = readFileSync(
+      'src/pages/reports/state-of-performance-tools.astro',
+      'utf8',
+    );
+    expect(page).toContain('State of Performance Tools');
+    expect(page).toContain('Download dataset CSV');
+    expect(page).toContain('not a market-share study');
+    expect(page).toContain('state-of-performance-tools.csv');
   });
 });

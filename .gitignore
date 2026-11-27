@@ -9,6 +9,7 @@ public/.well-known/llms.txt
 public/robots.txt
 public/tools.json
 public/tools/
+public/state-of-performance-tools.csv
 public/og/*.svg
 public/og/*.png
 .env

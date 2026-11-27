@@ -53,6 +53,12 @@ export function sitemapLastmod(page: string, base = siteBase): string {
       )?.publishedAt ?? datasetLastVerified
     );
   }
+  if (
+    path === '/reports/state-of-performance-tools' ||
+    path === '/reports/state-of-performance-tools/'
+  ) {
+    return '2026-11-27';
+  }
   if (!match) return datasetLastVerified;
 
   return (

@@ -106,6 +106,65 @@ for (const tool of catalogJson.tools) {
   );
 }
 
+const csvCell = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
+const reportCsvHeaders = [
+  'datasetLastVerified',
+  'slug',
+  'name',
+  'vendor',
+  'category',
+  'license',
+  'pricingModel',
+  'deployment',
+  'status',
+  'firstReleased',
+  'scriptingLanguages',
+  'protocols',
+  'osSupport',
+  'personalPick',
+  'generalPick',
+  'featured',
+  'url',
+  'repoUrl',
+  'description',
+  'tags',
+  'directoryUrl',
+];
+const reportCsvLines = [
+  reportCsvHeaders.map(csvCell).join(','),
+  ...catalogJson.tools.map((tool) =>
+    [
+      datasetLastVerified,
+      tool.slug,
+      tool.name,
+      tool.vendor,
+      tool.category,
+      tool.license,
+      tool.pricingModel,
+      tool.deployment,
+      tool.status,
+      tool.firstReleased ?? '',
+      tool.scriptingLanguages.join(';'),
+      tool.protocols.join(';'),
+      tool.osSupport.join(';'),
+      tool.personalPick,
+      tool.generalPick,
+      tool.featured,
+      tool.url,
+      tool.repoUrl ?? '',
+      tool.description,
+      tool.tags.join(';'),
+      tool.directoryUrl,
+    ]
+      .map(csvCell)
+      .join(','),
+  ),
+];
+await writeFile(
+  resolve(publicDir, 'state-of-performance-tools.csv'),
+  `${reportCsvLines.join('\n')}\n`,
+);
+
 await writeFile(
   resolve(publicDir, 'robots.txt'),
   `# Performance Testing Tools — ${siteOrigin}
