@@ -115,7 +115,7 @@ describe('generated public content', () => {
 
   it('keeps markdown mirror counts aligned with the HTML routes', () => {
     expect(tools).toHaveLength(136);
-    expect(allComparisonSpecs(tools)).toHaveLength(62);
+    expect(allComparisonSpecs(tools)).toHaveLength(78);
     expect(allAlternativesHubs(tools)).toHaveLength(46);
   });
 

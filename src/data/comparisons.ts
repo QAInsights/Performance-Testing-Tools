@@ -199,7 +199,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
     answerBox:
       'Apache JMeter is a Java GUI and plugin ecosystem for multi-protocol load tests across teams of any skill mix. Artillery is a developer-first Node toolkit with YAML scenarios, JavaScript processors, and serverless distribution. Choose JMeter for recorder workflows and plugin depth; choose Artillery for code-first Node teams testing modern APIs.',
     verdict:
-      'Artillery is the lighter authoring experience for API-heavy JavaScript shops: declarative YAML, full npm access in processors, and Lambda-based distribution from your own cloud account. JMeter answers with decades of protocol coverage, a recorder non-developers can use, and a plugin market that covers JDBC, JMS, and legacy systems. The overlap is HTTP load; everything outside it favors JMeter.',
+      'Artillery is the lighter authoring experience for API-heavy JavaScript shops: declarative YAML, full npm access in processors, dedicated engines for WebSocket, Socket.IO, MQTT, and gRPC, plus Lambda-based distribution from your own cloud account. JMeter answers with decades of protocol coverage, a recorder non-developers can use, and a plugin market that covers JDBC, JMS, FTP, and legacy systems. The overlap is HTTP and messaging load; enterprise protocols beyond that favor JMeter.',
     decisions: [
       'Choose JMeter when GUI recording or non-HTTP protocols are non-negotiable.',
       'Choose Artillery when scenarios should read as YAML and custom logic lives in Node.js.',
