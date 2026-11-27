@@ -15,6 +15,10 @@ describe('llms content builders', () => {
     expect(text).toContain('## Comparisons');
     expect(text).toContain('## Methodology');
     expect(text).toContain('llms-full.txt');
+    expect(text).toContain('State of Performance Tools report');
+    expect(text).toContain(
+      'https://perf.jmeter.ai/state-of-performance-tools.csv',
+    );
     expect(text).toContain('sitemap-index.xml');
     expect(text).toContain('https://perf.jmeter.ai/tools/apache-jmeter/');
     expect(text).toContain(

@@ -1,0 +1,346 @@
+---
+import ConsoleLayout from '../../layouts/ConsoleLayout.astro';
+import Footer from '../../components/Footer.astro';
+import { datasetLastVerified, tools } from '../../data/tools';
+import { curatorPerson } from '../../lib/methodology';
+import { breadcrumbs, datasetSchema } from '../../lib/seo';
+import { absoluteUrl, siteUrl } from '../../lib/urls';
+import '../../styles/editorial.css';
+
+const reportPath = 'reports/state-of-performance-tools';
+const csvPath = 'state-of-performance-tools.csv';
+const reportPublishedAt = '2026-11-27';
+const csvHref = siteUrl(csvPath);
+const csvAbsoluteUrl = absoluteUrl(csvPath);
+
+const countValues = (values: string[]) => {
+  const counts = new Map<string, number>();
+  for (const value of values) {
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([label, count]) => ({
+      label,
+      count,
+      coverage: Math.round((count / tools.length) * 100),
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
+    .slice(0, 8);
+};
+
+const categories = countValues(tools.map((tool) => tool.category));
+const licenses = countValues(tools.map((tool) => tool.license));
+const deployments = countValues(tools.map((tool) => tool.deployment));
+const statuses = countValues(tools.map((tool) => tool.status));
+const protocols = countValues(tools.flatMap((tool) => tool.protocols));
+const languages = countValues(tools.flatMap((tool) => tool.scriptingLanguages));
+const active = tools.filter((tool) => tool.status === 'Active').length;
+const discontinued = tools.filter(
+  (tool) => tool.status === 'Discontinued',
+).length;
+const openSource = tools.filter(
+  (tool) => tool.license === 'Open Source',
+).length;
+const cloudOrHybrid = tools.filter(
+  (tool) => tool.deployment === 'Cloud' || tool.deployment === 'Hybrid',
+).length;
+
+const metrics = [
+  { label: 'Tools cataloged', value: tools.length, note: 'entity records' },
+  { label: 'Active tools', value: active, note: 'current lifecycle status' },
+  { label: 'Open source', value: openSource, note: 'Open Source license' },
+  {
+    label: 'Cloud or hybrid',
+    value: cloudOrHybrid,
+    note: 'managed or mixed deployment',
+  },
+];
+
+const sections = [
+  {
+    title: 'Categories',
+    note: 'Where the catalog is deepest by primary use case.',
+    rows: categories,
+  },
+  {
+    title: 'Licenses',
+    note: 'Open-source, commercial, and freemium mix.',
+    rows: licenses,
+  },
+  {
+    title: 'Deployment',
+    note: 'Self-hosted engines versus cloud and hybrid control planes.',
+    rows: deployments,
+  },
+  {
+    title: 'Lifecycle',
+    note: 'Discontinued entries remain visible for historical accuracy.',
+    rows: statuses,
+  },
+  {
+    title: 'Top protocols',
+    note: 'Most common declared protocol signals across tool records.',
+    rows: protocols,
+  },
+  {
+    title: 'Top scripting languages',
+    note: 'Languages teams can use to author scenarios and extensions.',
+    rows: languages,
+  },
+];
+
+const findings = [
+  `The catalog contains ${tools.length} tools across ${categories.length} primary categories.`,
+  `${active} tools are marked Active, while ${discontinued} discontinued entries are retained with successor notes where available.`,
+  `${openSource} tools use an Open Source license; commercial and freemium tools make up the rest of the catalog.`,
+  `${cloudOrHybrid} tools are cloud or hybrid deployments, showing how much of the market has moved toward managed generators and control planes.`,
+];
+---
+
+<ConsoleLayout
+  title="State of Performance Tools · 2026 dataset report"
+  description="A citation-friendly snapshot of the Performance Testing Tools catalog with category, license, deployment, lifecycle, protocol, and language distributions."
+  ogType="article"
+  canonical={absoluteUrl(reportPath)}
+  showAd={false}
+  structuredData={[
+    datasetSchema(),
+    breadcrumbs([
+      { name: 'Directory', path: '' },
+      { name: 'State of Performance Tools', path: reportPath },
+    ]),
+  ]}
+>
+  <main class="editorial-page report-page">
+    <nav class="breadcrumbs mono">
+      <a href={siteUrl()}>Directory</a><span>/</span>
+      <strong>State of Performance Tools</strong>
+    </nav>
+    <p class="eyebrow">DATASET REPORT / {reportPublishedAt}</p>
+    <h1>State of Performance Tools</h1>
+    <div class="answer-box">
+      <span class="answer-box-label">Answer</span>
+      A citation-friendly snapshot of the curated catalog, not a market-share study.
+      It summarizes {tools.length} tools by category, license, deployment, lifecycle,
+      protocol, and scripting language, with the full dataset available as CSV.
+    </div>
+
+    <section class="editorial-section">
+      <h2>Snapshot</h2>
+      <div class="report-metric-grid">
+        {
+          metrics.map((metric) => (
+            <article class="panel report-metric">
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+              <small>{metric.note}</small>
+            </article>
+          ))
+        }
+      </div>
+      <ul class="decision-list report-findings">
+        {findings.map((finding) => <li>{finding}</li>)}
+      </ul>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Distribution</h2>
+      <p class="report-note">
+        Percentages show catalog coverage: the share of tool records carrying
+        that signal. Protocol and language rows are not mutually exclusive.
+      </p>
+      <div class="report-grid">
+        {
+          sections.map((section) => (
+            <article class="panel report-card">
+              <h3>{section.title}</h3>
+              <p>{section.note}</p>
+              <div class="report-bars">
+                {section.rows.map((row) => (
+                  <div class="report-row">
+                    <div class="report-row-head mono">
+                      <span>{row.label}</span>
+                      <strong>
+                        {row.count} <small>({row.coverage}%)</small>
+                      </strong>
+                    </div>
+                    <div class="report-track" aria-hidden="true">
+                      <div
+                        class="report-bar"
+                        style={`--bar-width: ${Math.max(3, row.coverage)}%;`}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Download the dataset</h2>
+      <div class="editorial-prose">
+        <p>
+          The CSV includes one row per tool with lifecycle, licensing,
+          deployment, protocol, language, and curator-pick fields. Use it for
+          internal analysis, citation checks, or a quarterly tooling review.
+        </p>
+      </div>
+      <div class="editorial-actions">
+        <a class="button button--amber" href={csvHref} download>
+          Download dataset CSV
+        </a>
+        <a class="button button--ghost" href={siteUrl('tools.json')}>
+          Inspect tools.json
+        </a>
+      </div>
+    </section>
+
+    <section class="editorial-section">
+      <h2>Methodology and citation</h2>
+      <div class="editorial-prose">
+        <p>
+          Curated by {curatorPerson.name} of QAInsights. Counts come directly from
+          the typed catalog used to build the directory, not from vendor surveys
+          or traffic estimates. Tool status is kept visible even when a product is
+          discontinued.
+        </p>
+        <p>
+          Published {reportPublishedAt}; dataset last verified {
+            datasetLastVerified
+          }. Cite the report URL and CSV URL below when reusing the snapshot.
+        </p>
+      </div>
+      <ul class="decision-list report-citation">
+        <li><code>{absoluteUrl(reportPath)}</code></li>
+        <li><code>{csvAbsoluteUrl}</code></li>
+      </ul>
+    </section>
+
+    <section class="cta-band panel">
+      <p>
+        Need a specific cut of the catalog? Compare up to three tools in the
+        Test Rig or filter the live directory.
+      </p>
+      <a class="button button--amber" href={siteUrl()}>Open directory</a>
+    </section>
+    <Footer />
+  </main>
+</ConsoleLayout>
+
+<style>
+  .report-page h1 {
+    max-width: 820px;
+  }
+  .report-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .report-metric {
+    padding: 18px 20px;
+  }
+  .report-metric strong {
+    color: var(--color-amber-400);
+    display: block;
+    font-size: 34px;
+    line-height: 1;
+  }
+  .report-metric span {
+    color: var(--color-surface-100);
+    display: block;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+  .report-metric small,
+  .report-row-head small {
+    color: var(--color-surface-300);
+    font: 12px var(--font-mono);
+  }
+  .report-findings,
+  .report-citation {
+    max-width: 78ch;
+    margin-top: 22px;
+  }
+  .report-note {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 78ch;
+  }
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .report-card {
+    padding: 18px 20px;
+  }
+  .report-card h3 {
+    color: var(--color-surface-100);
+    font-size: 19px;
+    margin: 0 0 6px;
+  }
+  .report-card > p {
+    color: var(--color-surface-300);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+  }
+  .report-bars {
+    display: grid;
+    gap: 12px;
+  }
+  .report-row-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+  .report-row-head span {
+    color: var(--color-surface-100);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .report-row-head strong {
+    color: var(--color-teal-300);
+    white-space: nowrap;
+  }
+  .report-track {
+    background: color-mix(in srgb, var(--color-surface-700) 70%, transparent);
+    height: 6px;
+    overflow: hidden;
+  }
+  .report-bar {
+    background: linear-gradient(
+      90deg,
+      var(--color-teal-300),
+      var(--color-amber-400)
+    );
+    height: 100%;
+    width: var(--bar-width);
+  }
+  .report-citation code {
+    color: var(--color-teal-300);
+    font: 12px var(--font-mono);
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 900px) {
+    .report-metric-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .report-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .report-metric-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
