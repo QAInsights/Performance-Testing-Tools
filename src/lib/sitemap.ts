@@ -5,8 +5,14 @@ import { getRawEnrichment } from './enrichmentData';
 
 export function isSitemapPage(page: string, base = siteBase): boolean {
   const pathname = new URL(page).pathname.replace(/\/+$/, '');
-  const basePath = base === '/' ? '' : base;
-  return pathname !== `${basePath}/compare` && !/\.[^/]+$/.test(pathname);
+  const basePath = base === '/' ? '' : base.replace(/^\/+|\/+$/g, '');
+  const relative = (
+    basePath &&
+    (pathname === `/${basePath}` || pathname.startsWith(`/${basePath}/`))
+      ? pathname.slice(basePath.length + 1)
+      : pathname
+  ).replace(/^\/+/, '');
+  return relative !== 'compare' && !/\.[^/]+$/.test(relative);
 }
 
 export function sitemapLastmod(page: string, base = siteBase): string {

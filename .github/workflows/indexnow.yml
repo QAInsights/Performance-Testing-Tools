@@ -21,4 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Wait for the Vercel production deploy to finish
+        if: github.event_name == 'workflow_run'
+        run: sleep 240
       - run: npm run indexnow

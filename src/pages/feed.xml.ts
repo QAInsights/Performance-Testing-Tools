@@ -21,17 +21,18 @@ export function GET() {
       title: landing.title,
       link: absoluteUrl(landingPath(landing)),
       description: landing.description,
-      pubDate: datasetLastVerified,
+      pubDate: landing.publishedAt ?? datasetLastVerified,
     })),
     ...TIER_A_COMPARISONS.map((spec) => ({
       title: `${spec.leftLabel} vs ${spec.rightLabel}: spec comparison & verdict`,
       link: absoluteUrl(`vs/${spec.pairPath}`),
       description: spec.answerBox,
-      pubDate: datasetLastVerified,
+      pubDate: spec.publishedAt ?? datasetLastVerified,
     })),
   ];
   const lastBuildDate =
-    [...reviews.map((review) => review.reviewedAt), datasetLastVerified]
+    items
+      .map((item) => item.pubDate)
       .sort()
       .at(-1) ?? datasetLastVerified;
   const xml = buildRssFeed(

@@ -54,7 +54,7 @@ SITE_ORIGIN=https://example.com npm run build                        # another h
 ## Search Console, Bing, IndexNow and RSS
 
 - Set `PUBLIC_GOOGLE_SITE_VERIFICATION` and `PUBLIC_BING_SITE_VERIFICATION` in the Vercel project environment (or build env) to emit the `google-site-verification` / `msvalidate.01` meta tags on every page. Submit `https://perf.jmeter.ai/sitemap-index.xml` in Google Search Console and Bing Webmaster Tools.
-- IndexNow: the key file `public/<key>.txt` is committed, and `npm run indexnow` submits every sitemap URL to `https://api.indexnow.org/IndexNow` (use `-- --dry-run` to preview; set `INDEXNOW_KEY` to override the key). The `IndexNow` GitHub workflow runs it after a successful CI on `main` and weekly.
+- IndexNow: the key file `public/<key>.txt` is committed, and `npm run indexnow` submits every sitemap URL to `https://api.indexnow.org/IndexNow` (use `-- --dry-run` to preview; set `INDEXNOW_KEY` to override the key). The `IndexNow` GitHub workflow runs it after a successful CI on `main` (waiting briefly for the Vercel production deploy so the new sitemap is live) and weekly as a safety net.
 - RSS: [`/feed.xml`](https://perf.jmeter.ai/feed.xml) publishes new reviews, guides, and static comparisons. It is linked via `<link rel="alternate">` in every page head, in the footer, and in `llms.txt`.
 
 ## Dataset

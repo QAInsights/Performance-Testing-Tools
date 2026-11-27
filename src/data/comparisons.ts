@@ -6,6 +6,7 @@ export interface ComparisonSpec {
   tier?: 'A' | 'B';
   /** URL segment, e.g. apache-jmeter-vs-grafana-k6 */
   pairPath: string;
+  publishedAt?: string;
   leftSlug: string;
   rightSlug: string;
   /** Short display names for titles */
@@ -22,6 +23,7 @@ export interface ComparisonSpec {
 export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   {
     pairPath: 'apache-jmeter-vs-grafana-k6',
+    publishedAt: '2026-08-12',
     leftSlug: 'apache-jmeter',
     rightSlug: 'grafana-k6',
     leftLabel: 'JMeter',
@@ -41,6 +43,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'apache-jmeter-vs-gatling',
+    publishedAt: '2026-08-12',
     leftSlug: 'apache-jmeter',
     rightSlug: 'gatling',
     leftLabel: 'JMeter',
@@ -59,6 +62,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'grafana-k6-vs-gatling',
+    publishedAt: '2026-08-12',
     leftSlug: 'grafana-k6',
     rightSlug: 'gatling',
     leftLabel: 'k6',
@@ -77,6 +81,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'locust-vs-grafana-k6',
+    publishedAt: '2026-08-12',
     leftSlug: 'locust',
     rightSlug: 'grafana-k6',
     leftLabel: 'Locust',
@@ -94,6 +99,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'apache-jmeter-vs-loadrunner-professional',
+    publishedAt: '2026-08-12',
     leftSlug: 'apache-jmeter',
     rightSlug: 'loadrunner-professional',
     leftLabel: 'JMeter',
@@ -111,6 +117,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'blazemeter-vs-grafana-cloud-k6',
+    publishedAt: '2026-08-12',
     leftSlug: 'blazemeter',
     rightSlug: 'grafana-cloud-k6',
     leftLabel: 'BlazeMeter',
@@ -128,6 +135,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'octoperf-vs-blazemeter',
+    publishedAt: '2026-08-12',
     leftSlug: 'octoperf',
     rightSlug: 'blazemeter',
     leftLabel: 'OctoPerf',
@@ -145,6 +153,7 @@ export const TIER_A_COMPARISONS: ComparisonSpec[] = [
   },
   {
     pairPath: 'artillery-vs-grafana-k6',
+    publishedAt: '2026-08-12',
     leftSlug: 'artillery',
     rightSlug: 'grafana-k6',
     leftLabel: 'Artillery',

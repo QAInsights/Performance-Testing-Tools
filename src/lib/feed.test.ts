@@ -76,6 +76,13 @@ describe('rss feed builder', () => {
     const xml = buildRssFeed(channel, [items[0]]);
     expect(xml).toContain('<guid>https://perf.jmeter.ai/reviews/wrk/</guid>');
   });
+
+  it('derives lastBuildDate from the newest item when omitted', () => {
+    const xml = buildRssFeed({ ...channel, lastBuildDate: undefined }, items);
+    expect(xml).toContain(
+      '<lastBuildDate>Fri, 18 Sep 2026 00:00:00 GMT</lastBuildDate>',
+    );
+  });
 });
 
 describe('sitemap excludes feed and markdown endpoints', () => {
@@ -89,5 +96,21 @@ describe('sitemap excludes feed and markdown endpoints', () => {
       true,
     );
     expect(isSitemapPage('https://perf.jmeter.ai/')).toBe(true);
+  });
+
+  it('keeps dotted base-path homepages in the sitemap', () => {
+    expect(isSitemapPage('https://example.com/v1.0/', '/v1.0')).toBe(true);
+    expect(isSitemapPage('https://example.com/v1.0/about/', '/v1.0')).toBe(
+      true,
+    );
+    expect(isSitemapPage('https://example.com/v1.0/feed.xml', '/v1.0')).toBe(
+      false,
+    );
+    expect(isSitemapPage('https://example.com/v1.0/compare/', '/v1.0')).toBe(
+      false,
+    );
+    expect(
+      isSitemapPage('https://example.com/v1.0/tools/apache-jmeter.md', '/v1.0'),
+    ).toBe(false);
   });
 });

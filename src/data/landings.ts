@@ -9,6 +9,7 @@ export interface LandingPage {
   description: string;
   /** 150-300 words of unique intro (plain paragraphs, join with newlines) */
   intro: string;
+  publishedAt?: string;
   /** Optional filter applied to tools */
   match: {
     protocol?: string;
@@ -143,6 +144,7 @@ export const DEPLOYMENT_LANDINGS: LandingPage[] = [
 export const GUIDE_LANDINGS: LandingPage[] = [
   {
     slug: 'best-open-source-load-testing-tools',
+    publishedAt: '2026-08-12',
     kind: 'guide',
     title: 'Best open source load testing tools',
     description:
@@ -158,6 +160,7 @@ export const GUIDE_LANDINGS: LandingPage[] = [
   },
   {
     slug: 'discontinued-performance-testing-tools',
+    publishedAt: '2026-08-12',
     kind: 'guide',
     title: 'Discontinued performance testing tools and successors',
     description:
