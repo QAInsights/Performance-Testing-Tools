@@ -56,15 +56,18 @@ test('directory search keeps curated capability terms matchable', async ({
 }) => {
   await page.goto(path());
   await page.getByLabel('Search tools').fill('test data');
+  await expect(page.locator('tr[data-tool="apache-jmeter"]')).toBeHidden();
   await expect(page.locator('tr[data-tool="blazemeter"]')).toBeVisible();
   await page.getByLabel('Search tools').fill('single machine');
+  await expect(page.locator('tr[data-tool="apache-jmeter"]')).toBeHidden();
   await expect(page.locator('tr[data-tool="wrk"]')).toBeVisible();
 });
 
 test('python filter keeps Locust-capable Azure Load Testing visible', async ({
   page,
 }) => {
-  await page.goto(`${path()}?q=Locust&language=Python`);
+  await page.goto(`${path()}?q=JMeter&language=Python`);
+  await expect(page.locator('tr[data-tool="apache-jmeter"]')).toBeHidden();
   await expect(
     page.locator('tr[data-tool="azure-load-testing"]'),
   ).toBeVisible();
