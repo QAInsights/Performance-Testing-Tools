@@ -76,9 +76,9 @@ export const tools: Tool[] = [
     url: 'https://jmeter.apache.org/',
     repoUrl: 'https://github.com/apache/jmeter',
     description:
-      'Open-source Java application for load testing and measuring performance of web and other services.',
+      'Open-source Java load testing tool for web, API, database, and messaging performance tests.',
     longDescription:
-      'Apache JMeter is a Java-based load and performance testing application. It supports HTTP, JDBC, JMS, FTP, TCP, and other protocols through test elements and plugins.',
+      'Apache JMeter is a mature, self-hosted load and performance testing application built on Java. It models workloads with Thread Groups, samplers, timers, assertions, and listeners, and supports HTTP/HTTPS, JDBC, JMS, FTP, and TCP through built-in elements and plugins. Teams choose JMeter when they need broad protocol coverage, extensibility, and CI/CD-friendly CLI runs, but it requires JVM tuning and test-plan discipline for large-scale or highly dynamic scenarios.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; Apache License 2.0.',
@@ -98,9 +98,9 @@ export const tools: Tool[] = [
     vendor: 'Perforce',
     url: 'https://www.blazemeter.com/',
     description:
-      'Cloud platform for performance testing, test data, continuous testing, and observability workflows.',
+      'Cloud-based continuous testing platform with test data for JMeter, k6, Gatling, and API performance tests.',
     longDescription:
-      'BlazeMeter provides browser-based orchestration for open-source and commercial testing tools. It can run distributed tests and integrate results into CI/CD and reporting workflows.',
+      'BlazeMeter is a SaaS performance and continuous testing platform from Perforce. It can orchestrate open-source scripts such as Apache JMeter, Taurus/YAML, k6, and Gatling, while adding managed load generation, test data, reporting, and CI/CD integrations. It fits teams that want cloud scale without managing injector infrastructure; costs and workflow fit should be validated for long-running or highly customized enterprise scenarios.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel:
@@ -120,9 +120,9 @@ export const tools: Tool[] = [
     vendor: 'OpenText',
     url: 'https://www.opentext.com/products/loadrunner-professional',
     description:
-      'Enterprise performance testing software for web, API, packaged, and legacy applications.',
+      'Enterprise performance testing suite for web, API, packaged, and legacy protocol workloads.',
     longDescription:
-      'LoadRunner Professional provides protocol-based virtual users, correlation, analysis, and controller-based execution. It is the on-premises successor to Micro Focus LoadRunner.',
+      'LoadRunner Professional is OpenText’s on-premises enterprise performance testing product for complex application landscapes. It combines VuGen scripting, Controller-based execution, Load Generators, and Analysis to test HTTP, WebSocket, SAP, Citrix, Oracle, and many other protocols. It suits organizations that need broad protocol coverage, governance, and deep diagnostics; the tradeoff is commercial licensing, heavier infrastructure, and a steeper learning curve than code-first OSS tools.',
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Commercial license; request a quote.',
@@ -141,9 +141,9 @@ export const tools: Tool[] = [
     vendor: 'OpenText',
     url: 'https://www.opentext.com/products/loadrunner-enterprise',
     description:
-      'Web-based enterprise platform for planning, executing, and analyzing performance tests.',
+      'Enterprise performance testing platform for centralized scheduling, execution, and governance.',
     longDescription:
-      'LoadRunner Enterprise centralizes performance test assets and execution for teams. It supports distributed load generation and integrates with enterprise quality workflows.',
+      'LoadRunner Enterprise is OpenText’s web-based performance testing platform for coordinating large testing programs across teams. It builds on LoadRunner protocols and controllers while adding centralized asset management, scheduling, lab/resource management, and role-based collaboration. It suits enterprises with multiple performance teams and governance requirements; smaller teams or simple API load tests may find it operationally heavy compared with cloud-native or OSS options.',
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Commercial license; request a quote.',
@@ -161,9 +161,9 @@ export const tools: Tool[] = [
     vendor: 'OpenText',
     url: 'https://www.opentext.com/products/loadrunner-cloud',
     description:
-      'SaaS performance testing service with cloud load generators and enterprise test management.',
+      'SaaS LoadRunner platform for globally distributed browser and protocol performance testing.',
     longDescription:
-      'LoadRunner Cloud runs performance tests from managed cloud infrastructure. It supports browser and protocol testing with integrated results and collaboration features.',
+      'LoadRunner Cloud is OpenText’s SaaS performance testing service that provides managed cloud load generators and centralized test management. It supports a wide range of protocols and tools, including HTTP, WebSocket, JMeter, Gatling, Kafka, MQTT, SAP, Citrix, and Selenium-based browser tests. It fits enterprises that want LoadRunner ecosystem breadth without running their own load infrastructure; commercial pricing and cloud data constraints should be evaluated early.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel: 'Commercial subscription; request a quote.',
@@ -194,9 +194,9 @@ export const tools: Tool[] = [
     url: 'https://locust.io/',
     repoUrl: 'https://github.com/locustio/locust',
     description:
-      'Open-source, Python-based framework for writing scalable user behavior load tests.',
+      'Open-source Python load testing framework for modeling user behavior as code.',
     longDescription:
-      'Locust lets engineers describe user behavior in ordinary Python code. Tests can run distributed across processes or machines and expose an HTTP web interface.',
+      'Locust is a Python-based performance testing framework where virtual users are plain Python classes and tasks. It supports HTTP/HTTPS and WebSocket testing, distributed workers, and a web UI for starting runs and watching live metrics. Locust is ideal for Python teams that want flexible, programmable scenarios and easy custom clients; because virtual users run as lightweight greenlets inside Python processes, scaling very high concurrency usually means coordinating multiple workers rather than relying on one process.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; MIT License.',
@@ -216,9 +216,9 @@ export const tools: Tool[] = [
     url: 'https://gatling.io/',
     repoUrl: 'https://github.com/gatling/gatling',
     description:
-      'Code-driven load testing tool with expressive scenarios and high-throughput asynchronous engines.',
+      'Code-driven load testing tool for high-throughput HTTP, WebSocket, SSE, and JMS workloads.',
     longDescription:
-      'Gatling uses code-based simulations to model traffic and produce HTML reports. The core project supports HTTP, WebSocket, SSE, and JMS workloads.',
+      'Gatling is a JVM-based performance testing tool that models user behavior as code in Java, Scala, or Kotlin. Its asynchronous engine generates high concurrency with efficient resource use, and it produces detailed HTML reports for latency, throughput, and error analysis. Gatling is a strong fit for engineering teams that want maintainable test code and CI integration; teams needing broad legacy enterprise protocols may prefer a suite like LoadRunner or NeoLoad.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free open-source core; commercial platform available.',
@@ -237,9 +237,9 @@ export const tools: Tool[] = [
     vendor: 'Gatling Corp.',
     url: 'https://gatling.io/pricing/',
     description:
-      'Managed Gatling platform for distributed testing, observability, and team workflows.',
+      'Managed Gatling platform for distributed load generation, dashboards, and team collaboration.',
     longDescription:
-      'Gatling Enterprise is the commercial cloud and self-managed platform from Gatling. It adds managed injection, scheduling, dashboards, and collaboration to Gatling tests.',
+      'Gatling Enterprise is the commercial platform for running Gatling simulations at scale with managed infrastructure and team workflows. It adds distributed load injection, scheduling, dashboards, integrations, and collaboration on top of Gatling’s Java/Scala/Kotlin/JavaScript SDKs. It fits teams already invested in Gatling who need managed execution or centralized reporting; teams seeking a fully open-source stack or non-Gatling scripting models should evaluate fit carefully.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel:
@@ -259,9 +259,9 @@ export const tools: Tool[] = [
     vendor: 'Neotys / Tricentis',
     url: 'https://www.tricentis.com/products/performance-testing-neoload',
     description:
-      'Enterprise performance testing platform for web, API, mobile, and packaged applications.',
+      'Enterprise performance testing platform for web, API, mobile, SAP, and packaged applications.',
     longDescription:
-      'NeoLoad provides visual test design, protocol support, load generation, and analysis. Tricentis offers it as part of its software quality platform.',
+      'NeoLoad is Tricentis’s enterprise performance testing platform for designing, executing, and analyzing load tests across web, API, mobile, and packaged applications. It offers visual/no-code design with code extensibility, protocol coverage including HTTP, WebSocket, JDBC, and SAP, and hybrid deployment options. NeoLoad fits organizations that need centralized governance, collaboration, and enterprise integrations; its commercial licensing and platform model are heavier than lightweight OSS CLI tools.',
     category: 'Enterprise Suite',
     license: 'Commercial',
     pricingModel: 'Commercial subscription or license; request a quote.',
@@ -322,9 +322,9 @@ export const tools: Tool[] = [
     vendor: 'Loader.io',
     url: 'https://loader.io/',
     description:
-      'Hosted HTTP load testing service for APIs and web applications.',
+      'Simple cloud HTTP load testing service for quick API and web endpoint stress checks.',
     longDescription:
-      'Loader.io runs short-lived HTTP load tests from the cloud and provides basic result charts. It is designed for quick endpoint and application checks.',
+      'Loader.io is a hosted HTTP load testing service focused on quick, simple endpoint tests. It lets teams configure basic load tests against URLs, verify targets, and review response times and error rates from cloud-generated traffic. Loader.io is useful for lightweight smoke/load checks and early-stage API validation; it is limited for complex scripted journeys, rich protocol coverage, or advanced performance engineering workflows.',
     category: 'Cloud Load Testing',
     license: 'Freemium',
     pricingModel: 'Free tier; Pro is USD 99.95 per month.',
@@ -446,9 +446,9 @@ export const tools: Tool[] = [
     url: 'https://grafana.com/docs/k6/latest/',
     repoUrl: 'https://github.com/grafana/k6',
     description:
-      'Open-source developer-centric load testing tool with JavaScript or TypeScript test scripts.',
+      'Open-source, code-first load testing tool for APIs and services using JavaScript or TypeScript.',
     longDescription:
-      'Grafana k6 executes performance tests from concise JavaScript or TypeScript scenarios. It supports thresholds, checks, extensions, and integration with Grafana observability products.',
+      'Grafana k6 is a developer-centric performance testing tool where scenarios are written as JavaScript or TypeScript code. It runs efficient HTTP, WebSocket, and gRPC workloads, with checks, thresholds, scenarios, and CI-friendly CLI execution. k6 fits teams that want version-controlled tests and Grafana observability integration; for browser-heavy journeys or GUI-first authoring, pair it with k6 browser or another tool.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; AGPL-3.0 license.',
@@ -468,9 +468,9 @@ export const tools: Tool[] = [
     vendor: 'Grafana Labs',
     url: 'https://grafana.com/products/cloud/k6/',
     description:
-      'Hosted Grafana service for running k6 tests with dashboards and distributed load generation.',
+      'Managed Grafana Cloud service for running k6 scripts with distributed load and observability.',
     longDescription:
-      'Grafana Cloud k6 provides managed execution and results for k6 test scripts. It connects load testing data with Grafana dashboards, alerts, and other observability signals.',
+      'Grafana Cloud k6 is the managed SaaS offering for the k6 performance testing ecosystem. It runs JavaScript/TypeScript k6 scripts with cloud load generation, project management, and native Grafana dashboards for correlating test results with application observability. It fits teams already using k6 or Grafana who need managed scale and shared results; usage-based pricing and cloud execution constraints should be evaluated for regulated or air-gapped environments.',
     category: 'Cloud Load Testing',
     license: 'Freemium',
     pricingModel: 'Free tier with usage-based paid plans.',
@@ -495,9 +495,9 @@ export const tools: Tool[] = [
     vendor: 'OctoPerf',
     url: 'https://octoperf.com/',
     description:
-      'SaaS and on-premises performance testing platform built around Apache JMeter.',
+      'SaaS and on-prem performance testing platform with visual and JMX-based JMeter workflows.',
     longDescription:
-      'OctoPerf offers visual JMeter test design, cloud or private execution, and results analysis. It supports distributed load testing and CI/CD integrations.',
+      'OctoPerf is a performance testing platform built around Apache JMeter, offering both SaaS and on-premises deployment. It provides visual test design, JMX import/export, cloud or private load generators, and collaborative reporting for HTTP, HTTPS, JDBC, and JMS workloads. OctoPerf fits teams that want JMeter compatibility with less operational overhead; very specialized JMeter plugins or non-JMeter protocol ecosystems may require extra validation.',
     category: 'Cloud Load Testing',
     license: 'Freemium',
     pricingModel: 'Free trial and paid plans.',
@@ -695,9 +695,9 @@ export const tools: Tool[] = [
     url: 'https://www.artillery.io/',
     repoUrl: 'https://github.com/artilleryio/artillery',
     description:
-      'Developer-first load testing toolkit for HTTP, WebSocket, and messaging systems.',
+      'Developer-first load testing toolkit for HTTP, WebSocket, Socket.IO, and MQTT workloads.',
     longDescription:
-      'Artillery uses YAML configuration and JavaScript or TypeScript extensions to model traffic. It supports local and distributed tests plus CI/CD-oriented reporting.',
+      'Artillery is a modern load testing toolkit designed for developers and CI pipelines. Tests can be authored in YAML with JavaScript or TypeScript hooks for custom logic, and it supports HTTP, WebSocket, Socket.IO, and MQTT scenarios. Artillery is a good fit for API and realtime service testing where fast feedback and code-friendly workflows matter; teams needing broad legacy protocol coverage or deep GUI-based analysis may need an enterprise suite.',
     category: 'Protocol/API Load',
     license: 'Open Source',
     pricingModel: 'Free open-source core; commercial cloud features available.',
@@ -815,14 +815,14 @@ export const tools: Tool[] = [
     vendor: 'Microsoft',
     url: 'https://learn.microsoft.com/azure/load-testing/',
     description:
-      'Fully managed Azure service for running high-scale Apache JMeter load tests.',
+      'Managed Azure service for high-scale JMeter and Locust load tests with Azure observability.',
     longDescription:
-      'Azure Load Testing provisions managed load infrastructure and integrates test results with Azure workflows. It supports Apache JMeter tests and CI/CD automation.',
+      'Azure Load Testing is Microsoft’s fully managed load testing service for generating high-scale traffic against applications and Azure resources. It supports Apache JMeter-based tests and Locust scripts, provides managed infrastructure, and integrates with Azure Monitor, CI/CD pipelines, and Azure role-based access. It is a strong fit for teams already invested in Azure; cross-cloud portability and advanced non-HTTP protocol needs should be validated before standardizing.',
     category: 'Cloud Load Testing',
     license: 'Commercial',
     pricingModel: 'Azure consumption-based pricing with free quota.',
     deployment: 'Cloud',
-    scriptingLanguages: ['Java', 'Groovy'],
+    scriptingLanguages: ['Java', 'Groovy', 'Python'],
     protocols: ['HTTP', 'HTTPS', 'JDBC', 'JMS'],
     osSupport: ['Browser'],
     firstReleased: 2021,
@@ -858,9 +858,9 @@ export const tools: Tool[] = [
     url: 'https://github.com/tsenart/vegeta',
     repoUrl: 'https://github.com/tsenart/vegeta',
     description:
-      'HTTP load testing command-line utility designed for constant request rates.',
+      'Go-based HTTP load testing CLI for constant-rate attacks, reports, and latency plots.',
     longDescription:
-      'Vegeta is a Go-based HTTP load testing tool with attack, report, and plotting commands. It is useful for repeatable endpoint benchmarks and rate-based tests.',
+      'Vegeta is a versatile Go command-line tool for HTTP load testing with a focus on constant request rates. Its attack, report, encode, and plot commands make it easy to run repeatable benchmarks and pipe results into scripts or dashboards. Vegeta is a strong choice for API endpoint benchmarking and SLO-oriented rate testing; it is not intended for browser journeys, complex stateful workflows, or large distributed test orchestration.',
     category: 'Micro-benchmark CLI',
     license: 'Open Source',
     pricingModel: 'Free; MIT License.',
@@ -880,9 +880,9 @@ export const tools: Tool[] = [
     url: 'https://github.com/wg/wrk',
     repoUrl: 'https://github.com/wg/wrk',
     description:
-      'Modern HTTP benchmarking tool capable of generating significant load from a single machine.',
+      'High-throughput HTTP benchmarking CLI for latency and requests-per-second tests on a single machine.',
     longDescription:
-      'wrk is a multithreaded HTTP benchmarking tool with LuaJIT scripting for custom workloads. It emphasizes throughput and latency measurements for HTTP services.',
+      'wrk is a lightweight, multithreaded HTTP benchmarking tool written in C with optional LuaJIT scripting. It is designed to generate significant request volume from a single machine and report latency distributions, throughput, and transfer rates. wrk is excellent for quick endpoint micro-benchmarks and capacity sanity checks; it is not a full load-testing framework for multi-step journeys, distributed orchestration, or rich business reporting.',
     category: 'Micro-benchmark CLI',
     license: 'Open Source',
     pricingModel: 'Free; Apache License 2.0.',
@@ -942,9 +942,9 @@ export const tools: Tool[] = [
     url: 'https://gettaurus.org/',
     repoUrl: 'https://github.com/Blazemeter/taurus',
     description:
-      'Open-source automation framework that configures and runs multiple performance testing engines.',
+      'Open-source test automation wrapper for running JMeter, Gatling, and other performance tools from YAML.',
     longDescription:
-      'Taurus provides YAML-based declarative configuration for tools such as JMeter, Gatling, and Selenium. It standardizes execution and reporting for local or CI environments.',
+      'Taurus is an open-source automation framework that wraps multiple performance and functional testing tools behind a common YAML configuration and CLI. It can orchestrate JMeter, Gatling, Locust, k6, Selenium, and other executors, making it useful for CI pipelines and teams standardizing test execution. Taurus is best as an orchestration layer, not a replacement engine; advanced protocol behavior and debugging still depend on the underlying tool.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; Apache License 2.0.',
@@ -1004,9 +1004,9 @@ export const tools: Tool[] = [
     vendor: 'Apache Software Foundation',
     url: 'https://httpd.apache.org/docs/2.4/programs/ab.html',
     description:
-      'Minimal HTTP server benchmarking command included with Apache HTTP Server.',
+      'Classic single-host HTTP benchmarking command for quick concurrency and throughput checks.',
     longDescription:
-      'ApacheBench sends configurable concurrent HTTP requests and summarizes throughput and timing. It is useful for simple endpoint benchmarks, not multi-step user journeys.',
+      'ApacheBench (ab) is a simple command-line HTTP benchmarking tool bundled with Apache HTTP Server. It sends a configurable number of requests at a chosen concurrency level and reports throughput, connection times, and percentiles for a single endpoint. ab is useful for quick sanity checks and basic server comparisons; it lacks modern scripting, distributed execution, HTTP/2-first workflows, and realistic multi-step scenario modeling.',
     category: 'Micro-benchmark CLI',
     license: 'Open Source',
     pricingModel: 'Free; Apache License 2.0.',
@@ -1169,9 +1169,9 @@ export const tools: Tool[] = [
     url: 'https://github.com/mcollina/autocannon',
     repoUrl: 'https://github.com/mcollina/autocannon',
     description:
-      'Node.js HTTP/1.1 benchmarking tool optimized for quick, high-throughput tests.',
+      'Fast Node.js HTTP/1.1 benchmarking tool with CLI and programmable JavaScript API.',
     longDescription:
-      'Autocannon generates HTTP traffic from the command line or JavaScript API. It reports throughput and latency and is commonly used in Node.js development.',
+      'Autocannon is a high-throughput HTTP/1.1 benchmarking tool written in Node.js, available as both a CLI and a JavaScript API. It is commonly used by Node.js teams to measure request throughput, latency, and errors during local development or CI performance checks. Autocannon is great for fast endpoint benchmarking and scripted HTTP tests; it is not a full-featured load testing platform for complex user journeys, protocol breadth, or distributed load generation.',
     category: 'Micro-benchmark CLI',
     license: 'Open Source',
     pricingModel: 'Free; MIT License.',
