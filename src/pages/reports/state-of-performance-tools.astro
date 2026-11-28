@@ -189,10 +189,23 @@ const findings = [
         </p>
       </div>
       <div class="editorial-actions">
-        <a class="button button--amber" href={csvHref} download>
+        <a
+          class="button button--amber"
+          href={csvHref}
+          download
+          data-analytics-event="dataset_download"
+          data-analytics-label="state_of_performance_tools"
+          data-analytics-placement="report"
+        >
           Download dataset CSV
         </a>
-        <a class="button button--ghost" href={siteUrl('tools.json')}>
+        <a
+          class="button button--ghost"
+          href={siteUrl('tools.json')}
+          data-analytics-event="dataset_view"
+          data-analytics-label="tools_json"
+          data-analytics-placement="report"
+        >
           Inspect tools.json
         </a>
       </div>

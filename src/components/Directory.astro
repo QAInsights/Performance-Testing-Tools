@@ -76,7 +76,12 @@ const optionGroups = [
         <p class="intro">{intro}</p>
         {
           !category && (
-            <a class="directory-wizard-link mono" href={siteUrl('wizard')}>
+            <a
+              class="directory-wizard-link mono"
+              href={siteUrl('wizard')}
+              data-analytics-event="wizard_click"
+              data-analytics-placement="homepage"
+            >
               TOOL FINDER →
             </a>
           )
@@ -88,6 +93,9 @@ const optionGroups = [
             class="sponsor-slot focus-ring"
             href={siteUrl('sponsors')}
             data-sponsor-cta="topbar"
+            data-analytics-event="sponsor_click"
+            data-analytics-cta="topbar"
+            data-analytics-placement="homepage"
           >
             <span class="sponsor-slot-label mono">Sponsored</span>
             <span class="sponsor-slot-title">Featured partner slots</span>
@@ -123,6 +131,11 @@ const optionGroups = [
                   href={siteUrl(`tools/${tool.slug}`)}
                   rel="sponsored"
                   data-sponsor-slot={index + 1}
+                  data-analytics-event="sponsor_click"
+                  data-analytics-cta="featured_tool"
+                  data-analytics-label={tool.slug}
+                  data-analytics-slot={index + 1}
+                  data-analytics-placement="homepage"
                 >
                   <span class="featured-slot-label mono">Sponsored</span>
                   <strong>{tool.name}</strong>
@@ -136,6 +149,10 @@ const optionGroups = [
                   href={siteUrl('sponsors')}
                   data-sponsor-slot={index + 1}
                   data-sponsor-cta="open-slot"
+                  data-analytics-event="sponsor_click"
+                  data-analytics-cta="open_slot"
+                  data-analytics-slot={index + 1}
+                  data-analytics-placement="homepage"
                 >
                   <span class="featured-slot-label mono">
                     Sponsored placement

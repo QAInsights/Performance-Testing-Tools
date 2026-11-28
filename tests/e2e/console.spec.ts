@@ -108,6 +108,10 @@ test('compare tray names tools and survives navigation', async ({ page }) => {
   await page.locator('[data-compare="apache-jmeter"]').first().check();
   await page.locator('[data-compare="grafana-k6"]').first().check();
   await expect(page.locator('[data-compare-tray]')).toBeVisible();
+  await expect(page.locator('[data-open-compare]')).toHaveAttribute(
+    'data-analytics-event',
+    'compare_open',
+  );
   await expect(page.locator('[data-compare-chips]')).toContainText(
     'Apache JMeter',
   );

@@ -125,7 +125,10 @@ const compareQuery = [left.slug, right.slug].sort().join(',');
         >
         <a
           class="button button--ghost"
-          href={siteUrl(`compare?tools=${compareQuery}`)}>Open Test Rig</a
+          href={siteUrl(`compare?tools=${compareQuery}`)}
+          data-analytics-event="vs_compare_click"
+          data-analytics-pair={spec.pairPath}
+          data-analytics-placement="vs">Open Test Rig</a
         >
       </div>
     </section>

@@ -72,7 +72,13 @@ const paragraphs = landing.intro.split('\n\n');
       <p>
         Compare up to three tools in the Test Rig or filter the live directory.
       </p>
-      <a class="button button--amber" href={siteUrl()}>Open directory</a>
+      <a
+        class="button button--amber"
+        href={siteUrl()}
+        data-analytics-event="guide_directory_click"
+        data-analytics-label={landing.slug}
+        data-analytics-placement="guide">Open directory</a
+      >
     </section>
     <Footer />
   </main>
