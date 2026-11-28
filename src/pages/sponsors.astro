@@ -9,12 +9,13 @@ import {
 } from '../data/sponsors';
 import { breadcrumbs } from '../lib/seo';
 import { absoluteUrl, siteUrl } from '../lib/urls';
+import { seoYear } from '../lib/pageMeta';
 import '../styles/editorial.css';
 ---
 
 <ConsoleLayout
-  title="Sponsor Performance Testing Tools · Featured slots"
-  description="Clearly labeled featured slots and sponsorship options for the Performance Testing Tools directory."
+  title={`Sponsor Performance Testing Tools (${seoYear}) - Featured Slots`}
+  description="Reach performance engineers with clearly labeled featured slots. Sponsorships stay separate from editorial picks, rankings, and lifecycle status."
   ogType="article"
   canonical={absoluteUrl('sponsors')}
   showAd={false}
