@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { tools } from '../data/tools';
+import { TOP_15_FAQ_SLUGS } from '../data/toolFaqs';
 import {
   assertFaqQuality,
   buildToolFaq,
@@ -23,6 +24,21 @@ describe('tool FAQ content', () => {
       expect(assertFaqQuality(faq), tool.slug).toBe(true);
       expect(faq.some((item) => /\blisted as\b/i.test(item.answer))).toBe(
         false,
+      );
+    }
+  });
+
+  it('uses hand-written FAQs for the top 15 tools', () => {
+    expect(TOP_15_FAQ_SLUGS).toHaveLength(15);
+    for (const slug of TOP_15_FAQ_SLUGS) {
+      const tool = tools.find((item) => item.slug === slug);
+      expect(tool, slug).toBeDefined();
+      if (!tool) continue;
+      const faq = buildToolFaq(tool, tools);
+      expect(faq.length, slug).toBeGreaterThanOrEqual(4);
+      expect(assertFaqQuality(faq), slug).toBe(true);
+      expect(faq[0].question.toLowerCase(), slug).toContain(
+        tool.name.toLowerCase(),
       );
     }
   });

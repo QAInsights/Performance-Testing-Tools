@@ -1,4 +1,5 @@
 import type { Tool } from '../data/tools';
+import { getToolFaqOverride } from '../data/toolFaqs';
 
 export interface FaqItem {
   question: string;
@@ -235,6 +236,14 @@ const ensureAnswerBand = (answer: string): string => {
 };
 
 export function buildToolFaq(tool: Tool, catalog: readonly Tool[]): FaqItem[] {
+  const override = getToolFaqOverride(tool.slug);
+  if (override?.length) {
+    return override.map((item) => ({
+      question: item.question.trim(),
+      answer: ensureAnswerBand(item.answer),
+    }));
+  }
+
   const items = [
     whoIsItFor(tool),
     differsFromRival(tool, catalog),
