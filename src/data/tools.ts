@@ -98,7 +98,7 @@ export const tools: Tool[] = [
     vendor: 'Perforce',
     url: 'https://www.blazemeter.com/',
     description:
-      'Cloud-based continuous testing platform for running JMeter, k6, Gatling, and API performance tests.',
+      'Cloud-based continuous testing platform with test data for JMeter, k6, Gatling, and API performance tests.',
     longDescription:
       'BlazeMeter is a SaaS performance and continuous testing platform from Perforce. It can orchestrate open-source scripts such as Apache JMeter, Taurus/YAML, k6, and Gatling, while adding managed load generation, test data, reporting, and CI/CD integrations. It fits teams that want cloud scale without managing injector infrastructure; costs and workflow fit should be validated for long-running or highly customized enterprise scenarios.',
     category: 'Cloud Load Testing',
@@ -196,7 +196,7 @@ export const tools: Tool[] = [
     description:
       'Open-source Python load testing framework for modeling user behavior as code.',
     longDescription:
-      'Locust is a Python-based performance testing framework where virtual users are plain Python classes and tasks. It supports HTTP/HTTPS and WebSocket testing, distributed workers, and a web UI for starting runs and watching live metrics. Locust is ideal for Python teams that want flexible, programmable scenarios and easy custom clients; because users run as Python processes, very high concurrency often requires more workers than JVM or Go-based tools.',
+      'Locust is a Python-based performance testing framework where virtual users are plain Python classes and tasks. It supports HTTP/HTTPS and WebSocket testing, distributed workers, and a web UI for starting runs and watching live metrics. Locust is ideal for Python teams that want flexible, programmable scenarios and easy custom clients; because virtual users run as lightweight greenlets inside Python processes, scaling very high concurrency usually means coordinating multiple workers rather than relying on one process.',
     category: 'Load Testing',
     license: 'Open Source',
     pricingModel: 'Free; MIT License.',
@@ -822,7 +822,7 @@ export const tools: Tool[] = [
     license: 'Commercial',
     pricingModel: 'Azure consumption-based pricing with free quota.',
     deployment: 'Cloud',
-    scriptingLanguages: ['Java', 'Groovy'],
+    scriptingLanguages: ['Java', 'Groovy', 'Python'],
     protocols: ['HTTP', 'HTTPS', 'JDBC', 'JMS'],
     osSupport: ['Browser'],
     firstReleased: 2021,
@@ -880,7 +880,7 @@ export const tools: Tool[] = [
     url: 'https://github.com/wg/wrk',
     repoUrl: 'https://github.com/wg/wrk',
     description:
-      'High-throughput HTTP benchmarking CLI for quick latency and requests-per-second measurements.',
+      'High-throughput HTTP benchmarking CLI for latency and requests-per-second tests on a single machine.',
     longDescription:
       'wrk is a lightweight, multithreaded HTTP benchmarking tool written in C with optional LuaJIT scripting. It is designed to generate significant request volume from a single machine and report latency distributions, throughput, and transfer rates. wrk is excellent for quick endpoint micro-benchmarks and capacity sanity checks; it is not a full load-testing framework for multi-step journeys, distributed orchestration, or rich business reporting.',
     category: 'Micro-benchmark CLI',

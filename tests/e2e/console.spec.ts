@@ -51,6 +51,35 @@ test('search state is reflected in the URL and command palette opens', async ({
   await expect(palette).toBeHidden();
 });
 
+test('directory search keeps curated capability terms matchable', async ({
+  page,
+}) => {
+  await page.goto(path());
+  await page.getByLabel('Search tools').fill('test data');
+  await expect(page.locator('tr[data-tool="blazemeter"]')).toBeVisible();
+  await page.getByLabel('Search tools').fill('single machine');
+  await expect(page.locator('tr[data-tool="wrk"]')).toBeVisible();
+});
+
+test('python filter keeps Locust-capable Azure Load Testing visible', async ({
+  page,
+}) => {
+  await page.goto(`${path()}?q=Locust&language=Python`);
+  await expect(
+    page.locator('tr[data-tool="azure-load-testing"]'),
+  ).toBeVisible();
+});
+
+test('tool pages show expanded catalog copy next to enrichment answers', async ({
+  page,
+}) => {
+  await page.goto(path('tools/apache-jmeter'));
+  await expect(page.locator('.answer-box')).toContainText('100% pure Java');
+  await expect(page.locator('.detail-copy .lead')).toContainText(
+    'mature, self-hosted load and performance testing application',
+  );
+});
+
 test('released-date sorting puts undated tools last', async ({ page }) => {
   await page.goto(path());
   await page.getByLabel('Sort tools').selectOption('released');

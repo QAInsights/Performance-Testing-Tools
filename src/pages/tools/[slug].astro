@@ -53,19 +53,17 @@ const alternativesCount = alternativesHub
 const enrichmentDate = enrichment
   ? new Date(enrichment.fetchedAt).toISOString().slice(0, 10)
   : datasetLastVerified;
-const about = enrichment?.about || tool.longDescription;
 const normalized = (value: string) =>
   value.trim().toLowerCase().replace(/\s+/g, ' ');
+const about = enrichment?.about || tool.longDescription;
+const detailAbout =
+  enrichment?.about &&
+  normalized(enrichment.about) !== normalized(tool.longDescription)
+    ? tool.longDescription
+    : '';
 const wordCount = (value: string) => value.trim().split(/\s+/).length;
 const answerText = wordCount(about) <= 120 ? about : answerBox;
-const normalizedAnswer = normalized(answerText)
-  .replace(/\s+status:.*$/i, '')
-  .replace(/\.+$/, '');
-const normalizedAbout = normalized(about);
-const answerMatchesAbout =
-  normalizedAbout === normalizedAnswer ||
-  normalizedAbout.startsWith(`${normalizedAnswer} `);
-const hasAbout = !answerMatchesAbout;
+const hasAbout = Boolean(detailAbout);
 const maintainedBy =
   enrichment?.authorOrCompany &&
   normalized(enrichment.authorOrCompany) !== normalized(tool.vendor)
@@ -256,7 +254,7 @@ const reviewSummary =
             Boolean(enrichment?.aiFeatures?.length)) && (
             <section class="detail-section">
               <h2>What it is</h2>
-              {hasAbout && <p class="lead">{about}</p>}
+              {hasAbout && <p class="lead">{detailAbout}</p>}
               {enrichment?.features && enrichment.features.length > 0 && (
                 <div class="what-it-is-block">
                   <h3>Features</h3>
