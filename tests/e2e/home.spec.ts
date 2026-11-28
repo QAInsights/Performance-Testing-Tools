@@ -9,4 +9,8 @@ test('directory loads at the configured site base', async ({ page }) => {
   await expect(
     page.getByRole('heading', { name: /\d+ performance testing tools/i }),
   ).toBeVisible();
+  await expect(page.locator('[data-sponsor-cta="topbar"]')).toHaveAttribute(
+    'data-analytics-event',
+    'sponsor_click',
+  );
 });

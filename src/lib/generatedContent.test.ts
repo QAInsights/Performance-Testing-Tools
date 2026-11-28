@@ -196,4 +196,31 @@ describe('generated public content', () => {
     expect(page).toContain('not a market-share study');
     expect(page).toContain('state-of-performance-tools.csv');
   });
+
+  it('wires analytics instrumentation into key surfaces', () => {
+    expect(readFileSync('src/layouts/ConsoleLayout.astro', 'utf8')).toContain(
+      '../scripts/analytics.ts',
+    );
+    expect(readFileSync('src/components/Directory.astro', 'utf8')).toContain(
+      'data-analytics-event="sponsor_click"',
+    );
+    expect(readFileSync('src/components/CompareTray.astro', 'utf8')).toContain(
+      'data-analytics-event="compare_open"',
+    );
+    expect(readFileSync('src/pages/sponsors.astro', 'utf8')).toContain(
+      'data-analytics-cta="inquiry"',
+    );
+    expect(
+      readFileSync(
+        'src/pages/reports/state-of-performance-tools.astro',
+        'utf8',
+      ),
+    ).toContain('data-analytics-event="dataset_download"');
+    expect(readFileSync('src/pages/vs/[pair].astro', 'utf8')).toContain(
+      'data-analytics-event="vs_compare_click"',
+    );
+    expect(readFileSync('src/pages/guides/[slug].astro', 'utf8')).toContain(
+      'data-analytics-event="guide_directory_click"',
+    );
+  });
 });

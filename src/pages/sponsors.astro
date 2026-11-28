@@ -107,10 +107,17 @@ import '../styles/editorial.css';
           href={sponsorInquiryUrl}
           target="_blank"
           rel="noreferrer"
-          data-sponsor-cta="inquiry">Request availability ↗</a
+          data-sponsor-cta="inquiry"
+          data-analytics-event="sponsor_click"
+          data-analytics-cta="inquiry"
+          data-analytics-placement="sponsors">Request availability ↗</a
         >
-        <a class="button button--ghost" href={siteUrl('tools.json')}
-          >Inspect tools.json</a
+        <a
+          class="button button--ghost"
+          href={siteUrl('tools.json')}
+          data-analytics-event="dataset_view"
+          data-analytics-label="tools_json"
+          data-analytics-placement="sponsors">Inspect tools.json</a
         >
       </div>
     </section>
