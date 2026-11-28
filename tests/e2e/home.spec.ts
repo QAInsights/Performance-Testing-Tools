@@ -4,7 +4,7 @@ import { sitePath } from './paths';
 test('directory loads at the configured site base', async ({ page }) => {
   await page.goto(sitePath());
   await expect(page).toHaveTitle(
-    /Performance Testing Tools Compared \(\d{4}\)/,
+    /Best Performance Testing Tools \(\d{4}\) - \d+ Compared/,
   );
   await expect(
     page.getByRole('heading', { name: /\d+ performance testing tools/i }),

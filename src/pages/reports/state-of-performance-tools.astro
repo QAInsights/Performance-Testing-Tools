@@ -5,6 +5,7 @@ import { datasetLastVerified, tools } from '../../data/tools';
 import { curatorPerson } from '../../lib/methodology';
 import { breadcrumbs, datasetSchema } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
+import { seoYear } from '../../lib/pageMeta';
 import '../../styles/editorial.css';
 
 const reportPath = 'reports/state-of-performance-tools';
@@ -98,8 +99,8 @@ const findings = [
 ---
 
 <ConsoleLayout
-  title="State of Performance Tools · 2026 dataset report"
-  description="A citation-friendly snapshot of the Performance Testing Tools catalog with category, license, deployment, lifecycle, protocol, and language distributions."
+  title={`State of Performance Tools (${seoYear}) - Dataset & Trends`}
+  description="Citation-friendly snapshot of the performance testing tools catalog: category, license, deployment, lifecycle, protocol, and language distributions."
   ogType="article"
   canonical={absoluteUrl(reportPath)}
   showAd={false}

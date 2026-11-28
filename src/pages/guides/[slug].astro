@@ -6,6 +6,7 @@ import { GUIDE_LANDINGS } from '../../data/landings';
 import { filterToolsForLanding, landingPath } from '../../lib/landingContent';
 import { breadcrumbs, toolItemList } from '../../lib/seo';
 import { absoluteUrl, siteUrl } from '../../lib/urls';
+import { clampMetaDescription, seoYear } from '../../lib/pageMeta';
 import '../../styles/editorial.css';
 
 export function getStaticPaths() {
@@ -24,8 +25,8 @@ const paragraphs = landing.intro.split('\n\n');
 ---
 
 <ConsoleLayout
-  title={`${landing.title} · Performance Testing Tools`}
-  description={landing.description}
+  title={`${landing.title} (${seoYear}) - Guide & Tool List`}
+  description={clampMetaDescription(landing.description)}
   ogType="article"
   canonical={absoluteUrl(path)}
   structuredData={[

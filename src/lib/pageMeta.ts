@@ -1,11 +1,4 @@
-import {
-  datasetLastVerified,
-  tools,
-  type Category,
-  type Deployment,
-  type License,
-  type Tool,
-} from '../data/tools';
+import { tools, type Category, type Tool } from '../data/tools';
 import type { ToolReview } from '../data/reviews';
 import { reviews } from '../data/reviews';
 import { curatorPerson } from './methodology';
@@ -14,18 +7,6 @@ import { curatorPerson } from './methodology';
 export const seoYear = 2026;
 
 export const siteName = 'Performance Testing Tools';
-
-const LICENSE_WORD: Record<License, string> = {
-  'Open Source': 'Open source',
-  Commercial: 'Commercial',
-  Freemium: 'Freemium',
-};
-
-const DEPLOYMENT_PHRASE: Record<Deployment, string> = {
-  'Self-hosted': 'self-hosted',
-  Cloud: 'cloud-hosted',
-  Hybrid: 'self-hosted or cloud',
-};
 
 const META_DESCRIPTION_LIMIT = 158;
 
@@ -40,55 +21,35 @@ export function toolCount(catalog: readonly Tool[] = tools): number {
 }
 
 export function homeTitle(catalog: readonly Tool[] = tools): string {
-  return `${toolCount(catalog)} Performance Testing Tools Compared (${seoYear}) · Directory`;
+  return `Best Performance Testing Tools (${seoYear}) - ${toolCount(catalog)} Compared`;
 }
 
 export function homeDescription(catalog: readonly Tool[] = tools): string {
-  return `Compare ${toolCount(catalog)} load, protocol, cloud, and enterprise performance testing tools. Curated specs, licenses, lifecycle status, and pick signals. Last verified ${datasetLastVerified}.`;
+  return clampMetaDescription(
+    `Compare ${toolCount(catalog)} performance testing tools by protocol, license, deployment, and lifecycle status. Find the best load testing tool for your stack.`,
+  );
 }
 
 export function toolTitle(tool: Tool): string {
   if (tool.status === 'Discontinued') {
-    return `${tool.name}: discontinued, and what to use instead (${seoYear})`;
+    return `${tool.name} Alternatives & Successor (${seoYear}) - Performance Testing`;
   }
-  return `${tool.name}: pricing, license & alternatives (${seoYear})`;
+  return `${tool.name} Review: Pricing, Pros/Cons & Alternatives (${seoYear})`;
 }
 
 export function toolDescription(tool: Tool): string {
-  const head = tool.description.trim().replace(/\.$/, '');
-  if (head.length + 1 > META_DESCRIPTION_LIMIT) {
-    return clampMetaDescription(head);
-  }
-
-  const successor =
-    tool.successor && !/^no verified/i.test(tool.successor)
-      ? tool.successor
-      : undefined;
-  const base = [
-    tool.status === 'Discontinued'
-      ? successor
-        ? ` Discontinued; successor: ${successor}.`
-        : ' Discontinued.'
-      : '',
-    ` ${LICENSE_WORD[tool.license]}, ${DEPLOYMENT_PHRASE[tool.deployment]}.`,
-  ]
-    .filter(Boolean)
-    .reduce(
-      (out, clause) =>
-        out.length + clause.length <= META_DESCRIPTION_LIMIT
-          ? out + clause
-          : out,
-      `${head}.`,
+  if (tool.status === 'Discontinued') {
+    const successor =
+      tool.successor && !/^no verified/i.test(tool.successor)
+        ? ` Successor: ${tool.successor}.`
+        : '';
+    return clampMetaDescription(
+      `${tool.name} is discontinued.${successor} Compare active alternatives, migration options, and similar performance testing tools.`,
     );
-
-  const tail = [
-    ` Pricing, protocols and alternatives, verified ${datasetLastVerified}.`,
-    ` Verified ${datasetLastVerified}.`,
-  ].find(
-    (candidate) => base.length + candidate.length <= META_DESCRIPTION_LIMIT,
+  }
+  return clampMetaDescription(
+    `Is ${tool.name} right for your team? See pricing model, protocols, deployment, pros/cons, and best alternatives before you choose.`,
   );
-
-  return tail ? base + tail : base;
 }
 
 const firstSentence = (value: string) =>
@@ -123,7 +84,7 @@ export function reviewsIndexDescription(
 }
 
 export function categoryTitle(category: Category): string {
-  return `Best ${category} Tools (${seoYear}) · Curated Directory`;
+  return `Best ${category} Tools (${seoYear}) - Compare & Choose`;
 }
 
 export function categoryDescription(
@@ -131,7 +92,9 @@ export function categoryDescription(
   catalog: readonly Tool[] = tools,
 ): string {
   const count = catalog.filter((tool) => tool.category === category).length;
-  return `Browse ${count} curated ${category.toLowerCase()} tools with licenses, protocols, deployment models, and lifecycle status. Updated ${datasetLastVerified}.`;
+  return clampMetaDescription(
+    `Compare ${count} ${category.toLowerCase()} tools by license, protocol, deployment, and status. Shortlist the right performance testing tool faster.`,
+  );
 }
 
 export function categoryIntro(category: Category): string {
@@ -140,46 +103,58 @@ export function categoryIntro(category: Category): string {
 
 export function compareTitle(toolNames: string[] = []): string {
   if (toolNames.length >= 2) {
-    return `${toolNames.join(' vs ')} Spec Comparison · ${siteName}`;
+    return `${toolNames.join(' vs ')}: Which Is Better? (${seoYear})`;
   }
-  return `Test Rig · Spec Comparison · ${siteName}`;
+  return `Compare Performance Testing Tools Side by Side (${seoYear})`;
 }
 
 export function compareDescription(toolNames: string[] = []): string {
   if (toolNames.length >= 2) {
-    return `Side-by-side comparison of ${toolNames.join(', ')}: license, deployment, protocols, scripting languages, status, and pricing model.`;
+    return clampMetaDescription(
+      `Compare ${toolNames.join(', ')} on pricing, protocols, scripting, deployment, and status. See key differences before you pick a load testing tool.`,
+    );
   }
-  return `Compare up to three performance testing tools side by side. Select tools from the directory to populate the Test Rig.`;
+  return clampMetaDescription(
+    'Compare up to three performance testing tools side by side. Check licenses, protocols, deployment, and status before choosing.',
+  );
 }
 
 export function wizardTitle(): string {
-  return `Tool Finder · ${siteName}`;
+  return `Load Testing Tool Finder (${seoYear}) - Match Tools to Your Stack`;
 }
 
 export function wizardDescription(): string {
-  return `Find performance testing tools by workload, budget, deployment, language, and maintenance status. Compare the best matches in the Test Rig.`;
+  return clampMetaDescription(
+    'Answer a few questions to find performance testing tools that match your workload, budget, deployment, language, and maintenance needs.',
+  );
 }
 
 export function timelineTitle(): string {
-  return `Tool timeline · ${siteName}`;
+  return `Performance Testing Tool Timeline (${seoYear}) - First Releases`;
 }
 
 export function timelineDescription(): string {
-  return `Explore performance testing tools by first release year, from early load-testing tools to current benchmarking platforms.`;
+  return clampMetaDescription(
+    'Explore performance testing tools by first release year, from early load-testing platforms to modern cloud and code-first tools.',
+  );
 }
 
 export function healthTitle(): string {
-  return `Repo health · ${siteName}`;
+  return `Open-Source Performance Tool Health (${seoYear}) - Repo Signals`;
 }
 
 export function healthDescription(): string {
-  return `Review GitHub stars, recent activity, and archived status for performance testing tools with public repositories.`;
+  return clampMetaDescription(
+    'Track GitHub stars, recent activity, and archived status for open-source performance testing tools before you adopt one.',
+  );
 }
 
 export function aboutTitle(): string {
-  return `About · ${siteName}`;
+  return `About Performance Testing Tools - Curation & Methodology`;
 }
 
 export function aboutDescription(catalog: readonly Tool[] = tools): string {
-  return `How the ${siteName} directory is curated: ${toolCount(catalog)} tools, personal and general picks, lifecycle truth, and evidence-backed enrichment from QAInsights.`;
+  return clampMetaDescription(
+    `How we curate ${toolCount(catalog)} performance testing tools: lifecycle status, editorial picks, verification dates, and enrichment quality rules.`,
+  );
 }
